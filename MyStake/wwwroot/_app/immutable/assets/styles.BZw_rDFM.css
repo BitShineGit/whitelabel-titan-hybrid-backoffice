@@ -1,0 +1,4212 @@
+@charset "UTF-8";
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/roboto/roboto-latin-ext-wght-normal.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/roboto/roboto-latin-wght-normal.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/montserrat/montserrat-latin-ext-wght-normal.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/montserrat/montserrat-latin-wght-normal.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: Montserrat;
+    font-style: italic;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/montserrat/montserrat-latin-wght-italic.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 100 900;
+    src: url(../../../fonts/google/inter/inter-latin-wght-normal.woff2) format("woff2");
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD
+}
+
+@font-face {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../../fonts/google/poppins/poppins-latin-400-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    src: url(../../../fonts/google/poppins/poppins-latin-500-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    src: url(../../../fonts/google/poppins/poppins-latin-600-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 700;
+    src: url(../../../fonts/google/poppins/poppins-latin-700-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: Anton;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../../fonts/google/anton/anton-latin-400-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: Luckiest Guy;
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../../fonts/google/luckiest-guy/luckiest-guy-latin-400-normal.woff2) format("woff2");
+    font-display: swap
+}
+
+:root {
+    --color-primary: 0, 170, 235;
+    --color-secondary: 31, 37, 51;
+    --color-text-primary: 255, 255, 255;
+    --color-text-secondary: 163, 175, 204;
+    --color-text-tertiary: 187, 198, 233;
+    --color-background-primary: 27, 27, 34;
+    --color-background-secondary: 12, 18, 30;
+    --color-background-red: 255, 23, 45;
+    --color-background-green: 137, 199, 99;
+    --color-background-gradient-start: 1, 28, 45;
+    --color-success: 40, 167, 69;
+    --color-info: 23, 162, 184;
+    --color-warning: 255, 193, 7;
+    --color-danger: 220, 53, 69;
+    --font-family-primary: "Roboto", sans-serif;
+    --font-family-secondary: "Montserrat", serif;
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-fixed: 1030;
+    --z-index-bottom-menu: 1037;
+    --z-index-sidebar-backdrop: 1038;
+    --z-index-sidebar: 1039;
+    --z-index-modal-backdrop: 1041;
+    --z-index-modal: 1050;
+    --z-index-popover: 1060;
+    --z-index-tooltip: 1070;
+    --header-height: 12.9rem;
+    --header-height-mobile: 6rem;
+    --bottom-menu-height: 8rem;
+    --sidebar-width: 25.1rem
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+figure,
+dl,
+dd {
+    margin: 0
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 10px
+}
+
+body {
+    min-height: 100dvh;
+    font-size: 1.6rem;
+    text-rendering: optimizespeed;
+    -webkit-font-smoothing: antialiased
+}
+
+body .cashier-modal-overlay>div {
+    max-height: 92dvh !important
+}
+
+ul,
+ol {
+    padding: 0;
+    list-style: none
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle
+}
+
+svg {
+    vertical-align: middle
+}
+
+button,
+input,
+select,
+textarea {
+
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    appearance: none;
+    outline: none;
+    background: none;
+    border: none
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    margin: 0
+}
+
+input[type=search] {
+    appearance: none;
+    outline-offset: -2px
+}
+
+input[type=file] {
+    padding: 0;
+    margin: 0;
+    border: none
+}
+
+input[type=checkbox],
+input[type=radio] {
+    margin: 0;
+    appearance: none
+}
+
+select {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none
+}
+
+:focus {
+    outline: none
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *,
+    *:before,
+    *:after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+    }
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse
+}
+
+blockquote,
+q {
+    quotes: none
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: ""
+}
+
+label {
+    display: block
+}
+
+p {
+    overflow-wrap: break-word
+}
+
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+    display: block;
+    max-width: 100%
+}
+
+code,
+pre {
+    font-family: monospace;
+    font-size: 1em
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit
+}
+
+::-moz-focus-inner {
+    padding: 0;
+    border: 0
+}
+
+html[dir=rtl] *:has(>[aria-controls*=swiper][role=button]),
+html[dir=rtl] .swiper {
+    direction: ltr !important
+}
+
+.flag {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    background-image: url(/images/flags.png);
+    background-repeat: no-repeat;
+    background-position: 100px 0;
+    transform: scale(.7);
+    transform-origin: left center
+}
+
+[dir=rtl] .flag {
+    background-position: right 100px top 0;
+    transform-origin: right center
+}
+
+.flag[country^=home] {
+    background-image: none
+}
+
+.flag[country^=worldcup] {
+    background-position: -287px -384px
+}
+
+[dir=rtl] .flag[country^=worldcup] {
+    background-position: right -287px top -384px
+}
+
+.flag[country^=international] {
+    background-position: -239px -384px
+}
+
+[dir=rtl] .flag[country^=international] {
+    background-position: right -239px top -384px
+}
+
+.flag[country^=uefachampionsleague] {
+    background-position: -47px -72px
+}
+
+[dir=rtl] .flag[country^=uefachampionsleague] {
+    background-position: right -47px top -72px
+}
+
+.flag[country^=uefaeuropaleague] {
+    background-position: -336px -96px
+}
+
+[dir=rtl] .flag[country^=uefaeuropaleague] {
+    background-position: right -336px top -96px
+}
+
+.flag[country^=copaamericacnt] {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    background-position: -264px -72px
+}
+
+[dir=rtl] .flag[country^=copaamericacnt] {
+    margin-left: 0;
+    margin-right: 10px;
+    background-position: right -264px top -72px
+}
+
+.flag[country^=wta] {
+    background-position: -1px -405px
+}
+
+[dir=rtl] .flag[country^=wta] {
+    background-position: right -1px top -405px
+}
+
+.flag[country^=atp] {
+    background-position: -25px -405px
+}
+
+[dir=rtl] .flag[country^=atp] {
+    background-position: right -25px top -405px
+}
+
+.flag[country^=itf] {
+    background-position: -50px -405px;
+    transform: scale(.8)
+}
+
+[dir=rtl] .flag[country^=itf] {
+    background-position: right -50px top -405px
+}
+
+.flag[country^=challenger] {
+    background-position: -74px -405px
+}
+
+[dir=rtl] .flag[country^=challenger] {
+    background-position: right -74px top -405px
+}
+
+.flag[country^=daviscup] {
+    background-position: -149px -405px
+}
+
+[dir=rtl] .flag[country^=daviscup] {
+    background-position: right -149px top -405px
+}
+
+.flag[country^=euro] {
+    background-position: -336px -385px
+}
+
+[dir=rtl] .flag[country^=euro] {
+    background-position: right -336px top -385px
+}
+
+.flag[country^=uefaeuropaconferenceleague] {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADfklEQVRIiZ2WTYwVRRDHf/XeAi4oYhojrhtkxSDxM2RdJKhxZSCeCAdN5EJiAhcvXk1Qb2j0xNVEozGeJJBgPHgw7YonlY89kCAa1pAggmGHaETg7du3ZWpezWN2mZmHVDLpnpqq/7+7qrp66Cequk5V31LVMVU9r6ra6XS2tlutmXardXa23U5U9Q1VXd0XrE5U1YByeUlVZ20+1+kk7VZL7ZnrdHYVbEbr8Bp9+CaAn33+OHAym4kMuO6aNBqrfH4aOHHbZCIyB7znr2PAsUwPS133G7DO55+IiP5/shhWEsOnxGDfvwAuAk8DPxV21gbOAsOALepzYlhGDAeJ4d5bI4vhYeAo8BqwSUQM9ENgLTDlVsuBFDgPPAAcERFbUAK8nC2qi1NDFsP9nqc1wCXLiX/5zOqFbviuAyuBy/6Yz5du96fr1mQ4MQyVk3VDdtDDMg08T5JOdqMmFq7vgaeASSebdmBbwDcZRpL+CIz7t+EsBV3cm3b2OrDZ4/8KSfrLgihY7p7xENtuznne/hGRUz2rJLWK3emReM5xC2QxLAb2uu4jkvRISX4tVKNeJMNeHLO9oilKkkarTtfsdfzezrYDFt8O8G4JkYXyD8CeC8DqjEyE/DiUyD6P0pDj98h2+DhBkp4r81RVK3db8QqvRrMbBE6VUiVpnmcWkuVtZqJilXiF/eC2k41mcxbVOT/YVfKt68eKZCM+/lrjeBWYcbLjjWbzLtedrvHJv40UyQZ9/LvG8S/gMQ+jVeSTdqhF5GqNT35OB4tkMz7eXeO42Hf1u5+vTV4wdbLMv7WKZBd8fKSPs/XHM8BD9kijkfaxz/EuFsmO+rilxnGJ98c3gY8NqDkw8FUfsheL+DnZ1z6OE0PVjTtcorNbvFlqHcODwAtF/JzsEPCvv79dQTZUoltUqOSF8k736stwD90gS1Krwv1uvIcYxkuc11aAbijZ1VZgt7/td/x5jfgDT75k3T+GRxdAjFWQzf/viOEJ4IC/TTku88mS9Ip3azs3IWs1MSQFmI0VZJsLRNvsIgXucZxXHTcTqQjBYT8jdk2s0i3TqefyZnu4LiLvE8N9eYl7nnZ49+9JmbMRbvD76xJJ+qyqrgfWV+zM5KSITBGD3QDWpG1H2cV7axLDHcRgLck6/neFf8MysYWZz2jmd7uiqiN9iEyuqeqdtRzAf4dwddcs6UNfAAAAAElFTkSuQmCC);
+    background-position: 0 0;
+    background-size: 100% 100%
+}
+
+[dir=rtl] .flag[country^=uefaeuropaconferenceleague] {
+    background-position: 100% 0
+}
+
+.flag[country^=asean] {
+    background-position: 0px 0px
+}
+
+[dir=rtl] .flag[country^=asean] {
+    background-position: right 0px top 0px
+}
+
+.flag[country^=afghanistan] {
+    background-position: -24px 0px
+}
+
+[dir=rtl] .flag[country^=afghanistan] {
+    background-position: right -24px top 0px
+}
+
+.flag[country^=africa] {
+    background-position: -48px 0px
+}
+
+[dir=rtl] .flag[country^=africa] {
+    background-position: right -48px top 0px
+}
+
+.flag[country^=african-union-oas] {
+    background-position: -72px 0px
+}
+
+[dir=rtl] .flag[country^=african-union-oas] {
+    background-position: right -72px top 0px
+}
+
+.flag[country^=albania] {
+    background-position: -96px 0px
+}
+
+[dir=rtl] .flag[country^=albania] {
+    background-position: right -96px top 0px
+}
+
+.flag[country^=algeria] {
+    background-position: -120px 0px
+}
+
+[dir=rtl] .flag[country^=algeria] {
+    background-position: right -120px top 0px
+}
+
+.flag[country^=america] {
+    background-position: -144px 0px
+}
+
+[dir=rtl] .flag[country^=america] {
+    background-position: right -144px top 0px
+}
+
+.flag[country^=american-samoa] {
+    background-position: -168px 0px
+}
+
+[dir=rtl] .flag[country^=american-samoa] {
+    background-position: right -168px top 0px
+}
+
+.flag[country^=andorra] {
+    background-position: -192px 0px
+}
+
+[dir=rtl] .flag[country^=andorra] {
+    background-position: right -192px top 0px
+}
+
+.flag[country^=angola] {
+    background-position: -216px 0px
+}
+
+[dir=rtl] .flag[country^=angola] {
+    background-position: right -216px top 0px
+}
+
+.flag[country^=anguilla] {
+    background-position: -240px 0px
+}
+
+[dir=rtl] .flag[country^=anguilla] {
+    background-position: right -240px top 0px
+}
+
+.flag[country^=antarctica] {
+    background-position: -264px 0px
+}
+
+[dir=rtl] .flag[country^=antarctica] {
+    background-position: right -264px top 0px
+}
+
+.flag[country^=antiguaandbarbuda] {
+    background-position: -288px 0px
+}
+
+[dir=rtl] .flag[country^=antiguaandbarbuda] {
+    background-position: right -288px top 0px
+}
+
+.flag[country^=arab-league] {
+    background-position: -312px 0px
+}
+
+[dir=rtl] .flag[country^=arab-league] {
+    background-position: right -312px top 0px
+}
+
+.flag[country^=argentina] {
+    background-position: -336px 0px
+}
+
+[dir=rtl] .flag[country^=argentina] {
+    background-position: right -336px top 0px
+}
+
+.flag[country^=armenia] {
+    background-position: -360px 0px
+}
+
+[dir=rtl] .flag[country^=armenia] {
+    background-position: right -360px top 0px
+}
+
+.flag[country^=aruba] {
+    background-position: 0px -24px
+}
+
+[dir=rtl] .flag[country^=aruba] {
+    background-position: right 0px top -24px
+}
+
+.flag[country^=asia] {
+    background-position: -24px -24px
+}
+
+[dir=rtl] .flag[country^=asia] {
+    background-position: right -24px top -24px
+}
+
+.flag[country^=australia] {
+    background-position: -48px -24px
+}
+
+[dir=rtl] .flag[country^=australia] {
+    background-position: right -48px top -24px
+}
+
+.flag[country^=austria] {
+    background-position: -72px -24px
+}
+
+[dir=rtl] .flag[country^=austria] {
+    background-position: right -72px top -24px
+}
+
+.flag[country^=azerbaijan] {
+    background-position: -96px -24px
+}
+
+[dir=rtl] .flag[country^=azerbaijan] {
+    background-position: right -96px top -24px
+}
+
+.flag[country^=bahamas] {
+    background-position: -120px -24px
+}
+
+[dir=rtl] .flag[country^=bahamas] {
+    background-position: right -120px top -24px
+}
+
+.flag[country^=bahrain] {
+    background-position: -144px -24px
+}
+
+[dir=rtl] .flag[country^=bahrain] {
+    background-position: right -144px top -24px
+}
+
+.flag[country^=bangladesh] {
+    background-position: -168px -24px
+}
+
+[dir=rtl] .flag[country^=bangladesh] {
+    background-position: right -168px top -24px
+}
+
+.flag[country^=barbados] {
+    background-position: -192px -24px
+}
+
+[dir=rtl] .flag[country^=barbados] {
+    background-position: right -192px top -24px
+}
+
+.flag[country^=belarus] {
+    background-position: -216px -24px
+}
+
+[dir=rtl] .flag[country^=belarus] {
+    background-position: right -216px top -24px
+}
+
+.flag[country^=belgium] {
+    background-position: -240px -24px
+}
+
+[dir=rtl] .flag[country^=belgium] {
+    background-position: right -240px top -24px
+}
+
+.flag[country^=belize] {
+    background-position: -264px -24px
+}
+
+[dir=rtl] .flag[country^=belize] {
+    background-position: right -264px top -24px
+}
+
+.flag[country^=benin] {
+    background-position: -288px -24px
+}
+
+[dir=rtl] .flag[country^=benin] {
+    background-position: right -288px top -24px
+}
+
+.flag[country^=bermuda] {
+    background-position: -312px -24px
+}
+
+[dir=rtl] .flag[country^=bermuda] {
+    background-position: right -312px top -24px
+}
+
+.flag[country^=bhutan] {
+    background-position: -336px -24px
+}
+
+[dir=rtl] .flag[country^=bhutan] {
+    background-position: right -336px top -24px
+}
+
+.flag[country^=bolivia] {
+    background-position: -360px -24px
+}
+
+[dir=rtl] .flag[country^=bolivia] {
+    background-position: right -360px top -24px
+}
+
+.flag[country^="bosnia&herzegovina"] {
+    background-position: 0px -48px
+}
+
+[dir=rtl] .flag[country^="bosnia&herzegovina"] {
+    background-position: right 0px top -48px
+}
+
+.flag[country^=bosnia],
+.flag[country^=bosniaandherzegovina] {
+    background-position: -24px -48px
+}
+
+[dir=rtl] .flag[country^=bosnia],
+[dir=rtl] .flag[country^=bosniaandherzegovina] {
+    background-position: right -24px top -48px
+}
+
+.flag[country^=botswana] {
+    background-position: -48px -48px
+}
+
+[dir=rtl] .flag[country^=botswana] {
+    background-position: right -48px top -48px
+}
+
+.flag[country^=brazil] {
+    background-position: -72px -48px
+}
+
+[dir=rtl] .flag[country^=brazil] {
+    background-position: right -72px top -48px
+}
+
+.flag[country^=brunei] {
+    background-position: -96px -48px
+}
+
+[dir=rtl] .flag[country^=brunei] {
+    background-position: right -96px top -48px
+}
+
+.flag[country^=bulgaria] {
+    background-position: -120px -48px
+}
+
+[dir=rtl] .flag[country^=bulgaria] {
+    background-position: right -120px top -48px
+}
+
+.flag[country^=burkina-faso] {
+    background-position: -144px -48px
+}
+
+[dir=rtl] .flag[country^=burkina-faso] {
+    background-position: right -144px top -48px
+}
+
+.flag[country^=burundi] {
+    background-position: -168px -48px
+}
+
+[dir=rtl] .flag[country^=burundi] {
+    background-position: right -168px top -48px
+}
+
+.flag[country^=caricom] {
+    background-position: -192px -48px
+}
+
+[dir=rtl] .flag[country^=caricom] {
+    background-position: right -192px top -48px
+}
+
+.flag[country^=cis] {
+    background-position: -216px -48px
+}
+
+[dir=rtl] .flag[country^=cis] {
+    background-position: right -216px top -48px
+}
+
+.flag[country^=cambodia] {
+    background-position: -240px -48px
+}
+
+[dir=rtl] .flag[country^=cambodia] {
+    background-position: right -240px top -48px
+}
+
+.flag[country^=cambodja] {
+    background-position: -264px -48px
+}
+
+[dir=rtl] .flag[country^=cambodja] {
+    background-position: right -264px top -48px
+}
+
+.flag[country^=cameroon] {
+    background-position: -288px -48px
+}
+
+[dir=rtl] .flag[country^=cameroon] {
+    background-position: right -288px top -48px
+}
+
+.flag[country^=canada] {
+    background-position: -312px -48px
+}
+
+[dir=rtl] .flag[country^=canada] {
+    background-position: right -312px top -48px
+}
+
+.flag[country^=cape-verde] {
+    background-position: -336px -48px
+}
+
+[dir=rtl] .flag[country^=cape-verde] {
+    background-position: right -336px top -48px
+}
+
+.flag[country^=cayman-islands] {
+    background-position: -360px -48px
+}
+
+[dir=rtl] .flag[country^=cayman-islands] {
+    background-position: right -360px top -48px
+}
+
+.flag[country^=central-african-republic] {
+    background-position: 0px -72px
+}
+
+[dir=rtl] .flag[country^=central-african-republic] {
+    background-position: right 0px top -72px
+}
+
+.flag[country^=chad] {
+    background-position: -24px -72px
+}
+
+[dir=rtl] .flag[country^=chad] {
+    background-position: right -24px top -72px
+}
+
+.flag[country^=championsleague] {
+    background-position: -48px -72px
+}
+
+[dir=rtl] .flag[country^=championsleague] {
+    background-position: right -48px top -72px
+}
+
+.flag[country^=chile] {
+    background-position: -72px -72px
+}
+
+[dir=rtl] .flag[country^=chile] {
+    background-position: right -72px top -72px
+}
+
+.flag[country^=china],
+.flag[country^=chinesetaipei] {
+    background-position: -96px -72px
+}
+
+[dir=rtl] .flag[country^=china],
+[dir=rtl] .flag[country^=chinesetaipei] {
+    background-position: right -96px top -72px
+}
+
+.flag[country^=colombia] {
+    background-position: -120px -72px
+}
+
+[dir=rtl] .flag[country^=colombia] {
+    background-position: right -120px top -72px
+}
+
+.flag[country^=commonwealth] {
+    background-position: -144px -72px
+}
+
+[dir=rtl] .flag[country^=commonwealth] {
+    background-position: right -144px top -72px
+}
+
+.flag[country^=comoros] {
+    background-position: -168px -72px
+}
+
+[dir=rtl] .flag[country^=comoros] {
+    background-position: right -168px top -72px
+}
+
+.flag[country^=congo-brazzaville] {
+    background-position: -192px -72px
+}
+
+[dir=rtl] .flag[country^=congo-brazzaville] {
+    background-position: right -192px top -72px
+}
+
+.flag[country^=congo-kinshasa] {
+    background-position: -216px -72px
+}
+
+[dir=rtl] .flag[country^=congo-kinshasa] {
+    background-position: right -216px top -72px
+}
+
+.flag[country^=cook-islands] {
+    background-position: -240px -72px
+}
+
+[dir=rtl] .flag[country^=cook-islands] {
+    background-position: right -240px top -72px
+}
+
+.flag[country^=copaamerica] {
+    background-position: -264px -72px
+}
+
+[dir=rtl] .flag[country^=copaamerica] {
+    background-position: right -264px top -72px
+}
+
+.flag[country^=costarica] {
+    background-position: -288px -72px
+}
+
+[dir=rtl] .flag[country^=costarica] {
+    background-position: right -288px top -72px
+}
+
+.flag[country^=cote-divoire] {
+    background-position: -312px -72px
+}
+
+[dir=rtl] .flag[country^=cote-divoire] {
+    background-position: right -312px top -72px
+}
+
+.flag[country^=croatia] {
+    background-position: -336px -72px
+}
+
+[dir=rtl] .flag[country^=croatia] {
+    background-position: right -336px top -72px
+}
+
+.flag[country^=cuba] {
+    background-position: -360px -72px
+}
+
+[dir=rtl] .flag[country^=cuba] {
+    background-position: right -360px top -72px
+}
+
+.flag[country^=cyprus] {
+    background-position: 0px -96px
+}
+
+[dir=rtl] .flag[country^=cyprus] {
+    background-position: right 0px top -96px
+}
+
+.flag[country^=czechrepublic] {
+    background-position: -24px -96px
+}
+
+[dir=rtl] .flag[country^=czechrepublic] {
+    background-position: right -24px top -96px
+}
+
+.flag[country^=denmark] {
+    background-position: -48px -96px
+}
+
+[dir=rtl] .flag[country^=denmark] {
+    background-position: right -48px top -96px
+}
+
+.flag[country^=djibouti] {
+    background-position: -72px -96px
+}
+
+[dir=rtl] .flag[country^=djibouti] {
+    background-position: right -72px top -96px
+}
+
+.flag[country^=dominica] {
+    background-position: -96px -96px
+}
+
+[dir=rtl] .flag[country^=dominica] {
+    background-position: right -96px top -96px
+}
+
+.flag[country^=dominicanrepublic] {
+    background-position: -120px -96px
+}
+
+[dir=rtl] .flag[country^=dominicanrepublic] {
+    background-position: right -120px top -96px
+}
+
+.flag[country^=ecuador] {
+    background-position: -144px -96px
+}
+
+[dir=rtl] .flag[country^=ecuador] {
+    background-position: right -144px top -96px
+}
+
+.flag[country^=egypt] {
+    background-position: -168px -96px
+}
+
+[dir=rtl] .flag[country^=egypt] {
+    background-position: right -168px top -96px
+}
+
+.flag[country^=elsalvador] {
+    background-position: -192px -96px
+}
+
+[dir=rtl] .flag[country^=elsalvador] {
+    background-position: right -192px top -96px
+}
+
+.flag[country^=england] {
+    background-position: -216px -96px
+}
+
+[dir=rtl] .flag[country^=england] {
+    background-position: right -216px top -96px
+}
+
+.flag[country^=equatorial-guinea] {
+    background-position: -240px -96px
+}
+
+[dir=rtl] .flag[country^=equatorial-guinea] {
+    background-position: right -240px top -96px
+}
+
+.flag[country^=eritrea] {
+    background-position: -264px -96px
+}
+
+[dir=rtl] .flag[country^=eritrea] {
+    background-position: right -264px top -96px
+}
+
+.flag[country^=estonia] {
+    background-position: -288px -96px
+}
+
+[dir=rtl] .flag[country^=estonia] {
+    background-position: right -288px top -96px
+}
+
+.flag[country^=ethiopia] {
+    background-position: -312px -96px
+}
+
+[dir=rtl] .flag[country^=ethiopia] {
+    background-position: right -312px top -96px
+}
+
+.flag[country^=europaleague] {
+    background-position: -336px -96px
+}
+
+[dir=rtl] .flag[country^=europaleague] {
+    background-position: right -336px top -96px
+}
+
+.flag[country^=europe] {
+    background-position: -360px -96px
+}
+
+[dir=rtl] .flag[country^=europe] {
+    background-position: right -360px top -96px
+}
+
+.flag[country^=faroeislands] {
+    background-position: -24px -120px
+}
+
+[dir=rtl] .flag[country^=faroeislands] {
+    background-position: right -24px top -120px
+}
+
+.flag[country^=fiji] {
+    background-position: -48px -120px
+}
+
+[dir=rtl] .flag[country^=fiji] {
+    background-position: right -48px top -120px
+}
+
+.flag[country^=finland] {
+    background-position: -72px -120px
+}
+
+[dir=rtl] .flag[country^=finland] {
+    background-position: right -72px top -120px
+}
+
+.flag[country^=france] {
+    background-position: -96px -120px
+}
+
+[dir=rtl] .flag[country^=france] {
+    background-position: right -96px top -120px
+}
+
+.flag[country^=gabon] {
+    background-position: -120px -120px
+}
+
+[dir=rtl] .flag[country^=gabon] {
+    background-position: right -120px top -120px
+}
+
+.flag[country^=gambia] {
+    background-position: -144px -120px
+}
+
+[dir=rtl] .flag[country^=gambia] {
+    background-position: right -144px top -120px
+}
+
+.flag[country^=georgia] {
+    background-position: -168px -120px
+}
+
+[dir=rtl] .flag[country^=georgia] {
+    background-position: right -168px top -120px
+}
+
+.flag[country^=germany] {
+    background-position: -192px -120px
+}
+
+[dir=rtl] .flag[country^=germany] {
+    background-position: right -192px top -120px
+}
+
+.flag[country^=ghana] {
+    background-position: -216px -120px
+}
+
+[dir=rtl] .flag[country^=ghana] {
+    background-position: right -216px top -120px
+}
+
+.flag[country^=gibraltar] {
+    background-position: -240px -120px
+}
+
+[dir=rtl] .flag[country^=gibraltar] {
+    background-position: right -240px top -120px
+}
+
+.flag[country^=greatbritain] {
+    background-position: -264px -120px
+}
+
+[dir=rtl] .flag[country^=greatbritain] {
+    background-position: right -264px top -120px
+}
+
+.flag[country^=greece] {
+    background-position: -288px -120px
+}
+
+[dir=rtl] .flag[country^=greece] {
+    background-position: right -288px top -120px
+}
+
+.flag[country^=greenland] {
+    background-position: -312px -120px
+}
+
+[dir=rtl] .flag[country^=greenland] {
+    background-position: right -312px top -120px
+}
+
+.flag[country^=grenada] {
+    background-position: -336px -120px
+}
+
+[dir=rtl] .flag[country^=grenada] {
+    background-position: right -336px top -120px
+}
+
+.flag[country^=guadeloupe] {
+    background-position: -360px -120px
+}
+
+[dir=rtl] .flag[country^=guadeloupe] {
+    background-position: right -360px top -120px
+}
+
+.flag[country^=guam] {
+    background-position: 0px -144px
+}
+
+[dir=rtl] .flag[country^=guam] {
+    background-position: right 0px top -144px
+}
+
+.flag[country^=guatemala] {
+    background-position: -24px -144px
+}
+
+[dir=rtl] .flag[country^=guatemala] {
+    background-position: right -24px top -144px
+}
+
+.flag[country^=guernsey] {
+    background-position: -48px -144px
+}
+
+[dir=rtl] .flag[country^=guernsey] {
+    background-position: right -48px top -144px
+}
+
+.flag[country^=guinea-bissau] {
+    background-position: -72px -144px
+}
+
+[dir=rtl] .flag[country^=guinea-bissau] {
+    background-position: right -72px top -144px
+}
+
+.flag[country^=guinea] {
+    background-position: -96px -144px
+}
+
+[dir=rtl] .flag[country^=guinea] {
+    background-position: right -96px top -144px
+}
+
+.flag[country^=guyana] {
+    background-position: -120px -144px
+}
+
+[dir=rtl] .flag[country^=guyana] {
+    background-position: right -120px top -144px
+}
+
+.flag[country^=haiti] {
+    background-position: -144px -144px
+}
+
+[dir=rtl] .flag[country^=haiti] {
+    background-position: right -144px top -144px
+}
+
+.flag[country^=honduras] {
+    background-position: -168px -144px
+}
+
+[dir=rtl] .flag[country^=honduras] {
+    background-position: right -168px top -144px
+}
+
+.flag[country^=hongkong] {
+    background-position: -192px -144px
+}
+
+[dir=rtl] .flag[country^=hongkong] {
+    background-position: right -192px top -144px
+}
+
+.flag[country^=hungary] {
+    background-position: -216px -144px
+}
+
+[dir=rtl] .flag[country^=hungary] {
+    background-position: right -216px top -144px
+}
+
+.flag[country^=iceland] {
+    background-position: -240px -144px
+}
+
+[dir=rtl] .flag[country^=iceland] {
+    background-position: right -240px top -144px
+}
+
+.flag[country^=india] {
+    background-position: -264px -144px
+}
+
+[dir=rtl] .flag[country^=india] {
+    background-position: right -264px top -144px
+}
+
+.flag[country^=indonesia] {
+    background-position: -288px -144px
+}
+
+[dir=rtl] .flag[country^=indonesia] {
+    background-position: right -288px top -144px
+}
+
+.flag[country^=iran] {
+    background-position: -336px -144px
+}
+
+[dir=rtl] .flag[country^=iran] {
+    background-position: right -336px top -144px
+}
+
+.flag[country^=iraq] {
+    background-position: -360px -144px
+}
+
+[dir=rtl] .flag[country^=iraq] {
+    background-position: right -360px top -144px
+}
+
+.flag[country^=ireland] {
+    background-position: 0px -168px
+}
+
+[dir=rtl] .flag[country^=ireland] {
+    background-position: right 0px top -168px
+}
+
+.flag[country^=islamic-conference] {
+    background-position: -24px -168px
+}
+
+[dir=rtl] .flag[country^=islamic-conference] {
+    background-position: right -24px top -168px
+}
+
+.flag[country^=isle-of-man] {
+    background-position: -48px -168px
+}
+
+[dir=rtl] .flag[country^=isle-of-man] {
+    background-position: right -48px top -168px
+}
+
+.flag[country^=israel] {
+    background-position: -72px -168px
+}
+
+[dir=rtl] .flag[country^=israel] {
+    background-position: right -72px top -168px
+}
+
+.flag[country^=italy] {
+    background-position: -96px -168px
+}
+
+[dir=rtl] .flag[country^=italy] {
+    background-position: right -96px top -168px
+}
+
+.flag[country^=jamaica] {
+    background-position: -120px -168px
+}
+
+[dir=rtl] .flag[country^=jamaica] {
+    background-position: right -120px top -168px
+}
+
+.flag[country^=jersey] {
+    background-position: -144px -168px
+}
+
+[dir=rtl] .flag[country^=jersey] {
+    background-position: right -144px top -168px
+}
+
+.flag[country^=jordan] {
+    background-position: -168px -168px
+}
+
+[dir=rtl] .flag[country^=jordan] {
+    background-position: right -168px top -168px
+}
+
+.flag[country^=kazakhstan] {
+    background-position: -192px -168px
+}
+
+[dir=rtl] .flag[country^=kazakhstan] {
+    background-position: right -192px top -168px
+}
+
+.flag[country^=kenya] {
+    background-position: -216px -168px
+}
+
+[dir=rtl] .flag[country^=kenya] {
+    background-position: right -216px top -168px
+}
+
+.flag[country^=kiribati] {
+    background-position: -240px -168px
+}
+
+[dir=rtl] .flag[country^=kiribati] {
+    background-position: right -240px top -168px
+}
+
+.flag[country^=korea-south] {
+    background-position: -264px -168px
+}
+
+[dir=rtl] .flag[country^=korea-south] {
+    background-position: right -264px top -168px
+}
+
+.flag[country^=koreasouth] {
+    background-position: -288px -168px
+}
+
+[dir=rtl] .flag[country^=koreasouth] {
+    background-position: right -288px top -168px
+}
+
+.flag[country^=kosovo] {
+    background-position: -312px -168px
+}
+
+[dir=rtl] .flag[country^=kosovo] {
+    background-position: right -312px top -168px
+}
+
+.flag[country^=kuwait] {
+    background-position: -336px -168px
+}
+
+[dir=rtl] .flag[country^=kuwait] {
+    background-position: right -336px top -168px
+}
+
+.flag[country^=kyrgyzstan] {
+    background-position: -360px -168px
+}
+
+[dir=rtl] .flag[country^=kyrgyzstan] {
+    background-position: right -360px top -168px
+}
+
+.flag[country^=laos] {
+    background-position: 0px -192px
+}
+
+[dir=rtl] .flag[country^=laos] {
+    background-position: right 0px top -192px
+}
+
+.flag[country^=latvia] {
+    background-position: -24px -192px
+}
+
+[dir=rtl] .flag[country^=latvia] {
+    background-position: right -24px top -192px
+}
+
+.flag[country^=lebanon] {
+    background-position: -48px -192px
+}
+
+[dir=rtl] .flag[country^=lebanon] {
+    background-position: right -48px top -192px
+}
+
+.flag[country^=lesotho] {
+    background-position: -72px -192px
+}
+
+[dir=rtl] .flag[country^=lesotho] {
+    background-position: right -72px top -192px
+}
+
+.flag[country^=liberia] {
+    background-position: -96px -192px
+}
+
+[dir=rtl] .flag[country^=liberia] {
+    background-position: right -96px top -192px
+}
+
+.flag[country^=libya] {
+    background-position: -120px -192px
+}
+
+[dir=rtl] .flag[country^=libya] {
+    background-position: right -120px top -192px
+}
+
+.flag[country^=liechtenstein] {
+    background-position: -144px -192px
+}
+
+[dir=rtl] .flag[country^=liechtenstein] {
+    background-position: right -144px top -192px
+}
+
+.flag[country^=lithuania] {
+    background-position: -168px -192px
+}
+
+[dir=rtl] .flag[country^=lithuania] {
+    background-position: right -168px top -192px
+}
+
+.flag[country^=luxembourg] {
+    background-position: -192px -192px
+}
+
+[dir=rtl] .flag[country^=luxembourg] {
+    background-position: right -192px top -192px
+}
+
+.flag[country^=macao],
+.flag[country^=macau] {
+    background-position: -216px -192px
+}
+
+[dir=rtl] .flag[country^=macao],
+[dir=rtl] .flag[country^=macau] {
+    background-position: right -216px top -192px
+}
+
+.flag[country^=macedonia] {
+    background-position: -240px -192px
+}
+
+[dir=rtl] .flag[country^=macedonia] {
+    background-position: right -240px top -192px
+}
+
+.flag[country^=madagascar] {
+    background-position: -264px -192px
+}
+
+[dir=rtl] .flag[country^=madagascar] {
+    background-position: right -264px top -192px
+}
+
+.flag[country^=malawi] {
+    background-position: -288px -192px
+}
+
+[dir=rtl] .flag[country^=malawi] {
+    background-position: right -288px top -192px
+}
+
+.flag[country^=malaysia] {
+    background-position: -312px -192px
+}
+
+[dir=rtl] .flag[country^=malaysia] {
+    background-position: right -312px top -192px
+}
+
+.flag[country^=maldives] {
+    background-position: -336px -192px
+}
+
+[dir=rtl] .flag[country^=maldives] {
+    background-position: right -336px top -192px
+}
+
+.flag[country^=mali] {
+    background-position: -360px -192px
+}
+
+[dir=rtl] .flag[country^=mali] {
+    background-position: right -360px top -192px
+}
+
+.flag[country^=malta] {
+    background-position: 0px -216px
+}
+
+[dir=rtl] .flag[country^=malta] {
+    background-position: right 0px top -216px
+}
+
+.flag[country^=marshall-islands] {
+    background-position: -24px -216px
+}
+
+[dir=rtl] .flag[country^=marshall-islands] {
+    background-position: right -24px top -216px
+}
+
+.flag[country^=martinique] {
+    background-position: -48px -216px
+}
+
+[dir=rtl] .flag[country^=martinique] {
+    background-position: right -48px top -216px
+}
+
+.flag[country^=mauritania] {
+    background-position: -72px -216px
+}
+
+[dir=rtl] .flag[country^=mauritania] {
+    background-position: right -72px top -216px
+}
+
+.flag[country^=mauritius] {
+    background-position: -96px -216px
+}
+
+[dir=rtl] .flag[country^=mauritius] {
+    background-position: right -96px top -216px
+}
+
+.flag[country^=mexico] {
+    background-position: -120px -216px
+}
+
+[dir=rtl] .flag[country^=mexico] {
+    background-position: right -120px top -216px
+}
+
+.flag[country^=micronesia] {
+    background-position: -144px -216px
+}
+
+[dir=rtl] .flag[country^=micronesia] {
+    background-position: right -144px top -216px
+}
+
+.flag[country^=moldova] {
+    background-position: -168px -216px
+}
+
+[dir=rtl] .flag[country^=moldova] {
+    background-position: right -168px top -216px
+}
+
+.flag[country^=monaco] {
+    background-position: -192px -216px
+}
+
+[dir=rtl] .flag[country^=monaco] {
+    background-position: right -192px top -216px
+}
+
+.flag[country^=mongolia] {
+    background-position: -216px -216px
+}
+
+[dir=rtl] .flag[country^=mongolia] {
+    background-position: right -216px top -216px
+}
+
+.flag[country^=montenegro] {
+    background-position: -240px -216px
+}
+
+[dir=rtl] .flag[country^=montenegro] {
+    background-position: right -240px top -216px
+}
+
+.flag[country^=montserrat] {
+    background-position: -264px -216px
+}
+
+[dir=rtl] .flag[country^=montserrat] {
+    background-position: right -264px top -216px
+}
+
+.flag[country^=morocco] {
+    background-position: -288px -216px
+}
+
+[dir=rtl] .flag[country^=morocco] {
+    background-position: right -288px top -216px
+}
+
+.flag[country^=mozambique] {
+    background-position: -312px -216px
+}
+
+[dir=rtl] .flag[country^=mozambique] {
+    background-position: right -312px top -216px
+}
+
+.flag[country^=myanmar] {
+    background-position: -336px -216px
+}
+
+[dir=rtl] .flag[country^=myanmar] {
+    background-position: right -336px top -216px
+}
+
+.flag[country^=nato] {
+    background-position: -360px -216px
+}
+
+[dir=rtl] .flag[country^=nato] {
+    background-position: right -360px top -216px
+}
+
+.flag[country^=namibia] {
+    background-position: 0px -240px
+}
+
+[dir=rtl] .flag[country^=namibia] {
+    background-position: right 0px top -240px
+}
+
+.flag[country^=nauru] {
+    background-position: -24px -240px
+}
+
+[dir=rtl] .flag[country^=nauru] {
+    background-position: right -24px top -240px
+}
+
+.flag[country^=nepal] {
+    background-position: -48px -240px
+}
+
+[dir=rtl] .flag[country^=nepal] {
+    background-position: right -48px top -240px
+}
+
+.flag[country^=netherlands-antilles] {
+    background-position: -72px -240px
+}
+
+[dir=rtl] .flag[country^=netherlands-antilles] {
+    background-position: right -72px top -240px
+}
+
+.flag[country^=netherlands],
+.flag[country^=holland] {
+    background-position: -96px -240px
+}
+
+[dir=rtl] .flag[country^=netherlands],
+[dir=rtl] .flag[country^=holland] {
+    background-position: right -96px top -240px
+}
+
+.flag[country^=newcaledonia] {
+    background-position: -120px -240px
+}
+
+[dir=rtl] .flag[country^=newcaledonia] {
+    background-position: right -120px top -240px
+}
+
+.flag[country^=newzealand] {
+    background-position: -144px -240px
+}
+
+[dir=rtl] .flag[country^=newzealand] {
+    background-position: right -144px top -240px
+}
+
+.flag[country^=nicaragua] {
+    background-position: -168px -240px
+}
+
+[dir=rtl] .flag[country^=nicaragua] {
+    background-position: right -168px top -240px
+}
+
+.flag[country^=niger] {
+    background-position: -192px -240px
+}
+
+[dir=rtl] .flag[country^=niger] {
+    background-position: right -192px top -240px
+}
+
+.flag[country^=nigeria] {
+    background-position: -216px -240px
+}
+
+[dir=rtl] .flag[country^=nigeria] {
+    background-position: right -216px top -240px
+}
+
+.flag[country^=north-korea] {
+    background-position: -240px -240px
+}
+
+[dir=rtl] .flag[country^=north-korea] {
+    background-position: right -240px top -240px
+}
+
+.flag[country^=northamerica] {
+    background-position: -264px -240px
+}
+
+[dir=rtl] .flag[country^=northamerica] {
+    background-position: right -264px top -240px
+}
+
+.flag[country^=northern-cyprus] {
+    background-position: -288px -240px
+}
+
+[dir=rtl] .flag[country^=northern-cyprus] {
+    background-position: right -288px top -240px
+}
+
+.flag[country^=northernireland] {
+    background-position: -312px -240px
+}
+
+[dir=rtl] .flag[country^=northernireland] {
+    background-position: right -312px top -240px
+}
+
+.flag[country^=norway] {
+    background-position: -336px -240px
+}
+
+[dir=rtl] .flag[country^=norway] {
+    background-position: right -336px top -240px
+}
+
+.flag[country^=opec] {
+    background-position: -360px -240px
+}
+
+[dir=rtl] .flag[country^=opec] {
+    background-position: right -360px top -240px
+}
+
+.flag[country^=olimpic-movement] {
+    background-position: 0px -264px
+}
+
+[dir=rtl] .flag[country^=olimpic-movement] {
+    background-position: right 0px top -264px
+}
+
+.flag[country^=olympicgames] {
+    background-position: -24px -264px
+}
+
+[dir=rtl] .flag[country^=olympicgames] {
+    background-position: right -24px top -264px
+}
+
+.flag[country^=oman] {
+    background-position: -48px -264px
+}
+
+[dir=rtl] .flag[country^=oman] {
+    background-position: right -48px top -264px
+}
+
+.flag[country^=pakistan] {
+    background-position: -72px -264px
+}
+
+[dir=rtl] .flag[country^=pakistan] {
+    background-position: right -72px top -264px
+}
+
+.flag[country^=palau] {
+    background-position: -96px -264px
+}
+
+[dir=rtl] .flag[country^=palau] {
+    background-position: right -96px top -264px
+}
+
+.flag[country^=palestine] {
+    background-position: -120px -264px
+}
+
+[dir=rtl] .flag[country^=palestine] {
+    background-position: right -120px top -264px
+}
+
+.flag[country^=panama] {
+    background-position: -144px -264px
+}
+
+[dir=rtl] .flag[country^=panama] {
+    background-position: right -144px top -264px
+}
+
+.flag[country^=papua-new-guinea] {
+    background-position: -168px -264px
+}
+
+[dir=rtl] .flag[country^=papua-new-guinea] {
+    background-position: right -168px top -264px
+}
+
+.flag[country^=paraguay] {
+    background-position: -192px -264px
+}
+
+[dir=rtl] .flag[country^=paraguay] {
+    background-position: right -192px top -264px
+}
+
+.flag[country^=peru] {
+    background-position: -216px -264px
+}
+
+[dir=rtl] .flag[country^=peru] {
+    background-position: right -216px top -264px
+}
+
+.flag[country^=philippines] {
+    background-position: -240px -264px
+}
+
+[dir=rtl] .flag[country^=philippines] {
+    background-position: right -240px top -264px
+}
+
+.flag[country^=poland] {
+    background-position: -264px -264px
+}
+
+[dir=rtl] .flag[country^=poland] {
+    background-position: right -264px top -264px
+}
+
+.flag[country^=portugal] {
+    background-position: -288px -264px
+}
+
+[dir=rtl] .flag[country^=portugal] {
+    background-position: right -288px top -264px
+}
+
+.flag[country^=puertorico] {
+    background-position: -312px -264px
+}
+
+[dir=rtl] .flag[country^=puertorico] {
+    background-position: right -312px top -264px
+}
+
+.flag[country^=qatar] {
+    background-position: -336px -264px
+}
+
+[dir=rtl] .flag[country^=qatar] {
+    background-position: right -336px top -264px
+}
+
+.flag[country^=red-cross] {
+    background-position: -360px -264px
+}
+
+[dir=rtl] .flag[country^=red-cross] {
+    background-position: right -360px top -264px
+}
+
+.flag[country^=republicofireland] {
+    background-position: 0px -288px
+}
+
+[dir=rtl] .flag[country^=republicofireland] {
+    background-position: right 0px top -288px
+}
+
+.flag[country^=reunion] {
+    background-position: -24px -288px
+}
+
+[dir=rtl] .flag[country^=reunion] {
+    background-position: right -24px top -288px
+}
+
+.flag[country^=romania] {
+    background-position: -48px -288px
+}
+
+[dir=rtl] .flag[country^=romania] {
+    background-position: right -48px top -288px
+}
+
+.flag[country^=russia] {
+    background-position: -72px -288px
+}
+
+[dir=rtl] .flag[country^=russia] {
+    background-position: right -72px top -288px
+}
+
+.flag[country^=rwanda] {
+    background-position: -96px -288px
+}
+
+[dir=rtl] .flag[country^=rwanda] {
+    background-position: right -96px top -288px
+}
+
+.flag[country^=saint-lucia] {
+    background-position: -120px -288px
+}
+
+[dir=rtl] .flag[country^=saint-lucia] {
+    background-position: right -120px top -288px
+}
+
+.flag[country^=samoa] {
+    background-position: -144px -288px
+}
+
+[dir=rtl] .flag[country^=samoa] {
+    background-position: right -144px top -288px
+}
+
+.flag[country^=sanmarino] {
+    background-position: -168px -288px
+}
+
+[dir=rtl] .flag[country^=sanmarino] {
+    background-position: right -168px top -288px
+}
+
+.flag[country^=sao-tome-principe] {
+    background-position: -192px -288px
+}
+
+[dir=rtl] .flag[country^=sao-tome-principe] {
+    background-position: right -192px top -288px
+}
+
+.flag[country^=saudiarabia] {
+    background-position: -216px -288px
+}
+
+[dir=rtl] .flag[country^=saudiarabia] {
+    background-position: right -216px top -288px
+}
+
+.flag[country^=scotland] {
+    background-position: -240px -288px
+}
+
+[dir=rtl] .flag[country^=scotland] {
+    background-position: right -240px top -288px
+}
+
+.flag[country^=senegal] {
+    background-position: -264px -288px
+}
+
+[dir=rtl] .flag[country^=senegal] {
+    background-position: right -264px top -288px
+}
+
+.flag[country^=serbia] {
+    background-position: -288px -288px
+}
+
+[dir=rtl] .flag[country^=serbia] {
+    background-position: right -288px top -288px
+}
+
+.flag[country^=seyshelles] {
+    background-position: -312px -288px
+}
+
+[dir=rtl] .flag[country^=seyshelles] {
+    background-position: right -312px top -288px
+}
+
+.flag[country^=sierra-leone] {
+    background-position: -336px -288px
+}
+
+[dir=rtl] .flag[country^=sierra-leone] {
+    background-position: right -336px top -288px
+}
+
+.flag[country^=singapore] {
+    background-position: -360px -288px
+}
+
+[dir=rtl] .flag[country^=singapore] {
+    background-position: right -360px top -288px
+}
+
+.flag[country^=slovakia] {
+    background-position: 0px -312px
+}
+
+[dir=rtl] .flag[country^=slovakia] {
+    background-position: right 0px top -312px
+}
+
+.flag[country^=slovenia] {
+    background-position: -24px -312px
+}
+
+[dir=rtl] .flag[country^=slovenia] {
+    background-position: right -24px top -312px
+}
+
+.flag[country^=solomon-islands] {
+    background-position: -48px -312px
+}
+
+[dir=rtl] .flag[country^=solomon-islands] {
+    background-position: right -48px top -312px
+}
+
+.flag[country^=somalia] {
+    background-position: -72px -312px
+}
+
+[dir=rtl] .flag[country^=somalia] {
+    background-position: right -72px top -312px
+}
+
+.flag[country^=somaliland] {
+    background-position: -96px -312px
+}
+
+[dir=rtl] .flag[country^=somaliland] {
+    background-position: right -96px top -312px
+}
+
+.flag[country^=southafrica] {
+    background-position: -120px -312px
+}
+
+[dir=rtl] .flag[country^=southafrica] {
+    background-position: right -120px top -312px
+}
+
+.flag[country^=southkorea-copy] {
+    background-position: -144px -312px
+}
+
+[dir=rtl] .flag[country^=southkorea-copy] {
+    background-position: right -144px top -312px
+}
+
+.flag[country^=southkorea] {
+    background-position: -168px -312px
+}
+
+[dir=rtl] .flag[country^=southkorea] {
+    background-position: right -168px top -312px
+}
+
+.flag[country^=spain] {
+    background-position: -192px -312px
+}
+
+[dir=rtl] .flag[country^=spain] {
+    background-position: right -192px top -312px
+}
+
+.flag[country^=sri-lanka] {
+    background-position: -216px -312px
+}
+
+[dir=rtl] .flag[country^=sri-lanka] {
+    background-position: right -216px top -312px
+}
+
+.flag[country^=st-kitts-nevis] {
+    background-position: -240px -312px
+}
+
+[dir=rtl] .flag[country^=st-kitts-nevis] {
+    background-position: right -240px top -312px
+}
+
+.flag[country^=st-vincent-the-grenadines] {
+    background-position: -264px -312px
+}
+
+[dir=rtl] .flag[country^=st-vincent-the-grenadines] {
+    background-position: right -264px top -312px
+}
+
+.flag[country^=sudan] {
+    background-position: -288px -312px
+}
+
+[dir=rtl] .flag[country^=sudan] {
+    background-position: right -288px top -312px
+}
+
+.flag[country^=suriname] {
+    background-position: -312px -312px
+}
+
+[dir=rtl] .flag[country^=suriname] {
+    background-position: right -312px top -312px
+}
+
+.flag[country^=swaziland] {
+    background-position: -336px -312px
+}
+
+[dir=rtl] .flag[country^=swaziland] {
+    background-position: right -336px top -312px
+}
+
+.flag[country^=sweden] {
+    background-position: -360px -312px
+}
+
+[dir=rtl] .flag[country^=sweden] {
+    background-position: right -360px top -312px
+}
+
+.flag[country^=switzerland] {
+    background-position: 0px -336px
+}
+
+[dir=rtl] .flag[country^=switzerland] {
+    background-position: right 0px top -336px
+}
+
+.flag[country^=syria] {
+    background-position: -24px -336px
+}
+
+[dir=rtl] .flag[country^=syria] {
+    background-position: right -24px top -336px
+}
+
+.flag[country^=tahiti-french-polinesia] {
+    background-position: -48px -336px
+}
+
+[dir=rtl] .flag[country^=tahiti-french-polinesia] {
+    background-position: right -48px top -336px
+}
+
+.flag[country^=taiwan] {
+    background-position: -72px -336px
+}
+
+[dir=rtl] .flag[country^=taiwan] {
+    background-position: right -72px top -336px
+}
+
+.flag[country^=tajikistan] {
+    background-position: -96px -336px
+}
+
+[dir=rtl] .flag[country^=tajikistan] {
+    background-position: right -96px top -336px
+}
+
+.flag[country^=tanzania] {
+    background-position: -120px -336px
+}
+
+[dir=rtl] .flag[country^=tanzania] {
+    background-position: right -120px top -336px
+}
+
+.flag[country^=thailand] {
+    background-position: -144px -336px
+}
+
+[dir=rtl] .flag[country^=thailand] {
+    background-position: right -144px top -336px
+}
+
+.flag[country^=timor-leste] {
+    background-position: -168px -336px
+}
+
+[dir=rtl] .flag[country^=timor-leste] {
+    background-position: right -168px top -336px
+}
+
+.flag[country^=togo] {
+    background-position: -192px -336px
+}
+
+[dir=rtl] .flag[country^=togo] {
+    background-position: right -192px top -336px
+}
+
+.flag[country^=tonga] {
+    background-position: -216px -336px
+}
+
+[dir=rtl] .flag[country^=tonga] {
+    background-position: right -216px top -336px
+}
+
+.flag[country^=trinidadtobago] {
+    background-position: -240px -336px
+}
+
+[dir=rtl] .flag[country^=trinidadtobago] {
+    background-position: right -240px top -336px
+}
+
+.flag[country^=trinidadandtobago] {
+    background-position: -264px -336px
+}
+
+[dir=rtl] .flag[country^=trinidadandtobago] {
+    background-position: right -264px top -336px
+}
+
+.flag[country^=tunisia] {
+    background-position: -288px -336px
+}
+
+[dir=rtl] .flag[country^=tunisia] {
+    background-position: right -288px top -336px
+}
+
+.flag[country^=turkey],
+.flag[country^=turkishpolitics] {
+    background-position: -312px -336px
+}
+
+[dir=rtl] .flag[country^=turkey],
+[dir=rtl] .flag[country^=turkishpolitics] {
+    background-position: right -312px top -336px
+}
+
+.flag[country^=turkmenistan] {
+    background-position: -336px -336px
+}
+
+[dir=rtl] .flag[country^=turkmenistan] {
+    background-position: right -336px top -336px
+}
+
+.flag[country^=turks-and-caicos-islands] {
+    background-position: -360px -336px
+}
+
+[dir=rtl] .flag[country^=turks-and-caicos-islands] {
+    background-position: right -360px top -336px
+}
+
+.flag[country^=tuvalu] {
+    background-position: 0px -360px
+}
+
+[dir=rtl] .flag[country^=tuvalu] {
+    background-position: right 0px top -360px
+}
+
+.flag[country^=uae] {
+    background-position: -24px -360px
+}
+
+[dir=rtl] .flag[country^=uae] {
+    background-position: right -24px top -360px
+}
+
+.flag[country^=uk] {
+    background-position: -48px -360px
+}
+
+[dir=rtl] .flag[country^=uk] {
+    background-position: right -48px top -360px
+}
+
+.flag[country^=usa],
+.flag[country^=unitedstates] {
+    background-position: -72px -360px
+}
+
+[dir=rtl] .flag[country^=usa],
+[dir=rtl] .flag[country^=unitedstates] {
+    background-position: right -72px top -360px
+}
+
+.flag[country^=uganda] {
+    background-position: -96px -360px
+}
+
+[dir=rtl] .flag[country^=uganda] {
+    background-position: right -96px top -360px
+}
+
+.flag[country^=ukraine] {
+    background-position: -120px -360px
+}
+
+[dir=rtl] .flag[country^=ukraine] {
+    background-position: right -120px top -360px
+}
+
+.flag[country^=united-nations] {
+    background-position: -144px -360px
+}
+
+[dir=rtl] .flag[country^=united-nations] {
+    background-position: right -144px top -360px
+}
+
+.flag[country^=unitedarabemirates] {
+    background-position: -168px -360px
+}
+
+[dir=rtl] .flag[country^=unitedarabemirates] {
+    background-position: right -168px top -360px
+}
+
+.flag[country^=unitedkingdom] {
+    background-position: -192px -360px
+}
+
+[dir=rtl] .flag[country^=unitedkingdom] {
+    background-position: right -192px top -360px
+}
+
+.flag[country^=uruguay] {
+    background-position: -216px -360px
+}
+
+[dir=rtl] .flag[country^=uruguay] {
+    background-position: right -216px top -360px
+}
+
+.flag[country^=uzbekistan] {
+    background-position: -240px -360px
+}
+
+[dir=rtl] .flag[country^=uzbekistan] {
+    background-position: right -240px top -360px
+}
+
+.flag[country^=vtb] {
+    background-position: -264px -360px
+}
+
+[dir=rtl] .flag[country^=vtb] {
+    background-position: right -264px top -360px
+}
+
+.flag[country^=vanuatu] {
+    background-position: -288px -360px
+}
+
+[dir=rtl] .flag[country^=vanuatu] {
+    background-position: right -288px top -360px
+}
+
+.flag[country^=vatican-city] {
+    background-position: -312px -360px
+}
+
+[dir=rtl] .flag[country^=vatican-city] {
+    background-position: right -312px top -360px
+}
+
+.flag[country^=venezuela] {
+    background-position: -336px -360px
+}
+
+[dir=rtl] .flag[country^=venezuela] {
+    background-position: right -336px top -360px
+}
+
+.flag[country^=vietnam] {
+    background-position: -360px -360px
+}
+
+[dir=rtl] .flag[country^=vietnam] {
+    background-position: right -360px top -360px
+}
+
+.flag[country^=virgin-islands-british] {
+    background-position: 0px -384px
+}
+
+[dir=rtl] .flag[country^=virgin-islands-british] {
+    background-position: right 0px top -384px
+}
+
+.flag[country^=virgin-islands-us] {
+    background-position: -24px -384px
+}
+
+[dir=rtl] .flag[country^=virgin-islands-us] {
+    background-position: right -24px top -384px
+}
+
+.flag[country^=wales] {
+    background-position: -48px -384px
+}
+
+[dir=rtl] .flag[country^=wales] {
+    background-position: right -48px top -384px
+}
+
+.flag[country^=western-sahara] {
+    background-position: -72px -384px
+}
+
+[dir=rtl] .flag[country^=western-sahara] {
+    background-position: right -72px top -384px
+}
+
+.flag[country^=yemen] {
+    background-position: -120px -384px
+}
+
+[dir=rtl] .flag[country^=yemen] {
+    background-position: right -120px top -384px
+}
+
+.flag[country^=zambia] {
+    background-position: -144px -384px
+}
+
+[dir=rtl] .flag[country^=zambia] {
+    background-position: right -144px top -384px
+}
+
+.flag[country^=zimbabwe] {
+    background-position: -168px -384px
+}
+
+[dir=rtl] .flag[country^=zimbabwe] {
+    background-position: right -168px top -384px
+}
+
+.flag[country^=japan] {
+    background-position: -192px -384px
+}
+
+[dir=rtl] .flag[country^=japan] {
+    background-position: right -192px top -384px
+}
+
+.flag[country^=rolandgarros],
+.flag[country^=atp-roland-garros],
+.flag[country^=wta-roland-garros] {
+    background-position: -216px -384px
+}
+
+[dir=rtl] .flag[country^=rolandgarros],
+[dir=rtl] .flag[country^=atp-roland-garros],
+[dir=rtl] .flag[country^=wta-roland-garros] {
+    background-position: right -216px top -384px
+}
+
+.flag[country^=undefined] {
+    background-position: -240px -384px
+}
+
+[dir=rtl] .flag[country^=undefined] {
+    background-position: right -240px top -384px
+}
+
+.flag[country^=wimbledon] {
+    background-position: -264px -384px
+}
+
+[dir=rtl] .flag[country^=wimbledon] {
+    background-position: right -264px top -384px
+}
+
+.core-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    padding-inline: 1.5rem;
+    font-family: var(--font-family-primary);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: rgba(var(--color-text-primary), 1);
+    text-wrap: nowrap;
+    background-color: rgba(var(--color-primary), 1);
+    border-radius: .3rem
+}
+
+@media not (min-width:920px) {
+    .core-button {
+        border-radius: 1rem
+    }
+}
+
+.core-button.loading .button-content {
+    opacity: 0 !important
+}
+
+.core-button .button-content {
+    display: flex;
+    gap: .8rem;
+    align-items: center
+}
+
+.core-button:hover {
+    background-color: #42cbff
+}
+
+.core-button:focus {
+    background-color: #1277c9
+}
+
+.core-button.secondary {
+    background-color: rgba(var(--color-secondary), 1)
+}
+
+.core-button.secondary:hover {
+    background-color: #323246
+}
+
+.core-button.secondary:focus {
+    background-color: #323246
+}
+
+@media not (min-width:920px) {
+    .core-button {
+        font-size: 1.2rem
+    }
+}
+
+.core-button .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    transform: translate(-50%, -50%)
+}
+
+[dir=rtl] .core-button .loader {
+    left: auto;
+    right: 50%;
+    transform: translate(50%, -50%)
+}
+
+.core-button .loader:after {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: auto;
+    content: "";
+    background-color: transparent;
+    border: 2px solid #000;
+    border-radius: 50%;
+    animation: loader-1 2s cubic-bezier(.77, 0, .175, 1) infinite
+}
+
+.core-button .loader span {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: auto;
+    animation: loader-2 2s cubic-bezier(.77, 0, .175, 1) infinite
+}
+
+.core-button .loader span:before,
+.core-button .loader span:after {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: auto;
+    content: "";
+    background: #000;
+    border-radius: 50%;
+    animation: loader-3 2s cubic-bezier(.77, 0, .175, 1) infinite
+}
+
+@keyframes loader-1 {
+    0% {
+        opacity: 0;
+        transform: scale(0)
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1)
+    }
+    to {
+        opacity: 0;
+        transform: scale(0)
+    }
+}
+
+@keyframes loader-2 {
+    0% {
+        transform: rotate(0)
+    }
+    50% {
+        transform: rotate(180deg)
+    }
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes loader-3 {
+    0% {
+        transform: translateZ(0) scale(1)
+    }
+    50% {
+        transform: translate3d(-16px, 0, 0) scale(.5)
+    }
+    to {
+        transform: translateZ(0) scale(1)
+    }
+}
+
+.core-button .loader span:after {
+    animation: loader-4 2s cubic-bezier(.77, 0, .175, 1) infinite
+}
+
+@keyframes loader-4 {
+    0% {
+        transform: translateZ(0) scale(1)
+    }
+    50% {
+        transform: translate3d(16px, 0, 0) scale(.5)
+    }
+    to {
+        transform: translateZ(0) scale(1)
+    }
+}
+
+.core-input {
+    position: relative;
+    width: 100%
+}
+
+.core-input.with-icon.icon-left input {
+    padding-left: 3.2rem
+}
+
+[dir=rtl] .core-input.with-icon.icon-left input {
+    padding-left: 0;
+    padding-right: 3.2rem
+}
+
+.core-input.with-icon.icon-right input {
+    padding-right: 3.2rem
+}
+
+[dir=rtl] .core-input.with-icon.icon-right input {
+    padding-right: 0;
+    padding-left: 3.2rem
+}
+
+.core-input .core-input-helper {
+    display: flex;
+    align-items: center
+}
+
+.core-input input {
+    width: 100%;
+    height: 4.8rem;
+    padding-inline: 1.4rem;
+    padding-left: 2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    background-color: #20252f;
+    border: 1px solid rgba(218, 218, 218, .2);
+    border-radius: .8rem
+}
+
+[dir=rtl] .core-input input {
+    padding-left: 0;
+    padding-right: 2rem
+}
+
+@media not (min-width:920px) {
+    .core-input input {
+        height: 4rem
+    }
+}
+
+@media not (min-width:920px) {
+    .core-input input {
+        font-size: 1.2rem
+    }
+}
+
+.core-input input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none
+}
+
+.core-input input::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none
+}
+
+.core-input input::placeholder {
+    font-size: 1.2rem;
+    color: #ffffff4d
+}
+
+.core-input:has(.error):not(.payment) .core-input-helper+span.placeholder-text {
+    top: 0 !important;
+    margin-bottom: .3rem !important;
+    font-size: 1rem !important;
+    transform: translateY(.3rem) !important
+}
+
+.core-input .error {
+    margin-top: .6rem;
+    font-size: 1.2rem;
+    color: rgba(var(--color-background-red), 1)
+}
+
+.core-input .icon,
+.core-input .eye {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.core-input .icon.left,
+.core-input .eye.left {
+    left: 1.2rem
+}
+
+[dir=rtl] .core-input .icon.left,
+[dir=rtl] .core-input .eye.left {
+    left: auto;
+    right: 1.2rem
+}
+
+.core-input .icon.right,
+.core-input .eye.right {
+    right: 1.8rem
+}
+
+[dir=rtl] .core-input .icon.right,
+[dir=rtl] .core-input .eye.right {
+    right: auto;
+    left: 1.8rem
+}
+
+@media not (min-width:920px) {
+    .core-input .icon.right,
+    .core-input .eye.right {
+        right: 1.6rem
+    }
+    [dir=rtl] .core-input .icon.right,
+    [dir=rtl] .core-input .eye.right {
+        right: auto;
+        left: 1.6rem
+    }
+}
+
+.core-input.auth.with-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column
+}
+
+.core-input.auth.with-placeholder .core-input-helper {
+    position: relative
+}
+
+.core-input.auth.with-placeholder .core-input-helper:has(input:focus) input::placeholder {
+    color: transparent
+}
+
+.core-input.auth.with-placeholder .core-input-helper:has(input:focus) input:focus {
+    background-color: #12151e;
+    border: 2px solid rgb(98, 0, 238)
+}
+
+.core-input.auth.with-placeholder .core-input-helper:has(input:focus)+span.placeholder-text,
+.core-input.auth.with-placeholder .core-input-helper:has(input:not(:placeholder-shown))+span.placeholder-text,
+.core-input.auth.with-placeholder .core-input-helper:has(input:-webkit-autofill)+span.placeholder-text {
+    top: 0;
+    margin-bottom: .3rem;
+    font-size: 1rem;
+    transform: translateY(.3rem)
+}
+
+.core-input.auth.with-placeholder input::placeholder {
+    opacity: 0
+}
+
+.core-input.auth.with-placeholder span.placeholder-text {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: block;
+    order: -1;
+    padding: 0 2rem;
+    margin-bottom: -1rem;
+    font-weight: 400;
+    color: #fff9;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: .2s ease
+}
+
+.core-input.auth input {
+    padding: 1.6rem 1.2rem;
+    border: 1px solid rgba(218, 218, 218, .2)
+}
+
+.core-input.auth input:-webkit-autofill,
+.core-input.auth input:-webkit-autofill:focus,
+.core-input.auth input:-webkit-autofill:hover,
+.core-input.auth input:-webkit-autofill:active {
+    caret-color: #fff;
+    -webkit-box-shadow: 0 0 0 1000px rgb(32, 37, 47) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: rgb(146, 151, 164) !important
+}
+
+.core-input.auth input:autofill,
+.core-input.auth input:autofill:focus,
+.core-input.auth input:autofill:hover,
+.core-input.auth input:autofill:active {
+    caret-color: #fff;
+    box-shadow: 0 0 0 1000px #20252f inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: rgb(32, 37, 47) !important
+}
+
+.core-input.auth input.error-border {
+    border: 1px solid var(--color-background-red)
+}
+
+.core-input.auth .eye {
+    cursor: pointer
+}
+
+.core-input.auth .icon {
+    padding-right: .8rem
+}
+
+[dir=rtl] .core-input.auth .icon {
+    padding-right: 0;
+    padding-left: .8rem
+}
+
+.core-input.auth .icon svg {
+    width: 1rem
+}
+
+.core-input.auth .icon:after {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 1.6rem;
+    content: "";
+    background-color: #d0d0d0;
+    transform: translateY(-50%)
+}
+
+[dir=rtl] .core-input.auth .icon:after {
+    right: auto;
+    left: 0
+}
+
+.core-input.payment {
+    position: relative
+}
+
+.core-input.payment.with-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column
+}
+
+.core-input.payment.with-placeholder .core-input-helper {
+    position: relative
+}
+
+.core-input.payment.with-placeholder .core-input-helper:has(input:focus) input::placeholder {
+    color: transparent
+}
+
+.core-input.payment.with-placeholder .core-input-helper:has(input:focus) input:focus {
+    border-bottom: 1px solid rgb(66, 203, 255)
+}
+
+.core-input.payment.with-placeholder .core-input-helper:has(input:focus)+span.placeholder-text,
+.core-input.payment.with-placeholder .core-input-helper:has(input:not(:placeholder-shown))+span.placeholder-text,
+.core-input.payment.with-placeholder .core-input-helper:has(input:-webkit-autofill)+span.placeholder-text {
+    padding: 0;
+    margin-bottom: 0rem;
+    transform: translateY(0)
+}
+
+.core-input.payment.with-placeholder input::placeholder {
+    opacity: 0
+}
+
+.core-input.payment.with-placeholder span.placeholder-text {
+    position: relative;
+    z-index: 1;
+    display: block;
+    order: -1;
+    padding: 0 1.2rem;
+    margin-bottom: -1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #a3afcc;
+    pointer-events: none;
+    transform: translateY(1.8rem);
+    transition: .2s ease
+}
+
+.core-input.payment input {
+    width: 100%;
+    height: 4rem;
+    padding-inline: 0;
+    padding-left: 1rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: unset;
+    border: unset;
+    border-bottom: 1px solid rgba(85, 112, 134, .44);
+    border-radius: 7px
+}
+
+[dir=rtl] .core-input.payment input {
+    padding-left: 0;
+    padding-right: 1rem
+}
+
+.core-input.payment input::placeholder {
+    color: #bdd4e882
+}
+
+.core-input.payment input[type=number] {
+    -moz-appearance: textfield
+}
+
+.core-input.payment input[type=number]::-webkit-outer-spin-button,
+.core-input.payment input[type=number]::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none
+}
+
+.core-popup .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-index-modal-backdrop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100dvh;
+    background-color: #000000e6
+}
+
+[dir=rtl] .core-popup .overlay {
+    left: auto;
+    right: 0
+}
+
+@media not (min-width:920px) {
+    .core-popup .overlay {
+        padding: 0 1.2rem
+    }
+}
+
+.core-popup .overlay .content {
+    position: relative;
+    z-index: var(--z-index-modal);
+    max-height: calc(100% - var(--header-height-mobile) / 2);
+    padding: 2.4rem 4rem;
+    overflow-y: hidden;
+    background: #0e1319;
+    border-radius: 1rem
+}
+
+@media not (min-width:920px) {
+    .core-popup .overlay .content {
+        padding: 2.4rem 1.2rem;
+        overflow-y: auto;
+        border-radius: .8rem
+    }
+}
+
+.core-popup .overlay .content .close {
+    position: absolute;
+    top: 2.4rem;
+    right: 2.4rem;
+    cursor: pointer
+}
+
+[dir=rtl] .core-popup .overlay .content .close {
+    right: auto;
+    left: 2.4rem
+}
+
+@media not (min-width:920px) {
+    .core-popup .overlay .content .close {
+        top: 1.2rem;
+        right: 1.2rem
+    }
+    [dir=rtl] .core-popup .overlay .content .close {
+        right: auto;
+        left: 1.2rem
+    }
+}
+
+.core-popup .overlay .content.fullscreen {
+    width: 100dvw;
+    max-width: 100dvw !important;
+    height: calc(100dvh - var(--header-height-mobile));
+    border-radius: 0 !important
+}
+
+.core-popup .overlay .content .popup-title {
+    margin-bottom: 2.4rem;
+    font-size: 2rem;
+    font-weight: 600
+}
+
+.core-popup.no-overlay .overlay {
+    background-color: transparent
+}
+
+.overlay.select-options-overlay {
+    z-index: var(--z-index-modal)
+}
+
+.core-select {
+    position: relative;
+    width: 100%
+}
+
+.core-select.disabled {
+    opacity: .8
+}
+
+.core-select .error {
+    margin-top: .6rem;
+    font-size: 1.2rem;
+    color: red
+}
+
+.core-select .placeholder {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 4.8rem;
+    padding-inline: 1.4rem;
+    padding-left: 2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    text-wrap: nowrap;
+    cursor: pointer;
+    background-color: #20252f;
+    border: 1px solid rgba(218, 218, 218, .2);
+    border-radius: .8rem
+}
+
+[dir=rtl] .core-select .placeholder {
+    padding-left: 0;
+    padding-right: 2rem
+}
+
+@media not (min-width:920px) {
+    .core-select .placeholder {
+        height: 4rem
+    }
+}
+
+.core-select .placeholder .select-icon {
+    margin-left: auto
+}
+
+[dir=rtl] .core-select .placeholder .select-icon {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.core-select-options {
+    position: absolute;
+    z-index: var(--z-index-dropdown);
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    max-height: 25rem;
+    overflow-y: auto;
+    font-size: 1.2rem;
+    color: var(--color-text-primary);
+    background-color: #20252f;
+    border: .1rem solid rgba(218, 218, 218, .2);
+    border-radius: .4rem
+}
+
+@media(not (min-width:1249px))and (min-width:920px) {
+    .core-select-options {
+        max-height: 40rem !important
+    }
+}
+
+@media not (min-width:920px) {
+    .core-select-options {
+        position: fixed;
+        top: unset;
+        bottom: 0;
+        z-index: var(--z-index-modal);
+        width: 100%;
+        height: unset !important;
+        min-height: 30rem;
+        max-height: 45rem;
+        border-radius: 2.4rem 2.4rem 0 0
+    }
+    .core-select-options .options-container {
+        position: relative
+    }
+}
+
+.core-select-search {
+    position: relative;
+    width: 100%
+}
+
+.core-select-search.disabled {
+    opacity: .6
+}
+
+.core-select-search .error {
+    margin-top: .6rem;
+    font-size: 1.2rem;
+    color: red
+}
+
+.core-select-search .placeholder {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 4.8rem;
+    padding-inline: 1.4rem;
+    padding-left: 2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    text-wrap: nowrap;
+    cursor: pointer;
+    background-color: #20252f;
+    border: 1px solid rgba(218, 218, 218, .2);
+    border-radius: .8rem
+}
+
+[dir=rtl] .core-select-search .placeholder {
+    padding-left: 0;
+    padding-right: 2rem
+}
+
+@media not (min-width:920px) {
+    .core-select-search .placeholder {
+        height: 4rem
+    }
+}
+
+.core-select-search .placeholder .select-icon {
+    margin-left: auto
+}
+
+[dir=rtl] .core-select-search .placeholder .select-icon {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.core-select-options {
+    position: absolute;
+    z-index: var(--z-index-dropdown);
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    overflow-y: auto;
+    font-size: 1.2rem;
+    color: var(--color-text-primary);
+    background-color: #20252f;
+    border: .1rem solid rgba(218, 218, 218, .2);
+    border-radius: .4rem
+}
+
+@media(not (min-width:1249px))and (min-width:920px) {
+    .core-select-options {
+        max-height: 40rem
+    }
+}
+
+.core-select-options .options-container {
+    position: relative
+}
+
+@media not (min-width:920px) {
+    .core-select-options {
+        position: fixed;
+        top: unset;
+        bottom: 0;
+        z-index: var(--z-index-modal);
+        width: 100%;
+        height: 30rem;
+        border-radius: 2.4rem 2.4rem 0 0
+    }
+    .core-select-options .options-container {
+        position: relative
+    }
+}
+
+.core-select-options .options-placeholder {
+    position: sticky;
+    top: -.2rem;
+    z-index: 1;
+    padding: 3.5rem 1rem 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: .1rem;
+    background: #20252f
+}
+
+.core-select-options .options-placeholder:before {
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    display: block;
+    width: 4rem;
+    height: .3rem;
+    content: "";
+    background: #fff;
+    border-radius: 5rem;
+    transform: translate(-50%)
+}
+
+[dir=rtl] .core-select-options .options-placeholder:before {
+    left: auto;
+    right: 50%;
+    transform: translate(50%)
+}
+
+.core-select-options .option {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    padding: 1.6rem 1rem;
+    text-wrap: nowrap;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(218, 218, 218, .062745098);
+    transition: color .2s ease
+}
+
+@media not (min-width:920px) {
+    .core-select-options .option {
+        padding: 2rem
+    }
+}
+
+.core-select-options .option:hover,
+.core-select-options .option.active {
+    background-color: #171a20
+}
+
+.core-select-options:has(.select-input) {
+    padding: unset
+}
+
+.core-select-options .select-input {
+    width: 100%;
+    padding: 1.2rem;
+    background: unset !important
+}
+
+.core-checkbox .checkbox-container {
+    position: relative;
+    display: flex;
+    gap: 1.3rem;
+    align-items: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+.core-checkbox .checkbox-container input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    opacity: 0
+}
+
+.core-checkbox .checkbox-container .checkmark {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: #fff;
+    border-radius: .5rem
+}
+
+.core-checkbox .checkbox-container .checkmark:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    width: 70%;
+    height: 70%;
+    content: "";
+    background-color: rgba(var(--color-primary), 1);
+    border-radius: .3rem;
+    transform: translate(-50%, -50%)
+}
+
+[dir=rtl] .core-checkbox .checkbox-container .checkmark:after {
+    left: auto;
+    right: 50%;
+    transform: translate(50%, -50%)
+}
+
+.core-checkbox .checkbox-container input:checked~.checkmark:after {
+    display: block
+}
+
+.core-checkbox .checkbox-container .placeholder {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    color: rgba(var(--color-text-primary), .8)
+}
+
+@media not (min-width:920px) {
+    .core-checkbox .checkbox-container {
+        gap: .6rem
+    }
+    .core-checkbox .checkbox-container .placeholder {
+        font-size: 1.3rem;
+        line-height: 100%
+    }
+}
+
+.core-checkbox .error {
+    margin-top: .6rem;
+    font-size: 1.2rem;
+    color: red
+}
+
+.core-table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: separate;
+    border-radius: 10px
+}
+
+.core-table thead {
+    background: #1e1e25;
+    border-bottom: 1px solid #333645;
+    border-radius: 10px 10px 0 0
+}
+
+.core-table thead th {
+    padding-block: 1.1rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    text-align: left;
+    border-bottom: 1px solid #333645
+}
+
+[dir=rtl] .core-table thead th {
+    text-align: right
+}
+
+.core-table thead th:first-child {
+    padding-left: 3rem
+}
+
+[dir=rtl] .core-table thead th:first-child {
+    padding-left: 0;
+    padding-right: 3rem
+}
+
+.core-table thead th:last-child {
+    padding-right: 3rem
+}
+
+[dir=rtl] .core-table thead th:last-child {
+    padding-right: 0;
+    padding-left: 3rem
+}
+
+.core-table tbody tr {
+    font-size: 1.4rem;
+    background-color: rgba(var(--color-background-primary), 1)
+}
+
+.core-table tbody tr td {
+    height: 4rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff80;
+    border-bottom: 1px solid #333645
+}
+
+.core-table tbody tr td:first-child {
+    padding-left: 3rem
+}
+
+[dir=rtl] .core-table tbody tr td:first-child {
+    padding-left: 0;
+    padding-right: 3rem
+}
+
+.core-table tbody tr td:last-child {
+    padding-right: 3rem
+}
+
+[dir=rtl] .core-table tbody tr td:last-child {
+    padding-right: 0;
+    padding-left: 3rem
+}
+
+@media not (min-width:920px) {
+    .core-table thead th {
+        padding-block: .95rem;
+        font-size: 1.31rem
+    }
+    .core-table thead th:first-child {
+        padding-left: 1.125rem
+    }
+    [dir=rtl] .core-table thead th:first-child {
+        padding-left: 0;
+        padding-right: 1.125rem
+    }
+    .core-table thead th:last-child {
+        padding-right: 1.125rem
+    }
+    [dir=rtl] .core-table thead th:last-child {
+        padding-right: 0;
+        padding-left: 1.125rem
+    }
+    .core-table tbody tr {
+        font-size: 1.2rem
+    }
+    .core-table tbody tr td {
+        height: 3.6rem;
+        font-size: 1.2rem
+    }
+    .core-table tbody tr td:first-child {
+        padding-left: 1.125rem
+    }
+    [dir=rtl] .core-table tbody tr td:first-child {
+        padding-left: 0;
+        padding-right: 1.125rem
+    }
+    .core-table tbody tr td:last-child {
+        padding-right: 1.125rem
+    }
+    [dir=rtl] .core-table tbody tr td:last-child {
+        padding-right: 0;
+        padding-left: 1.125rem
+    }
+}
+
+.core-snackbars {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem
+}
+
+[dir=rtl] .core-snackbars {
+    right: auto;
+    left: 2rem
+}
+
+@media not (min-width:920px) {
+    .core-snackbars {
+        right: 1rem
+    }
+    [dir=rtl] .core-snackbars {
+        right: auto;
+        left: 1rem
+    }
+}
+
+.core-snackbars .core-snackbar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 40rem;
+    max-width: 60rem;
+    padding: 1rem 2rem;
+    color: #000;
+    border-radius: 1rem
+}
+
+@media not (min-width:920px) {
+    .core-snackbars .core-snackbar {
+        min-width: 25rem
+    }
+}
+
+.core-snackbars .core-snackbar .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.core-snackbars .core-snackbar .message {
+    padding-top: 1rem;
+    font-size: 1.4rem
+}
+
+.core-snackbars .core-snackbar .close {
+    color: var(--text-primary);
+    cursor: pointer
+}
+
+.core-snackbars .core-snackbar.success {
+    background-color: #33ea33
+}
+
+.core-snackbars .core-snackbar.error {
+    background-color: #ee2d26
+}
+
+.core-date-picker {
+    position: absolute;
+    top: 100%;
+    right: -4.3rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: center;
+    width: 21.2rem;
+    padding: .8rem 0;
+    margin-top: .8rem;
+    overflow: hidden;
+    font-size: 1.5rem;
+    background: #fff;
+    border-top: 1px solid rgb(51, 153, 255);
+    box-shadow: 0 3px 6px #ccc
+}
+
+[dir=rtl] .core-date-picker {
+    right: auto;
+    left: -4.3rem
+}
+
+@media not (min-width:920px) {
+    .core-date-picker {
+        position: fixed;
+        top: unset;
+        bottom: 0%;
+        left: 0;
+        z-index: var(--z-index-modal);
+        width: 100%;
+        padding: 5rem 5.5rem
+    }
+    [dir=rtl] .core-date-picker {
+        left: auto;
+        right: 0
+    }
+}
+
+.core-date-picker .month-changer,
+.core-date-picker .year-changer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #000
+}
+
+.core-date-picker .month-changer {
+    padding-inline: .5rem
+}
+
+.core-date-picker .month-changer .arrow svg {
+    width: 1.8rem;
+    height: 1.8rem
+}
+
+.core-date-picker .month-changer .arrow svg path {
+    fill: #000
+}
+
+.core-date-picker .calendar {
+    width: 100%;
+    color: #000
+}
+
+@media not (min-width:920px) {
+    .core-date-picker .calendar {
+        width: 100%
+    }
+}
+
+.core-date-picker .calendar .buttons {
+    display: flex;
+    gap: 1.3rem;
+    align-items: center
+}
+
+.core-date-picker .calendar .week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: .6rem;
+    padding: 0 .4rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #000;
+    text-align: center
+}
+
+.core-date-picker .calendar .dates .date-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    margin-bottom: .4rem;
+    text-align: center
+}
+
+.core-date-picker .calendar .dates .date-row .date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    border-radius: 0;
+    transition: .2s ease
+}
+
+@media not (min-width:920px) {
+    .core-date-picker .calendar .dates .date-row .date {
+        line-height: 3.8rem
+    }
+}
+
+.core-date-picker .calendar .dates .date-row .date:hover {
+    background-color: #e6f2ff
+}
+
+.core-date-picker .calendar .dates .date-row .date.today {
+    font-weight: 600;
+    color: #39f
+}
+
+.core-date-picker .calendar .dates .date-row .date.selected {
+    font-weight: 600;
+    background-color: #e6f2ff
+}
+
+.core-date-picker .calendar .dates .date-row .date.past-month {
+    color: #999;
+    cursor: default
+}
+
+.core-date-picker .calendar .dates .date-row .date.invalid-age {
+    color: #dbdbe5;
+    pointer-events: none
+}
+
+.core-date-picker .months,
+.core-date-picker .years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr)
+}
+
+.core-date-picker .months .month,
+.core-date-picker .months .year,
+.core-date-picker .years .month,
+.core-date-picker .years .year {
+    height: 5.2rem;
+    padding: 1rem 2.6rem;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    vertical-align: middle;
+    color: #000;
+    text-align: center;
+    letter-spacing: 0;
+    cursor: pointer
+}
+
+.core-date-picker .months .month.selected,
+.core-date-picker .months .year.selected,
+.core-date-picker .years .month.selected,
+.core-date-picker .years .year.selected {
+    color: #000;
+    background-color: #e6f2ff
+}
+
+.core-date-picker-select {
+    position: relative;
+    width: 100%
+}
+
+.core-date-picker-select .placeholder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1.2rem 1.4rem 1.2rem 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: rgba(var(--color-text-primary), .5);
+    text-wrap: nowrap;
+    background: #323246;
+    border-radius: 10px
+}
+
+[dir=rtl] .core-date-picker-select .placeholder {
+    padding: 1.2rem 1.2rem 1.2rem 1.4rem
+}
+
+.core-date-picker-select .placeholder .icon {
+    margin-right: .6rem
+}
+
+[dir=rtl] .core-date-picker-select .placeholder .icon {
+    margin-right: 0;
+    margin-left: .6rem
+}
+
+.core-date-picker-select .core-date-picker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: var(--z-index-tooltip);
+    box-shadow: 0 3px 6px #ccc
+}
+
+[dir=rtl] .core-date-picker-select .core-date-picker {
+    left: auto;
+    right: 0
+}
+
+@media not (min-width:920px) {
+    .core-date-picker-select .core-date-picker {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        z-index: var(--z-index-modal);
+        width: calc(100% - 3.2rem);
+        max-width: 40rem;
+        transform: translate(-50%)
+    }
+    [dir=rtl] .core-date-picker-select .core-date-picker {
+        left: auto;
+        right: 50%;
+        transform: translate(50%)
+    }
+}
+
+.core-pagination {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1.6rem;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+.core-pagination .pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.core-pagination .pagination-container .arrow {
+    background: rgba(var(--color-background-primary), 1)
+}
+
+.core-pagination .pagination-container .arrow svg path {
+    fill: #a3afcc78;
+    transition: .2s ease-in-out
+}
+
+.core-pagination .pagination-container .arrow.available svg path {
+    fill: #a3afcc
+}
+
+.core-pagination .pagination-container .pagination-numbers {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem
+}
+
+.core-pagination .pagination-container .pagination-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.7rem;
+    height: 3.7rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    vertical-align: bottom;
+    color: rgba(var(--color-text-primary), 1);
+    text-align: center;
+    background: rgba(var(--color-background-primary), 1);
+    border-radius: .4rem;
+    transition: .2s ease-in-out
+}
+
+.core-pagination .pagination-container .pagination-item.selected {
+    border: 1px solid rgba(var(--color-primary), 1)
+}
+
+.sportsbook-sidebar-menu .top-leagues {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem
+}
+
+.sportsbook-sidebar-menu .top-leagues .top-league {
+    display: flex;
+    align-items: center;
+    padding: 0 2rem
+}
+
+.sportsbook-sidebar-menu .top-leagues .top-league .info {
+    display: flex;
+    gap: .7rem;
+    align-items: center;
+    font-size: 1.4rem;
+    font-style: regular;
+    font-weight: 400;
+    color: #a7a7a7
+}
+
+.sportsbook-sidebar-menu .top-leagues .top-league .info .icon {
+    width: 2rem;
+    border-radius: 50%
+}
+
+.sportsbook-sidebar-menu .top-leagues .top-league .count {
+    margin-left: auto;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #3dff67
+}
+
+[dir=rtl] .sportsbook-sidebar-menu .top-leagues .top-league .count {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.mandatory-props-popup .close {
+    top: 1rem !important;
+    right: 1rem !important
+}
+
+[dir=rtl] .mandatory-props-popup .close {
+    right: auto !important;
+    left: 1rem !important
+}
+
+.mandatory-props-popup .content {
+    overflow: visible !important
+}
+
+.mandatory-props .title {
+    margin-bottom: 2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: center
+}
+
+.mandatory-props form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem
+}
+
+.mandatory-props form .core-select .placeholder,
+.mandatory-props form .core-button,
+.mandatory-props form .core-input input {
+    height: 4rem
+}
+
+.mandatory-props form .core-select .core-select-options {
+    width: 100%
+}
+
+.mandatory-props form .core-date-picker-select .placeholder {
+    width: 100%;
+    height: 4rem;
+    padding-inline: 1.4rem;
+    padding-left: 2rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    background-color: #292e41;
+    border: 1px solid rgba(218, 218, 218, .2);
+    border-radius: .8rem
+}
+
+[dir=rtl] .mandatory-props form .core-date-picker-select .placeholder {
+    padding-left: 0;
+    padding-right: 2rem
+}
+
+.mandatory-props form .wrapper {
+    display: flex;
+    gap: .6rem
+}
+
+.mandatory-props form .wrapper .core-select {
+    width: 30%
+}
+
+.mandatory-props form .wrapper .core-input {
+    flex: 5
+}
+
+.mandatory-props form .core-date-select {
+    display: flex;
+    gap: .6rem
+}
+
+@keyframes ui-skeleton-shimmer {
+    0% {
+        background-position: 100% 0
+    }
+    to {
+        background-position: -100% 0
+    }
+}
+
+.ui-skeleton-block {
+    flex-shrink: 0;
+    background: linear-gradient(90deg, var(--ui-skeleton-base, #262632) 0%, var(--ui-skeleton-highlight, #34384a) 50%, var(--ui-skeleton-base, #262632) 100%);
+    animation: ui-skeleton-shimmer 1.25s ease-in-out infinite
+}
+
+[dir=rtl] .ui-skeleton-block {
+    background: linear-gradient(-90deg, var(--ui-skeleton-base, #262632) 0%, var(--ui-skeleton-highlight, #34384a) 50%, var(--ui-skeleton-base, #262632) 100%)
+}
+
+[dir] .ui-skeleton-block {
+    background-size: 200% 100%
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+    font-family: var(--font-family-primary), sans-serif;
+    font-size: 1.4rem;
+    color: rgba(var(--color-text-primary), 1);
+    background-color: rgba(var(--color-background-primary), 1)
+}
+
+body:has(.core-popup) {
+    position: absolute!important;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    overflow: scroll!important
+}
+
+body.hide-scrollbar {
+    overflow: hidden
+}
+
+body:has(#sb) header {
+    margin-bottom: 0 !important
+}
+
+body:has(#sb) main {
+    padding-inline: 0 !important
+}
+
+body:has(#sb) footer {
+    display: none
+}
+
+* {
+    scrollbar-color: rgb(41, 46, 65) transparent;
+    scrollbar-width: thin
+}
+
+::-webkit-scrollbar {
+    width: .3rem
+}
+
+::-webkit-scrollbar-track {
+    background: transparent
+}
+
+::-webkit-scrollbar-thumb {
+    background: #292e41;
+    border-radius: 2.4rem
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #292e41
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 100% 50%
+    }
+    to {
+        background-position: 0 50%
+    }
+}
+
+.skeleton-loading {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 1rem;
+    overflow: hidden;
+    color: transparent !important;
+    pointer-events: none;
+    background: linear-gradient(-80deg, #2c2c35 40%, #3a3f52, #2c2c35 60%) 0 0/300% 100%;
+    border-radius: .5rem;
+    animation: gradient-animation 1.25s ease-in-out infinite
+}
+
+[dir=rtl] .skeleton-loading {
+    background: linear-gradient(80deg, #2c2c35 40%, #3a3f52, #2c2c35 60%) 0 0/300% 100%
+}
+
+.skeleton-loading * {
+    opacity: 0
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-index-modal-backdrop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100dvh;
+    background-color: #0e151bab
+}
+
+[dir=rtl] .overlay {
+    left: auto;
+    right: 0
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0
+}
+
+.grecaptcha-badge {
+    visibility: hidden
+}

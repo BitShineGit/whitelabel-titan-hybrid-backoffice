@@ -1,0 +1,1435 @@
+﻿@{
+    ViewData["Title"] = "Transaction";
+}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<style>
+  /* ========================================================= TRANSACTION TABLE ========================================================= */
+    .transactions-wrapper .table-responsive {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+        margin-top: 18px;
+        border-radius: 6px;
+        scrollbar-width: thin;
+    }
+
+    .transactions-wrapper {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: visible;
+    }
+
+        .transactions-wrapper .table-responsive {
+            box-sizing: border-box;
+            display: block;
+        }
+  .transactions-wrapper .transaction-table {
+    width: max-content%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .transactions-wrapper .transaction-table th,
+  .transactions-wrapper .transaction-table td {
+    padding: 13px 18px;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .transactions-wrapper .transaction-table th {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .transactions-wrapper .transaction-table th:first-child,
+  .transactions-wrapper .transaction-table td:first-child {
+    padding-left: 18px;
+  }
+  .transactions-wrapper .transaction-table th:last-child,
+  .transactions-wrapper .transaction-table td:last-child {
+    padding-right: 18px;
+  } /* Column widths */
+  .transactions-wrapper .transaction-table th:nth-child(1),
+  .transactions-wrapper .transaction-table td:nth-child(1) {
+    min-width: 165px;
+  }
+  .transactions-wrapper .transaction-table th:nth-child(2),
+  .transactions-wrapper .transaction-table td:nth-child(2) {
+    min-width: 145px;
+  }
+  .transactions-wrapper .transaction-table th:nth-child(3),
+  .transactions-wrapper .transaction-table td:nth-child(3) {
+    min-width: 140px;
+  }
+  .transactions-wrapper .transaction-table th:nth-child(4),
+  .transactions-wrapper .transaction-table td:nth-child(4) {
+    min-width: 145px;
+  }
+  .transactions-wrapper .transaction-table th:nth-child(5),
+  .transactions-wrapper .transaction-table td:nth-child(5) {
+    min-width: 150px;
+  } /* ========================================================= AMOUNT ========================================================= */
+  .transaction-amount {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .transaction-amount.amount-profit {
+    color: #00c853;
+  }
+  .transaction-amount.amount-loss {
+    color: #ff3b4d;
+  }
+  .transaction-amount-separator {
+    margin: 0 5px;
+    opacity: 0.55;
+  } /* ========================================================= RESULT / STATUS ========================================================= */
+  .transaction-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 28px;
+  }
+  .transaction-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    padding: 5px 9px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .status-success {
+    color: #00c853;
+    background: rgba(0, 200, 83, 0.1);
+  }
+  .status-completed {
+    color: #00c853;
+    background: rgba(0, 200, 83, 0.1);
+  }
+  .status-pending {
+    color: #ff9800;
+    background: rgba(255, 152, 0, 0.1);
+  }
+  .status-processing {
+    color: #00aaeb;
+    background: rgba(0, 170, 235, 0.1);
+  }
+  .status-rejected {
+    color: #ff3b4d;
+    background: rgba(255, 59, 77, 0.1);
+  }
+  .status-failed {
+    color: #ff3b4d;
+    background: rgba(255, 59, 77, 0.1);
+  }
+  .status-canceled {
+    color: #ff3b4d;
+    background: rgba(255, 59, 77, 0.1);
+  }
+  .status-outstanding {
+    color: #ff9800;
+    background: rgba(255, 152, 0, 0.1);
+  } /* ========================================================= CANCEL BUTTON ========================================================= */
+  .transaction-cancel-btn {
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    background: #ff3b4d;
+    transition: opacity 0.2s ease;
+  }
+  .transaction-cancel-btn:hover {
+    opacity: 0.85;
+  }
+  .transaction-cancel-btn:active {
+    opacity: 0.7;
+  }
+  .transaction-cancel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  } /* ========================================================= PAGINATION Same structure/behavior as desktop ========================================================= */
+  .transactions-wrapper .core-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 22px;
+    padding: 5px 0 15px;
+    flex-wrap: wrap;
+  }
+  .transactions-wrapper .transaction-page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .transactions-wrapper .transaction-page-btn:hover:not(:disabled) {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+  .transactions-wrapper .transaction-page-btn.active {
+    color: #fff;
+    background: #00aaeb;
+    border-color: #00aaeb;
+  }
+  .transactions-wrapper .transaction-page-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .transactions-wrapper .transaction-page-btn.navigation,
+  .transactions-wrapper .transaction-page-btn.first-last {
+    padding: 0 12px;
+  }
+  .transaction-pagination-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    min-width: 20px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+  } /* ========================================================= EMPTY TABLE ========================================================= */
+    .transactions-wrapper .transaction-table td.transaction-empty {
+        padding: 35px 15px;
+        text-align: left;
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 13px;
+    }
+    /* ========================================================= CANCEL CONFIRMATION MODAL ========================================================= */
+  .transaction-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+  }
+  .transaction-modal-overlay.show {
+    display: flex;
+  }
+  .transaction-confirm-modal {
+    width: 100%;
+    max-width: 360px;
+    padding: 24px 20px;
+    border-radius: 8px;
+    background: #1b1d24;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    text-align: center;
+  }
+  .transaction-confirm-modal-title {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .transaction-confirm-modal-text {
+    margin-bottom: 22px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .transaction-confirm-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .transaction-confirm-actions button {
+    flex: 1;
+    height: 40px;
+    border: 0;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  #cancelWithdrawalNo {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  #cancelWithdrawalYes {
+    color: #fff;
+    background: #ff3b4d;
+  }
+  #cancelWithdrawalYes:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  } /* ========================================================= SMALL MOBILE ========================================================= */
+  @@media (max-width: 480px) {
+    .transactions-wrapper .transaction-table th,
+    .transactions-wrapper .transaction-table td {
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+    .transactions-wrapper .transaction-table th {
+      font-size: 11px;
+    }
+    .transactions-wrapper .transaction-page-btn {
+      min-width: 32px;
+      height: 32px;
+      line-height: 30px;
+      font-size: 11px;
+    }
+    .transactions-wrapper .transaction-page-btn.navigation,
+    .transactions-wrapper .transaction-page-btn.first-last {
+      padding: 0 9px;
+    }
+  }
+</style>
+<style>
+@@media (max-width: 767px) {
+    .daterangepicker {
+        position: fixed !important;
+        top: 50% !important;
+        left: 10px !important;
+        right: 10px !important;
+        transform: translateY(-50%);
+        width: auto !important;
+        max-width: none !important;
+        box-sizing: border-box;
+    }
+}
+</style>
+<style>
+    .daterangepicker .calendar-time select {
+        color: #000 !important;
+    }
+
+        .daterangepicker .calendar-time select option {
+            color: #000 !important;
+        }
+</style>
+<main class="svelte-1v2axqk common">
+    <!----><!----><!----><!---->
+    <div class="main-container svelte-acgoc1">
+        <div class="users svelte-acgoc1">
+            <!---->
+            <div class="mobile-user-navigation svelte-1houd7k">
+                <!----><a href="/user/dashboard"
+                          data-sveltekit-preload-data="hover"
+                          data-sveltekit-noscroll="false">
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.82484 13L12.7248 17.9C12.9248 18.1 13.0208 18.3333 13.0128 18.6C13.0048 18.8667 12.9005 19.1 12.6998 19.3C12.4998 19.4833 12.2665 19.5793 11.9998 19.588C11.7332 19.5967 11.4998 19.5007 11.2998 19.3L4.69984 12.7C4.59984 12.6 4.52884 12.4917 4.48684 12.375C4.44484 12.2583 4.42451 12.1333 4.42584 12C4.42718 11.8667 4.44818 11.7417 4.48884 11.625C4.52951 11.5083 4.60018 11.4 4.70084 11.3L11.3008 4.7C11.4842 4.51667 11.7135 4.425 11.9888 4.425C12.2642 4.425 12.5015 4.51667 12.7008 4.7C12.9008 4.9 13.0008 5.13767 13.0008 5.413C13.0008 5.68834 12.9008 5.92567 12.7008 6.125L7.82484 11H18.9998C19.2832 11 19.5208 11.096 19.7128 11.288C19.9048 11.48 20.0005 11.7173 19.9998 12C19.9992 12.2827 19.9032 12.5203 19.7118 12.713C19.5205 12.9057 19.2832 13.0013 18.9998 13H7.82484Z"
+                              fill="white"
+                              fill-opacity="0.5"></path>
+                    </svg><!---->
+                </a><!---->
+                <div class="current-page-info svelte-1houd7k">
+                    <!----><svg width="25"
+                                height="25"
+                                viewBox="0 0 25 25"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_1906_4646)">
+                            <path d="M4.54301 8.15832L12.0404 11.9962C12.1833 12.0688 12.3421 12.1067 12.5032 12.1067C12.6643 12.1067 12.823 12.0688 12.966 11.9962L20.4634 8.15832C20.6251 8.07555 20.7605 7.95105 20.855 7.79833C20.9496 7.64562 20.9995 7.47051 20.9995 7.29199C20.9995 7.11348 20.9496 6.93838 20.855 6.78566C20.7605 6.63293 20.6251 6.50845 20.4634 6.42568L12.966 2.58782C12.8229 2.5145 12.6638 2.4762 12.5022 2.4762C12.3406 2.4762 12.1815 2.5145 12.0384 2.58782L4.54101 6.42568C4.37931 6.50845 4.24386 6.63293 4.14935 6.78566C4.05485 6.93838 4.00488 7.11348 4.00488 7.29199C4.00488 7.47051 4.05485 7.64562 4.14935 7.79833C4.24386 7.95105 4.37931 8.07555 4.54101 8.15832H4.54301Z"
+                                  fill="#00AAEB"></path>
+                            <path d="M20.0003 10.2538C19.7351 10.2538 19.4808 10.3568 19.2933 10.5401C19.1059 10.7235 19.0005 10.9722 19.0005 11.2316V11.4085L12.5029 14.733L6.00516 11.4085V11.2316C6.00516 10.9722 5.89983 10.7235 5.71236 10.5401C5.52489 10.3568 5.27063 10.2538 5.00551 10.2538C4.74038 10.2538 4.48612 10.3568 4.29865 10.5401C4.11118 10.7235 4.00586 10.9722 4.00586 11.2316V12.0001C4.00583 12.1786 4.05574 12.3537 4.1502 12.5064C4.24465 12.6591 4.38003 12.7836 4.54167 12.8664L12.039 16.7043C12.1821 16.7776 12.3413 16.8159 12.5029 16.8159C12.6644 16.8159 12.8236 16.7776 12.9667 16.7043L20.4641 12.8664C20.6257 12.7836 20.761 12.6591 20.8555 12.5064C20.95 12.3537 20.9999 12.1786 20.9999 12.0001V11.2316C20.9999 10.9722 20.8946 10.7235 20.707 10.5401C20.5196 10.3568 20.2653 10.2538 20.0003 10.2538Z"
+                                  fill="#00AAEB"></path>
+                            <path d="M19.9943 14.9618C19.7293 14.9618 19.475 15.0648 19.2875 15.2482C19.1 15.4316 18.9947 15.6803 18.9947 15.9396V16.1166L12.497 19.4411L5.9993 16.1166V15.9396C5.9993 15.6803 5.89397 15.4316 5.7065 15.2482C5.51903 15.0648 5.26477 14.9618 4.99965 14.9618C4.73452 14.9618 4.48026 15.0648 4.29279 15.2482C4.10532 15.4316 4 15.6803 4 15.9396V16.7091C3.99997 16.8876 4.04989 17.0627 4.14434 17.2154C4.23879 17.3681 4.37417 17.4927 4.53581 17.5754L12.0332 21.4133C12.1765 21.4859 12.3356 21.5239 12.497 21.5239C12.6584 21.5239 12.8175 21.4859 12.9608 21.4133L20.4581 17.5754C20.6198 17.4927 20.7552 17.3681 20.8497 17.2154C20.9442 17.0627 20.9941 16.8876 20.9941 16.7091V15.9396C20.9941 15.6803 20.8887 15.4316 20.7012 15.2482C20.5138 15.0648 20.2595 14.9618 19.9943 14.9618Z"
+                                  fill="#00AAEB"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_1906_4646">
+                                <rect width="17"
+                                      height="20"
+                                      fill="white"
+                                      transform="translate(4 2)"></rect>
+                            </clipPath>
+                        </defs>
+                    </svg><!---->
+                    <span data-group="PROFILE_MENU" data-key="TRANSACTIONS_HISTORY">Transactions History</span><!----><!---->
+                </div>
+                <!---->
+            </div>
+            <!---->
+            <!----><!----><!---->
+            <main class="transactions svelte-cz2cxe">
+                <section class="filters-wrapper svelte-cz2cxe">
+                    <div class="filter-wrapper svelte-cz2cxe">
+                        <div class="core-select radio-style  open-modal-btn" data-open-modal="#activitytype"
+                             role="combobox"
+                             aria-expanded="false"
+                             aria-haspopup="listbox"
+                             aria-controls="core-select-listbox-6dd3929a-eadc-4b17-8dda-1a4e45063a49"
+                             aria-autocomplete="none">
+                            <!---->
+                            <div class="placeholder">
+                                <!----><!----><!---->
+                                <span id="selectedactivity">Activity Type</span>
+                                <!----><!---->
+                                <div class="dropdown-icon">
+                                    <!---->
+                                    <!----><svg width="10"
+                                                height="6"
+                                                viewBox="0 0 10 6"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                              fill="white"
+                                              fill-opacity="0.5"></path>
+                                    </svg><!---->
+                                </div>
+                                <!---->
+                            </div>
+                            <!---->
+                            <!----><!----><!---->
+                        </div>
+                        <!---->
+                        <div class="core-select radio-style open-modal-btn" data-open-modal="#statusmodal"
+                             role="combobox"
+                             aria-expanded="false"
+                             aria-haspopup="listbox"
+                             aria-controls="core-select-listbox-33dc11f9-72f6-4a9f-83be-27dc432fa495"
+                             aria-autocomplete="none">
+                            <!---->
+                            <div class="placeholder">
+                                <!----><!----><!---->
+                                <span id="selectedstatus">Status</span>
+                                <!----><!---->
+                                <div class="dropdown-icon">
+                                    <!---->
+                                    <!----><svg width="10"
+                                                height="6"
+                                                viewBox="0 0 10 6"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                              fill="white"
+                                              fill-opacity="0.5"></path>
+                                    </svg><!---->
+                                </div>
+                                <!---->
+                            </div>
+                            <!---->
+                            <!----><!----><!---->
+                        </div>
+                        <!---->
+                    </div>
+                    <div class="filter-wrapper svelte-cz2cxe">
+                        <div class="transactions-date-picker svelte-vps33z">
+                            <button class="placeholder svelte-vps33z" style="padding:0px;">
+                                <div class="placeholder-date svelte-vps33z">
+                                    <svg width="16"
+                                         height="16"
+                                         viewBox="0 0 16 16"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g opacity="0.5">
+                                            <path d="M15 12.0833V5.66667H1V12.0833C1 12.8569 1.30729 13.5987 1.85427 14.1457C2.40125 14.6927 3.14312 15 3.91667 15H12.0833C12.8569 15 13.5987 14.6927 14.1457 14.1457C14.6927 13.5987 15 12.8569 15 12.0833ZM5.66317 8.28933C5.66317 8.52093 5.57116 8.74305 5.4074 8.90681C5.24363 9.07058 5.02152 9.16258 4.78992 9.16258C4.55832 9.16258 4.3362 9.07058 4.17244 8.90681C4.00867 8.74305 3.91667 8.52093 3.91667 8.28933C3.91667 8.05773 4.00867 7.83562 4.17244 7.67185C4.3362 7.50809 4.55832 7.41608 4.78992 7.41608C5.02152 7.41608 5.24363 7.50809 5.4074 7.67185C5.57116 7.83562 5.66317 8.05773 5.66317 8.28933ZM5.66317 11.206C5.66317 11.4376 5.57116 11.6597 5.4074 11.8235C5.24363 11.9872 5.02152 12.0792 4.78992 12.0792C4.55832 12.0792 4.3362 11.9872 4.17244 11.8235C4.00867 11.6597 3.91667 11.4376 3.91667 11.206C3.91667 10.9744 4.00867 10.7523 4.17244 10.5885C4.3362 10.4248 4.55832 10.3328 4.78992 10.3328C5.02152 10.3328 5.24363 10.4248 5.4074 10.5885C5.57116 10.7523 5.66317 10.9744 5.66317 11.206ZM8.87383 8.28933C8.87383 8.52093 8.78183 8.74305 8.61806 8.90681C8.4543 9.07058 8.23218 9.16258 8.00058 9.16258C7.76898 9.16258 7.54687 9.07058 7.3831 8.90681C7.21934 8.74305 7.12733 8.52093 7.12733 8.28933C7.12733 8.05773 7.21934 7.83562 7.3831 7.67185C7.54687 7.50809 7.76898 7.41608 8.00058 7.41608C8.23218 7.41608 8.4543 7.50809 8.61806 7.67185C8.78183 7.83562 8.87383 8.05773 8.87383 8.28933ZM8.87383 11.206C8.87383 11.4376 8.78183 11.6597 8.61806 11.8235C8.4543 11.9872 8.23218 12.0792 8.00058 12.0792C7.76898 12.0792 7.54687 11.9872 7.3831 11.8235C7.21934 11.6597 7.12733 11.4376 7.12733 11.206C7.12733 10.9744 7.21934 10.7523 7.3831 10.5885C7.54687 10.4248 7.76898 10.3328 8.00058 10.3328C8.23218 10.3328 8.4543 10.4248 8.61806 10.5885C8.78183 10.7523 8.87383 10.9744 8.87383 11.206ZM12.0798 8.28933C12.0798 8.52093 11.9878 8.74305 11.8241 8.90681C11.6603 9.07058 11.4382 9.16258 11.2066 9.16258C10.975 9.16258 10.7529 9.07058 10.5891 8.90681C10.4253 8.74305 10.3333 8.52093 10.3333 8.28933C10.3333 8.05773 10.4253 7.83562 10.5891 7.67185C10.7529 7.50809 10.975 7.41608 11.2066 7.41608C11.4382 7.41608 11.6603 7.50809 11.8241 7.67185C11.9878 7.83562 12.0798 8.05773 12.0798 8.28933ZM15 3.91667C15 3.14312 14.6927 2.40125 14.1457 1.85427C13.5987 1.30729 12.8569 1 12.0833 1H3.91667C3.14312 1 2.40125 1.30729 1.85427 1.85427C1.30729 2.40125 1 3.14312 1 3.91667V4.5H15V3.91667Z"
+                                                  fill="white"></path>
+                                        </g>
+                                    </svg><!---->
+                                    <input id="fromDate" type="text" name="birthday" value="" />
+                                </div>
+                            </button>
+                            <!---->
+                        </div>
+                        <!---->
+                        <div class="transactions-date-picker svelte-vps33z">
+                            <button class="placeholder svelte-vps33z" style="padding:0px;">
+                                <div class="placeholder-date svelte-vps33z">
+                                    <svg width="16"
+                                         height="16"
+                                         viewBox="0 0 16 16"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g opacity="0.5">
+                                            <path d="M15 12.0833V5.66667H1V12.0833C1 12.8569 1.30729 13.5987 1.85427 14.1457C2.40125 14.6927 3.14312 15 3.91667 15H12.0833C12.8569 15 13.5987 14.6927 14.1457 14.1457C14.6927 13.5987 15 12.8569 15 12.0833ZM5.66317 8.28933C5.66317 8.52093 5.57116 8.74305 5.4074 8.90681C5.24363 9.07058 5.02152 9.16258 4.78992 9.16258C4.55832 9.16258 4.3362 9.07058 4.17244 8.90681C4.00867 8.74305 3.91667 8.52093 3.91667 8.28933C3.91667 8.05773 4.00867 7.83562 4.17244 7.67185C4.3362 7.50809 4.55832 7.41608 4.78992 7.41608C5.02152 7.41608 5.24363 7.50809 5.4074 7.67185C5.57116 7.83562 5.66317 8.05773 5.66317 8.28933ZM5.66317 11.206C5.66317 11.4376 5.57116 11.6597 5.4074 11.8235C5.24363 11.9872 5.02152 12.0792 4.78992 12.0792C4.55832 12.0792 4.3362 11.9872 4.17244 11.8235C4.00867 11.6597 3.91667 11.4376 3.91667 11.206C3.91667 10.9744 4.00867 10.7523 4.17244 10.5885C4.3362 10.4248 4.55832 10.3328 4.78992 10.3328C5.02152 10.3328 5.24363 10.4248 5.4074 10.5885C5.57116 10.7523 5.66317 10.9744 5.66317 11.206ZM8.87383 8.28933C8.87383 8.52093 8.78183 8.74305 8.61806 8.90681C8.4543 9.07058 8.23218 9.16258 8.00058 9.16258C7.76898 9.16258 7.54687 9.07058 7.3831 8.90681C7.21934 8.74305 7.12733 8.52093 7.12733 8.28933C7.12733 8.05773 7.21934 7.83562 7.3831 7.67185C7.54687 7.50809 7.76898 7.41608 8.00058 7.41608C8.23218 7.41608 8.4543 7.50809 8.61806 7.67185C8.78183 7.83562 8.87383 8.05773 8.87383 8.28933ZM8.87383 11.206C8.87383 11.4376 8.78183 11.6597 8.61806 11.8235C8.4543 11.9872 8.23218 12.0792 8.00058 12.0792C7.76898 12.0792 7.54687 11.9872 7.3831 11.8235C7.21934 11.6597 7.12733 11.4376 7.12733 11.206C7.12733 10.9744 7.21934 10.7523 7.3831 10.5885C7.54687 10.4248 7.76898 10.3328 8.00058 10.3328C8.23218 10.3328 8.4543 10.4248 8.61806 10.5885C8.78183 10.7523 8.87383 10.9744 8.87383 11.206ZM12.0798 8.28933C12.0798 8.52093 11.9878 8.74305 11.8241 8.90681C11.6603 9.07058 11.4382 9.16258 11.2066 9.16258C10.975 9.16258 10.7529 9.07058 10.5891 8.90681C10.4253 8.74305 10.3333 8.52093 10.3333 8.28933C10.3333 8.05773 10.4253 7.83562 10.5891 7.67185C10.7529 7.50809 10.975 7.41608 11.2066 7.41608C11.4382 7.41608 11.6603 7.50809 11.8241 7.67185C11.9878 7.83562 12.0798 8.05773 12.0798 8.28933ZM15 3.91667C15 3.14312 14.6927 2.40125 14.1457 1.85427C13.5987 1.30729 12.8569 1 12.0833 1H3.91667C3.14312 1 2.40125 1.30729 1.85427 1.85427C1.30729 2.40125 1 3.14312 1 3.91667V4.5H15V3.91667Z"
+                                                  fill="white"></path>
+                                        </g>
+                                    </svg><!---->
+                                    <input id="toDate" type="text" name="birthday" value="" />
+                                </div>
+                            </button>
+                            <!---->
+                        </div>
+                        <!---->
+                    </div>
+                    <button class="core-button">
+                        <div class="button-content">
+                            <span data-group="PROFILE_TRANSACTION" data-key="SUBMIT">Submit</span><!---->
+                        </div>
+                        <!---->
+                    </button><!---->
+                </section>
+                <section class="transactions-wrapper svelte-cz2cxe">
+
+                    <div class="table-responsive">
+                        <table class="core-table transaction-table">
+                            <thead>
+                                <tr>
+                                    <th><span>Date/Time</span></th>
+                                    <th><span>Type</span></th>
+                                    <th><span>Name</span></th>
+                                    <th><span>Amount</span></th>
+                                    <th><span>Result</span></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="core-pagination">
+                    </div>
+
+                </section>
+            </main>
+            <!---->
+        </div>
+    </div>
+    <!---->
+</main>
+<!-- ========================================================= CANCEL WITHDRAWAL CONFIRMATION ========================================================= -->
+<div class="transaction-modal-overlay" id="cancelWithdrawalModal">
+    <div class="transaction-confirm-modal">
+        <div class="transaction-confirm-modal-title">Cancel Withdrawal</div>
+        <div class="transaction-confirm-modal-text">
+            Are you sure you want to cancel this withdrawal?
+        </div>
+        <div class="transaction-confirm-actions">
+            <button type="button" id="cancelWithdrawalNo">No</button>
+            <button type="button" id="cancelWithdrawalYes">Yes, Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        /* =========================================================
+           TRANSACTION SETTINGS
+        ========================================================= */
+
+        const pageSize = 10;
+
+        let currentPage = 1;
+        let allTransactions = [];
+
+        const userTimeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        let selectedActivity = "";
+        let selectedStatus = "Status";
+
+        let selectedWithdrawalId = null;
+
+
+        /* =========================================================
+           FORMAT DATE
+        ========================================================= */
+
+        function formatDateTime(dateTime) {
+
+            if (!dateTime) {
+                return "-";
+            }
+
+            return moment
+                .utc(dateTime)
+                .local()
+                .format("YYYY-MM-DD HH:mm:ss");
+        }
+
+
+        /* =========================================================
+           STATUS OPTIONS
+        ========================================================= */
+
+        function updateStatusOptions(activityType) {
+            const container = $("#statusmodal .options-container");
+            if (!container.length) {
+                return;
+            }
+            let options = [];
+        /* * Bet/Win has its own status list. */ if (activityType === "Bet/Win") {
+                options = [
+                    { text: "All", value: "All" },
+                    { text: "Outstanding", value: "Outstanding" },
+                    { text: "Success", value: "Success" },
+                    { text: "Canceled", value: "Canceled" },
+                ];
+            } else {
+          /* * Default: * Deposit / Withdraw * * Also used when no Activity Type * has been selected yet. */ options =
+                    [
+                        { text: "All", value: "All" },
+                        { text: "Pending", value: "Pending" },
+                        { text: "Processing", value: "Processing" },
+                        { text: "Completed", value: "Completed" },
+                        { text: "Rejected", value: "Rejected" },
+                        { text: "Failed", value: "Failed" },
+                        { text: "Canceled", value: "Canceled" },
+                    ];
+            }
+            container.empty();
+            options.forEach(function (option) {
+                const isActive = option.value === selectedStatus;
+                container.append(
+                    ` <button type="button" role="option" class="modal-option option ${isActive ? "active" : ""}" aria-selected="${isActive ? "true" : "false"}" data-value="${option.value}" data-update-element="#selectedstatus"> <span>${option.text}</span> </button> `,
+                );
+            });
+        }
+
+        /* =========================================================
+           STATUS CLASS
+        ========================================================= */
+
+        function getStatusClass(status) {
+
+            if (!status) {
+                return "";
+            }
+
+            switch (status.toLowerCase()) {
+
+                case "success":
+                    return "status-success";
+
+                case "completed":
+                    return "status-completed";
+
+                case "pending":
+                    return "status-pending";
+
+                case "processing":
+                    return "status-processing";
+
+                case "rejected":
+                    return "status-rejected";
+
+                case "failed":
+                    return "status-failed";
+
+                case "canceled":
+                    return "status-canceled";
+
+                case "outstanding":
+                    return "status-outstanding";
+
+                default:
+                    return "";
+            }
+        }
+
+
+        /* =========================================================
+           RENDER TRANSACTIONS
+        ========================================================= */
+
+        function renderMobileTransactions() {
+
+            const tbody =
+                $(".transactions-wrapper .transaction-table tbody");
+
+            tbody.empty();
+
+
+            const start =
+                (currentPage - 1) * pageSize;
+
+            const end =
+                start + pageSize;
+
+            const transactions =
+                allTransactions.slice(start, end);
+
+
+            if (transactions.length === 0) {
+
+                tbody.append(`
+            <tr>
+                <td colspan="5" class="transaction-empty">
+                    No transactions found.
+                </td>
+            </tr>
+        `);
+
+                renderPagination();
+
+                return;
+            }
+
+
+            transactions.forEach(function (transaction) {
+
+                /* =================================================
+                   AMOUNT
+                ================================================= */
+
+                let amountHtml = "-";
+
+
+                if (transaction.type === "Bet/Win") {
+
+                    const betAmount =
+                        transaction.amount !== undefined &&
+                            transaction.amount !== null
+                            ? transaction.amount
+                            : 0;
+
+                    const winAmount =
+                        transaction.winAmount !== undefined &&
+                            transaction.winAmount !== null
+                            ? transaction.winAmount
+                            : 0;
+
+
+                    amountHtml = `
+                            <span class="transaction-amount amount-loss">
+                                -${betAmount}
+                            </span>
+
+                            <span class="transaction-amount-separator">
+                                /
+                            </span>
+
+                            <span class="transaction-amount amount-profit">
+                                +${winAmount}
+                            </span>
+                        `;
+
+                }
+                else if (
+                    transaction.amount !== undefined &&
+                    transaction.amount !== null
+                ) {
+
+                    amountHtml =
+                        `<span class="transaction-amount">
+                                ${transaction.amount}
+                            </span>`;
+                }
+
+
+                /* =================================================
+                   RESULT
+                ================================================= */
+
+                const result =
+                    transaction.result || "-";
+
+                const statusClass =
+                    getStatusClass(result);
+
+                let resultHtml = "";
+
+
+                if (transaction.canCancel) {
+
+                    resultHtml = `
+                            <div class="transaction-result">
+
+                                <span
+                                    class="transaction-status ${statusClass}">
+                                    ${result}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="transaction-cancel-btn"
+                                    data-id="${transaction.id}">
+                                    Cancel
+                                </button>
+
+                            </div>
+                        `;
+
+                }
+                else {
+
+                    resultHtml = `
+                            <span
+                                class="transaction-status ${statusClass}">
+                                ${result}
+                            </span>
+                        `;
+                }
+
+
+                /* =================================================
+                   ROW
+                ================================================= */
+
+                tbody.append(`
+                        <tr>
+
+                            <td>
+                                ${formatDateTime(transaction.dateTime)}
+                            </td>
+
+                            <td>
+                                ${transaction.type || "-"}
+                            </td>
+
+                            <td>
+                                ${transaction.name || "-"}
+                            </td>
+
+                            <td>
+                                ${amountHtml}
+                            </td>
+
+                            <td>
+                                ${resultHtml}
+                            </td>
+
+                        </tr>
+                    `);
+
+            });
+
+
+            renderPagination();
+        }
+
+
+        /* =========================================================
+           PAGINATION
+        ========================================================= */
+
+        function renderPagination() {
+            const pagination = $(".transactions-wrapper .core-pagination");
+            pagination.empty();
+            const totalPages = Math.ceil(allTransactions.length / pageSize);
+            if (totalPages <= 1) {
+                return;
+            }
+        /* * FIRST */ pagination.append(
+                ` <button type="button" class="transaction-page-btn first-last" data-page="1" ${currentPage === 1 ? "disabled" : ""}> First </button> `,
+            );
+        /* * PREVIOUS */ pagination.append(
+                ` <button type="button" class="transaction-page-btn navigation" data-page="${currentPage - 1}" ${currentPage === 1 ? "disabled" : ""}> Previous </button> `,
+            );
+        /* * PAGE WINDOW */ let startPage = 1;
+            let endPage = totalPages;
+            if (totalPages > 7) {
+                if (currentPage <= 4) {
+                    startPage = 1;
+                    endPage = 5;
+                } else if (currentPage >= totalPages - 3) {
+                    startPage = totalPages - 4;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 2;
+                    endPage = currentPage + 2;
+                }
+            }
+        /* * FIRST PAGE + DOTS */ if (startPage > 1) {
+                pagination.append(
+                    ` <button type="button" class="transaction-page-btn" data-page="1"> 1 </button> `,
+                );
+                pagination.append(
+                    ` <span class="transaction-pagination-dots"> ... </span> `,
+                );
+            }
+        /* * PAGE NUMBERS */ for (let i = startPage; i <= endPage; i++) {
+                pagination.append(
+                    ` <button type="button" class="transaction-page-btn ${i === currentPage ? "active" : ""}" data-page="${i}"> ${i} </button> `,
+                );
+            }
+        /* * LAST PAGE + DOTS */ if (endPage < totalPages) {
+                pagination.append(
+                    ` <span class="transaction-pagination-dots"> ... </span> `,
+                );
+                pagination.append(
+                    ` <button type="button" class="transaction-page-btn" data-page="${totalPages}"> ${totalPages} </button> `,
+                );
+            }
+        /* * NEXT */ pagination.append(
+                ` <button type="button" class="transaction-page-btn navigation" data-page="${currentPage + 1}" ${currentPage === totalPages ? "disabled" : ""}> Next </button> `,
+            );
+        /* * LAST */ pagination.append(
+                ` <button type="button" class="transaction-page-btn first-last" data-page="${totalPages}" ${currentPage === totalPages ? "disabled" : ""}> Last </button> `,
+            );
+        }
+
+        /* =========================================================
+           PAGINATION CLICK
+        ========================================================= */
+
+        $(document).on(
+            "click.transactionPagination",
+            ".transaction-page-btn",
+            function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                if ($(this).prop("disabled")) {
+                    return;
+                }
+
+
+                const page =
+                    parseInt(
+                        $(this).attr("data-page"),
+                        10
+                    );
+
+
+                const totalPages =
+                    Math.ceil(
+                        allTransactions.length / pageSize
+                    );
+
+
+                if (
+                    isNaN(page) ||
+                    page < 1 ||
+                    page > totalPages ||
+                    page === currentPage
+                ) {
+                    return;
+                }
+
+
+                currentPage = page;
+
+                renderMobileTransactions();
+
+
+                $(".transactions-wrapper")[0]?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        );
+
+
+        /* =========================================================
+           ACTIVITY TYPE
+        ========================================================= */
+
+        $(document).on(
+            "click.transactionActivity",
+            "#activitytype .modal-option",
+            function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                const value =
+                    $(this)
+                        .find("span")
+                        .text()
+                        .trim();
+
+
+                if (!value) {
+                    return;
+                }
+
+
+                selectedActivity = value;
+
+                $("#selectedactivity")
+                    .text(value);
+
+
+                /*
+                 * Reset status whenever activity changes.
+                 */
+
+                selectedStatus = "All";
+
+                $("#selectedstatus")
+                    .text("All");
+
+
+                /*
+                 * Rebuild status options.
+                 */
+
+                updateStatusOptions(
+                    selectedActivity
+                );
+
+
+                /*
+                 * Reset pagination.
+                 */
+
+                currentPage = 1;
+
+
+                /*
+                 * Active activity option.
+                 */
+
+                $("#activitytype .modal-option")
+                    .removeClass("active")
+                    .attr(
+                        "aria-selected",
+                        "false"
+                    );
+
+
+                $(this)
+                    .addClass("active")
+                    .attr(
+                        "aria-selected",
+                        "true"
+                    );
+
+
+                /*
+                 * Close modal.
+                 */
+
+                $("#activitytype")
+                    .removeClass("is-open");
+            }
+        );
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        $(document).on(
+            "click.transactionStatus",
+            "#statusmodal .modal-option",
+            function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                const value =
+                    $(this).attr("data-value");
+
+
+                if (!value) {
+                    return;
+                }
+
+
+                selectedStatus = value;
+
+
+                $("#selectedstatus")
+                    .text(
+                        $(this)
+                            .find("span")
+                            .text()
+                            .trim()
+                    );
+
+
+                /*
+                 * Active state.
+                 */
+
+                $("#statusmodal .modal-option")
+                    .removeClass("active")
+                    .attr(
+                        "aria-selected",
+                        "false"
+                    );
+
+
+                $(this)
+                    .addClass("active")
+                    .attr(
+                        "aria-selected",
+                        "true"
+                    );
+
+
+                currentPage = 1;
+
+
+                /*
+                 * Dynamic options are not registered
+                 * by the global ModalController.
+                 */
+
+                $("#statusmodal")
+                    .removeClass("is-open");
+            }
+        );
+
+
+        /* =========================================================
+           CANCEL WITHDRAWAL
+        ========================================================= */
+
+        $(document).on(
+            "click.transactionCancel",
+            ".transaction-cancel-btn",
+            function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                selectedWithdrawalId =
+                    $(this).data("id");
+
+
+                if (!selectedWithdrawalId) {
+                    return;
+                }
+
+
+                $("#cancelWithdrawalModal")
+                    .addClass("show");
+            }
+        );
+
+
+        function closeCancelWithdrawalModal() {
+
+            selectedWithdrawalId = null;
+
+            $("#cancelWithdrawalModal")
+                .removeClass("show");
+
+            $("#cancelWithdrawalYes")
+                .prop("disabled", false)
+                .text("Yes, Cancel");
+        }
+
+
+        $("#closeCancelWithdrawalModal")
+            .on(
+                "click.transactionCancel",
+                function (e) {
+
+                    e.preventDefault();
+
+                    closeCancelWithdrawalModal();
+                }
+            );
+
+
+        $("#cancelWithdrawalNo")
+            .on(
+                "click.transactionCancel",
+                function (e) {
+
+                    e.preventDefault();
+
+                    closeCancelWithdrawalModal();
+                }
+            );
+
+
+        $(".transaction-modal-overlay")
+            .on(
+                "click.transactionCancel",
+                function (e) {
+
+                    if (e.target === this) {
+
+                        closeCancelWithdrawalModal();
+                    }
+                }
+            );
+
+
+        $("#cancelWithdrawalYes")
+            .on(
+                "click.transactionCancel",
+                function (e) {
+
+                    e.preventDefault();
+
+
+                    if (!selectedWithdrawalId) {
+                        return;
+                    }
+
+
+                    const withdrawalId =
+                        selectedWithdrawalId;
+
+
+                    $("#cancelWithdrawalYes")
+                        .prop("disabled", true)
+                        .text("Canceling...");
+
+
+                    $.ajax({
+
+                        url:
+                            '@Url.Action("CancelWithdrawal", "User")',
+
+                        type: "POST",
+
+                        data: {
+                            id: withdrawalId
+                        },
+
+                        success: function (response) {
+
+                            if (!response.success) {
+
+                                console.error(
+                                    response.message
+                                );
+
+                                closeCancelWithdrawalModal();
+
+                                return;
+                            }
+
+
+                            closeCancelWithdrawalModal();
+
+                            currentPage = 1;
+
+                            loadTransactions();
+                        },
+
+                        error: function (xhr) {
+
+                            console.error(
+                                "Cancel withdrawal error:",
+                                xhr
+                            );
+
+                            closeCancelWithdrawalModal();
+                        }
+                    });
+                }
+            );
+
+
+        /* =========================================================
+           DATE PICKER
+        ========================================================= */
+
+        $("#fromDate, #toDate")
+            .daterangepicker({
+
+                autoUpdateInput: false,
+
+                timePicker: true,
+
+                timePicker24Hour: true,
+
+                timePickerSeconds: true,
+
+                locale: {
+                    format: "YYYY-MM-DD HH:mm:ss",
+                    cancelLabel: "Clear"
+                }
+            });
+
+
+        /* =========================================================
+           DATE PICKER APPLY
+        ========================================================= */
+
+        $("#fromDate")
+            .on(
+                "apply.daterangepicker",
+                function (ev, picker) {
+
+                    $("#fromDate")
+                        .val(
+                            picker.startDate.format(
+                                "YYYY-MM-DD HH:mm:ss"
+                            )
+                        );
+
+                    $("#toDate")
+                        .val(
+                            picker.endDate.format(
+                                "YYYY-MM-DD HH:mm:ss"
+                            )
+                        );
+                }
+            );
+
+
+        $("#toDate")
+            .on(
+                "apply.daterangepicker",
+                function (ev, picker) {
+
+                    $("#fromDate")
+                        .val(
+                            picker.startDate.format(
+                                "YYYY-MM-DD HH:mm:ss"
+                            )
+                        );
+
+                    $("#toDate")
+                        .val(
+                            picker.endDate.format(
+                                "YYYY-MM-DD HH:mm:ss"
+                            )
+                        );
+                }
+            );
+
+
+        /* =========================================================
+           DATE PICKER CLEAR
+        ========================================================= */
+
+        $("#fromDate, #toDate")
+            .on(
+                "cancel.daterangepicker",
+                function () {
+
+                    $("#fromDate").val("");
+
+                    $("#toDate").val("");
+                }
+            );
+
+
+        /* =========================================================
+           LOAD TRANSACTIONS
+        ========================================================= */
+
+        function loadTransactions() {
+
+            const fromDate =
+                $("#fromDate").val();
+
+            const toDate =
+                $("#toDate").val();
+
+
+            $.ajax({
+
+                url:
+                    '@Url.Action("GetTransactions", "User")',
+
+                type: "POST",
+
+                data: {
+
+                    activityType:
+                        selectedActivity,
+
+                    status:
+                        selectedStatus,
+
+                    fromDate:
+                        fromDate,
+
+                    toDate:
+                        toDate,
+
+                    timeZone:
+                        userTimeZone
+                },
+
+
+                success: function (response) {
+
+                    if (!response.success) {
+
+                        console.error(
+                            response.message
+                        );
+
+                        return;
+                    }
+
+
+                    allTransactions =
+                        response.transactions || [];
+
+
+                    currentPage = 1;
+
+
+                    renderMobileTransactions();
+                },
+
+
+                error: function (xhr) {
+
+                    console.error(
+                        "Failed to load transactions.",
+                        xhr
+                    );
+                }
+            });
+        }
+
+
+        /* =========================================================
+           SUBMIT
+        ========================================================= */
+
+        $(".transactions .filters-wrapper .core-button")
+            .on(
+                "click.transactionSubmit",
+                function (e) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+                    currentPage = 1;
+
+                    loadTransactions();
+                }
+            );
+
+
+        /* =========================================================
+           INITIAL STATUS
+        ========================================================= */
+
+        updateStatusOptions(
+            selectedActivity
+        );
+
+
+        /* =========================================================
+           INITIAL PAGE STATE
+        ========================================================= */
+
+        allTransactions = [];
+
+        currentPage = 1;
+
+
+        $(".transactions-wrapper .transaction-table tbody")
+            .empty();
+
+        $(".transactions-wrapper .core-pagination")
+            .empty();
+
+    });
+</script>

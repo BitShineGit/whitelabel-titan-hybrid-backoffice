@@ -1,0 +1,9 @@
+﻿iframe[name=sportsbook_iframe] {
+    height: calc(100dvh - var(--header-height))
+}
+
+@media not (min-width:920px) {
+    iframe[name=sportsbook_iframe] {
+        height: calc(100dvh - var(--header-height-mobile))
+    }
+}

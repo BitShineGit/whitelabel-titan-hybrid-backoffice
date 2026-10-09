@@ -1,0 +1,1585 @@
+﻿@{
+    ViewData["Title"] = "Transaction";
+}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<style>
+    .daterangepicker .calendar-time select {
+        color: #000 !important;
+    }
+
+        .daterangepicker .calendar-time select option {
+            color: #000 !important;
+        }
+</style>
+<style>
+    .transaction-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+    }
+
+        .transaction-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    .transaction-modal-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(3px);
+    }
+
+    .transaction-modal-content {
+        position: relative;
+        width: 420px;
+        max-width: calc(100% - 30px);
+        background: #1b1d24;
+        border: 1px solid #30333d;
+        border-radius: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .transaction-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px;
+        border-bottom: 1px solid #30333d;
+    }
+
+        .transaction-modal-header h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+    .transaction-modal-close {
+        border: 0;
+        background: transparent;
+        color: #8d919d;
+        font-size: 26px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+        .transaction-modal-close:hover {
+            color: #ffffff;
+        }
+
+    .transaction-modal-body {
+        padding: 22px 20px;
+    }
+
+        .transaction-modal-body p {
+            margin: 0 0 8px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .transaction-modal-body span {
+            color: #8d919d;
+            font-size: 13px;
+        }
+
+    .transaction-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 15px 20px;
+        border-top: 1px solid #30333d;
+    }
+
+    .transaction-modal-btn {
+        min-width: 90px;
+        padding: 9px 16px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        .transaction-modal-btn.secondary {
+            background: #292c35;
+            border-color: #3a3d47;
+            color: #ffffff;
+        }
+
+            .transaction-modal-btn.secondary:hover {
+                background: #333640;
+            }
+
+        .transaction-modal-btn.danger {
+            background: #00aaeb;
+            border-color: #00aaeb;
+            color: white;
+        }
+
+            .transaction-modal-btn.danger:hover {
+                background: #00aaeb;
+            }
+    /* =========================================================
+       TRANSACTION STATUS
+    ========================================================= */
+
+    .transaction-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+
+        /* Pending */
+
+        .transaction-status.status-pending {
+            background: rgba(255, 193, 7, 0.12);
+            color: #ffc107;
+        }
+
+
+        /* Processing */
+
+        .transaction-status.status-processing {
+            background: rgba(33, 150, 243, 0.12);
+            color: #2196f3;
+        }
+
+
+        /* Completed / Success */
+
+        .transaction-status.status-completed,
+        .transaction-status.status-success {
+            background: rgba(0, 200, 83, 0.12);
+            color: #00c853;
+        }
+
+
+        /* Rejected / Failed / Canceled */
+
+        .transaction-status.status-rejected,
+        .transaction-status.status-failed,
+        .transaction-status.status-canceled {
+            background: rgba(255, 59, 77, 0.12);
+            color: #ff3b4d;
+        }
+
+
+        /* Outstanding */
+
+        .transaction-status.status-outstanding {
+            background: rgba(255, 193, 7, 0.12);
+            color: #ffc107;
+        }
+
+
+    /* =========================================================
+       BET / WIN AMOUNT
+    ========================================================= */
+
+    .transaction-amount {
+        font-weight: 500;
+    }
+
+        .transaction-amount.amount-profit {
+            color: #00c853;
+        }
+
+        .transaction-amount.amount-loss {
+            color: #ff3b4d;
+        }
+
+        .transaction-amount.amount-even {
+            color: #ffc107;
+        }
+
+
+    /* =========================================================
+       PAGINATION
+    ========================================================= */
+
+    .transactions-wrapper .core-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 24px;
+        padding: 10px 0;
+        flex-wrap: wrap;
+    }
+
+    .transaction-page-btn {
+        min-width: 38px;
+        height: 36px;
+        padding: 0 12px;
+        border: 1px solid #30333d;
+        border-radius: 5px;
+        background: #1b1d24;
+        color: #8d919d;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+        .transaction-page-btn:hover:not(:disabled) {
+            background: #292c35;
+            color: #ffffff;
+            border-color: #444854;
+        }
+
+        .transaction-page-btn.active {
+            background: #00aaeb;
+            border-color: #00aaeb;
+            color: #ffffff;
+        }
+
+        .transaction-page-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .transaction-page-btn.navigation {
+            min-width: 78px;
+        }
+
+        .transaction-page-btn.first-last {
+            min-width: 65px;
+        }
+
+    .transaction-pagination-dots {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 36px;
+        color: #8d919d;
+        font-size: 13px;
+    }
+</style>
+<main class="svelte-1v2axqk" style="margin:auto;max-width:140rem;position:relative;top:118px;">
+    <!----><!----><!----><!---->
+    <div class="main-container svelte-acgoc1">
+        <div class="users svelte-acgoc1">
+            @await Html.PartialAsync("/Views/Sections/ProfileTab.cshtml")
+            <!---->
+            <!----><!----><!---->
+            <main class="transactions svelte-8b9svn">
+                <section class="filters-wrapper svelte-8b9svn">
+                    <div class="filter-wrapper svelte-8b9svn">
+                        <div class="core-select radio-style user-dropdown"
+                             role="combobox"
+                             aria-expanded="false"
+                             aria-haspopup="listbox"
+                             aria-controls="core-select-listbox-24ca01b1-73b1-4653-84a3-0c470d44ec91"
+                             aria-autocomplete="none">
+                            <!---->
+                            <div class="placeholder user-dropdown-toggle">
+                                <!----><!----><!---->
+                                <span id="selectedactivity" class="user-selected-text">Activity Type</span> <!----><!---->
+                                <div class="dropdown-icon">
+                                    <!---->
+                                    <!----><svg width="10"
+                                                height="6"
+                                                viewBox="0 0 10 6"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                              fill="white"
+                                              fill-opacity="0.5"></path>
+                                    </svg><!---->
+                                </div>
+                                <!---->
+                            </div>
+                            <!---->
+                            <!----><!----><!----><!----><!---->
+                            <div role="listbox"
+                                 tabindex="-1"
+                                 id="core-select-listbox-7c1d22dd-9af0-4fba-ac71-617cb6696360"
+                                 class="options core-select-options radio-style down user-dropdown-menu ">
+                                <!---->
+                                <div class="options-container">
+                                    <!---->
+                                    <button role="option" class="option" aria-selected="false">
+                                        <!----><!---->
+                                        <span>Deposit</span>
+                                        <!----><!---->
+                                    </button>
+                                    <button role="option" class="option" aria-selected="false">
+                                        <!----><!---->
+                                        <span>Withdraw</span>
+                                        <!----><!---->
+                                    </button>
+                                    <button role="option" class="option" aria-selected="false">
+                                        <!----><!---->
+                                        <span>Bet/Win</span>
+                                        <!----><!---->
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!---->
+                        <div class="core-select radio-style user-dropdown"
+                             role="combobox"
+                             aria-expanded="false"
+                             aria-haspopup="listbox"
+                             aria-autocomplete="none">
+
+                            <div class="placeholder user-dropdown-toggle">
+                                <span id="selectedstatus" class="user-selected-text">Status</span>
+
+                                <div class="dropdown-icon">
+                                    <svg width="10"
+                                         height="6"
+                                         viewBox="0 0 10 6"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                              fill="white"
+                                              fill-opacity="0.5">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div role="listbox"
+                                 tabindex="-1"
+                                 class="options core-select-options radio-style down user-dropdown-menu">
+
+                                <div class="options-container" id="transactionStatusOptions">
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>All</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Pending</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Processing</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Completed</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Rejected</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Failed</span>
+                                    </button>
+
+                                    <button role="option"
+                                            class="option"
+                                            aria-selected="false">
+                                        <span>Canceled</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!---->
+                    </div>
+                    <div class="filter-wrapper svelte-8b9svn">
+                        <div class="transactions-date-picker svelte-nzd2su">
+                            <button class="placeholder svelte-nzd2su">
+                                <div class="placeholder-date svelte-nzd2su">
+                                    <svg width="16"
+                                         height="16"
+                                         viewBox="0 0 16 16"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g opacity="0.5">
+                                            <path d="M15 12.0833V5.66667H1V12.0833C1 12.8569 1.30729 13.5987 1.85427 14.1457C2.40125 14.6927 3.14312 15 3.91667 15H12.0833C12.8569 15 13.5987 14.6927 14.1457 14.1457C14.6927 13.5987 15 12.8569 15 12.0833ZM5.66317 8.28933C5.66317 8.52093 5.57116 8.74305 5.4074 8.90681C5.24363 9.07058 5.02152 9.16258 4.78992 9.16258C4.55832 9.16258 4.3362 9.07058 4.17244 8.90681C4.00867 8.74305 3.91667 8.52093 3.91667 8.28933C3.91667 8.05773 4.00867 7.83562 4.17244 7.67185C4.3362 7.50809 4.55832 7.41608 4.78992 7.41608C5.02152 7.41608 5.24363 7.50809 5.4074 7.67185C5.57116 7.83562 5.66317 8.05773 5.66317 8.28933ZM5.66317 11.206C5.66317 11.4376 5.57116 11.6597 5.4074 11.8235C5.24363 11.9872 5.02152 12.0792 4.78992 12.0792C4.55832 12.0792 4.3362 11.9872 4.17244 11.8235C4.00867 11.6597 3.91667 11.4376 3.91667 11.206C3.91667 10.9744 4.00867 10.7523 4.17244 10.5885C4.3362 10.4248 4.55832 10.3328 4.78992 10.3328C5.02152 10.3328 5.24363 10.4248 5.4074 10.5885C5.57116 10.7523 5.66317 10.9744 5.66317 11.206ZM8.87383 8.28933C8.87383 8.52093 8.78183 8.74305 8.61806 8.90681C8.4543 9.07058 8.23218 9.16258 8.00058 9.16258C7.76898 9.16258 7.54687 9.07058 7.3831 8.90681C7.21934 8.74305 7.12733 8.52093 7.12733 8.28933C7.12733 8.05773 7.21934 7.83562 7.3831 7.67185C7.54687 7.50809 7.76898 7.41608 8.00058 7.41608C8.23218 7.41608 8.4543 7.50809 8.61806 7.67185C8.78183 7.83562 8.87383 8.05773 8.87383 8.28933ZM8.87383 11.206C8.87383 11.4376 8.78183 11.6597 8.61806 11.8235C8.4543 11.9872 8.23218 12.0792 8.00058 12.0792C7.76898 12.0792 7.54687 11.9872 7.3831 11.8235C7.21934 11.6597 7.12733 11.4376 7.12733 11.206C7.12733 10.9744 7.21934 10.7523 7.3831 10.5885C7.54687 10.4248 7.76898 10.3328 8.00058 10.3328C8.23218 10.3328 8.4543 10.4248 8.61806 10.5885C8.78183 10.7523 8.87383 10.9744 8.87383 11.206ZM12.0798 8.28933C12.0798 8.52093 11.9878 8.74305 11.8241 8.90681C11.6603 9.07058 11.4382 9.16258 11.2066 9.16258C10.975 9.16258 10.7529 9.07058 10.5891 8.90681C10.4253 8.74305 10.3333 8.52093 10.3333 8.28933C10.3333 8.05773 10.4253 7.83562 10.5891 7.67185C10.7529 7.50809 10.975 7.41608 11.2066 7.41608C11.4382 7.41608 11.6603 7.50809 11.8241 7.67185C11.9878 7.83562 12.0798 8.05773 12.0798 8.28933ZM15 3.91667C15 3.14312 14.6927 2.40125 14.1457 1.85427C13.5987 1.30729 12.8569 1 12.0833 1H3.91667C3.14312 1 2.40125 1.30729 1.85427 1.85427C1.30729 2.40125 1 3.14312 1 3.91667V4.5H15V3.91667Z"
+                                                  fill="white"></path>
+                                        </g>
+                                    </svg><!---->
+
+                                    <input id="fromDate" type="text" name="birthday" value="" />
+                                </div>
+                                <svg width="10"
+                                     height="6"
+                                     viewBox="0 0 10 6"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                          fill="white"
+                                          fill-opacity="0.5"></path>
+                                </svg><!---->
+                            </button>
+                            <!---->
+                        </div>
+                        <!---->
+                        <div class="transactions-date-picker svelte-nzd2su">
+                            <button class="placeholder svelte-nzd2su">
+                                <div class="placeholder-date svelte-nzd2su">
+                                    <svg width="16"
+                                         height="16"
+                                         viewBox="0 0 16 16"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g opacity="0.5">
+                                            <path d="M15 12.0833V5.66667H1V12.0833C1 12.8569 1.30729 13.5987 1.85427 14.1457C2.40125 14.6927 3.14312 15 3.91667 15H12.0833C12.8569 15 13.5987 14.6927 14.1457 14.1457C14.6927 13.5987 15 12.8569 15 12.0833ZM5.66317 8.28933C5.66317 8.52093 5.57116 8.74305 5.4074 8.90681C5.24363 9.07058 5.02152 9.16258 4.78992 9.16258C4.55832 9.16258 4.3362 9.07058 4.17244 8.90681C4.00867 8.74305 3.91667 8.52093 3.91667 8.28933C3.91667 8.05773 4.00867 7.83562 4.17244 7.67185C4.3362 7.50809 4.55832 7.41608 4.78992 7.41608C5.02152 7.41608 5.24363 7.50809 5.4074 7.67185C5.57116 7.83562 5.66317 8.05773 5.66317 8.28933ZM5.66317 11.206C5.66317 11.4376 5.57116 11.6597 5.4074 11.8235C5.24363 11.9872 5.02152 12.0792 4.78992 12.0792C4.55832 12.0792 4.3362 11.9872 4.17244 11.8235C4.00867 11.6597 3.91667 11.4376 3.91667 11.206C3.91667 10.9744 4.00867 10.7523 4.17244 10.5885C4.3362 10.4248 4.55832 10.3328 4.78992 10.3328C5.02152 10.3328 5.24363 10.4248 5.4074 10.5885C5.57116 10.7523 5.66317 10.9744 5.66317 11.206ZM8.87383 8.28933C8.87383 8.52093 8.78183 8.74305 8.61806 8.90681C8.4543 9.07058 8.23218 9.16258 8.00058 9.16258C7.76898 9.16258 7.54687 9.07058 7.3831 8.90681C7.21934 8.74305 7.12733 8.52093 7.12733 8.28933C7.12733 8.05773 7.21934 7.83562 7.3831 7.67185C7.54687 7.50809 7.76898 7.41608 8.00058 7.41608C8.23218 7.41608 8.4543 7.50809 8.61806 7.67185C8.78183 7.83562 8.87383 8.05773 8.87383 8.28933ZM8.87383 11.206C8.87383 11.4376 8.78183 11.6597 8.61806 11.8235C8.4543 11.9872 8.23218 12.0792 8.00058 12.0792C7.76898 12.0792 7.54687 11.9872 7.3831 11.8235C7.21934 11.6597 7.12733 11.4376 7.12733 11.206C7.12733 10.9744 7.21934 10.7523 7.3831 10.5885C7.54687 10.4248 7.76898 10.3328 8.00058 10.3328C8.23218 10.3328 8.4543 10.4248 8.61806 10.5885C8.78183 10.7523 8.87383 10.9744 8.87383 11.206ZM12.0798 8.28933C12.0798 8.52093 11.9878 8.74305 11.8241 8.90681C11.6603 9.07058 11.4382 9.16258 11.2066 9.16258C10.975 9.16258 10.7529 9.07058 10.5891 8.90681C10.4253 8.74305 10.3333 8.52093 10.3333 8.28933C10.3333 8.05773 10.4253 7.83562 10.5891 7.67185C10.7529 7.50809 10.975 7.41608 11.2066 7.41608C11.4382 7.41608 11.6603 7.50809 11.8241 7.67185C11.9878 7.83562 12.0798 8.05773 12.0798 8.28933ZM15 3.91667C15 3.14312 14.6927 2.40125 14.1457 1.85427C13.5987 1.30729 12.8569 1 12.0833 1H3.91667C3.14312 1 2.40125 1.30729 1.85427 1.85427C1.30729 2.40125 1 3.14312 1 3.91667V4.5H15V3.91667Z"
+                                                  fill="white"></path>
+                                        </g>
+                                    </svg><!---->
+
+                                    <input id="toDate" type="text" name="birthday" value="" />
+                                </div>
+                                <svg width="10"
+                                     height="6"
+                                     viewBox="0 0 10 6"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.220115 0.229439C0.361098 0.0825295 0.552285 0 0.751634 0C0.950983 0 1.14217 0.0825295 1.28315 0.229439L5.00454 4.10846L8.72592 0.229439C8.86771 0.0866928 9.05762 0.00770617 9.25474 0.00949192C9.45186 0.0112772 9.64042 0.0936918 9.77981 0.238985C9.91919 0.384278 9.99826 0.580825 9.99997 0.786294C10.0017 0.991761 9.92591 1.18971 9.78896 1.33751L5.53606 5.77056C5.39508 5.91747 5.20389 6 5.00454 6C4.80519 6 4.614 5.91747 4.47302 5.77056L0.220115 1.33751C0.0791756 1.19055 0 0.991266 0 0.783473C0 0.57568 0.0791756 0.376394 0.220115 0.229439Z"
+                                          fill="white"
+                                          fill-opacity="0.5"></path>
+                                </svg><!---->
+                            </button>
+                            <!---->
+                        </div>
+                        <!---->
+                    </div>
+                    <button class="core-button">
+                        <div class="button-content">
+                            <span data-group="PROFILE_TRANSACTION" data-key="SUBMIT">Submit</span><!---->
+                        </div>
+                        <!---->
+                    </button><!---->
+                </section>
+                <section class="transactions-wrapper svelte-8b9svn">
+                    <!---->
+                    <table class="core-table">              
+                        <thead>
+                            <tr>
+                                <th><span>Date/Time</span></th>
+                                <th><span>Type</span></th>
+                                <th><span>Name</span></th>
+                                <th><span>Amount</span></th>
+                                <th><span>Result</span></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <!---->
+                    </table>
+                    <!---->
+                    <!----><!---->
+                    <div class="core-pagination"><!----></div>
+                    <!---->
+                </section>
+            </main>
+            <!---->
+        </div>
+    </div>
+    <!---->
+</main>
+
+<div id="cancelWithdrawalModal" class="transaction-modal">
+    <div class="transaction-modal-overlay"></div>
+
+    <div class="transaction-modal-content">
+        <div class="transaction-modal-header">
+            <h3>Cancel Withdrawal</h3>
+
+            <button type="button"
+                    id="closeCancelWithdrawalModal"
+                    class="transaction-modal-close">
+                ×
+            </button>
+        </div>
+
+        <div class="transaction-modal-body">
+            <p>Are you sure you want to cancel this withdrawal?</p>
+            <span>This action cannot be undone.</span>
+        </div>
+
+        <div class="transaction-modal-footer">
+            <button type="button"
+                    id="cancelWithdrawalNo"
+                    class="transaction-modal-btn secondary">
+                No
+            </button>
+
+            <button type="button"
+                    id="cancelWithdrawalYes"
+                    class="transaction-modal-btn danger">
+                Yes, Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        /* =========================================================
+           TRANSACTION SETTINGS
+        ========================================================= */
+
+        const pageSize = 10;
+
+        let currentPage = 1;
+
+        let allTransactions = [];
+
+        const userTimeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        let selectedActivity = "All";
+
+        let selectedStatus = "Status";
+
+        let selectedWithdrawalId = null;
+
+
+        /* =========================================================
+           DATE FORMAT
+        ========================================================= */
+
+        function formatDateTime(dateTime) {
+
+            if (!dateTime) {
+                return "-";
+            }
+
+            return moment
+                .utc(dateTime)
+                .local()
+                .format("YYYY-MM-DD HH:mm:ss");
+        }
+
+
+
+
+        /* =========================================================
+           STATUS OPTIONS
+        ========================================================= */
+
+        function updateStatusOptions() {
+
+            const statusContainer =
+                $(".transactions .user-dropdown")
+                    .eq(1)
+                    .find(".options-container");
+
+            statusContainer.empty();
+
+
+            /* -----------------------------------------------------
+               BET / WIN
+               ----------------------------------------------------- */
+
+            if (selectedActivity === "Bet/Win") {
+
+                statusContainer.append(`
+                            <button
+                                type="button"
+                                role="option"
+                                class="option"
+                                aria-selected="false">
+                                <span>All</span>
+                            </button>
+
+                            <button
+                                type="button"
+                                role="option"
+                                class="option"
+                                aria-selected="false">
+                                <span>Outstanding</span>
+                            </button>
+
+                            <button
+                                type="button"
+                                role="option"
+                                class="option"
+                                aria-selected="false">
+                                <span>Success</span>
+                            </button>
+
+                            <button
+                                type="button"
+                                role="option"
+                                class="option"
+                                aria-selected="false">
+                                <span>Canceled</span>
+                            </button>
+                        `);
+
+                return;
+            }
+
+
+            /* -----------------------------------------------------
+               DEPOSIT / WITHDRAW / ALL
+               ----------------------------------------------------- */
+
+            statusContainer.append(`
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>All</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Pending</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Processing</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Completed</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Rejected</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Failed</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="option"
+                            class="option"
+                            aria-selected="false">
+                            <span>Canceled</span>
+                        </button>
+                    `);
+        }
+
+
+        /* =========================================================
+           OPEN / CLOSE TRANSACTION DROPDOWNS
+        ========================================================= */
+
+        $(".transactions .user-dropdown-toggle").on(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+                e.stopPropagation();
+
+                const dropdown =
+                    $(this).closest(".user-dropdown");
+
+
+                $(".transactions .user-dropdown")
+                    .not(dropdown)
+                    .removeClass("open");
+
+
+                dropdown.toggleClass("open");
+            }
+        );
+
+
+        /* =========================================================
+           ACTIVITY TYPE
+        ========================================================= */
+
+        $(".transactions .user-dropdown")
+            .eq(0)
+            .find(".user-dropdown-menu")
+            .on(
+                "click",
+                ".option",
+                function (e) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+                    const value =
+                        $(this)
+                            .find("span")
+                            .text()
+                            .trim();
+
+
+                    if (!value) {
+                        return;
+                    }
+
+
+                    selectedActivity = value;
+
+                    $("#selectedactivity")
+                        .text(value);
+
+
+                    /*
+                     * Reset status whenever Activity changes.
+                     */
+
+                    selectedStatus = "Status";
+
+                    $("#selectedstatus")
+                        .text("Status");
+
+
+                    /*
+                     * Rebuild the Status dropdown.
+                     */
+
+                    updateStatusOptions();
+
+
+                    currentPage = 1;
+
+
+                    /*
+                     * Close dropdown.
+                     */
+
+                    $(".transactions .user-dropdown")
+                        .removeClass("open");
+                }
+            );
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        $(".transactions .user-dropdown")
+            .eq(1)
+            .find(".user-dropdown-menu")
+            .on(
+                "click",
+                ".option",
+                function (e) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+
+                    const value =
+                        $(this)
+                            .find("span")
+                            .text()
+                            .trim();
+
+
+                    if (!value) {
+                        return;
+                    }
+
+
+                    selectedStatus = value;
+
+                    $("#selectedstatus")
+                        .text(value);
+
+
+                    currentPage = 1;
+
+
+                    /*
+                     * Close dropdown.
+                     */
+
+                    $(".transactions .user-dropdown")
+                        .removeClass("open");
+                }
+            );
+
+
+        /* =========================================================
+           CLOSE DROPDOWNS WHEN CLICKING OUTSIDE
+        ========================================================= */
+
+        $(document).on(
+            "click.transactionDropdown",
+            function () {
+
+                $(".transactions .user-dropdown")
+                    .removeClass("open");
+            }
+        );
+
+
+        /* =========================================================
+           PREVENT TRANSACTION DROPDOWN CLICKS FROM REACHING
+           OTHER PAGE NAVIGATION HANDLERS
+        ========================================================= */
+
+        $(".transactions .user-dropdown-menu").on(
+            "click.transactionDropdown",
+            function (e) {
+
+                e.stopPropagation();
+            }
+        );
+
+
+        /* =========================================================
+           CANCEL WITHDRAWAL
+        ========================================================= */
+
+        $(document).on(
+            "click",
+            ".transaction-cancel-btn",
+            function (e) {
+
+                e.preventDefault();
+
+                e.stopPropagation();
+
+                selectedWithdrawalId =
+                    $(this).data("id");
+
+                if (!selectedWithdrawalId) {
+                    return;
+                }
+
+                $("#cancelWithdrawalModal")
+                    .addClass("show");
+            }
+        );
+
+
+        function closeCancelWithdrawalModal() {
+
+            selectedWithdrawalId = null;
+
+            $("#cancelWithdrawalModal")
+                .removeClass("show");
+
+            $("#cancelWithdrawalYes")
+                .prop("disabled", false)
+                .text("Yes, Cancel");
+        }
+
+
+        $("#closeCancelWithdrawalModal").on(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+                closeCancelWithdrawalModal();
+            }
+        );
+
+
+        $("#cancelWithdrawalNo").on(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+                closeCancelWithdrawalModal();
+            }
+        );
+
+
+        $(".transaction-modal-overlay").on(
+            "click",
+            function () {
+
+                closeCancelWithdrawalModal();
+            }
+        );
+
+
+        $("#cancelWithdrawalYes").on(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+                if (!selectedWithdrawalId) {
+                    return;
+                }
+
+
+                const withdrawalId =
+                    selectedWithdrawalId;
+
+
+                $("#cancelWithdrawalYes")
+                    .prop("disabled", true)
+                    .text("Canceling...");
+
+
+                $.ajax({
+
+                    url:
+                        '@Url.Action("CancelWithdrawal", "User")',
+
+                    type: "POST",
+
+                    data: {
+                        id: withdrawalId
+                    },
+
+                    success:
+                        function (response) {
+
+                            if (!response.success) {
+
+                                console.error(
+                                    response.message
+                                );
+
+                                closeCancelWithdrawalModal();
+
+                                return;
+                            }
+
+
+                            closeCancelWithdrawalModal();
+
+
+                            /*
+                             * Reload current filter results.
+                             */
+
+                            currentPage = 1;
+
+                            loadTransactions();
+                        },
+
+                    error:
+                        function (xhr) {
+
+                            console.error(
+                                "Cancel withdrawal error:",
+                                xhr
+                            );
+
+                            closeCancelWithdrawalModal();
+                        }
+                });
+            }
+        );
+
+
+        /* =========================================================
+    STATUS CLASS
+    ========================================================= */
+
+        function getStatusClass(status) {
+
+            if (!status) {
+                return "";
+            }
+
+            switch (status.toLowerCase()) {
+
+                case "success":
+                    return "status-success";
+
+                case "completed":
+                    return "status-completed";
+
+                case "pending":
+                    return "status-pending";
+
+                case "processing":
+                    return "status-processing";
+
+                case "rejected":
+                    return "status-rejected";
+
+                case "failed":
+                    return "status-failed";
+
+                case "canceled":
+                case "cancelled":
+                    return "status-canceled";
+
+                case "outstanding":
+                    return "status-outstanding";
+
+                default:
+                    return "";
+            }
+        }
+        /* =========================================================
+           RENDER DESKTOP TRANSACTIONS
+        ========================================================= */
+
+        function renderDesktopTransactions() {
+
+            const tbody =
+                $(".transactions .core-table tbody");
+
+            tbody.empty();
+
+
+            const start =
+                (currentPage - 1) * pageSize;
+
+
+            const end =
+                start + pageSize;
+
+
+            const transactions =
+                allTransactions.slice(start, end);
+
+
+            if (transactions.length === 0) {
+
+                tbody.append(`
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No transactions found.
+                    </td>
+                </tr>
+            `);
+
+                renderPagination();
+
+                return;
+            }
+
+
+            transactions.forEach(
+                function (transaction) {
+
+                    /* =====================================================
+                       AMOUNT
+                    ===================================================== */
+
+                    let amountHtml = "-";
+
+                    if (transaction.type === "Bet/Win") {
+
+                        const betAmount =
+                            transaction.amount !== undefined &&
+                                transaction.amount !== null
+                                ? transaction.amount
+                                : 0;
+
+
+                        const winAmount =
+                            transaction.winAmount !== undefined &&
+                                transaction.winAmount !== null
+                                ? transaction.winAmount
+                                : 0;
+
+
+                        amountHtml = `
+                            <span class="transaction-amount amount-loss">
+                                -${betAmount}
+                            </span>
+                            /
+                            <span class="transaction-amount amount-profit">
+                                +${winAmount}
+                            </span>
+                        `;
+                    }
+                    else if (
+                        transaction.amount !== undefined
+                    ) {
+
+                        amountHtml =
+                            transaction.amount;
+                    }
+
+
+                    /* =====================================================
+                       RESULT
+                    ===================================================== */
+
+                    const result =
+                        transaction.result || "-";
+
+
+                    const statusClass =
+                        getStatusClass(result);
+
+
+                    let resultHtml = "";
+
+
+                    if (transaction.canCancel) {
+
+                        resultHtml = `
+                        <div class="transaction-result">
+
+                            <span
+                                style="margin-right:30px;"
+                                class="transaction-status ${statusClass}">
+                                ${result}
+                            </span>
+
+                            <button
+                                type="button"
+                                class="transaction-cancel-btn"
+                                data-id="${transaction.id}">
+                                Cancel
+                            </button>
+
+                        </div>
+                    `;
+                    }
+                    else {
+
+                        resultHtml = `
+                        <span
+                            class="transaction-status ${statusClass}">
+                            ${result}
+                        </span>
+                    `;
+                    }
+
+
+                    /* =====================================================
+                       ROW
+                    ===================================================== */
+
+                    tbody.append(`
+                    <tr>
+
+                        <td>
+                            ${formatDateTime(
+                        transaction.dateTime
+                    )}
+                        </td>
+
+                        <td>
+                            ${transaction.type || "-"}
+                        </td>
+
+                        <td>
+                            ${transaction.name || "-"}
+                        </td>
+
+                        <td>
+                            ${amountHtml}
+                        </td>
+
+                        <td>
+                            ${resultHtml}
+                        </td>
+
+                    </tr>
+                `);
+                }
+            );
+
+
+            renderPagination();
+        }
+
+
+
+        /* =========================================================
+           PAGINATION CLICK
+        ========================================================= */
+
+
+        function renderPagination() {
+
+            const pagination =
+                $(".transactions-wrapper .core-pagination");
+
+
+            pagination.empty();
+
+
+            const totalPages =
+                Math.ceil(
+                    allTransactions.length / pageSize
+                );
+
+
+            /*
+             * No pagination required for zero or one page.
+             */
+
+            if (totalPages <= 1) {
+                return;
+            }
+
+
+            /* =====================================================
+               FIRST PAGE
+            ===================================================== */
+
+            pagination.append(`
+            <button
+                type="button"
+                class="transaction-page-btn first-last"
+                data-page="1"
+                title="Go to First Page"
+                ${currentPage === 1 ? "disabled" : ""}>
+                First
+            </button>
+        `);
+
+
+            /* =====================================================
+               PREVIOUS
+            ===================================================== */
+
+            pagination.append(`
+            <button
+                type="button"
+                class="transaction-page-btn navigation"
+                data-page="${currentPage - 1}"
+                title="Previous Page"
+                ${currentPage === 1 ? "disabled" : ""}>
+                Previous
+            </button>
+        `);
+
+
+            /* =====================================================
+               PAGE NUMBERS
+            ===================================================== */
+
+            let startPage = 1;
+            let endPage = totalPages;
+
+
+            /*
+             * Show all pages when there are 7 or fewer.
+             */
+
+            if (totalPages > 7) {
+
+                if (currentPage <= 4) {
+
+                    startPage = 1;
+                    endPage = 5;
+
+                }
+                else if (currentPage >= totalPages - 3) {
+
+                    startPage = totalPages - 4;
+                    endPage = totalPages;
+
+                }
+                else {
+
+                    startPage = currentPage - 2;
+                    endPage = currentPage + 2;
+                }
+            }
+
+
+            /*
+             * First page + ellipsis.
+             */
+
+            if (startPage > 1) {
+
+                pagination.append(`
+                <button
+                    type="button"
+                    class="transaction-page-btn"
+                    data-page="1">
+                    1
+                </button>
+            `);
+
+                pagination.append(`
+                <span class="transaction-pagination-dots">
+                    ...
+                </span>
+            `);
+            }
+
+
+            /*
+             * Page numbers.
+             */
+
+            for (
+                let i = startPage;
+                i <= endPage;
+                i++
+            ) {
+
+                pagination.append(`
+                <button
+                    type="button"
+                    class="transaction-page-btn ${i === currentPage
+                        ? "active"
+                        : ""
+                    }"
+                    data-page="${i}">
+                    ${i}
+                </button>
+            `);
+            }
+
+
+            /*
+             * Last page + ellipsis.
+             */
+
+            if (endPage < totalPages) {
+
+                pagination.append(`
+                <span class="transaction-pagination-dots">
+                    ...
+                </span>
+            `);
+
+                pagination.append(`
+                <button
+                    type="button"
+                    class="transaction-page-btn"
+                    data-page="${totalPages}">
+                    ${totalPages}
+                </button>
+            `);
+            }
+
+
+            /* =====================================================
+               NEXT
+            ===================================================== */
+
+            pagination.append(`
+            <button
+                type="button"
+                class="transaction-page-btn navigation"
+                data-page="${currentPage + 1}"
+                title="Next Page"
+                ${currentPage === totalPages ? "disabled" : ""}>
+                Next
+            </button>
+        `);
+
+
+            /* =====================================================
+               LAST PAGE
+            ===================================================== */
+
+            pagination.append(`
+            <button
+                type="button"
+                class="transaction-page-btn first-last"
+                data-page="${totalPages}"
+                title="Go to Last Page"
+                ${currentPage === totalPages ? "disabled" : ""}>
+                Last
+            </button>
+        `);
+        }
+        /* =========================================================
+    PAGINATION CLICK
+    ========================================================= */
+
+        $(document).on(
+            "click.transactionPagination",
+            ".transaction-page-btn",
+            function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                if ($(this).prop("disabled")) {
+                    return;
+                }
+
+                const page = parseInt(
+                    $(this).attr("data-page"),
+                    10
+                );
+
+                const totalPages = Math.ceil(
+                    allTransactions.length / pageSize
+                );
+
+                if (
+                    isNaN(page) ||
+                    page < 1 ||
+                    page > totalPages ||
+                    page === currentPage
+                ) {
+                    return;
+                }
+
+                currentPage = page;
+
+                renderDesktopTransactions();
+
+                $(".transactions-wrapper .core-table")[0]
+                    ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+            }
+        );
+        /* =========================================================
+           LOAD TRANSACTIONS
+        ========================================================= */
+
+        function loadTransactions() {
+
+            const fromDate =
+                $("#fromDate").val();
+
+
+            const toDate =
+                $("#toDate").val();
+
+
+            $.ajax({
+
+                url:
+                    '@Url.Action("GetTransactions", "User")',
+
+                type: "POST",
+
+                data: {
+
+                    activityType:
+                        selectedActivity,
+
+                    status:
+                        selectedStatus,
+
+                    fromDate:
+                        fromDate,
+
+                    toDate:
+                        toDate,
+
+                    timeZone:
+                        userTimeZone
+                },
+
+                success:
+                    function (response) {
+
+                        if (!response.success) {
+
+                            console.error(
+                                response.message
+                            );
+
+                            return;
+                        }
+
+
+                        allTransactions =
+                            response.transactions || [];
+
+
+                        currentPage = 1;
+
+
+                        renderDesktopTransactions();
+                    },
+
+                error:
+                    function (xhr) {
+
+                        console.error(
+                            "Failed to load transactions.",
+                            xhr
+                        );
+                    }
+            });
+        }
+
+
+        /* =========================================================
+           SUBMIT
+        ========================================================= */
+
+        $(".transactions .filters-wrapper > .core-button")
+            .on(
+                "click",
+                function (e) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+
+                    currentPage = 1;
+
+
+                    loadTransactions();
+                }
+            );
+
+
+        /* =========================================================
+           INITIAL STATUS OPTIONS
+        ========================================================= */
+
+        updateStatusOptions();
+
+
+        /*
+         * Do NOT load transactions automatically.
+         * AJAX happens only after Submit.
+         */
+
+        allTransactions = [];
+
+        currentPage = 1;
+
+        $(".transactions .core-table tbody")
+            .empty();
+
+        $(".transactions-wrapper .core-pagination")
+            .empty();
+
+    });
+</script>

@@ -1,0 +1,1454 @@
+.dashboard-balance.svelte-dxajua {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 30.13rem;
+    height: 10.4rem;
+    padding: 0 2.8rem;
+    overflow: hidden;
+    background: #323246;
+    border-radius: .734rem
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) .balance-label-container:where(.svelte-dxajua) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) .balance-label-container:where(.svelte-dxajua) .balance-label:where(.svelte-dxajua) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #ffffff80;
+    text-align: center;
+    white-space: nowrap
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) .balance-amount-container:where(.svelte-dxajua) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) .balance-amount-container:where(.svelte-dxajua) .balance-amount:where(.svelte-dxajua) {
+    font-family: Roboto, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #fff;
+    white-space: nowrap
+}
+
+.dashboard-balance.svelte-dxajua .balance-info:where(.svelte-dxajua) .balance-amount-container:where(.svelte-dxajua) .balance-amount:where(.svelte-dxajua) .currency:where(.svelte-dxajua) {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #bfbfbf
+}
+
+.dashboard-balance.svelte-dxajua .deposit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 12rem;
+    height: 4.3rem;
+    padding: 0 2.598rem 0 2.597rem;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    background: #00aaeb;
+    border-radius: 3px
+}
+
+[dir=rtl] .dashboard-balance.svelte-dxajua .deposit-button {
+    padding: 0 2.597rem 0 2.598rem
+}
+
+.dashboard-my-account.svelte-1xrozqe {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    min-width: 32.03rem;
+    height: 10.4rem;
+    padding-left: 1.9rem
+}
+
+[dir=rtl] .dashboard-my-account.svelte-1xrozqe {
+    padding-left: 0;
+    padding-right: 1.9rem
+}
+
+.dashboard-my-account.svelte-1xrozqe .box:where(.svelte-1xrozqe) {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10.4rem;
+    padding: 0;
+    overflow: hidden;
+    background: #323246;
+    border-radius: .734rem
+}
+
+.dashboard-my-account.svelte-1xrozqe .profile-link {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0;
+    gap: 1.2rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+    padding: 3.4rem 0;
+    text-decoration: none
+}
+
+.dashboard-my-account.svelte-1xrozqe .profile-link .profile-icon {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 4.8rem;
+    height: 4.8rem
+}
+
+.dashboard-my-account.svelte-1xrozqe .profile-link span {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #fff
+}
+
+.dashboard-profile-verification.svelte-ehqi25 {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    min-width: 32.03rem;
+    height: 10.4rem;
+    padding-left: 1.9rem
+}
+
+[dir=rtl] .dashboard-profile-verification.svelte-ehqi25 {
+    padding-left: 0;
+    padding-right: 1.9rem
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .box:where(.svelte-ehqi25) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10.4rem;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(168deg, #323246, #cf142b);
+    border-radius: .734rem
+}
+
+[dir=rtl] .dashboard-profile-verification.svelte-ehqi25 .box:where(.svelte-ehqi25) {
+    background: linear-gradient(-168deg, #323246, #cf142b)
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .box.verified:where(.svelte-ehqi25) {
+    background: linear-gradient(168deg, #323246 11.28%, #82c727 154.56%);
+    border-radius: 7.34px
+}
+
+[dir=rtl] .dashboard-profile-verification.svelte-ehqi25 .box.verified:where(.svelte-ehqi25) {
+    background: linear-gradient(-168deg, #323246 11.28%, #82c727 154.56%)
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-icon:where(.svelte-ehqi25) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 4.8rem;
+    height: 4.8rem;
+    padding: 0 1.5rem 0 0
+}
+
+[dir=rtl] .dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-icon:where(.svelte-ehqi25) {
+    padding: 0 0 0 1.5rem
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-icon:where(.svelte-ehqi25) svg {
+    display: block;
+    width: 100%;
+    height: 100%
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-text:where(.svelte-ehqi25) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-text:where(.svelte-ehqi25) .verification-title:where(.svelte-ehqi25) {
+    padding-bottom: .2rem;
+    font-family: Roboto, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #fff;
+    white-space: nowrap
+}
+
+.dashboard-profile-verification.svelte-ehqi25 .verification-content:where(.svelte-ehqi25) .verification-text:where(.svelte-ehqi25) .verification-status:where(.svelte-ehqi25) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #fff;
+    white-space: nowrap
+}
+
+.dashboard-loyalty-skeleton.svelte-c4h0hz {
+    display: flex;
+    gap: 2rem
+}
+
+.dashboard-loyalty-skeleton.svelte-c4h0hz .level-card:where(.svelte-c4h0hz) {
+    flex-shrink: 0;
+    width: 28.8rem;
+    height: 30.4rem;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    box-shadow: 0 0 10rem #6200ff1f
+}
+
+.dashboard-loyalty-skeleton.svelte-c4h0hz .progress-card:where(.svelte-c4h0hz) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1em;
+    min-width: 0;
+    padding: 5rem 7.1rem 5rem 5.9rem;
+    background: linear-gradient(106deg, #1b1b22 31.38%, #6100ff40);
+    border-radius: 1.2rem;
+    box-shadow: 0 0 10rem #6200ff1f
+}
+
+[dir=rtl] .dashboard-loyalty-skeleton.svelte-c4h0hz .progress-card:where(.svelte-c4h0hz) {
+    padding: 5rem 5.9rem 5rem 7.1rem;
+    background: linear-gradient(-106deg, #1b1b22 31.38%, #6100ff40)
+}
+
+.dashboard-loyalty-skeleton.svelte-c4h0hz .progress-header:where(.svelte-c4h0hz),
+.dashboard-loyalty-skeleton.svelte-c4h0hz .progress-footer:where(.svelte-c4h0hz) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%
+}
+
+.dashboard-loyalty.svelte-1ndqmzh {
+    display: flex;
+    gap: 2rem;
+    cursor: pointer
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) {
+    position: relative;
+    width: 28.8rem;
+    height: 30.4rem;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    box-shadow: 0 0 10rem #6200ff1f
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../../images/loyalty/background-shadow.png);
+    background-position: center;
+    background-size: cover
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    height: 100%
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .points-range:where(.svelte-1ndqmzh) {
+    margin-top: 7rem;
+    font-family: Roboto, sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    letter-spacing: .1rem;
+    text-shadow: rgba(0, 0, 0, .25) 0rem .4rem 1rem
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .points-range:where(.svelte-1ndqmzh) .highlight:where(.svelte-1ndqmzh) {
+    color: #fff500
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-image:where(.svelte-1ndqmzh) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15.4rem;
+    height: 15.3rem;
+    mix-blend-mode: lighten;
+    opacity: .9
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-image:where(.svelte-1ndqmzh) img:where(.svelte-1ndqmzh) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: lighten
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-badge:where(.svelte-1ndqmzh) {
+    position: absolute;
+    bottom: 3rem;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    height: 4.5rem;
+    padding: 0 1.4rem;
+    text-shadow: rgba(0, 0, 0, .25) 0rem .4rem 1rem;
+    background: linear-gradient(259deg, #b752ffb3 24.55%, #7e1adbb3 36.59%, #7518ecb3 52.12%, #533ed7b3 66.07%, #7d30e0b3 73.76%);
+    border-radius: 9rem;
+    box-shadow: 0 0 6rem #6202ffe6 inset, 1.8rem 1.7rem 1.3rem #1c106580
+}
+
+[dir=rtl] .dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-badge:where(.svelte-1ndqmzh) {
+    background: linear-gradient(-259deg, #b752ffb3 24.55%, #7e1adbb3 36.59%, #7518ecb3 52.12%, #533ed7b3 66.07%, #7d30e0b3 73.76%);
+    box-shadow: 0 0 6rem #6202ffe6 inset, -1.8rem 1.7rem 1.3rem #1c106580
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-badge:where(.svelte-1ndqmzh) .level-name:where(.svelte-1ndqmzh) {
+    padding-left: 1rem;
+    font-family: Inter, sans-serif;
+    font-size: 1.9688rem;
+    font-weight: 700;
+    line-height: 0;
+    color: #fff500;
+    letter-spacing: .2rem
+}
+
+[dir=rtl] .dashboard-loyalty.svelte-1ndqmzh .loyalty-level-card:where(.svelte-1ndqmzh) .level-card-background:where(.svelte-1ndqmzh) .level-info:where(.svelte-1ndqmzh) .level-badge:where(.svelte-1ndqmzh) .level-name:where(.svelte-1ndqmzh) {
+    padding-left: 0;
+    padding-right: 1rem
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1em;
+    padding: 5rem 7.1rem 5rem 5.9rem;
+    background: linear-gradient(106deg, #1b1b22 31.38%, #6100ff66);
+    border-radius: 1.2rem;
+    box-shadow: 0 0 10rem #6200ff1f
+}
+
+[dir=rtl] .dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) {
+    padding: 5rem 5.9rem 5rem 7.1rem;
+    background: linear-gradient(-106deg, #1b1b22 31.38%, #6100ff66)
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-header:where(.svelte-1ndqmzh) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-header:where(.svelte-1ndqmzh) .points-start:where(.svelte-1ndqmzh),
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-header:where(.svelte-1ndqmzh) .points-end:where(.svelte-1ndqmzh) {
+    font-family: Poppins, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff300;
+    letter-spacing: .1rem
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) {
+    position: relative
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) .progress-bar-background:where(.svelte-1ndqmzh) {
+    position: relative;
+    width: 100%;
+    height: 1.525rem;
+    overflow: visible;
+    background: #0c121e;
+    border: .1rem solid #898cff;
+    border-radius: 9.375rem
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) .progress-bar-background:where(.svelte-1ndqmzh) .progress-bar-fill:where(.svelte-1ndqmzh) {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(90deg, #6200ff, #898cff);
+    border-radius: 9.375rem;
+    transition: width .3s ease
+}
+
+[dir=rtl] .dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) .progress-bar-background:where(.svelte-1ndqmzh) .progress-bar-fill:where(.svelte-1ndqmzh) {
+    background: linear-gradient(-90deg, #6200ff, #898cff)
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) .progress-bar-background:where(.svelte-1ndqmzh) .progress-bar-fill:where(.svelte-1ndqmzh) img:where(.svelte-1ndqmzh) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateY(-100%) translate(50%)
+}
+
+[dir=rtl] .dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-bar-container:where(.svelte-1ndqmzh) .progress-bar-background:where(.svelte-1ndqmzh) .progress-bar-fill:where(.svelte-1ndqmzh) img:where(.svelte-1ndqmzh) {
+    right: auto;
+    left: 0;
+    transform: translateY(-100%) translate(-50%)
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-start:where(.svelte-1ndqmzh),
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-end:where(.svelte-1ndqmzh) {
+    display: flex;
+    gap: .5rem;
+    align-items: center
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-start:where(.svelte-1ndqmzh) img:where(.svelte-1ndqmzh),
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-end:where(.svelte-1ndqmzh) img:where(.svelte-1ndqmzh) {
+    width: 2rem;
+    height: 2rem;
+    mix-blend-mode: lighten
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-start:where(.svelte-1ndqmzh) .level-text:where(.svelte-1ndqmzh),
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-end:where(.svelte-1ndqmzh) .level-text:where(.svelte-1ndqmzh) {
+    padding: 0 .5rem;
+    font-family: Poppins, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    color: #fff;
+    letter-spacing: .1rem
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-start:where(.svelte-1ndqmzh) .level-text:where(.svelte-1ndqmzh) .level-name:where(.svelte-1ndqmzh),
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .progress-footer:where(.svelte-1ndqmzh) .level-info-end:where(.svelte-1ndqmzh) .level-text:where(.svelte-1ndqmzh) .level-name:where(.svelte-1ndqmzh) {
+    color: #ffef00;
+    opacity: .88
+}
+
+.dashboard-loyalty.svelte-1ndqmzh .loyalty-progress-card:where(.svelte-1ndqmzh) .welcome-message:where(.svelte-1ndqmzh) {
+    margin: 0;
+    font-family: Roboto, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 3rem;
+    color: #ddd;
+    letter-spacing: .6px;
+    text-shadow: rgba(0, 0, 0, .25) 0px 4px 10px
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 {
+    width: 100%
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .card:where(.svelte-1oyh552) {
+    overflow: hidden;
+    border-radius: .6rem;
+    box-shadow: 0 0 2.326rem #6200ff1f
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .card-inner:where(.svelte-1oyh552) {
+    min-height: 15rem;
+    padding: 1.4rem 1.2rem 1.2rem 1.5rem;
+    background: linear-gradient(106deg, #1b1b22 40%, #6100ff47)
+}
+
+[dir=rtl] .dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .card-inner:where(.svelte-1oyh552) {
+    padding: 1.4rem 1.5rem 1.2rem 1.2rem;
+    background: linear-gradient(-106deg, #1b1b22 40%, #6100ff47)
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .top-row:where(.svelte-1oyh552) {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .right-col:where(.svelte-1oyh552) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: .65rem;
+    min-width: 0;
+    padding-top: .2rem
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .points-pair:where(.svelte-1oyh552),
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .level-pair:where(.svelte-1oyh552) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%
+}
+
+.dashboard-loyalty-mobile-skeleton.svelte-1oyh552 .image-skel {
+    flex-shrink: 0;
+    opacity: .9
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua {
+    width: 100%;
+    margin-top: 0;
+    font-size: 2.7vw
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 23.26em #6200ff1f
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) {
+    position: relative;
+    width: 100%;
+    min-height: 15em;
+    padding: 3.82em 1.22em 1.04em 1.53em;
+    background: url(../../../images/loyalty/loyalty-card-bg.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) {
+    padding: 3.82em 1.53em 1.04em 1.22em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .background-image:where(.svelte-2jd3ua) {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-image-container:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 3.82em;
+    left: calc(50% - 9.59em);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 11.97em;
+    height: 9.42em;
+    mix-blend-mode: lighten;
+    opacity: .9;
+    transform: translate(-50%)
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-image-container:where(.svelte-2jd3ua) {
+    left: auto;
+    right: calc(50% - 9.59em);
+    transform: translate(50%)
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-image-container:where(.svelte-2jd3ua) .level-image:where(.svelte-2jd3ua) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 9.85em;
+    height: 8.29em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-image-container:where(.svelte-2jd3ua) .level-image:where(.svelte-2jd3ua) img:where(.svelte-2jd3ua) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-badge:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 11.04em;
+    left: calc(50% - 9.59em);
+    z-index: 3;
+    display: flex;
+    gap: .49em;
+    align-items: center;
+    height: 2.29em;
+    padding: 0 1.19em;
+    text-shadow: rgba(0, 0, 0, .25) 0px .34em .85em;
+    background: #6202ffe6;
+    border-radius: 7.64em;
+    box-shadow: 1.53em 1.44em 1.1em #1c106580;
+    transform: translate(-50%)
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-badge:where(.svelte-2jd3ua) {
+    left: auto;
+    right: calc(50% - 9.59em);
+    box-shadow: -1.53em 1.44em 1.1em #1c106580;
+    transform: translate(50%)
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-badge:where(.svelte-2jd3ua) .level-name:where(.svelte-2jd3ua) {
+    font-family: Inter, sans-serif;
+    font-size: 1.01em;
+    font-weight: 700;
+    line-height: 0;
+    color: #fff500;
+    letter-spacing: .09em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-range:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 1.65em;
+    left: 15.31em;
+    z-index: 3;
+    font-family: Roboto, sans-serif;
+    font-size: 1.02em;
+    font-weight: 800;
+    line-height: 0;
+    color: #fff;
+    letter-spacing: .05em;
+    text-shadow: rgba(0, 0, 0, .25) 0px .34em .85em
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-range:where(.svelte-2jd3ua) {
+    left: auto;
+    right: 15.31em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-range:where(.svelte-2jd3ua) .highlight:where(.svelte-2jd3ua) {
+    color: #fff500
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-display:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 3.79em;
+    right: 1.22em;
+    left: 15.31em;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-display:where(.svelte-2jd3ua) {
+    left: 1.22em;
+    right: 15.31em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-display:where(.svelte-2jd3ua) .points-start:where(.svelte-2jd3ua),
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .points-display:where(.svelte-2jd3ua) .points-end:where(.svelte-2jd3ua) {
+    font-family: Roboto, sans-serif;
+    font-size: .85em;
+    font-weight: 600;
+    line-height: 0;
+    color: #fff300;
+    letter-spacing: .05em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 4.96em;
+    right: 1.22em;
+    left: 15.31em;
+    z-index: 3
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) {
+    left: 1.22em;
+    right: 15.31em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) .progress-bar-background:where(.svelte-2jd3ua) {
+    position: relative;
+    width: 100%;
+    height: 1.53em;
+    overflow: visible;
+    background: #0c121e;
+    border: .1em solid #898cff;
+    border-radius: 9.74em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) .progress-bar-background:where(.svelte-2jd3ua) .progress-bar-fill:where(.svelte-2jd3ua) {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(90deg, #6200ff, #898cff);
+    border-radius: 9.74em;
+    transition: width .3s ease
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) .progress-bar-background:where(.svelte-2jd3ua) .progress-bar-fill:where(.svelte-2jd3ua) {
+    background: linear-gradient(-90deg, #6200ff, #898cff)
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) .progress-bar-background:where(.svelte-2jd3ua) .progress-bar-fill:where(.svelte-2jd3ua) img:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.82em;
+    max-width: none;
+    height: 2.19em;
+    transform: translateY(-70%) translate(50%)
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .progress-bar-container:where(.svelte-2jd3ua) .progress-bar-background:where(.svelte-2jd3ua) .progress-bar-fill:where(.svelte-2jd3ua) img:where(.svelte-2jd3ua) {
+    right: auto;
+    left: 0;
+    transform: translateY(-70%) translate(-50%)
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-indicators:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 7.6em;
+    right: 1.58em;
+    left: 15.73em;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-indicators:where(.svelte-2jd3ua) {
+    left: 1.58em;
+    right: 15.73em
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-indicators:where(.svelte-2jd3ua) .level-indicator-start:where(.svelte-2jd3ua),
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .level-indicators:where(.svelte-2jd3ua) .level-indicator-end:where(.svelte-2jd3ua) {
+    font-family: Roboto, sans-serif;
+    font-size: .78em;
+    font-weight: 800;
+    line-height: 0;
+    color: #fff;
+    letter-spacing: .05em;
+    white-space: nowrap
+}
+
+.dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .benefits-list:where(.svelte-2jd3ua) {
+    position: absolute;
+    top: 10.42em;
+    right: 1.58em;
+    left: 20.31em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: .76em;
+    max-width: 315px;
+    font-family: Roboto, sans-serif;
+    font-size: .76em;
+    font-weight: 700;
+    color: #ddd;
+    letter-spacing: .05em;
+    text-shadow: rgba(0, 0, 0, .25) 0px .34em .85em
+}
+
+[dir=rtl] .dashboard-loyalty-mobile.svelte-2jd3ua .loyalty-card:where(.svelte-2jd3ua) .card-background:where(.svelte-2jd3ua) .benefits-list:where(.svelte-2jd3ua) {
+    left: 1.58em;
+    right: 20.31em
+}
+
+.mobile-dashboard.svelte-cnvhut {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 5.26rem;
+    padding: 0
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .user-left:where(.svelte-cnvhut) {
+    display: flex;
+    flex: 1;
+    gap: 1.2rem;
+    align-items: center
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .user-avatar:where(.svelte-cnvhut) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .user-avatar:where(.svelte-cnvhut) svg {
+    width: 100%;
+    height: 100%;
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .username:where(.svelte-cnvhut) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.58rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #bbc6e9
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .balance:where(.svelte-cnvhut) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.58rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #efefef;
+    text-align: right;
+    white-space: nowrap
+}
+
+[dir=rtl] .mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .balance:where(.svelte-cnvhut) {
+    text-align: left
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-user-info:where(.svelte-cnvhut) .balance:where(.svelte-cnvhut) .currency:where(.svelte-cnvhut) {
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) {
+    display: flex;
+    gap: .5rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .withdraw-button,
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .deposit-button {
+    display: flex;
+    flex: 1;
+    gap: .8rem;
+    align-items: center;
+    justify-content: center;
+    height: 5.92rem;
+    font-family: Roboto, sans-serif;
+    font-size: 1.58rem;
+    font-weight: 400;
+    color: #fff;
+    text-decoration: none;
+    border-radius: .5rem;
+    transition: opacity .2s
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .withdraw-button svg,
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .deposit-button svg {
+    width: 2.4rem;
+    height: 2.4rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .withdraw-button:hover,
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .deposit-button:hover {
+    opacity: .9
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .withdraw-button {
+    background: linear-gradient(90deg, #1f222c9f, #3a41559d)
+}
+
+[dir=rtl] .mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .withdraw-button {
+    background: linear-gradient(-90deg, #1f222c9f, #3a41559d)
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .deposit-button {
+    background: #00aaeb
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-actions:where(.svelte-cnvhut) .deposit-button svg path {
+    fill: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: .33rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .container:where(.svelte-cnvhut) {
+    width: 100%
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .link {
+    text-decoration: none
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 1.5rem;
+    padding: 1.6rem 0;
+    font-family: Roboto, sans-serif;
+    font-size: 1.38rem;
+    font-weight: 400;
+    color: #97a1c2;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: color .2s
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut) .wrapper:where(.svelte-cnvhut) {
+    display: flex;
+    gap: 1.28rem;
+    align-items: center
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut) .wrapper:where(.svelte-cnvhut) .icon:where(.svelte-cnvhut) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut) svg {
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut) span {
+    font-family: Roboto, sans-serif;
+    font-size: 1.38rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.active:where(.svelte-cnvhut) {
+    color: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.active:where(.svelte-cnvhut) span {
+    color: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.active:where(.svelte-cnvhut) svg {
+    color: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.logout:where(.svelte-cnvhut) {
+    position: relative;
+    height: auto;
+    min-height: 4.24rem;
+    padding: .5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, .2)
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.logout:where(.svelte-cnvhut) .wrapper:where(.svelte-cnvhut) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 4.24rem
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.logout:where(.svelte-cnvhut) svg {
+    flex-shrink: 0;
+    width: 1.398rem;
+    height: 1.398rem;
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item.logout:where(.svelte-cnvhut) span {
+    font-family: Roboto, sans-serif;
+    font-size: 1.38rem;
+    font-weight: 400;
+    line-height: normal;
+    color: #97a1c2
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut):not(.logout):hover {
+    color: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut):not(.logout):hover span {
+    color: #fff
+}
+
+.mobile-dashboard.svelte-cnvhut .mobile-navigation:where(.svelte-cnvhut) .nav-item:where(.svelte-cnvhut):not(.logout):hover svg {
+    color: #fff
+}
+
+.dashboard-transactions.svelte-ouys28 {
+    display: flex;
+    flex-direction: column;
+    gap: 0
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-header:where(.svelte-ouys28) {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    padding: 0 3.7016rem;
+    color: #fff
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-header:where(.svelte-ouys28) a {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #00aaeb;
+    text-decoration: underline
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-header:where(.svelte-ouys28) span {
+    font-size: 1.6rem;
+    font-weight: 400
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) {
+    background: #ffffff0a
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) .core-table thead {
+    background: #ffffff0a
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) .core-table thead tr th {
+    padding: 1.15rem 0 1.15rem 5.5rem;
+    font-family: Roboto, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #ffffff4d;
+    text-align: left
+}
+
+[dir=rtl] .dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) .core-table thead tr th {
+    padding: 1.15rem 5.5rem 1.15rem 0;
+    text-align: right
+}
+
+.dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) .core-table tbody tr td {
+    padding: 1.15rem 0 1.15rem 5.5rem;
+    font-family: Roboto, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff
+}
+
+[dir=rtl] .dashboard-transactions.svelte-ouys28 .transactions-table:where(.svelte-ouys28) .core-table tbody tr td {
+    padding: 1.15rem 5.5rem 1.15rem 0
+}
+
+.dashboard-transactions.svelte-ouys28 .transaction-status:where(.svelte-ouys28) {
+    display: flex;
+    gap: .8rem;
+    align-items: center
+}
+
+.dashboard-transactions.svelte-ouys28 .transaction-status:where(.svelte-ouys28) .status-indicator:where(.svelte-ouys28) {
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%
+}
+
+.dashboard-transactions.svelte-ouys28 .transaction-status:where(.svelte-ouys28) .status-indicator.success:where(.svelte-ouys28) {
+    background-color: #2eff36
+}
+
+.dashboard-transactions.svelte-ouys28 .transaction-status:where(.svelte-ouys28) .status-indicator.rejected:where(.svelte-ouys28) {
+    background-color: #ff263c
+}
+
+.dashboard-transactions.svelte-ouys28 .transaction-status:where(.svelte-ouys28) .status-indicator.pending:where(.svelte-ouys28) {
+    background-color: #e8b21a
+}
+
+.dashboard-wallets.svelte-8v76xl {
+    display: flex;
+    flex-direction: column
+}
+
+.dashboard-wallets.svelte-8v76xl .wallets-header:where(.svelte-8v76xl) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    font-family: Roboto, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+    text-align: center
+}
+
+.dashboard-wallets.svelte-8v76xl .wallets-list:where(.svelte-8v76xl) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13.698rem, 1fr));
+    gap: 2rem;
+    padding: 1rem
+}
+
+.dashboard-wallets.svelte-8v76xl .wallets-list:where(.svelte-8v76xl) .wallet-item:where(.svelte-8v76xl) {
+    display: flex;
+    flex-grow: 1;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    min-width: 13.698rem;
+    height: 7rem;
+    padding: 0 1rem;
+    background: #3c3b43;
+    border-radius: 1.5rem
+}
+
+.dashboard-wallets.svelte-8v76xl .wallets-list:where(.svelte-8v76xl) .wallet-item:where(.svelte-8v76xl) .wallet-amount:where(.svelte-8v76xl) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff
+}
+
+.dashboard-wallets.svelte-8v76xl .wallets-list:where(.svelte-8v76xl) .wallet-item:where(.svelte-8v76xl) .wallet-currency:where(.svelte-8v76xl) {
+    font-family: Roboto, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #ffffff4d
+}
+
+.dashboard-balance-skeleton.svelte-422nra {
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 30.13rem;
+    height: 10.4rem;
+    padding: 0 2.8rem;
+    background: #323246;
+    border-radius: .734rem
+}
+
+.dashboard-balance-skeleton.svelte-422nra .balance-info:where(.svelte-422nra) {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    align-items: flex-start;
+    justify-content: center
+}
+
+.dashboard-balance-skeleton.svelte-422nra .deposit-skel {
+    flex-shrink: 0
+}
+
+.dashboard-my-account-skeleton.svelte-15yzjve {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 32.03rem;
+    height: 10.4rem;
+    padding-left: 1.9rem
+}
+
+[dir=rtl] .dashboard-my-account-skeleton.svelte-15yzjve {
+    padding-left: 0;
+    padding-right: 1.9rem
+}
+
+.dashboard-my-account-skeleton.svelte-15yzjve .inner:where(.svelte-15yzjve) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10.4rem;
+    background: #323246;
+    border-radius: .734rem
+}
+
+.dashboard-my-account-skeleton.svelte-15yzjve .ui-skeleton-row {
+    justify-content: center
+}
+
+.dashboard-profile-verification-skeleton.svelte-o8c82n {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 32.03rem;
+    height: 10.4rem;
+    padding-left: 1.9rem
+}
+
+[dir=rtl] .dashboard-profile-verification-skeleton.svelte-o8c82n {
+    padding-left: 0;
+    padding-right: 1.9rem
+}
+
+.dashboard-profile-verification-skeleton.svelte-o8c82n .inner:where(.svelte-o8c82n) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10.4rem;
+    background: linear-gradient(168deg, #323246, #cf142b);
+    border-radius: .734rem
+}
+
+[dir=rtl] .dashboard-profile-verification-skeleton.svelte-o8c82n .inner:where(.svelte-o8c82n) {
+    background: linear-gradient(-168deg, #323246, #cf142b)
+}
+
+.dashboard-profile-verification-skeleton.svelte-o8c82n .icon-wrap:where(.svelte-o8c82n) {
+    flex-shrink: 0;
+    padding-right: 1.5rem
+}
+
+[dir=rtl] .dashboard-profile-verification-skeleton.svelte-o8c82n .icon-wrap:where(.svelte-o8c82n) {
+    padding-right: 0;
+    padding-left: 1.5rem
+}
+
+.dashboard-profile-verification-skeleton.svelte-o8c82n .text-col:where(.svelte-o8c82n) {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    align-items: flex-start
+}
+
+.dashboard-profile-verification-skeleton.svelte-o8c82n .ui-skeleton-row {
+    justify-content: center
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .mobile-user-info:where(.svelte-2owp73) {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    height: 5.26rem
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .flex-spacer:where(.svelte-2owp73) {
+    flex: 1;
+    min-width: 0
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .mobile-actions:where(.svelte-2owp73) {
+    display: flex;
+    gap: .5rem
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .mobile-actions:where(.svelte-2owp73)>.ui-skeleton-block {
+    flex: 1
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .mobile-navigation:where(.svelte-2owp73) {
+    display: flex;
+    flex-direction: column;
+    margin-top: .33rem
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .nav-item-skel:where(.svelte-2owp73) {
+    display: flex;
+    gap: 1.28rem;
+    align-items: center;
+    min-height: 1.5rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06)
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .nav-item-skel:where(.svelte-2owp73) .nav-label {
+    max-width: 16rem
+}
+
+.mobile-dashboard-skeleton.svelte-2owp73 .nav-item-skel.logout:where(.svelte-2owp73) {
+    position: relative;
+    min-height: 4.24rem;
+    padding: .5rem 0;
+    margin-top: .15rem;
+    border-top: 1px solid rgba(255, 255, 255, .2);
+    border-bottom: none
+}
+
+.dashboard-transactions-skeleton.svelte-y0y4e4 {
+    display: flex;
+    flex-direction: column
+}
+
+.dashboard-transactions-skeleton.svelte-y0y4e4 .transactions-header:where(.svelte-y0y4e4) {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    padding: 0 3.7016rem
+}
+
+.dashboard-transactions-skeleton.svelte-y0y4e4 .transactions-table:where(.svelte-y0y4e4) {
+    background: #ffffff0a
+}
+
+.dashboard-transactions-skeleton.svelte-y0y4e4 .thead:where(.svelte-y0y4e4) {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1.1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.15rem 0 1.15rem 5.5rem;
+    background: #ffffff0a
+}
+
+[dir=rtl] .dashboard-transactions-skeleton.svelte-y0y4e4 .thead:where(.svelte-y0y4e4) {
+    padding: 1.15rem 5.5rem 1.15rem 0
+}
+
+.dashboard-transactions-skeleton.svelte-y0y4e4 .tbody-row:where(.svelte-y0y4e4) {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1.1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.15rem 0 1.15rem 5.5rem
+}
+
+[dir=rtl] .dashboard-transactions-skeleton.svelte-y0y4e4 .tbody-row:where(.svelte-y0y4e4) {
+    padding: 1.15rem 5.5rem 1.15rem 0
+}
+
+.dashboard-wallets-skeleton.svelte-yi1ytv {
+    display: flex;
+    flex-direction: column
+}
+
+.dashboard-wallets-skeleton.svelte-yi1ytv .wallets-header:where(.svelte-yi1ytv) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7rem
+}
+
+.dashboard-wallets-skeleton.svelte-yi1ytv .wallets-list:where(.svelte-yi1ytv) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13.698rem, 1fr));
+    gap: 2rem;
+    padding: 1rem
+}
+
+.dashboard-wallets-skeleton.svelte-yi1ytv .wallet-item:where(.svelte-yi1ytv) {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    min-width: 13.698rem;
+    height: 7rem;
+    padding: 0 1rem;
+    background: #3c3b43;
+    border-radius: 1.5rem
+}
+
+.dashboard-skeleton.svelte-cngs2e {
+    display: flex;
+    flex-direction: column;
+    gap: 3.6rem
+}
+
+.dashboard-skeleton.svelte-cngs2e .dashboard-header:where(.svelte-cngs2e) {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    height: 10.4rem
+}
+
+.dashboard-skeleton.svelte-cngs2e .dashboard-header:where(.svelte-cngs2e)>* {
+    flex: 1;
+    min-width: 0
+}
+
+.dashboard-skeleton.svelte-cngs2e .dashboard-body:where(.svelte-cngs2e) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem
+}
+
+.dashboard-page.svelte-1jgtkbm {
+    width: 100%
+}
+
+.dashboard.svelte-1jgtkbm {
+    display: flex;
+    flex-direction: column;
+    gap: 3.6rem
+}
+
+.dashboard.svelte-1jgtkbm .dashboard-header:where(.svelte-1jgtkbm) {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    height: 10.4rem
+}
+
+.dashboard.svelte-1jgtkbm .dashboard-header:where(.svelte-1jgtkbm)>div {
+    flex: 1
+}
+
+.dashboard.svelte-1jgtkbm .dashboard-body:where(.svelte-1jgtkbm) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem
+}

@@ -1,0 +1,14 @@
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyStake.Services.Messaging.Common.Client
+{
+    public class AddBettingLogResponse : BaseResponse
+    {
+        public string message {  get; set; }
+    }
+}

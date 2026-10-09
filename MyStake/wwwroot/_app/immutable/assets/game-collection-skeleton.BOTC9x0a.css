@@ -1,0 +1,36 @@
+﻿.game-collection-skeleton.svelte-yvl0sj {
+    width: 100%;
+    max-width: 130rem;
+    margin: 0 auto
+}
+
+.title-bar.svelte-yvl0sj {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5rem
+}
+
+@media not (min-width:920px) {
+    .title-bar.svelte-yvl0sj {
+        margin-bottom: 3rem
+    }
+}
+
+.game-grid.svelte-yvl0sj {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(20rem,1fr));
+    gap: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem
+}
+
+    .game-grid.svelte-yvl0sj > * {
+        aspect-ratio: 1/1
+    }
+
+@media(max-width:500px) {
+    .game-grid.svelte-yvl0sj {
+        grid-template-columns: repeat(auto-fill,minmax(14rem,1fr));
+        gap: 2rem
+    }
+}

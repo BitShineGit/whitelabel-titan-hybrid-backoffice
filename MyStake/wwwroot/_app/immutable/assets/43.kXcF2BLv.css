@@ -1,0 +1,201 @@
+﻿.personal-information-field.svelte-1t2u6x6 {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    height: 4.8rem;
+    border-top: 1px solid rgba(255,255,255,.1019607843)
+}
+
+@media not (min-width:920px) {
+    .personal-information-field.svelte-1t2u6x6 .icon-locked:where(.svelte-1t2u6x6) svg {
+        width: 2.1rem;
+        height: 2.1rem
+    }
+}
+
+@media not (min-width:920px) {
+    .personal-information-field.svelte-1t2u6x6 {
+        gap: .6rem
+    }
+}
+
+.personal-information-field.svelte-1t2u6x6 .placeholder:where(.svelte-1t2u6x6) {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff4d;
+    white-space: nowrap
+}
+
+@media not (min-width:920px) {
+    .personal-information-field.svelte-1t2u6x6 .placeholder:where(.svelte-1t2u6x6) {
+        font-size: 1.2rem
+    }
+}
+
+.personal-information-field.svelte-1t2u6x6 .edit-actions:where(.svelte-1t2u6x6) {
+    display: flex;
+    gap: .5rem
+}
+
+    .personal-information-field.svelte-1t2u6x6 .edit-actions:where(.svelte-1t2u6x6) .action-button:where(.svelte-1t2u6x6) {
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 2.4rem;
+        height: 4rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ccd6f6;
+        cursor: pointer;
+        border: none
+    }
+
+.personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.5rem 1rem 1.5rem 3rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    border-radius: 5rem
+}
+
+[dir=rtl] .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) {
+    padding: 1.5rem 3rem 1.5rem 1rem
+}
+
+@media not (min-width:920px) {
+    .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) {
+        gap: .8rem;
+        height: 4.5rem;
+        font-size: 1.2rem
+    }
+}
+
+.personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .core-input {
+    width: 100%
+}
+
+    .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .core-input input {
+        width: 100%;
+        font-size: 1.4rem;
+        background: #0e1319;
+        border: 0;
+        border-radius: 0
+    }
+
+        .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .core-input input::placeholder {
+            color: #fff9
+        }
+
+        .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .core-input input:focus {
+            border: 0
+        }
+
+.personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .personal-information-value.placeholder {
+    color: #fff9
+}
+
+.personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .birthdate-multi {
+    display: flex;
+    gap: .5rem;
+    align-items: center
+}
+
+    .personal-information-field.svelte-1t2u6x6 .value:where(.svelte-1t2u6x6) .birthdate-multi .core-select .placeholder {
+        padding: 0 .5rem;
+        background: #0e1319;
+        border: none;
+        border-radius: 0
+    }
+
+.personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3.5rem
+}
+
+    .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) a {
+        display: block;
+        flex: 1;
+        width: 8.6rem;
+        max-width: 31.5rem;
+        height: 6.8rem
+    }
+
+        .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) a .core-button {
+            width: 100%;
+            height: 100%;
+            cursor: pointer
+        }
+
+    .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button {
+        gap: 1.6rem;
+        width: 31.5rem;
+        height: 6.8rem;
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 6.8rem;
+        color: #fff;
+        cursor: default
+    }
+
+        .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.balance-button {
+            padding: 2.4rem;
+            font-weight: 400;
+            background: #00000052
+        }
+
+            .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.balance-button .button-content {
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%
+            }
+
+            .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.balance-button svg {
+                width: 3.2rem;
+                height: 3.2rem
+            }
+
+            .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.balance-button span {
+                font-size: 16px;
+                color: #ffffff80
+            }
+
+        .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.deposit-button svg {
+            width: 2.4rem;
+            height: 2.4rem
+        }
+
+            .personal-information.svelte-1xz2cmn .profile-head:where(.svelte-1xz2cmn) .core-button.deposit-button svg path {
+                fill: #fff
+            }
+
+.personal-information.svelte-1xz2cmn .profile-info:where(.svelte-1xz2cmn) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    height: 100%
+}
+
+@media not (min-width:920px) {
+    .personal-information.svelte-1xz2cmn .profile-info:where(.svelte-1xz2cmn) {
+        grid-template-columns: 1fr;
+        gap: 1rem
+    }
+}
+
+.personal-information.svelte-1xz2cmn .profile-info:where(.svelte-1xz2cmn) h3:where(.svelte-1xz2cmn) {
+    display: flex;
+    align-items: center;
+    height: 8.4rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #00aaeb
+}

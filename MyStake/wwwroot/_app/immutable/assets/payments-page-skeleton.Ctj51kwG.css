@@ -1,0 +1,1428 @@
+.payment-crypto-deposit-skeleton.svelte-3rkgcl {
+    width: 100%
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .payment-content:where(.svelte-3rkgcl) {
+    display: flex;
+    gap: 4.8rem;
+    align-items: flex-start;
+    margin-bottom: 3.2rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .payment-content:where(.svelte-3rkgcl) {
+        flex-direction: column;
+        gap: 3.2rem;
+        margin-bottom: 0
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) {
+    flex: 1;
+    min-width: 0
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) {
+        width: 100%
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .fields:where(.svelte-3rkgcl) {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2.8rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .fields:where(.svelte-3rkgcl) {
+        gap: 1.6rem;
+        margin-bottom: 2.4rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .fields:where(.svelte-3rkgcl) .field:where(.svelte-3rkgcl) .placeholder:where(.svelte-3rkgcl) {
+    margin-bottom: .8rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .fields:where(.svelte-3rkgcl) .field:where(.svelte-3rkgcl) .placeholder:where(.svelte-3rkgcl) {
+        margin-bottom: .6rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) {
+    display: grid;
+    grid-template-columns: minmax(0, 17rem) auto minmax(0, 1fr);
+    gap: 1.2rem 1.2rem;
+    align-items: center;
+    max-width: 41rem;
+    margin-top: 2rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 100%
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) .amount-separator:where(.svelte-3rkgcl) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4.8rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #ffffff59;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) .amount-separator:where(.svelte-3rkgcl) {
+        display: none
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) .amount:where(.svelte-3rkgcl),
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .logic:where(.svelte-3rkgcl) .amount-group:where(.svelte-3rkgcl) .converted-amount:where(.svelte-3rkgcl) {
+    min-width: 0
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .right:where(.svelte-3rkgcl) {
+    flex-shrink: 0;
+    padding-top: .4rem;
+    margin-left: auto
+}
+
+[dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .right:where(.svelte-3rkgcl) {
+    margin-left: 0;
+    margin-right: auto
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .right:where(.svelte-3rkgcl) {
+        width: auto;
+        padding-top: 0;
+        margin-right: auto;
+        margin-bottom: 3.2rem;
+        margin-left: auto
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .qr-box:where(.svelte-3rkgcl) {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17.6rem;
+    height: 17.6rem;
+    padding: 2rem;
+    background: linear-gradient(160deg, #2a3040f2, #1a1f28fa);
+    border: 1px solid rgba(0, 170, 235, .2);
+    border-radius: 1.2rem;
+    box-shadow: 0 .8rem 3.2rem #00000059, inset 0 1px #ffffff0f;
+    transition: border-color .25s ease, box-shadow .25s ease
+}
+
+[dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .qr-box:where(.svelte-3rkgcl) {
+    background: linear-gradient(-160deg, #2a3040f2, #1a1f28fa)
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .qr-box:where(.svelte-3rkgcl) {
+        width: 17.6rem;
+        height: 17.6rem;
+        padding: 2rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .description:where(.svelte-3rkgcl) {
+    padding-top: 2.4rem;
+    margin-top: .8rem;
+    border-top: 1px solid rgba(255, 255, 255, .08)
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .ui-skeleton-block {
+    --ui-skeleton-base: #2c2c35;
+    --ui-skeleton-highlight: #3a3f52
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .field:where(.svelte-3rkgcl) .field-control {
+    height: 4rem;
+    border-radius: .5rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .field:where(.svelte-3rkgcl) .field-control {
+        height: 3.6rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .field:where(.svelte-3rkgcl) .field-control--full {
+    width: 100%
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .amount-group:where(.svelte-3rkgcl) .field.amount:where(.svelte-3rkgcl),
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .amount-group:where(.svelte-3rkgcl) .converted-amount:where(.svelte-3rkgcl) {
+    padding: 0;
+    margin: 0
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .amount-group:where(.svelte-3rkgcl) .field-control--amount {
+    height: 4.8rem;
+    border-radius: .5rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .amount-group:where(.svelte-3rkgcl) .field-control--amount {
+        height: 4rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .converted-field:where(.svelte-3rkgcl) {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    padding: 1.2rem 3.2rem 1.2rem 1.6rem;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem
+}
+
+[dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .converted-field:where(.svelte-3rkgcl) {
+    padding: 1.2rem 1.6rem 1.2rem 3.2rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .converted-field:where(.svelte-3rkgcl) {
+        height: 4rem;
+        padding: .8rem 2.8rem .8rem 1rem;
+        background-color: #242836
+    }
+    [dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .converted-field:where(.svelte-3rkgcl) {
+        padding: .8rem 1rem .8rem 2.8rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-converted-value {
+    flex: 1;
+    min-width: 0;
+    max-width: 10rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-converted-currency {
+    position: absolute;
+    top: 50%;
+    right: 1.8rem;
+    width: 3.2rem;
+    transform: translateY(-50%)
+}
+
+[dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-converted-currency {
+    right: auto;
+    left: 1.8rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-converted-currency {
+        right: 1.6rem
+    }
+    [dir=rtl] .payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-converted-currency {
+        right: auto;
+        left: 1.6rem
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .wallet-address:where(.svelte-3rkgcl) .address-value:where(.svelte-3rkgcl) {
+    box-sizing: border-box;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    max-width: 41rem;
+    min-height: 4rem;
+    padding: 1.2rem 1.6rem;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem
+}
+
+@media not (min-width:920px) {
+    .payment-crypto-deposit-skeleton.svelte-3rkgcl .wallet-address:where(.svelte-3rkgcl) .address-value:where(.svelte-3rkgcl) {
+        max-width: 100%;
+        min-height: 3.6rem;
+        padding: .8rem 1rem;
+        background-color: #242836
+    }
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .wallet-address:where(.svelte-3rkgcl) .address-text {
+    flex: 1;
+    min-width: 0
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-label {
+    display: block
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-label--network {
+    width: 10rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .skeleton-label--address {
+    width: 10.5rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .qr-code {
+    flex-shrink: 0;
+    width: 13.6rem;
+    height: 13.6rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .description:where(.svelte-3rkgcl) {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .description:where(.svelte-3rkgcl) .description-line {
+    height: 1.4rem
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .description:where(.svelte-3rkgcl) .description-line:nth-child(2) {
+    width: 92%
+}
+
+.payment-crypto-deposit-skeleton.svelte-3rkgcl .description:where(.svelte-3rkgcl) .description-line:nth-child(3) {
+    width: 65%
+}
+
+.payment-deposit-logic.svelte-1rf6aoj {
+    width: 100%;
+    padding: 4rem 4.8rem;
+    background: linear-gradient(180deg, #0e1319, #0c1016);
+    border-radius: .4rem
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj {
+    background: linear-gradient(-180deg, #0e1319, #0c1016)
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj {
+        padding: 2rem 1.6rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .payment-content:where(.svelte-1rf6aoj) {
+    display: flex;
+    gap: 4.8rem;
+    align-items: flex-start;
+    margin-bottom: 3.2rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .payment-content:where(.svelte-1rf6aoj) {
+        flex-direction: column;
+        gap: 3.2rem;
+        margin-bottom: 0
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) {
+    flex: 1;
+    min-width: 0
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) {
+        width: 100%
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .fields:where(.svelte-1rf6aoj) {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2.8rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .fields:where(.svelte-1rf6aoj) {
+        gap: 1.6rem;
+        margin-bottom: 2.4rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .fields:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .placeholder:where(.svelte-1rf6aoj) {
+    margin-bottom: .8rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .fields:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .placeholder:where(.svelte-1rf6aoj) {
+        margin-bottom: .6rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .right:where(.svelte-1rf6aoj) {
+    flex-shrink: 0;
+    padding-top: .4rem;
+    margin-left: auto
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .right:where(.svelte-1rf6aoj) {
+    margin-left: 0;
+    margin-right: auto
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .right:where(.svelte-1rf6aoj) {
+        width: auto;
+        padding-top: 0;
+        margin-right: auto;
+        margin-bottom: 3.2rem;
+        margin-left: auto
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .qr-box:where(.svelte-1rf6aoj) {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17.6rem;
+    height: 17.6rem;
+    padding: 2rem;
+    background: linear-gradient(160deg, #2a3040f2, #1a1f28fa);
+    border: 1px solid rgba(0, 170, 235, .2);
+    border-radius: 1.2rem;
+    box-shadow: 0 .8rem 3.2rem #00000059, inset 0 1px #ffffff0f;
+    transition: border-color .25s ease, box-shadow .25s ease
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .qr-box:where(.svelte-1rf6aoj) {
+    background: linear-gradient(-160deg, #2a3040f2, #1a1f28fa)
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .qr-box:where(.svelte-1rf6aoj) {
+        width: 17.6rem;
+        height: 17.6rem;
+        padding: 2rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .description:where(.svelte-1rf6aoj) {
+    padding-top: 2.4rem;
+    margin-top: .8rem;
+    border-top: 1px solid rgba(255, 255, 255, .08)
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .loading-state:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .loaded-state:where(.svelte-1rf6aoj) {
+    min-height: 28rem
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .description:where(.svelte-1rf6aoj) {
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff73
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .description:where(.svelte-1rf6aoj) * {
+    font-size: 1.4rem !important
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .core-input input {
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem;
+    transition: border-color .2s ease
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .core-input input:focus {
+    outline: none;
+    border-color: #00aaeb80
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .core-input input {
+        padding: .8rem 1rem;
+        background-color: #242836
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .core-select .placeholder {
+    height: 4rem;
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .core-select .placeholder {
+        padding: .8rem 1rem;
+        background-color: #242836
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .placeholder:where(.svelte-1rf6aoj) {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #ffffffb3
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .placeholder:where(.svelte-1rf6aoj) {
+        font-size: 1.2rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) {
+    display: grid;
+    grid-template-columns: minmax(0, 17rem) auto minmax(0, 1fr);
+    gap: 1.2rem 1.2rem;
+    align-items: center;
+    max-width: 41rem;
+    margin-top: 2rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        max-width: 100%
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .amount-separator:where(.svelte-1rf6aoj) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4.8rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #ffffff59;
+    -webkit-user-select: none;
+    user-select: none
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .amount-separator:where(.svelte-1rf6aoj) {
+        display: none
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .amount:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-amount:where(.svelte-1rf6aoj) {
+    min-width: 0
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-amount:where(.svelte-1rf6aoj) {
+    padding: 0;
+    margin: 0
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input {
+    min-width: 0
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input .core-input-helper {
+    position: relative;
+    width: 100%;
+    min-width: 0
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input.icon-right input {
+    box-sizing: border-box;
+    height: 4.8rem;
+    padding: 1.2rem 3.2rem 1.2rem 1.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input.icon-right input {
+    padding: 1.2rem 1.6rem 1.2rem 3.2rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input.icon-right input {
+        height: 4rem;
+        padding: .8rem 2.8rem .8rem 1rem
+    }
+    [dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input.icon-right input {
+        padding: .8rem 1rem .8rem 2.8rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input .icon.right {
+    right: 1.8rem;
+    z-index: 1;
+    flex-shrink: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input .icon.right {
+    right: auto;
+    left: 1.8rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input .icon.right {
+        right: 1.6rem
+    }
+    [dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .field.amount:where(.svelte-1rf6aoj) .core-input .icon.right {
+        right: auto;
+        left: 1.6rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-field:where(.svelte-1rf6aoj) {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 4.8rem;
+    padding: 1.2rem 3.2rem 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-field:where(.svelte-1rf6aoj) {
+    padding: 1.2rem 1.6rem 1.2rem 3.2rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-field:where(.svelte-1rf6aoj) {
+        height: 4rem;
+        padding: .8rem 2.8rem .8rem 1rem;
+        background-color: #242836
+    }
+    [dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-field:where(.svelte-1rf6aoj) {
+        padding: .8rem 1rem .8rem 2.8rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-value:where(.svelte-1rf6aoj) {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-currency:where(.svelte-1rf6aoj) {
+    position: absolute;
+    top: 50%;
+    right: 1.8rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #00aaeb;
+    transform: translateY(-50%)
+}
+
+[dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-currency:where(.svelte-1rf6aoj) {
+    right: auto;
+    left: 1.8rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-currency:where(.svelte-1rf6aoj) {
+        right: 1.6rem
+    }
+    [dir=rtl] .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .amount-group:where(.svelte-1rf6aoj) .converted-currency:where(.svelte-1rf6aoj) {
+        right: auto;
+        left: 1.6rem
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields:where(.svelte-1rf6aoj) {
+    width: 100%;
+    max-width: 41rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields:where(.svelte-1rf6aoj) {
+        max-width: 100%
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields.with-destination-tag:where(.svelte-1rf6aoj) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.6rem;
+    max-width: 100%
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields.with-destination-tag:where(.svelte-1rf6aoj) {
+        grid-template-columns: 1fr
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields:where(.svelte-1rf6aoj) .wallet-address:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .address-fields:where(.svelte-1rf6aoj) .destination-tag:where(.svelte-1rf6aoj) {
+    min-width: 0
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .wallet-address:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .destination-tag:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj) {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    min-height: 4rem
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .wallet-address:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj) span:where(.svelte-1rf6aoj),
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .destination-tag:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj) span:where(.svelte-1rf6aoj) {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .copy-button:where(.svelte-1rf6aoj) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: .4rem;
+    color: #fff9;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: .4rem;
+    transition: color .2s ease, background-color .2s ease
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .copy-button:where(.svelte-1rf6aoj):hover {
+    color: #fff;
+    background-color: #ffffff14
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .value-wrapper:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj) {
+    padding: 1.2rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .12);
+    border-radius: .5rem
+}
+
+@media not (min-width:920px) {
+    .payment-deposit-logic.svelte-1rf6aoj .logic:where(.svelte-1rf6aoj) .field:where(.svelte-1rf6aoj) .value-wrapper:where(.svelte-1rf6aoj) .value:where(.svelte-1rf6aoj) {
+        padding: .8rem 1rem;
+        background-color: #242836
+    }
+}
+
+.payment-deposit-logic.svelte-1rf6aoj .right:where(.svelte-1rf6aoj) .qr-box:where(.svelte-1rf6aoj):has(canvas, img, svg) {
+    border-color: #00aaeb47;
+    box-shadow: 0 .8rem 3.2rem #00000059, 0 0 2.4rem #00aaeb14, inset 0 1px #ffffff0f
+}
+
+.payment-withdraw-logic.svelte-qqhidn {
+    width: 100%;
+    padding: 5rem 9rem;
+    background-color: #0e1319
+}
+
+@media not (min-width:920px) {
+    .payment-withdraw-logic.svelte-qqhidn {
+        padding: 1.8rem 0rem
+    }
+}
+
+.payment-withdraw-logic.svelte-qqhidn .description:where(.svelte-qqhidn) {
+    font-size: 1.4rem !important;
+    font-weight: 400;
+    line-height: 140%;
+    color: #ffffff4d
+}
+
+.payment-withdraw-logic.svelte-qqhidn .description:where(.svelte-qqhidn) * {
+    font-size: 1.4rem !important
+}
+
+@media not (min-width:920px) {
+    .payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) {
+        width: 100% !important
+    }
+}
+
+.payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .fields:where(.svelte-qqhidn) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    margin-bottom: 9rem
+}
+
+@media not (min-width:920px) {
+    .payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .fields:where(.svelte-qqhidn) {
+        margin-bottom: 3rem
+    }
+}
+
+.payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .payment-fields:where(.svelte-qqhidn) {
+    display: grid;
+    gap: 1.6rem
+}
+
+.payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .field:where(.svelte-qqhidn) .core-input input {
+    padding: 1.5rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 100%;
+    color: #fff;
+    letter-spacing: 0%;
+    background-color: #2c2c35;
+    border: 1px solid rgba(204, 214, 246, .2);
+    border-radius: 5px
+}
+
+.payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .field:where(.svelte-qqhidn) .core-select .placeholder {
+    padding: 1.5rem 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: 0%;
+    background-color: #2c2c35
+}
+
+.payment-withdraw-logic.svelte-qqhidn .logic:where(.svelte-qqhidn) .field:where(.svelte-qqhidn) .placeholder:where(.svelte-qqhidn) {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    color: #fff
+}
+
+.payment-withdraw-logic.svelte-qqhidn .submit-button {
+    width: 20rem;
+    height: 4rem;
+    margin: 2rem auto
+}
+
+.iban-withdraw.svelte-1lxp9fj {
+    width: 100%;
+    padding: 2rem
+}
+
+@media not (min-width:920px) {
+    .iban-withdraw.svelte-1lxp9fj {
+        padding: 0rem
+    }
+}
+
+.iban-withdraw.svelte-1lxp9fj .iban-field:where(.svelte-1lxp9fj) {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    padding: 1rem 3rem;
+    background-color: #2c2c35;
+    border-radius: 1rem
+}
+
+.iban-withdraw.svelte-1lxp9fj .iban-field:where(.svelte-1lxp9fj) .core-input {
+    max-width: 30rem
+}
+
+.iban-withdraw.svelte-1lxp9fj .iban-field:where(.svelte-1lxp9fj) .core-input input {
+    height: 4rem;
+    background-color: #1b1b22;
+    border: 0
+}
+
+@media not (min-width:920px) {
+    .iban-withdraw.svelte-1lxp9fj .iban-field:where(.svelte-1lxp9fj) .core-input {
+        width: 70%;
+        max-width: 100%
+    }
+}
+
+.iban-withdraw.svelte-1lxp9fj .iban-field:where(.svelte-1lxp9fj) .core-button {
+    height: 3.5rem
+}
+
+.iban-withdraw.svelte-1lxp9fj .fields:where(.svelte-1lxp9fj) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+    align-items: center;
+    margin-top: 1.6rem
+}
+
+@media not (min-width:920px) {
+    .iban-withdraw.svelte-1lxp9fj .fields:where(.svelte-1lxp9fj) {
+        grid-template-columns: 1fr;
+        gap: 1.6rem
+    }
+}
+
+.iban-withdraw.svelte-1lxp9fj .submit-button {
+    width: 100%;
+    height: 4rem;
+    background-color: #ff172d
+}
+
+.iban-withdraw.svelte-1lxp9fj .description {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    padding: .5rem 2rem;
+    margin-top: 3rem
+}
+
+.iban-withdraw.svelte-1lxp9fj .description h3,
+.iban-withdraw.svelte-1lxp9fj .description p {
+    color: #97a1c2
+}
+
+.iban-withdraw.svelte-1lxp9fj .description p:before {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 1.5rem;
+    vertical-align: middle;
+    content: "";
+    background-color: #97a1c2;
+    border-radius: 50%
+}
+
+[dir=rtl] .iban-withdraw.svelte-1lxp9fj .description p:before {
+    margin-right: 0;
+    margin-left: 1.5rem
+}
+
+.iban-withdraw.svelte-1lxp9fj .error:where(.svelte-1lxp9fj) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.6rem;
+    font-size: 1.4rem;
+    color: red
+}
+
+.iban-withdraw.svelte-1lxp9fj .success:where(.svelte-1lxp9fj) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.6rem;
+    font-size: 1.4rem;
+    color: #0f0
+}
+
+.payment-body.svelte-1g0mjt {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+    padding: 1rem 1rem 3rem
+}
+
+@media not (min-width:920px) {
+    .payment-body.svelte-1g0mjt {
+        grid-template-columns: 1fr;
+        gap: 1.6rem
+    }
+}
+
+.payment-body.full-width.svelte-1g0mjt {
+    grid-template-columns: 1fr
+}
+
+.payment-body.svelte-1g0mjt .logic:where(.svelte-1g0mjt) .core-button {
+    width: 100%;
+    height: 4.8rem
+}
+
+.payment-body.svelte-1g0mjt .logic:where(.svelte-1g0mjt) .submit-button {
+    margin-top: 3rem
+}
+
+.payment-body.svelte-1g0mjt .logic:where(.svelte-1g0mjt) .fields:where(.svelte-1g0mjt) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem
+}
+
+.payment-body.svelte-1g0mjt .logic:where(.svelte-1g0mjt) .error:where(.svelte-1g0mjt) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.6rem;
+    font-size: 1.4rem;
+    color: red
+}
+
+.payment-body.svelte-1g0mjt .description:where(.svelte-1g0mjt) .title:where(.svelte-1g0mjt) {
+    padding: .8rem 1.5rem;
+    font-size: 1.88rem;
+    font-weight: 400;
+    color: #fff;
+    background-color: #24242d
+}
+
+@media not (min-width:920px) {
+    .payment-body.svelte-1g0mjt .description:where(.svelte-1g0mjt) .title:where(.svelte-1g0mjt) {
+        padding: .8rem 1rem;
+        font-size: 1.4rem
+    }
+}
+
+.payment-body.svelte-1g0mjt .description:where(.svelte-1g0mjt) .content:where(.svelte-1g0mjt) {
+    padding: 2.58rem 1.5rem;
+    color: #000;
+    background-color: #f5f5f5
+}
+
+@media not (min-width:920px) {
+    .payment-body.svelte-1g0mjt .description:where(.svelte-1g0mjt) .content:where(.svelte-1g0mjt) {
+        padding: 1.6rem;
+        font-size: 1.4rem
+    }
+}
+
+.payment-iframe-popup.core-popup .overlay .content {
+    height: 100%;
+    max-height: 80dvh;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto
+}
+
+.payment-iframe-popup.core-popup .overlay .content .close {
+    top: 1rem;
+    right: 1rem
+}
+
+[dir=rtl] .payment-iframe-popup.core-popup .overlay .content .close {
+    right: auto;
+    left: 1rem
+}
+
+.payment-iframe-popup.core-popup .overlay .content iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 60dvh;
+    border: none
+}
+
+.key-value-pairs-popup .title {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    font-size: 18px
+}
+
+.key-value-pairs-popup .close {
+    top: 1rem;
+    right: 1rem
+}
+
+[dir=rtl] .key-value-pairs-popup .close {
+    right: auto;
+    left: 1rem
+}
+
+.key-value-pairs-popup.core-popup .overlay .content {
+    padding: 2rem
+}
+
+.key-value-pairs-popup.core-popup .overlay .key-value-pairs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem
+}
+
+.key-value-pairs-popup.core-popup .overlay .key-value-pair {
+    display: flex;
+    align-items: center;
+    padding: 1.6rem;
+    color: #fff;
+    background-color: #24242d
+}
+
+.key-value-pairs-popup.core-popup .overlay .name {
+    margin-right: 1rem;
+    font-size: 1.4rem;
+    font-weight: 400
+}
+
+[dir=rtl] .key-value-pairs-popup.core-popup .overlay .name {
+    margin-right: 0;
+    margin-left: 1rem
+}
+
+.key-value-pairs-popup.core-popup .overlay .value {
+    margin-right: 3rem;
+    font-size: 1.4rem;
+    font-weight: 400
+}
+
+[dir=rtl] .key-value-pairs-popup.core-popup .overlay .value {
+    margin-right: 0;
+    margin-left: 3rem
+}
+
+.key-value-pairs-popup.core-popup .overlay .icon {
+    margin-left: auto;
+    cursor: pointer
+}
+
+[dir=rtl] .key-value-pairs-popup.core-popup .overlay .icon {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) {
+    display: flex
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .container:where(.svelte-1palw2a) {
+    display: flex;
+    width: 100%;
+    height: 11.125rem;
+    padding-top: 1.83rem;
+    padding-bottom: 1.57rem;
+    cursor: pointer;
+    border-top: 1px solid rgba(255, 255, 255, .1)
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .container:where(.svelte-1palw2a) {
+        display: flex;
+        padding: 2.5rem 1.85rem;
+        background: linear-gradient(270deg, #2c2c357a, #3a41557a);
+        border-top: unset
+    }
+    [dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .container:where(.svelte-1palw2a) {
+        background: linear-gradient(-270deg, #2c2c357a, #3a41557a)
+    }
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .logo:where(.svelte-1palw2a) {
+    flex-shrink: 0;
+    width: 9.3rem;
+    height: 5.4rem
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .logo:where(.svelte-1palw2a) img:where(.svelte-1palw2a) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .logo:where(.svelte-1palw2a) {
+        width: 8.6rem;
+        height: 4.9rem;
+        margin-right: 1.853rem
+    }
+    [dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .logo:where(.svelte-1palw2a) {
+        margin-right: 0;
+        margin-left: 1.853rem
+    }
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .wrapper:where(.svelte-1palw2a) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    margin-left: 5rem
+}
+
+[dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .wrapper:where(.svelte-1palw2a) {
+    margin-left: 0;
+    margin-right: 5rem
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .wrapper:where(.svelte-1palw2a) {
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+        margin-left: 0
+    }
+    [dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .wrapper:where(.svelte-1palw2a) {
+        margin-left: 0;
+        margin-right: 0
+    }
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) {
+        display: flex;
+        flex-direction: column;
+        gap: .6rem
+    }
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .deposit-with:where(.svelte-1palw2a) {
+        display: flex;
+        flex-direction: column;
+        gap: .6rem
+    }
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .deposit-with:where(.svelte-1palw2a) .deposit:where(.svelte-1palw2a) {
+        margin-bottom: .85rem;
+        color: #fff
+    }
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .info-name:where(.svelte-1palw2a) {
+    margin-bottom: .6rem;
+    font-size: 1.4rem;
+    color: #97a1c280
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .info-value:where(.svelte-1palw2a) {
+    font-size: 1.4rem;
+    color: #bbc6e9
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .limits:where(.svelte-1palw2a) {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.4rem
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .info:where(.svelte-1palw2a) .limits:where(.svelte-1palw2a) {
+        display: flex;
+        flex-direction: row;
+        gap: .3rem;
+        font-size: 1.2rem
+    }
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .arrow:where(.svelte-1palw2a) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 5.2rem;
+    margin-left: auto;
+    background-color: #283042
+}
+
+[dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .arrow:where(.svelte-1palw2a) {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .arrow:where(.svelte-1palw2a) svg {
+    transform: rotate(-90deg)
+}
+
+[dir=rtl] .payment-item.svelte-1palw2a .item-container:where(.svelte-1palw2a) .arrow:where(.svelte-1palw2a) svg {
+    transform: rotate(90deg)
+}
+
+.not-allowed-popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 1.4rem
+}
+
+.not-allowed-popup .content {
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    padding: 2.4rem !important;
+    border-top: 1px solid #00aaeb;
+    border-radius: 0 !important
+}
+
+.not-allowed-popup .content .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer
+}
+
+[dir=rtl] .not-allowed-popup .content .icon {
+    right: auto;
+    left: 10px
+}
+
+.not-allowed-popup .content .icon svg path {
+    fill: #fff !important
+}
+
+.payments.not-allowed.svelte-1iv611z {
+    pointer-events: none;
+    opacity: .5;
+    filter: grayscale(.3)
+}
+
+@media not (min-width:920px) {
+    .payments.svelte-1iv611z .payments:where(.svelte-1iv611z) {
+        display: flex;
+        flex-direction: column;
+        gap: .35rem
+    }
+}
+
+.payment-iframe-popup .content {
+    width: 50rem;
+    height: 50rem;
+    padding: 0;
+    overflow: hidden
+}
+
+@media not (min-width:920px) {
+    .payment-iframe-popup .content {
+        height: 80vh
+    }
+}
+
+.payments-skeleton.svelte-btsnkd {
+    display: flex;
+    flex-direction: column;
+    width: 100%
+}
+
+.payment-item.svelte-btsnkd {
+    width: 100%
+}
+
+.payment-item.svelte-btsnkd .item-container:where(.svelte-btsnkd) {
+    display: flex;
+    width: 100%
+}
+
+.payment-item.svelte-btsnkd .arrow:where(.svelte-btsnkd) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 5.2rem;
+    margin-left: auto;
+    background-color: #283042
+}
+
+[dir=rtl] .payment-item.svelte-btsnkd .arrow:where(.svelte-btsnkd) {
+    margin-left: 0;
+    margin-right: auto
+}
+
+.payment-item.svelte-btsnkd .container:where(.svelte-btsnkd) {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: 10.125rem;
+    padding-top: 1.83rem;
+    padding-bottom: 1.57rem;
+    border-top: 1px solid rgba(255, 255, 255, .1)
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-btsnkd .container:where(.svelte-btsnkd) {
+        padding: 2.5rem 1.85rem;
+        background: linear-gradient(270deg, #2c2c357a, #3a41557a);
+        border-top: unset
+    }
+    [dir=rtl] .payment-item.svelte-btsnkd .container:where(.svelte-btsnkd) {
+        background: linear-gradient(-270deg, #2c2c357a, #3a41557a)
+    }
+}
+
+.payment-item.svelte-btsnkd .logo:where(.svelte-btsnkd) {
+    flex-shrink: 0
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-btsnkd .logo:where(.svelte-btsnkd) .ui-skeleton-block {
+        width: 8.6rem !important;
+        height: 4.9rem !important
+    }
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-btsnkd .logo:where(.svelte-btsnkd) {
+        margin-right: 1.853rem
+    }
+    [dir=rtl] .payment-item.svelte-btsnkd .logo:where(.svelte-btsnkd) {
+        margin-right: 0;
+        margin-left: 1.853rem
+    }
+}
+
+.payment-item.svelte-btsnkd .wrapper:where(.svelte-btsnkd) {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    min-width: 0;
+    margin-left: 5rem
+}
+
+[dir=rtl] .payment-item.svelte-btsnkd .wrapper:where(.svelte-btsnkd) {
+    margin-left: 0;
+    margin-right: 5rem
+}
+
+@media not (min-width:920px) {
+    .payment-item.svelte-btsnkd .wrapper:where(.svelte-btsnkd) {
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+        margin-left: 0
+    }
+    [dir=rtl] .payment-item.svelte-btsnkd .wrapper:where(.svelte-btsnkd) {
+        margin-left: 0;
+        margin-right: 0
+    }
+}
+
+.payment-item.svelte-btsnkd .info:where(.svelte-btsnkd) {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    min-width: 0
+}
+
+@media not (min-width:920px) {
+    .desktop-only.svelte-btsnkd {
+        display: none
+    }
+}

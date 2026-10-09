@@ -1,0 +1,3030 @@
+@{
+    List<Titan.Repository.Database.Currency> currencyList = (List<Titan.Repository.Database.Currency>)ViewData["CurrencyList"];
+}
+@model MyStake.Models.RegisterViewModel
+@using Microsoft.Extensions.Localization
+@{
+    string ReturnUrl = "";
+    if (ViewData["ReturnUrl"] != null)
+    {
+        ReturnUrl = (string)ViewData["ReturnUrl"];
+    }
+}
+<style>
+  body.signup-modal-open,
+  body.login-modal-open {
+    overflow: hidden;
+  }
+  .signup-modal,
+  .login-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.25s ease,
+      visibility 0.25s ease;
+  }
+  .signup-modal.is-open,
+  .login-modal.is-open {
+    visibility: visible;
+    opacity: 1;
+  }
+  .signup-backdrop,
+  .login-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 50% 25%,
+        rgba(124, 92, 255, 0.14),
+        transparent 45%
+      ),
+      rgba(2, 5, 12, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .signup-dialog,
+  .login-dialog {
+    position: relative;
+    z-index: 2;
+    width: min(860px, calc(100vw - 40px));
+    height: min(570px, calc(100vh - 40px));
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background: linear-gradient(
+      145deg,
+      rgba(25, 29, 42, 0.99),
+      rgba(13, 17, 27, 0.99)
+    );
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+    transform: translateY(18px) scale(0.98);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .signup-modal.is-open .signup-dialog,
+  .login-modal.is-open .login-dialog {
+    transform: translateY(0) scale(1);
+  }
+  .account-modal-visual {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: #111522;
+  }
+  .account-modal-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.06);
+    transition:
+      opacity 0.8s ease,
+      transform 5s ease;
+  }
+  .account-modal-slide.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .account-modal-slide img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .account-modal-visual:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(5, 7, 14, 0.05) 20%,
+      rgba(5, 7, 14, 0.9) 100%
+    );
+    pointer-events: none;
+  }
+  .account-modal-visual-content {
+    position: absolute;
+    left: 28px;
+    right: 22px;
+    bottom: 30px;
+    z-index: 3;
+  }
+  .account-modal-visual-content span {
+    display: block;
+    margin-bottom: 7px;
+    color: #00aaeb;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+  .account-modal-visual-content h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+  }
+  .account-modal-dots {
+    position: absolute;
+    left: 28px;
+    bottom: 22px;
+    z-index: 4;
+    display: flex;
+    gap: 5px;
+  }
+  .account-modal-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transition: 0.25s ease;
+    cursor: pointer;
+  }
+  .account-modal-dots span.active {
+    width: 18px;
+    border-radius: 10px;
+    background: #00aaeb;
+  }
+  .signup-content,
+  .login-content {
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+  }
+  .signup-content::-webkit-scrollbar,
+  .login-content::-webkit-scrollbar {
+    width: 5px;
+  }
+  .signup-content::-webkit-scrollbar-track,
+  .login-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .signup-content::-webkit-scrollbar-thumb,
+  .login-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+  }
+  .account-modal-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 22px 28px 0;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+  .account-modal-tab {
+    flex: 1;
+    height: 36px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #7f8798;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .account-modal-tab:hover {
+    color: #dfe2ea;
+  }
+  .account-modal-tab.active {
+    color: #fff;
+    background: linear-gradient( 135deg, #00aaeb,#00aaeb );
+    box-shadow: 0 6px 18px rgba(93, 61, 245, 0.18);
+  }
+  .signup-header,
+  .login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 22px 28px 18px;
+  }
+  .signup-eyebrow,
+  .login-eyebrow {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: #00aaeb;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+  .signup-header h2,
+  .login-header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+  }
+  .signup-header p,
+  .login-header p {
+    margin: 6px 0 0;
+    color: #858d9f;
+    font-size: 12px;
+  }
+  .signup-close,
+  .login-close {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #a8afbf;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .signup-close:hover,
+  .login-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+  .signup-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  .signup-full {
+    grid-column: 1/-1;
+  }
+  #signupForm,
+  #loginForm {
+    padding: 0 28px 28px;
+  }
+  .signup-field,
+  .login-field {
+    margin-bottom: 14px;
+  }
+  .signup-field label,
+  .login-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #c8cdd8;
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .signup-input-wrapper,
+  .login-input-wrapper {
+    position: relative;
+  }
+  .signup-input-wrapper input,
+  .signup-input-wrapper select,
+  .login-input-wrapper input {
+    width: 100%;
+    height: 46px;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.045);
+    color: #f5f7fb;
+    font-size: 13px;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .signup-input-wrapper input::placeholder,
+  .login-input-wrapper input::placeholder {
+    color: #646b7b;
+  }
+  .signup-input-wrapper input:focus,
+  .signup-input-wrapper select:focus,
+  .login-input-wrapper input:focus {
+                border-color: #00aaeb;
+    background: rgba(124, 92, 255, 0.055);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
+  }
+  .signup-input-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 38px;
+    background-image:
+      linear-gradient(45deg, transparent 50%, #777f92 50%),
+      linear-gradient(135deg, #777f92 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 20px,
+      calc(100% - 13px) 20px;
+    background-size:
+      5px 5px,
+      5px 5px;
+    background-repeat: no-repeat;
+  }
+  .signup-input-wrapper select option {
+    background: #171b27;
+    color: #fff;
+  }
+  .signup-input-wrapper:has(.signup-input-icon) input,
+  .login-input-wrapper:has(.login-input-icon) input {
+    padding-left: 36px;
+  }
+  .signup-input-icon,
+  .login-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777f92;
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .password-toggle,
+  .login-password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #858da0;
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .password-toggle:hover,
+  .login-password-toggle:hover {
+    color: #b9b0ff;
+  }
+  .signup-input-wrapper:has(.password-toggle) input,
+  .login-input-wrapper:has(.login-password-toggle) input {
+    padding-right: 58px;
+  }
+  .signup-error,
+  .login-error {
+    display: block;
+    min-height: 15px;
+    margin-top: 5px;
+    color: #ff6f86;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .signup-field.has-error input,
+  .signup-field.has-error select,
+  .login-field.has-error input {
+    border-color: rgba(255, 85, 112, 0.65);
+    box-shadow: 0 0 0 3px rgba(255, 85, 112, 0.06);
+  }
+  .signup-field.is-valid input,
+  .signup-field.is-valid select,
+  .login-field.is-valid input {
+    border-color: rgba(62, 207, 142, 0.35);
+  }
+  .password-requirements {
+    margin: 0 0 15px;
+    padding: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+  .requirement-title {
+    margin-bottom: 9px;
+    color: #858da0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .requirement-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 14px;
+  }
+  .requirement-list span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #737b8d;
+    font-size: 11px;
+    transition: 0.2s ease;
+  }
+  .requirement-list i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4d5464;
+  }
+  .requirement-list span.valid {
+    color: #6fdfaa;
+  }
+  .requirement-list span.valid i {
+    background: #4ddd96;
+    box-shadow: 0 0 8px rgba(77, 221, 150, 0.5);
+  }
+  .signup-server-message,
+  .login-server-message {
+    display: none;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 82, 109, 0.08);
+    color: #ff7188;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .signup-server-message.is-visible,
+  .login-server-message.is-visible {
+    display: block;
+  }
+  .login-server-message.success {
+    background: rgba(62, 207, 142, 0.08);
+    color: #6fdfaa;
+  }
+  .signup-submit,
+  .login-submit {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    border: 0;
+    border-radius: 13px;
+        background: linear-gradient(135deg, #00aaeb, #00aaeb);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(93, 61, 245, 0.18);
+    transition: 0.25s ease;
+  }
+  .signup-submit:hover:not(:disabled),
+  .login-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 35px rgba(93, 61, 245, 0.3);
+  }
+  .signup-submit:disabled,
+  .login-submit:disabled {
+    cursor: not-allowed;
+    background: #292e3b;
+    color: #666d7e;
+    box-shadow: none;
+  }
+  .signup-submit.is-loading,
+  .login-submit.is-loading {
+    pointer-events: none;
+  }
+  .signup-submit-loader,
+  .login-submit-loader {
+    display: none;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: accountModalSpin 0.7s linear infinite;
+  }
+  .signup-submit.is-loading .signup-submit-text,
+  .login-submit.is-loading .login-submit-text {
+    display: none;
+  }
+  .signup-submit.is-loading .signup-submit-loader,
+  .login-submit.is-loading .login-submit-loader {
+    display: block;
+  }
+  @@keyframes accountModalSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @@media (max-width: 760px) {
+    .signup-dialog,
+    .login-dialog {
+      width: min(680px, calc(100vw - 28px));
+      height: min(680px, calc(100vh - 28px));
+      grid-template-columns: 1fr;
+      grid-template-rows: 145px minmax(0, 1fr);
+      border-radius: 22px;
+    }
+    .account-modal-visual {
+      min-height: 145px;
+    }
+    .account-modal-visual-content {
+      left: 20px;
+      bottom: 22px;
+    }
+    .account-modal-visual-content h3 {
+      font-size: 19px;
+    }
+    .account-modal-dots {
+      left: auto;
+      right: 20px;
+      bottom: 20px;
+    }
+    .account-modal-tabs {
+      margin: 16px 20px 0;
+      margin-top: 48px;
+    }
+    .signup-header,
+    .login-header {
+      padding: 18px 20px 14px;
+    }
+    #signupForm,
+    #loginForm {
+      padding: 0 20px 22px;
+    }
+  }
+  @@media (max-width: 560px) {
+    .signup-modal,
+    .login-modal {
+      align-items: flex-end;
+      padding: 0;
+    }
+    .signup-dialog,
+    .login-dialog {
+      width: 100%;
+      height: 94vh;
+      max-height: 94vh;
+      grid-template-rows: 125px minmax(0, 1fr);
+      border-radius: 22px 22px 0 0;
+      transform: translateY(30px);
+    }
+    .signup-modal.is-open .signup-dialog,
+    .login-modal.is-open .login-dialog {
+      transform: translateY(0);
+    }
+    .account-modal-visual {
+      min-height: 125px;
+    }
+    .account-modal-visual-content {
+      left: 18px;
+      bottom: 18px;
+    }
+    .account-modal-visual-content span {
+      margin-bottom: 4px;
+    }
+    .account-modal-visual-content h3 {
+      font-size: 17px;
+    }
+    .account-modal-dots {
+      right: 18px;
+      bottom: 17px;
+    }
+    .account-modal-tabs {
+      margin: 14px 18px 0;
+      margin-top: 46px;
+    }
+    .signup-header,
+    .login-header {
+      padding: 16px 18px 12px;
+    }
+    .signup-header h2,
+    .login-header h2 {
+      font-size: 25px;
+    }
+    #signupForm,
+    #loginForm {
+      padding: 0 18px 20px;
+    }
+  }
+  @@media (max-width: 430px) {
+    .signup-dialog,
+    .login-dialog {
+      height: 96vh;
+      max-height: 96vh;
+    }
+    .signup-form-grid {
+      grid-template-columns: 1fr;
+    }
+    .signup-full {
+      grid-column: auto;
+    }
+    .requirement-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .signup-field,
+    .login-field {
+      margin-bottom: 12px;
+    }
+  }
+  @@media (max-width: 360px) {
+    .requirement-list {
+      grid-template-columns: 1fr;
+    }
+    .account-modal-tab {
+      font-size: 11px;
+    }
+  }
+
+  /* Combined account modal structure */
+  .account-tab-panel {
+    display: none;
+    min-width: 0;
+  }
+  .account-tab-panel.is-active {
+    display: block;
+  }
+  #closeSignupModal {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    z-index: 30;
+  }
+  .signup-content .account-modal-tabs {
+    position: relative;
+    z-index: 10;
+    margin-top: 52px;
+  }
+  .signup-modal {
+    pointer-events: none;
+  }
+  .signup-modal.is-open {
+    pointer-events: auto;
+  }
+</style>
+
+<!-- Combined Register / Login Modal -->
+<div id="signupModal" class="signup-modal" aria-hidden="true">
+
+    <div class="signup-backdrop"></div>
+
+    <div class="signup-dialog" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+
+        <div class="account-modal-visual" id="signupVisual">
+            <div class="account-modal-slide active"><img src="~/images/login-bg.png" alt="Welcome"></div>
+@*             <div class="account-modal-slide"><img src="~/images/7f809c1d-09e2-41e3-b449-60221165d7d2.png" alt="Casino"></div>
+            <div class="account-modal-slide"><img src="~/images/7f809c1d-09e2-41e3-b449-60221165d7d2.png" alt="Games"></div> *@
+            <div class="account-modal-visual-content"><span>CREATE ACCOUNT</span><h3>Have a great time at TITANBET.</h3></div>
+            <div class="account-modal-dots"><span class="active"></span>
+              @*   <span></span><span></span> *@
+                </div>
+        </div>
+
+        <div class="signup-content">
+
+            <div class="account-modal-tabs" role="tablist" aria-label="Account">
+                <button type="button" class="account-modal-tab active" data-account-tab="register" role="tab" aria-selected="true">Register</button>
+                <button type="button" class="account-modal-tab" data-account-tab="login" role="tab" aria-selected="false">Sign In</button>
+            </div>
+
+            <button type="button" id="closeSignupModal" class="signup-close" aria-label="Close">&times;</button>
+
+            <div id="registerTabContent" class="account-tab-panel is-active" role="tabpanel">
+
+
+
+
+        <!-- Header -->
+        <div class="signup-header">
+            <div>
+                <span class="signup-eyebrow">CREATE ACCOUNT</span>
+                <h2 id="signupTitle">Join us</h2>
+                <p>Create your account and get started.</p>
+            </div>
+
+
+        </div>
+
+
+        <!-- Form -->
+        <form id="signupForm"
+              method="post"
+              action="@Url.Action("Register", "Account")"
+              data-no-loading
+              novalidate>
+
+            @Html.AntiForgeryToken()
+
+            <div class="signup-form-grid">
+
+                <!-- First Name -->
+                <div class="signup-field">
+                    <label for="FirstName">First Name</label>
+
+                    <div class="signup-input-wrapper">
+                        <input type="text"
+                               id="FirstName"
+                               name="FirstName"
+                               autocomplete="given-name"
+                               placeholder="First name">
+                    </div>
+
+                    <span class="signup-error"
+                          id="firstNameError"></span>
+                </div>
+
+
+                <!-- Last Name -->
+                <div class="signup-field">
+                    <label for="LastName">Last Name</label>
+
+                    <div class="signup-input-wrapper">
+                        <input type="text"
+                               id="LastName"
+                               name="LastName"
+                               autocomplete="family-name"
+                               placeholder="Last name">
+                    </div>
+
+                    <span class="signup-error"
+                          id="lastNameError"></span>
+                </div>
+
+
+                <!-- Email -->
+                <div class="signup-field signup-full">
+                    <label for="Email">Email</label>
+
+                    <div class="signup-input-wrapper">
+                        <span class="signup-input-icon"></span>
+
+                        <input type="text"
+                               id="Email"
+                               name="Email"
+                               autocomplete="email"
+                               placeholder="yourname@example.com">
+                    </div>
+
+                    <span class="signup-error"
+                          id="emailError"></span>
+                </div>
+
+
+                <!-- Password -->
+                <div class="signup-field">
+                    <label for="Password">Password</label>
+
+                    <div class="signup-input-wrapper">
+                        <input type="password"
+                               id="Password"
+                               name="Password"
+                               autocomplete="new-password"
+                               placeholder="Enter password">
+
+                        <button type="button"
+                                class="password-toggle"
+                                data-target="Password">
+                            Show
+                        </button>
+                    </div>
+
+                    <span class="signup-error"
+                          id="passwordError"></span>
+                </div>
+
+
+                <!-- Confirm Password -->
+                <div class="signup-field">
+                    <label for="ConfirmPassword">Confirm Password</label>
+
+                    <div class="signup-input-wrapper">
+                        <input type="password"
+                               id="ConfirmPassword"
+                               name="ConfirmPassword"
+                               autocomplete="new-password"
+                               placeholder="Repeat password">
+
+                        <button type="button"
+                                class="password-toggle"
+                                data-target="ConfirmPassword">
+                            Show
+                        </button>
+                    </div>
+
+                    <span class="signup-error"
+                          id="confirmPasswordError"></span>
+                </div>
+
+
+                <!-- Currency -->
+                <div class="signup-field">
+                    <label for="CurrencyId">Currency</label>
+
+                    <div class="signup-input-wrapper">
+                        <select id="CurrencyId"
+                                name="CurrencyId">
+                            <option value="1" selected>USD — US Dollar</option>
+                        </select>
+                    </div>
+
+                    <span class="signup-error"
+                          id="currencyError"></span>
+                </div>
+
+
+                <!-- Country -->
+                <div class="signup-field">
+                    <label for="CountryId">Country</label>
+
+                    <div class="signup-input-wrapper">
+                        <select id="CountryId"
+                                name="CountryId">
+                            <option value="">Select country</option>
+
+                            <option value="AF">Afghanistan</option>
+                            <option value="AL">Albania</option>
+                            <option value="DZ">Algeria</option>
+                            <option value="AD">Andorra</option>
+                            <option value="AO">Angola</option>
+                            <option value="AG">Antigua and Barbuda</option>
+                            <option value="AR">Argentina</option>
+                            <option value="AM">Armenia</option>
+                            <option value="AU">Australia</option>
+                            <option value="AT">Austria</option>
+                            <option value="AZ">Azerbaijan</option>
+
+                            <option value="BS">Bahamas</option>
+                            <option value="BH">Bahrain</option>
+                            <option value="BD">Bangladesh</option>
+                            <option value="BB">Barbados</option>
+                            <option value="BY">Belarus</option>
+                            <option value="BE">Belgium</option>
+                            <option value="BZ">Belize</option>
+                            <option value="BJ">Benin</option>
+                            <option value="BT">Bhutan</option>
+                            <option value="BO">Bolivia</option>
+                            <option value="BA">Bosnia and Herzegovina</option>
+                            <option value="BW">Botswana</option>
+                            <option value="BR">Brazil</option>
+                            <option value="BN">Brunei</option>
+                            <option value="BG">Bulgaria</option>
+                            <option value="BF">Burkina Faso</option>
+                            <option value="BI">Burundi</option>
+
+                            <option value="CV">Cabo Verde</option>
+                            <option value="KH">Cambodia</option>
+                            <option value="CM">Cameroon</option>
+                            <option value="CA">Canada</option>
+                            <option value="CF">Central African Republic</option>
+                            <option value="TD">Chad</option>
+                            <option value="CL">Chile</option>
+                            <option value="CN">China</option>
+                            <option value="CO">Colombia</option>
+                            <option value="KM">Comoros</option>
+                            <option value="CG">Congo</option>
+                            <option value="CD">Congo, Democratic Republic</option>
+                            <option value="CR">Costa Rica</option>
+                            <option value="CI">Côte d'Ivoire</option>
+                            <option value="HR">Croatia</option>
+                            <option value="CU">Cuba</option>
+                            <option value="CY">Cyprus</option>
+                            <option value="CZ">Czech Republic</option>
+
+                            <option value="DK">Denmark</option>
+                            <option value="DJ">Djibouti</option>
+                            <option value="DM">Dominica</option>
+                            <option value="DO">Dominican Republic</option>
+
+                            <option value="EC">Ecuador</option>
+                            <option value="EG">Egypt</option>
+                            <option value="SV">El Salvador</option>
+                            <option value="GQ">Equatorial Guinea</option>
+                            <option value="ER">Eritrea</option>
+                            <option value="EE">Estonia</option>
+                            <option value="SZ">Eswatini</option>
+                            <option value="ET">Ethiopia</option>
+
+                            <option value="FJ">Fiji</option>
+                            <option value="FI">Finland</option>
+                            <option value="FR">France</option>
+
+                            <option value="GA">Gabon</option>
+                            <option value="GM">Gambia</option>
+                            <option value="GE">Georgia</option>
+                            <option value="DE">Germany</option>
+                            <option value="GH">Ghana</option>
+                            <option value="GR">Greece</option>
+                            <option value="GD">Grenada</option>
+                            <option value="GT">Guatemala</option>
+                            <option value="GN">Guinea</option>
+                            <option value="GW">Guinea-Bissau</option>
+                            <option value="GY">Guyana</option>
+
+                            <option value="HT">Haiti</option>
+                            <option value="HN">Honduras</option>
+                            <option value="HU">Hungary</option>
+
+                            <option value="IS">Iceland</option>
+                            <option value="IN">India</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="IR">Iran</option>
+                            <option value="IQ">Iraq</option>
+                            <option value="IE">Ireland</option>
+                            <option value="IL">Israel</option>
+                            <option value="IT">Italy</option>
+
+                            <option value="JM">Jamaica</option>
+                            <option value="JP">Japan</option>
+                            <option value="JO">Jordan</option>
+
+                            <option value="KZ">Kazakhstan</option>
+                            <option value="KE">Kenya</option>
+                            <option value="KI">Kiribati</option>
+                            <option value="KW">Kuwait</option>
+                            <option value="KG">Kyrgyzstan</option>
+
+                            <option value="LA">Laos</option>
+                            <option value="LV">Latvia</option>
+                            <option value="LB">Lebanon</option>
+                            <option value="LS">Lesotho</option>
+                            <option value="LR">Liberia</option>
+                            <option value="LY">Libya</option>
+                            <option value="LI">Liechtenstein</option>
+                            <option value="LT">Lithuania</option>
+                            <option value="LU">Luxembourg</option>
+
+                            <option value="MG">Madagascar</option>
+                            <option value="MW">Malawi</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="MV">Maldives</option>
+                            <option value="ML">Mali</option>
+                            <option value="MT">Malta</option>
+                            <option value="MH">Marshall Islands</option>
+                            <option value="MR">Mauritania</option>
+                            <option value="MU">Mauritius</option>
+                            <option value="MX">Mexico</option>
+                            <option value="FM">Micronesia</option>
+                            <option value="MD">Moldova</option>
+                            <option value="MC">Monaco</option>
+                            <option value="MN">Mongolia</option>
+                            <option value="ME">Montenegro</option>
+                            <option value="MA">Morocco</option>
+                            <option value="MZ">Mozambique</option>
+                            <option value="MM">Myanmar</option>
+
+                            <option value="NA">Namibia</option>
+                            <option value="NR">Nauru</option>
+                            <option value="NP">Nepal</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="NZ">New Zealand</option>
+                            <option value="NI">Nicaragua</option>
+                            <option value="NE">Niger</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="MK">North Macedonia</option>
+                            <option value="NO">Norway</option>
+
+                            <option value="OM">Oman</option>
+
+                            <option value="PK">Pakistan</option>
+                            <option value="PW">Palau</option>
+                            <option value="PA">Panama</option>
+                            <option value="PG">Papua New Guinea</option>
+                            <option value="PY">Paraguay</option>
+                            <option value="PE">Peru</option>
+                            <option value="PH">Philippines</option>
+                            <option value="PL">Poland</option>
+                            <option value="PT">Portugal</option>
+
+                            <option value="QA">Qatar</option>
+
+                            <option value="RO">Romania</option>
+                            <option value="RU">Russia</option>
+                            <option value="RW">Rwanda</option>
+
+                            <option value="KN">Saint Kitts and Nevis</option>
+                            <option value="LC">Saint Lucia</option>
+                            <option value="VC">Saint Vincent and the Grenadines</option>
+                            <option value="WS">Samoa</option>
+                            <option value="SM">San Marino</option>
+                            <option value="ST">São Tomé and Príncipe</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="SN">Senegal</option>
+                            <option value="RS">Serbia</option>
+                            <option value="SC">Seychelles</option>
+                            <option value="SL">Sierra Leone</option>
+                            <option value="SG">Singapore</option>
+                            <option value="SK">Slovakia</option>
+                            <option value="SI">Slovenia</option>
+                            <option value="SB">Solomon Islands</option>
+                            <option value="SO">Somalia</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="SS">South Sudan</option>
+                            <option value="ES">Spain</option>
+                            <option value="LK">Sri Lanka</option>
+                            <option value="SD">Sudan</option>
+                            <option value="SR">Suriname</option>
+                            <option value="SE">Sweden</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="SY">Syria</option>
+
+                            <option value="TW">Taiwan</option>
+                            <option value="TJ">Tajikistan</option>
+                            <option value="TZ">Tanzania</option>
+                            <option value="TH">Thailand</option>
+                            <option value="TL">Timor-Leste</option>
+                            <option value="TG">Togo</option>
+                            <option value="TO">Tonga</option>
+                            <option value="TT">Trinidad and Tobago</option>
+                            <option value="TN">Tunisia</option>
+                            <option value="TR">Turkey</option>
+                            <option value="TM">Turkmenistan</option>
+                            <option value="TV">Tuvalu</option>
+
+                            <option value="UG">Uganda</option>
+                            <option value="UA">Ukraine</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="US">United States</option>
+                            <option value="UY">Uruguay</option>
+                            <option value="UZ">Uzbekistan</option>
+
+                            <option value="VU">Vanuatu</option>
+                            <option value="VA">Vatican City</option>
+                            <option value="VE">Venezuela</option>
+                            <option value="VN">Vietnam</option>
+
+                            <option value="YE">Yemen</option>
+
+                            <option value="ZM">Zambia</option>
+                            <option value="ZW">Zimbabwe</option>
+                        </select>
+                    </div>
+
+                    <span class="signup-error"
+                          id="countryError"></span>
+                </div>
+
+            </div>
+            <!-- Birthday -->
+            <div class="signup-field">
+                <label for="Birthday">Birthday</label>
+
+                <div class="signup-input-wrapper">
+                    <input type="date"
+                           id="Birthday"
+                           name="Birthday">
+                </div>
+
+                <span class="signup-error"
+                      id="birthdayError"></span>
+            </div>
+
+
+            <!-- Promo Code -->
+            <div class="signup-field">
+                <label for="PromoCode">Promo Code</label>
+
+                <div class="signup-input-wrapper">
+                    <input type="text"
+                           id="PromoCode"
+                           name="promocode"
+                           value="@((ViewData["PromoCode"] as string) ?? "")"
+                           placeholder="Promo code">
+                </div>
+
+                <span id="promoCodeError"
+                      class="signup-error"></span>
+            </div>
+
+            <!-- Password Requirements -->
+            <div class="password-requirements">
+                <div class="requirement-title">
+                    Password requirements
+                </div>
+
+                <div class="requirement-list">
+
+                    <span id="reqLength">
+                        <i></i>
+                        6–20 characters
+                    </span>
+
+                    <span id="reqLower">
+                        <i></i>
+                        Lowercase
+                    </span>
+
+                    <span id="reqUpper">
+                        <i></i>
+                        Uppercase
+                    </span>
+
+                    <span id="reqNumber">
+                        <i></i>
+                        Number
+                    </span>
+
+                    <span id="reqSpecial">
+                        <i></i>
+                        Special character
+                    </span>
+
+                </div>
+            </div>
+
+
+            <!-- Server message -->
+            <div id="signupServerMessage"
+                 class="signup-server-message">
+            </div>
+
+
+            <!-- Submit -->
+            <button type="submit"
+                    id="signupSubmit"
+                    class="signup-submit"
+                    disabled>
+
+                <span class="signup-submit-text">
+                    Create Account
+                </span>
+
+                <span class="signup-submit-loader"></span>
+            </button>
+
+        </form>
+
+            </div>
+
+            <div id="loginTabContent" class="account-tab-panel" role="tabpanel" aria-hidden="true">
+
+
+
+
+        <!-- =================================================
+             TOP HEADER
+             Close button stays at the very top
+             ================================================= -->
+
+        <div class="login-header">
+
+            <div>
+                <span class="login-eyebrow">
+                    ACCOUNT LOGIN
+                </span>
+
+                <h2 id="loginTitle">
+                    Sign in
+                </h2>
+
+                <p>
+                    Enter your credentials to continue.
+                </p>
+            </div>
+
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOGIN FORM
+             ================================================= -->
+
+        <form id="loginForm"
+              method="post"
+              action="@Url.Action("DoLogin", "Account")"
+              data-no-loading
+              novalidate>
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- Email -->
+
+            <div class="login-field">
+
+                <label for="LoginEmail">
+                    Email
+                </label>
+
+                <div class="login-input-wrapper">
+
+                    <span class="login-input-icon">
+                        
+                    </span>
+
+                    <input type="email"
+                           id="LoginEmail"
+                           name="Email"
+                           autocomplete="email"
+                           placeholder="yourname@example.com">
+
+                </div>
+
+                <span id="loginEmailError"
+                      class="login-error">
+                </span>
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="login-field">
+
+                <label for="LoginPassword">
+                    Password
+                </label>
+
+                <div class="login-input-wrapper">
+
+                    <input type="password"
+                           id="LoginPassword"
+                           style="padding-left:36px;"
+                           name="Password"
+                           autocomplete="current-password"
+                           placeholder="Enter your password">
+
+                    <button type="button"
+                            class="login-password-toggle"
+                            data-target="LoginPassword">
+                        Show
+                    </button>
+
+                </div>
+
+                <span id="loginPasswordError"
+                      class="login-error">
+                </span>
+
+            </div>
+
+            <!-- Server Message -->
+
+            <div id="loginServerMessage"
+                 class="login-server-message">
+            </div>
+
+
+            <!-- Submit -->
+
+            <button type="submit"
+                    id="loginSubmit"
+                    class="login-submit"
+                    disabled>
+
+                <span class="login-submit-text">
+                    Sign In
+                </span>
+
+                <span class="login-submit-loader"></span>
+
+            </button>
+
+        </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(){
+    if(window.__accountModalControllerInitialized)return;
+    window.__accountModalControllerInitialized=true;
+
+    document.addEventListener("DOMContentLoaded",function(){
+        const modal=document.getElementById("signupModal");
+        if(!modal)return;
+
+        const tabs=modal.querySelectorAll(".account-modal-tab");
+        const registerPanel=document.getElementById("registerTabContent");
+        const loginPanel=document.getElementById("loginTabContent");
+        const closeButton=document.getElementById("closeSignupModal");
+        const backdrop=modal.querySelector(".signup-backdrop");
+
+        function setActive(tabName){
+            const login=tabName==="login";
+            tabs.forEach(function(tab){
+                const active=tab.dataset.accountTab===tabName;
+                tab.classList.toggle("active",active);
+                tab.setAttribute("aria-selected",active?"true":"false");
+            });
+            registerPanel?.classList.toggle("is-active",!login);
+            loginPanel?.classList.toggle("is-active",login);
+            registerPanel?.setAttribute("aria-hidden",login?"true":"false");
+            loginPanel?.setAttribute("aria-hidden",login?"false":"true");
+        }
+
+        function open(tabName){
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden","false");
+            document.body.classList.add("signup-modal-open");
+            document.body.classList.remove("login-modal-open");
+            setActive(tabName||"register");
+            setTimeout(function(){
+                const field=tabName==="login"?document.getElementById("LoginEmail"):document.getElementById("Email");
+                field?.focus();
+            },250);
+        }
+
+        function close(){
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden","true");
+            document.body.classList.remove("signup-modal-open","login-modal-open");
+        }
+
+        window.setActiveAccountTab=setActive;
+        window.openAccountModal=open;
+        window.closeAccountModal=close;
+
+        tabs.forEach(function(tab){
+            tab.addEventListener("click",function(event){
+                event.preventDefault();
+                setActive(tab.dataset.accountTab);
+                setTimeout(function(){
+                    const field=tab.dataset.accountTab==="login"?document.getElementById("LoginEmail"):document.getElementById("Email");
+                    field?.focus();
+                },100);
+            });
+        });
+
+        closeButton?.addEventListener("click",close);
+        backdrop?.addEventListener("click",close);
+
+        document.addEventListener("keydown",function(event){
+            if(event.key==="Escape" && modal.classList.contains("is-open"))close();
+        });
+
+        // Always start completely closed.
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.classList.remove("signup-modal-open","login-modal-open");
+        setActive("register");
+    });
+})();
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("signupModal");
+    const openButton = document.getElementById("openSignupModal");
+    const mobileopenButton = document.getElementById("openRegisterModal");
+    const loginOpenButton = document.getElementById("openLoginModal");
+    const closeButton = document.getElementById("closeSignupModal");
+    const backdrop = modal?.querySelector(".signup-backdrop");
+
+    const form = document.getElementById("signupForm");
+    const submitButton = document.getElementById("signupSubmit");
+
+    if (!modal || !openButton || !closeButton || !form) {
+        return;
+    }
+
+
+    /* =========================================================
+       ELEMENTS
+       ========================================================= */
+
+    const firstName = document.getElementById("FirstName");
+    const lastName = document.getElementById("LastName");
+    const email = document.getElementById("Email");
+    const password = document.getElementById("Password");
+    const confirmPassword = document.getElementById("ConfirmPassword");
+    const currency = document.getElementById("CurrencyId");
+    const country = document.getElementById("CountryId");
+    const birthday = document.getElementById("Birthday");
+    const promoCode = document.getElementById("PromoCode");
+        const promoCodeError =
+            document.getElementById("promoCodeError");
+
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const confirmPasswordError =
+        document.getElementById("confirmPasswordError");
+
+    const firstNameError =
+        document.getElementById("firstNameError");
+
+    const lastNameError =
+        document.getElementById("lastNameError");
+
+    const currencyError =
+        document.getElementById("currencyError");
+
+    const countryError =
+        document.getElementById("countryError");
+
+    const serverMessage =
+        document.getElementById("signupServerMessage");
+        const birthdayError =
+            document.getElementById("birthdayError");
+
+
+        const signupSlides=document.querySelectorAll("#signupVisual .account-modal-slide");
+        const signupDots=document.querySelectorAll("#signupVisual .account-modal-dots span");
+        let signupCurrentSlide=0,signupSliderTimer=null;
+        function showSignupSlide(index){if(!signupSlides.length)return;signupSlides.forEach(function(s){s.classList.remove("active")});signupDots.forEach(function(d){d.classList.remove("active")});signupSlides[index].classList.add("active");if(signupDots[index])signupDots[index].classList.add("active");signupCurrentSlide=index;}
+        function startSignupSlider(){if(signupSlides.length<=1||signupSliderTimer)return;signupSliderTimer=setInterval(function(){showSignupSlide((signupCurrentSlide+1)%signupSlides.length)},4000)}
+        function stopSignupSlider(){if(!signupSliderTimer)return;clearInterval(signupSliderTimer);signupSliderTimer=null}
+        signupDots.forEach(function(dot,index){dot.addEventListener("click",function(){showSignupSlide(index);stopSignupSlider();startSignupSlider();})});
+        startSignupSlider();
+
+    /* =========================================================
+       OPEN / CLOSE
+       ========================================================= */
+
+    function openModal() {
+        window.openAccountModal?.("register");
+    }
+
+        const isSignupRoute = @Json.Serialize(ViewData["IsSignupRoute"] ?? false);
+
+        if (isSignupRoute) {
+            openModal();
+        }
+
+
+    function closeModal() {
+        window.closeAccountModal?.();
+    }
+
+    openButton.addEventListener("click", function () {
+        openModal();
+    });
+
+    if (mobileopenButton) {
+        mobileopenButton.addEventListener("click", function () {
+            openModal();
+        });
+    }
+
+    if (loginOpenButton) {
+        loginOpenButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            window.openAccountModal?.("login");
+        });
+    }
+
+    closeButton.addEventListener("click", function () {
+        closeModal();
+    });
+
+    backdrop?.addEventListener("click", function () {
+        closeModal();
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+            closeModal();
+        }
+    });
+
+
+    /* =========================================================
+       PASSWORD TOGGLE
+       ========================================================= */
+
+    document.querySelectorAll(".password-toggle")
+        .forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                const targetId = button.dataset.target;
+                const input = document.getElementById(targetId);
+
+                if (!input) return;
+
+                if (input.type === "password") {
+
+                    input.type = "text";
+                    button.textContent = "Hide";
+
+                } else {
+
+                    input.type = "password";
+                    button.textContent = "Show";
+                }
+            });
+        });
+
+
+    /* =========================================================
+       HELPERS
+       ========================================================= */
+
+    function setError(input, errorElement, message) {
+
+        const field = input.closest(".signup-field");
+
+        if (message) {
+
+            errorElement.textContent = message;
+
+            field.classList.add("has-error");
+            field.classList.remove("is-valid");
+
+        } else {
+
+            errorElement.textContent = "";
+
+            field.classList.remove("has-error");
+
+            if (input.value.trim()) {
+                field.classList.add("is-valid");
+            }
+        }
+    }
+
+
+    function clearServerMessage() {
+
+        serverMessage.textContent = "";
+        serverMessage.classList.remove("is-visible");
+    }
+
+
+    function showServerMessage(message) {
+
+        serverMessage.textContent = message;
+        serverMessage.classList.add("is-visible");
+    }
+
+
+    /* =========================================================
+       EMAIL VALIDATION
+       
+       Requirements:
+       - 8–20 characters
+       - @@
+       - .com
+       - lowercase
+       - uppercase
+       - number
+       ========================================================= */
+
+    function validateEmail() {
+
+        const value = email.value.trim();
+
+        if (!value) {
+
+            setError(
+                email,
+                emailError,
+                "Email is required."
+            );
+
+            return false;
+        }
+
+
+        if (value.length < 8 || value.length > 20) {
+
+            setError(
+                email,
+                emailError,
+                "Email must be 8–20 characters long."
+            );
+
+            return false;
+        }
+
+
+        if (!value.toLowerCase().includes(".com")) {
+
+            setError(
+                email,
+                emailError,
+                "Email must contain '.com'."
+            );
+
+            return false;
+        }
+
+
+        if (!/[a-z]/.test(value)) {
+
+            setError(
+                email,
+                emailError,
+                "Email must contain a lowercase letter."
+            );
+
+            return false;
+        }
+
+
+        if (!/[A-Z]/.test(value)) {
+
+            setError(
+                email,
+                emailError,
+                "Email must contain an uppercase letter."
+            );
+
+            return false;
+        }
+
+
+        if (!/[0-9]/.test(value)) {
+
+            setError(
+                email,
+                emailError,
+                "Email must contain a number."
+            );
+
+            return false;
+        }
+
+
+        /*
+         * Basic email structure
+         */
+
+        const emailPattern =
+                /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+        if (!emailPattern.test(value)) {
+
+            setError(
+                email,
+                emailError,
+                "Please enter a valid .com email address."
+            );
+
+            return false;
+        }
+
+
+        setError(email, emailError, "");
+
+        return true;
+    }
+
+
+    /* =========================================================
+       PASSWORD REQUIREMENTS UI
+       ========================================================= */
+
+        function updatePasswordRequirements() {
+
+            const value = password.value;
+
+            const lengthValid =
+                value.length >= 6 &&
+                value.length <= 20;
+
+            const lowerValid =
+                /[a-z]/.test(value);
+
+            const upperValid =
+                /[A-Z]/.test(value);
+
+            const numberValid =
+                /[0-9]/.test(value);
+
+            const specialValid =
+                /[^a-zA-Z0-9]/.test(value);
+
+
+            const reqLength =
+                document.getElementById("reqLength");
+
+            const reqLower =
+                document.getElementById("reqLower");
+
+            const reqUpper =
+                document.getElementById("reqUpper");
+
+            const reqNumber =
+                document.getElementById("reqNumber");
+
+            const reqSpecial =
+                document.getElementById("reqSpecial");
+
+
+            if (reqLength) {
+                reqLength.classList.toggle(
+                    "valid",
+                    lengthValid
+                );
+            }
+
+            if (reqLower) {
+                reqLower.classList.toggle(
+                    "valid",
+                    lowerValid
+                );
+            }
+
+            if (reqUpper) {
+                reqUpper.classList.toggle(
+                    "valid",
+                    upperValid
+                );
+            }
+
+            if (reqNumber) {
+                reqNumber.classList.toggle(
+                    "valid",
+                    numberValid
+                );
+            }
+
+            if (reqSpecial) {
+                reqSpecial.classList.toggle(
+                    "valid",
+                    specialValid
+                );
+            }
+        }
+
+    /* =========================================================
+       PASSWORD VALIDATION
+       ========================================================= */
+
+        function validatePassword() {
+
+            const value = password.value;
+
+            updatePasswordRequirements();
+
+
+            if (!value) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password is required."
+                );
+
+                return false;
+            }
+
+
+            if (value.length < 6 || value.length > 20) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password must be 6–20 characters long."
+                );
+
+                return false;
+            }
+
+
+            if (!/[a-z]/.test(value)) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password must contain a lowercase letter."
+                );
+
+                return false;
+            }
+
+
+            if (!/[A-Z]/.test(value)) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password must contain an uppercase letter."
+                );
+
+                return false;
+            }
+
+
+            if (!/[0-9]/.test(value)) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password must contain a number."
+                );
+
+                return false;
+            }
+
+
+            if (!/[^a-zA-Z0-9]/.test(value)) {
+
+                setError(
+                    password,
+                    passwordError,
+                    "Password must contain at least one special character."
+                );
+
+                return false;
+            }
+
+
+            setError(
+                password,
+                passwordError,
+                ""
+            );
+
+            return true;
+        }
+
+    /* =========================================================
+       CONFIRM PASSWORD
+       ========================================================= */
+
+    function validateConfirmPassword() {
+
+        const value = confirmPassword.value;
+
+        if (!value) {
+
+            setError(
+                confirmPassword,
+                confirmPasswordError,
+                "Please confirm your password."
+            );
+
+            return false;
+        }
+
+
+        if (value !== password.value) {
+
+            setError(
+                confirmPassword,
+                confirmPasswordError,
+                "Passwords do not match."
+            );
+
+            return false;
+        }
+
+
+        setError(
+            confirmPassword,
+            confirmPasswordError,
+            ""
+        );
+
+        return true;
+    }
+
+
+    /* =========================================================
+       FIRST / LAST NAME
+       ========================================================= */
+
+    function validateFirstName() {
+
+        const value = firstName.value.trim();
+
+        if (!value) {
+
+            setError(
+                firstName,
+                firstNameError,
+                "First name is required."
+            );
+
+            return false;
+        }
+
+        setError(firstName, firstNameError, "");
+
+        return true;
+    }
+
+
+    function validateLastName() {
+
+        const value = lastName.value.trim();
+
+        if (!value) {
+
+            setError(
+                lastName,
+                lastNameError,
+                "Last name is required."
+            );
+
+            return false;
+        }
+
+        setError(lastName, lastNameError, "");
+
+        return true;
+    }
+
+
+    /* =========================================================
+       CURRENCY
+       ========================================================= */
+
+    function validateCurrency() {
+
+        if (!currency.value || currency.value === "0") {
+
+            setError(
+                currency,
+                currencyError,
+                "Please select your currency."
+            );
+
+            return false;
+        }
+
+        setError(currency, currencyError, "");
+
+        return true;
+    }
+
+
+    /* =========================================================
+       COUNTRY
+       ========================================================= */
+
+    function validateCountry() {
+
+        if (!country.value) {
+
+            setError(
+                country,
+                countryError,
+                "Please select your country."
+            );
+
+            return false;
+        }
+
+        setError(country, countryError, "");
+
+        return true;
+    }
+        /* =========================================================
+       BIRTHDAY
+       ========================================================= */
+        function validateBirthday() {
+
+            const value = birthday.value;
+
+            if (!value) {
+
+                setError(
+                    birthday,
+                    birthdayError,
+                    "Birthday is required."
+                );
+
+                return false;
+            }
+
+            const birthDate = new Date(value + "T00:00:00");
+
+            if (isNaN(birthDate.getTime())) {
+
+                setError(
+                    birthday,
+                    birthdayError,
+                    "Please enter a valid birthday."
+                );
+
+                return false;
+            }
+
+            const today = new Date();
+
+            if (birthDate > today) {
+
+                setError(
+                    birthday,
+                    birthdayError,
+                    "Birthday cannot be in the future."
+                );
+
+                return false;
+            }
+
+            setError(
+                birthday,
+                birthdayError,
+                ""
+            );
+
+            return true;
+        }
+
+
+    /* =========================================================
+       COMPLETE FORM VALIDATION
+       ========================================================= */
+
+    function validateForm() {
+
+        const firstValid = validateFirstName();
+        const lastValid = validateLastName();
+        const emailValid = validateEmail();
+        const passwordValid = validatePassword();
+        const confirmValid = validateConfirmPassword();
+        const currencyValid = validateCurrency();
+        const countryValid = validateCountry();
+        const birthdayValid = validateBirthday();
+
+        const isValid =
+            firstValid &&
+            lastValid &&
+            emailValid &&
+            passwordValid &&
+            confirmValid &&
+            currencyValid &&
+            countryValid &&
+            birthdayValid;
+
+
+        submitButton.disabled = !isValid;
+
+        return isValid;
+    }
+
+
+    /* =========================================================
+       LIVE VALIDATION
+       ========================================================= */
+
+    firstName.addEventListener("input", function () {
+        validateForm();
+    });
+
+    lastName.addEventListener("input", function () {
+        validateForm();
+    });
+
+    email.addEventListener("input", function () {
+        clearServerMessage();
+        validateForm();
+    });
+
+    password.addEventListener("input", function () {
+        clearServerMessage();
+        validateForm();
+    });
+
+    confirmPassword.addEventListener("input", function () {
+        validateForm();
+    });
+
+    currency.addEventListener("change", function () {
+        validateForm();
+    });
+
+    country.addEventListener("change", function () {
+        validateForm();
+    });
+    birthday.addEventListener("change", function () {
+        validateForm();
+    });
+
+    /* =========================================================
+       AJAX REGISTER
+       ========================================================= */
+
+    form.addEventListener("submit", async function (event) {
+
+        /*
+         * VERY IMPORTANT:
+         *
+         * Prevent normal form submission.
+         *
+         * Therefore your existing page loading mask
+         * never activates.
+         */
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        clearServerMessage();
+
+
+        /*
+         * Validate one final time before sending.
+         */
+
+        if (!validateForm()) {
+            return;
+        }
+
+
+        submitButton.disabled = true;
+        submitButton.classList.add("is-loading");
+
+
+        try {
+
+                const formData = new FormData(form);
+
+                const promoValue = promoCode.value.trim();
+
+                if (promoValue) {
+                    formData.set("promocode", promoValue);
+                } else {
+                    formData.set("promocode", "000000");
+                }
+
+            const response = await fetch(
+                form.action,
+                {
+                    method: "POST",
+
+                    body: formData,
+
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+                throw new Error(
+                    "Unable to process registration."
+                );
+            }
+
+
+            const result = await response.json();
+
+
+            /* =================================================
+               SUCCESS
+               ================================================= */
+
+            if (result.success) {
+
+                showServerMessage(
+                    result.msg || "Successfully Signed Up!"
+                );
+
+            if (result.errorPromoCode) {
+
+                setError(
+                    promoCode,
+                    promoCodeError,
+                    result.errorPromoCode
+                );
+            }
+
+                /*
+                 * Give the user a short moment to see success.
+                 */
+                    window.location.reload();
+                    $("#success-header").text("Sign Up");
+                    $("#success-body").text("Successfully sign up");
+                    const modal = document.getElementById("success-notice-modal");
+                    modal.style.transform = "translateX(0%)";
+                    setTimeout(function () {
+                        modal.style.transform = "translateX(110%)";
+                    }, 2000);
+
+
+                return;
+            }
+
+
+            /* =================================================
+               BACKEND VALIDATION ERRORS
+               ================================================= */
+
+            if (result.errorEmail) {
+                    $("#failed-header").text("Sign Up");
+                    $("#failed-body").text(result.errorEmail);
+                    const modal = document.getElementById("failed-notice-modal");
+                    modal.style.transform = "translateX(0%)";
+                    setTimeout(function () {
+                        modal.style.transform = "translateX(110%)";
+                    }, 3000);
+            }
+
+
+            if (result.errorPassword) {
+
+                setError(
+                    password,
+                    passwordError,
+                    result.errorPassword
+                );
+            }
+
+
+            if (result.errorConfirmPassword) {
+
+                setError(
+                    confirmPassword,
+                    confirmPasswordError,
+                    result.errorConfirmPassword
+                );
+            }
+
+
+            if (result.errorCurrency) {
+
+                setError(
+                    currency,
+                    currencyError,
+                    result.errorCurrency
+                );
+            }
+                if (result.errorPromoCode) {
+                    $("#failed-header").text("Sign Up");
+                    $("#failed-body").text("Invalid PromoCode");
+                    const modal = document.getElementById("failed-notice-modal");
+                    modal.style.transform = "translateX(0%)";
+                    setTimeout(function () {
+                        modal.style.transform = "translateX(110%)";
+                    }, 3000);
+                }
+
+
+                if (
+                    !result.errorEmail &&
+                    !result.errorPassword &&
+                    !result.errorConfirmPassword &&
+                    !result.errorCurrency &&
+                    !result.errorPromoCode
+                ) {
+                    showServerMessage(
+                        result.msg || "Sign Up Failed!"
+                    );
+                }
+
+
+            /*
+             * Re-enable only if the frontend is valid.
+             * If backend returned an error, the relevant field
+             * remains marked as invalid.
+             */
+
+            validateForm();
+
+        }
+        catch (error) {
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+            showServerMessage(
+                "Something went wrong. Please try again."
+            );
+
+            submitButton.disabled = false;
+        }
+        finally {
+
+            submitButton.classList.remove("is-loading");
+
+            /*
+             * Don't blindly enable the button.
+             *
+             * The frontend validation decides whether
+             * it should be enabled.
+             */
+
+            validateForm();
+        }
+
+    });
+
+});
+
+</script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* =========================================================
+           MODAL ELEMENTS
+           ========================================================= */
+
+        const modal =
+            document.getElementById("signupModal");
+
+        const form =
+            document.getElementById("loginForm");
+
+        const submitButton =
+            document.getElementById("loginSubmit");
+
+        const email =
+            document.getElementById("LoginEmail");
+
+        const password =
+            document.getElementById("LoginPassword");
+
+        const emailError =
+            document.getElementById("loginEmailError");
+
+        const passwordError =
+            document.getElementById("loginPasswordError");
+
+        const serverMessage =
+            document.getElementById("loginServerMessage");
+
+
+        if (!modal || !form || !submitButton || !email || !password) {
+            return;
+        }
+
+
+        /* =========================================================
+           CLOSE LOGIN MODAL
+           ========================================================= */
+
+        function closeLoginModal() {
+            window.closeAccountModal?.();
+        }
+
+
+        /* =========================================================
+           PASSWORD SHOW / HIDE
+           ========================================================= */
+
+        document
+            .querySelectorAll(".login-password-toggle")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const target =
+                            document.getElementById(
+                                button.dataset.target
+                            );
+
+                        if (!target) {
+                            return;
+                        }
+
+
+                        if (target.type === "password") {
+
+                            target.type = "text";
+
+                            button.textContent = "Hide";
+
+                        }
+                        else {
+
+                            target.type = "password";
+
+                            button.textContent = "Show";
+                        }
+
+                    }
+                );
+
+            });
+
+
+        /* =========================================================
+           CLEAR LOGIN ERRORS
+           ========================================================= */
+
+        function clearErrors() {
+
+            if (emailError) {
+                emailError.textContent = "";
+            }
+
+            if (passwordError) {
+                passwordError.textContent = "";
+            }
+
+
+            const emailField =
+                email.closest(".login-field");
+
+            const passwordField =
+                password.closest(".login-field");
+
+
+            if (emailField) {
+
+                emailField.classList.remove(
+                    "has-error",
+                    "is-valid"
+                );
+            }
+
+
+            if (passwordField) {
+
+                passwordField.classList.remove(
+                    "has-error",
+                    "is-valid"
+                );
+            }
+        }
+
+
+        /* =========================================================
+           SERVER MESSAGE
+           ========================================================= */
+
+        function showServerMessage(
+            message,
+            success = false
+        ) {
+
+            if (!serverMessage) {
+                return;
+            }
+
+
+            serverMessage.textContent =
+                message;
+
+            serverMessage.classList.add(
+                "is-visible"
+            );
+
+            serverMessage.classList.toggle(
+                "success",
+                success
+            );
+        }
+
+
+        function clearServerMessage() {
+
+            if (!serverMessage) {
+                return;
+            }
+
+
+            serverMessage.textContent = "";
+
+            serverMessage.classList.remove(
+                "is-visible",
+                "success"
+            );
+        }
+
+
+        /* =========================================================
+           LOGIN VALIDATION
+           ========================================================= */
+
+        function validateLogin() {
+
+            const emailValue =
+                email.value.trim();
+
+            const passwordValue =
+                password.value;
+
+
+            /*
+             * Email must have a valid email format.
+             */
+            const emailValid =
+                /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(
+                    emailValue
+                );
+
+
+            /*
+             * Password only needs to contain something.
+             *
+             * Backend will handle whether the password
+             * itself is correct.
+             */
+            const passwordValid =
+                passwordValue.length > 0;
+
+
+            /*
+             * Update visual field state.
+             */
+
+            const emailField =
+                email.closest(".login-field");
+
+            const passwordField =
+                password.closest(".login-field");
+
+
+            if (emailField) {
+
+                emailField.classList.toggle(
+                    "is-valid",
+                    emailValid
+                );
+            }
+
+
+            if (passwordField) {
+
+                passwordField.classList.toggle(
+                    "is-valid",
+                    passwordValid
+                );
+            }
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Button is disabled when the form
+             * is NOT valid.
+             *
+             * Therefore:
+             *
+             * valid email + valid password
+             *          ↓
+             *      disabled = false
+             *          ↓
+             *       ENABLED
+             */
+            const isValid =
+                emailValid &&
+                passwordValid;
+
+
+            submitButton.disabled =
+                !isValid;
+
+
+            return isValid;
+        }
+
+
+        /* =========================================================
+           EMAIL INPUT
+           ========================================================= */
+
+        email.addEventListener(
+            "input",
+            function () {
+
+                clearServerMessage();
+
+                validateLogin();
+            }
+        );
+
+
+        /* =========================================================
+           PASSWORD INPUT
+           ========================================================= */
+
+        password.addEventListener(
+            "input",
+            function () {
+
+                clearServerMessage();
+
+                validateLogin();
+            }
+        );
+
+
+        /* =========================================================
+           AUTOMATIC IMAGE SLIDER
+           ========================================================= */
+
+        const slides =
+            document.querySelectorAll(
+                "#signupVisual .account-modal-slide"
+            );
+
+        const dots =
+            document.querySelectorAll(
+                "#signupVisual .account-modal-dots span"
+            );
+
+        let currentSlide = 0;
+
+        let sliderTimer = null;
+
+
+        function showSlide(index) {
+
+            if (!slides.length) {
+                return;
+            }
+
+
+            slides.forEach(function (slide) {
+
+                slide.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            dots.forEach(function (dot) {
+
+                dot.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            if (slides[index]) {
+
+                slides[index].classList.add(
+                    "active"
+                );
+            }
+
+
+            if (dots[index]) {
+
+                dots[index].classList.add(
+                    "active"
+                );
+            }
+
+
+            currentSlide = index;
+        }
+
+
+        function nextSlide() {
+
+            if (!slides.length) {
+                return;
+            }
+
+
+            const nextIndex =
+                (currentSlide + 1) %
+                slides.length;
+
+
+            showSlide(nextIndex);
+        }
+
+
+        function startSlider() {
+
+            if (
+                slides.length <= 1 ||
+                sliderTimer
+            ) {
+                return;
+            }
+
+
+            sliderTimer =
+                setInterval(
+                    nextSlide,
+                    4000
+                );
+        }
+
+
+        function stopSlider() {
+
+            if (!sliderTimer) {
+                return;
+            }
+
+
+            clearInterval(
+                sliderTimer
+            );
+
+            sliderTimer = null;
+        }
+
+
+        startSlider();
+
+
+        /* =========================================================
+           SLIDER DOT CLICK
+           ========================================================= */
+
+        dots.forEach(function (dot, index) {
+
+            dot.addEventListener(
+                "click",
+                function () {
+
+                    showSlide(index);
+
+                    stopSlider();
+
+                    startSlider();
+
+                }
+            );
+
+        });
+
+
+        /* =========================================================
+           AJAX LOGIN
+           ========================================================= */
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                /*
+                 * Prevent normal form submission.
+                 */
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                /*
+                 * Frontend validation.
+                 *
+                 * This is also an extra protection even though
+                 * the button should already be disabled when invalid.
+                 */
+
+                if (!validateLogin()) {
+                    return;
+                }
+
+
+                clearErrors();
+
+                clearServerMessage();
+
+
+                /*
+                 * Prevent double submission.
+                 */
+
+                if (
+                    submitButton.classList.contains(
+                        "is-loading"
+                    )
+                ) {
+                    return;
+                }
+
+
+                submitButton.classList.add(
+                    "is-loading"
+                );
+
+                submitButton.disabled = true;
+
+
+                try {
+
+                    const formData =
+                        new FormData(form);
+
+
+                    const response =
+                        await fetch(
+                            form.action,
+                            {
+                                method: "POST",
+
+                                body: formData,
+
+                                headers: {
+                                    "X-Requested-With":
+                                        "XMLHttpRequest"
+                                }
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Login request failed."
+                        );
+                    }
+
+
+                    const result =
+                        await response.json();
+
+
+                    /* =============================================
+                       SUCCESS
+                       ============================================= */
+
+                    if (result.success) {
+
+                        showServerMessage(
+                            result.msg ||
+                            "Successfully Signed In!",
+                            true
+                        );
+
+
+                        /*
+                         * Existing success notification.
+                         */
+
+                        $("#success-header").text(
+                            "Login"
+                        );
+
+                        $("#success-body").text(
+                            "Successfully login"
+                        );
+
+
+                        const successModal =
+                            document.getElementById(
+                                "success-notice-modal"
+                            );
+
+
+                        if (successModal) {
+
+                            successModal.style.transform =
+                                "translateX(0%)";
+
+
+                            setTimeout(
+                                function () {
+
+                                    successModal.style.transform =
+                                        "translateX(110%)";
+
+                                },
+                                2000
+                            );
+                        }
+
+
+                        /*
+                         * Keep your existing successful-login
+                         * behavior.
+                         */
+
+                        setTimeout(
+                            function () {
+
+                                closeLoginModal();
+
+                                window.location.reload();
+
+                            },
+                            300
+                        );
+
+
+                        return;
+                    }
+
+
+                    /* =============================================
+                       TWO FACTOR AUTHENTICATION
+                       ============================================= */
+
+                    if (
+                        result.requires2FA
+                    ) {
+
+                        showServerMessage(
+                            result.msg ||
+                            "Two-Factor Authentication required."
+                        );
+
+
+                        return;
+                    }
+
+
+                    /* =============================================
+                       BACKEND EMAIL ERROR
+                       ============================================= */
+
+                    if (
+                        result.errorEmail
+                    ) {
+
+                        if (emailError) {
+
+                            emailError.textContent =
+                                result.errorEmail;
+                        }
+
+
+                        const emailField =
+                            email.closest(".login-field");
+
+
+                        if (emailField) {
+
+                            emailField.classList.add(
+                                "has-error"
+                            );
+
+                            emailField.classList.remove(
+                                "is-valid"
+                            );
+                        }
+                    }
+
+
+                    /* =============================================
+                       BACKEND PASSWORD ERROR
+                       ============================================= */
+
+                    if (
+                        result.errorPassword
+                    ) {
+
+                        if (passwordError) {
+
+                            passwordError.textContent =
+                                result.errorPassword;
+                        }
+
+
+                        const passwordField =
+                            password.closest(".login-field");
+
+
+                        if (passwordField) {
+
+                            passwordField.classList.add(
+                                "has-error"
+                            );
+
+                            passwordField.classList.remove(
+                                "is-valid"
+                            );
+                        }
+                    }
+
+
+                    /* =============================================
+                       GENERAL LOGIN ERROR
+                       ============================================= */
+
+                    if (
+                        result.msg &&
+                        !result.errorEmail &&
+                        !result.errorPassword
+                    ) {
+
+                        showServerMessage(
+                            result.msg
+                        );
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    showServerMessage(
+                        "Unable to sign in. Please try again."
+                    );
+
+                }
+                finally {
+
+                    submitButton.classList.remove(
+                        "is-loading"
+                    );
+
+
+                    /*
+                     * Re-check frontend validation.
+                     *
+                     * If email/password are still valid,
+                     * the button becomes enabled again.
+                     */
+
+                    validateLogin();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           INITIAL STATE
+           ========================================================= */
+
+        validateLogin();
+
+    });
+
+</script>

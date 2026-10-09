@@ -1,0 +1,153 @@
+.error-page.svelte-1j96wlh {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    padding: 9rem 0;
+    overflow: hidden;
+    background-color: rgba(var(--color-background-secondary), 1);
+    background-image: url(../../../images/not-found/page-not-found-bg.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover
+}
+
+@media not (min-width:920px) {
+    .error-page.svelte-1j96wlh {
+        padding: 4rem 0
+    }
+}
+
+.error-page.svelte-1j96wlh .error-header:where(.svelte-1j96wlh) {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+@media not (min-width:920px) {
+    .error-page.svelte-1j96wlh .error-header:where(.svelte-1j96wlh) img:where(.svelte-1j96wlh) {
+        width: 14rem
+    }
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 7rem;
+    text-align: center
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .not-found-img:where(.svelte-1j96wlh) {
+    width: clamp(18rem, 30vw, 28rem);
+    margin-bottom: 2rem
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .error-title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff
+}
+
+@media not (min-width:920px) {
+    .error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .error-title {
+        font-size: 3.2rem
+    }
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .error-description {
+    max-width: 48rem;
+    margin-top: .8rem;
+    font-size: 1.8rem;
+    color: #fff
+}
+
+@media not (min-width:920px) {
+    .error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .error-description {
+        font-size: 1.2rem
+    }
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-top: 2.4rem
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .back-to-home {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 15.5rem;
+    height: 5rem;
+    padding: 0 2.6rem;
+    color: #fff;
+    background: transparent;
+    border-radius: 6rem
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .contact-support {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 15.5rem;
+    height: 5rem;
+    padding: 0 2.6rem;
+    color: #fff;
+    background: linear-gradient(135deg, #6ddcff, #7f60f9);
+    border-radius: 6rem
+}
+
+[dir=rtl] .error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .contact-support {
+    background: linear-gradient(-135deg, #6ddcff, #7f60f9)
+}
+
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .back-to-home:before,
+.error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .contact-support:before {
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    pointer-events: none;
+    content: "";
+    background: linear-gradient(135deg, #6ddcff, #7f60f9);
+    border-radius: inherit;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude
+}
+
+[dir=rtl] .error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .back-to-home:before,
+[dir=rtl] .error-page.svelte-1j96wlh .error-content:where(.svelte-1j96wlh) .buttons:where(.svelte-1j96wlh) .contact-support:before {
+    background: linear-gradient(-135deg, #6ddcff, #7f60f9)
+}
+
+.current-url-container.svelte-1j96wlh {
+    width: 60rem;
+    max-width: 90%;
+    min-height: 78px;
+    padding: 3rem 3.5rem;
+    margin: 0 auto;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    background-color: #171a3a;
+    border: 1px solid rgba(127, 96, 249, .2901960784);
+    border-radius: 160px;
+    box-shadow: 0 4px 50px #060518 inset
+}
+
+@media not (min-width:920px) {
+    .current-url-container.svelte-1j96wlh {
+        min-height: auto;
+        padding-top: 2rem;
+        padding-bottom: 2rem
+    }
+}

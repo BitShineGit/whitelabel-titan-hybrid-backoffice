@@ -1,0 +1,2031 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | TITAN BET</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+    <link rel="stylesheet" href="~/css/list.css" asp-append-version="true" />
+    @if (ViewBag.LoadListJs != false)
+    {
+        <link rel="stylesheet" href="./css/site.css" asp-append-version="true" />
+    }
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/table-pagination.Bnf4dpMb.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/1.BC8GpWWt.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/styles.BZw_rDFM.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/language-switcher.bjca302h.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/app-auth-banner.DyLyJUR6.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/app-login.BDO2FGaC.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/app-signup-form.qcdzwkbd.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/app-signup.CgXaT9ZG.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/2.B-09qx03.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/5.D4X5sbmd.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/skeleton-text.EemzQql6.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/payments-page-skeleton.Ctj51kwG.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/33.CkQCVn_P.css" asp-append-version="true">
+    <link rel="shortcut icon" href="~/images/favicon/favicon.png">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/6.D6C9O51Z.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/game-collection-skeleton.BOTC9x0a.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/13.CtGIjc1G.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/1q2w3e.css" asp-append-version="true">
+    <link rel="stylesheet" crossorigin="" href="~/_app/immutable/assets/q1w2e3.css" asp-append-version="true">
+
+    <link rel="icon" href="/favicon.png?v=2">
+    <link rel="preload" href="/fonts/google/roboto/roboto-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/32.Dtri7-ls.css">
+    <link rel="shortcut icon" href="/images/favicon/favicon.png">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/20.4gZcXgdq.css">
+
+
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/43.kXcF2BLv.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/45.CIjOzJkA.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/44.K1JuLS3F.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/30.CzLBjbdT.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/36.BYUsKsf9.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/40.hIT3T7PW.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/casino-page-skeleton.DdqwC09U.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/42.DoU-QsLk.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/34.CNSEAbI4.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/35.DXnuv9i-.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/table-pagination.Bnf4dpMb.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/1.BC8GpWWt.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/styles.BZw_rDFM.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/language-switcher.bjca302h.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/app-auth-banner.DyLyJUR6.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/app-login.BDO2FGaC.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/app-signup-form.qcdzwkbd.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/app-signup.CgXaT9ZG.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/2.B-09qx03.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/5.D4X5sbmd.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/43.kXcF2BLv.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/skeleton-text.EemzQql6.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/20.4gZcXgdq.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/game-collection-skeleton.BOTC9x0a.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/13.CtGIjc1G.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/10.BEBSmcOU.css">
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/2.Bt6F2_DK.css" />
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/42.CxiqxQkR.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/34.BwEimlzI.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/44.DW4_6ajZ.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/45.CIjOzJkA.css">
+
+
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/1.BC8GpWWt.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/2.Bt6F2_DK.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/5.1La_ZysG.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/payments-page-skeleton.uStCXxP4.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/33.CkQCVn_P.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/casino-page-skeleton.IA5gmiUC.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/43.BX7eNP6C.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/skeleton-text.x1tj_TDw.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/32._YfV1fit.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/game-collection-skeleton.tmACPFWN.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/12.Dr7n61I4.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/4.Du3DearG.css">
+    <link rel="stylesheet" crossorigin="" href="/_app/immutable/assets/3.Dt1uzdvi.css">
+
+    <link rel="stylesheet" crossorigin="" href="/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" crossorigin="" href="/sweetalert2/sweetalert2.min.js">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        /* ========================================= PAGE ========================================= */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+        /* ========================================= IMAGE GRID ========================================= */
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+        /* ========================================= IMAGE CONTAINER ========================================= */
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            background: #313443;
+            border-radius:12px;
+        }
+        /* ========================================= IMAGE ========================================= */
+
+        .lazy-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+        /* ========================================= SHIMMER ========================================= */
+
+        .image-wrapper.loading::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 220%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient( 90deg, transparent 0%, rgba(255, 255, 255, 0.025) 25%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.025) 75%, transparent 100% );
+            transform: translate3d(0, 0, 0) skewX(-20deg);
+            will-change: transform;
+            animation: imageShimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @@keyframes imageShimmer {
+            0% {
+                transform: translate3d(-180%, 0, 0) skewX(-20deg);
+            }
+
+            100% {
+                transform: translate3d(500%, 0, 0) skewX(-20deg);
+            }
+        }
+        /* ========================================= IMAGE LOADED ========================================= */
+
+        .image-wrapper.loaded::after {
+            display: none;
+        }
+
+        .image-wrapper.loaded .lazy-image {
+            opacity: 1;
+        }
+        /* ========================================= CARD ========================================= */
+
+        .image-card {
+            background: #0c0c0c;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .image-title {
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        /* ========================================= RESPONSIVE ========================================= */
+
+        @@media (max-width: 1000px) {
+            .image-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 700px) {
+            .image-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 450px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <style>
+        .mobile-user-navigation {
+            width: 100% !important;
+        }
+    </style>
+    <style>
+
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown-menu {
+            display: none;
+        }
+
+        .user-dropdown.open .user-dropdown-menu {
+            display: block;
+        }
+
+        .user-dropdown .user-dropdown-menu {
+            display: none;
+        }
+
+        .drp-calendar tr {
+            color: black;
+        }
+
+        .main-position {
+            position: relative;
+            top: 50px;
+        }
+
+        @@media screen and (max-width: 1160px) {
+            .main-position {
+                position: relative;
+                top: 0px;
+            }
+        }
+    </style>
+    <style>
+        /* Open button */
+
+        /* Modal container */
+        .modern-modal {
+            visibility: hidden;
+            opacity: 0;
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+
+            /* Active modal */
+            .modern-modal.show {
+                visibility: visible;
+                opacity: 1;
+            }
+
+
+        /* Dark blurred background */
+        .modern-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+
+        /* Modal box */
+        .modern-modal-content {
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+
+        /* Modal animation */
+        .modern-modal.show .modern-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Mobile */
+        @@media (max-width: 480px) {
+            .modern-modal-content {
+                padding: 26px 20px;
+                border-radius: 16px;
+            }
+        }
+    </style>
+    <style>
+        /* Open button */
+
+        /* Modal container */
+        .dashboard-modal {
+            visibility: hidden;
+            opacity: 0;
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+
+            /* Active modal */
+            .dashboard-modal.show {
+                visibility: visible;
+                opacity: 1;
+            }
+
+
+        /* Dark blurred background */
+        .dashboard-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+
+        /* Modal box */
+        .dashboard-modal-content {
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+
+        /* Modal animation */
+        .dashboard-modal.show .dashboard-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Mobile */
+        @@media (max-width: 480px) {
+            .dashboard-modal-content {
+                padding: 26px 20px;
+                border-radius: 16px;
+            }
+        }
+
+        .notice-hide {
+            display: flex !important;
+        }
+    </style>
+    <style>
+        /* Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 9999;
+        }
+
+            /* Show overlay */
+            .modal-overlay.is-open {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        /* Modal box */
+        .modal-box {
+            transform: translateY(100%);
+            transition: transform 0.35s ease;
+        }
+
+        /* Slide up */
+        .modal-overlay.is-open .modal-box {
+            transform: translateY(0);
+        }
+
+        /* Example buttons */
+        .open-modal-btn,
+        .modal-option {
+            cursor: pointer;
+            border: 0;
+        }
+
+        .modal-option {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /*             .modal-option.active {
+                        background: #222;
+                        color: white;
+                    } */
+    </style>
+    <style>
+        .visible {
+            display: flex !important;
+        }
+
+        .placeholder {
+            background-color: revert;
+        }
+
+        .common {
+            position: relative;
+            top: 36px;
+        }
+
+        .svelte-1dgxlpn {
+            position: relative;
+        }
+
+        .provider-button-active {
+            background-color: #20252e;
+            border-radius:10px
+        }
+
+        @@media (max-width: 1160px) {
+            .provider-button-active {
+                background-color: darkgray;
+                border-radius: 10px;
+                transform:scale(1)!important;
+            }
+        }
+
+        /* =========================================================
+            RESPONSIBLE GAMING MODAL
+        ========================================================= */
+
+        .rg-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .rg-modal {
+            position: relative;
+
+            width: 100%;
+            max-width: 460px;
+
+            overflow: hidden;
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+
+            background: #17191f;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.65),
+                0 0 0 1px rgba(255, 255, 255, 0.02);
+
+            animation: rgModalShow 0.25s ease-out;
+        }
+
+        .rg-modal::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 3px;
+
+            background: linear-gradient( 90deg, #00aaeb, #00aaeb, #00aaeb );
+        }
+
+        .rg-modal-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 64px;
+            height: 64px;
+
+            margin: 30px auto 18px;
+
+            border-radius: 50%;
+
+            background: rgba(212, 175, 55, 0.10);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            color: #00aaeb;
+
+            font-size: 26px;
+        }
+
+        .rg-modal-content {
+            padding: 0 32px 32px;
+            text-align: center;
+        }
+
+        .rg-modal-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 46px;
+            height: 28px;
+
+            margin-bottom: 12px;
+            padding: 0 10px;
+
+            border-radius: 6px;
+
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            color: #00aaeb;
+
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .rg-modal h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .rg-modal-subtitle {
+            margin: 0 auto 20px;
+
+            max-width: 360px;
+
+            color: #aeb2bc;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .rg-modal-notice {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 24px;
+            padding: 14px 15px;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            color: #969ba7;
+
+            font-size: 12px;
+            line-height: 1.6;
+
+            text-align: left;
+        }
+
+        .rg-modal-notice i {
+            flex-shrink: 0;
+
+            margin-top: 2px;
+                color: #00aaeb;
+        }
+
+        .rg-modal-actions {
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+        .rg-btn {
+            width: 100%;
+
+            min-height: 46px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+        .rg-btn-confirm {
+            border: 1px solid #00aaeb;
+
+            background: linear-gradient( 135deg, #00aaeb, #00aaeb );
+
+            color: #111318;
+        }
+
+        .rg-btn-confirm:hover {
+            transform: translateY(-1px);
+
+            background: linear-gradient( 135deg, #00aaeb, #00aaeb );
+        }
+
+        .rg-btn-confirm i {
+            margin-right: 7px;
+        }
+
+        .rg-btn-decline {
+            border: 1px solid rgba(255, 255, 255, 0.09);
+
+            background: rgba(255, 255, 255, 0.035);
+
+            color: #969ba7;
+        }
+
+        .rg-btn-decline:hover {
+            background: rgba(255, 255, 255, 0.06);
+
+            border-color: rgba(255, 255, 255, 0.14);
+
+            color: #ffffff;
+        }
+
+        .rg-btn-decline i {
+            margin-right: 7px;
+        }
+
+        @@keyframes rgModalShow {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @@media (max-width: 480px) {
+
+            .rg-modal {
+                max-width: 100%;
+                border-radius: 15px;
+            }
+
+            .rg-modal-content {
+                padding: 0 22px 24px;
+            }
+
+            .rg-modal-icon {
+                width: 58px;
+                height: 58px;
+
+                margin-top: 25px;
+            }
+
+            .rg-modal h2 {
+                font-size: 21px;
+            }
+        }
+    </style>
+    
+
+
+</head>
+<body id="body">
+    @await Html.PartialAsync("_Header");
+
+    @await Html.PartialAsync("~/Views/Account/Register.cshtml")
+
+
+    <div class="lazy-loading">
+            @RenderBody()
+    </div>
+
+    @await Html.PartialAsync("_Footer")
+    
+    @await RenderSectionAsync("Scripts", required: false)
+    @if (ViewBag.LoadListJs != false){
+    <script src="~/js/list.js" asp-append-version="true"></script>
+    }
+
+    <script>
+        // Open / Close dropdown
+        $(document).on("click", ".user-dropdown-toggle", function (e) {
+            e.stopPropagation();
+                
+            const dropdown = $(this).closest(".user-dropdown");
+
+            // Close every other dropdown
+            $(".user-dropdown").not(dropdown).removeClass("open");
+
+            // Toggle current one
+            dropdown.toggleClass("open");
+        });
+
+        // Click an option
+        $(document).on("click", ".user-dropdown-menu button", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const dropdown = $(this).closest(".user-dropdown");
+
+            // Change button text
+            dropdown.find(".user-selected-text").text($(this).text());
+
+            // Close dropdown
+            dropdown.removeClass("open");
+        });
+
+        // Prevent clicking inside menu from closing it
+        $(document).on("click", ".user-dropdown-menu", function (e) {
+            e.stopPropagation();
+        });
+
+        // Click outside closes all
+        $(document).on("click", function () {
+            $(".user-dropdown").removeClass("open");
+        });
+    </script>
+
+    <div id="modernModal" class="modern-modal">
+        <div class="modern-modal-overlay" onclick="closeModal()"></div>
+        <div class="core-popup notifications-popup modern-modal-content" style="display:contents;">
+            <div class="overlay">
+                <div class="content">
+                    <!---->
+                    <div class="close" role="presentation" onclick="closeModal()">
+                        <img src="/images/popup-close.svg?v3" alt="Close" /><!---->
+                    </div>
+                    <!---->
+                    <!---->
+                    <div class="notifications-header svelte-cf1dav">
+                        <div class="left svelte-cf1dav">
+                            <div class="core-input with-icon icon-right">
+                                <div class="core-input-helper">
+                                    <input id="search-notification-input" placeholder="Search" />
+                                    <div class="icon">
+                                        <svg width="18"
+                                             height="18"
+                                             viewBox="0 0 18 18"
+                                             fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_213_1507)">
+                                                <g clip-path="url(#clip1_213_1507)">
+                                                    <g clip-path="url(#clip2_213_1507)">
+                                                        <g opacity="0.84">
+                                                            <path d="M14.8945 8.15551C14.8945 9.48812 14.4993 10.7908 13.759 11.8988C13.0186 13.0069 11.9664 13.8705 10.7352 14.3805C9.50406 14.8905 8.14933 15.024 6.84231 14.7641C5.53529 14.5042 4.33469 13.8626 3.39233 12.9204C2.44996 11.9781 1.80815 10.7776 1.54805 9.47064C1.28795 8.16366 1.42124 6.80891 1.93107 5.57768C2.4409 4.34646 3.30437 3.29406 4.4123 2.55355C5.52023 1.81305 6.82285 1.41771 8.15546 1.41751C9.04039 1.41738 9.91668 1.59157 10.7343 1.93012C11.5519 2.26868 12.2948 2.76498 12.9206 3.39067C13.5464 4.01637 14.0428 4.7592 14.3815 5.57676C14.7201 6.39432 14.8945 7.27058 14.8945 8.15551Z"
+                                                                  stroke="#ADB8CC"
+                                                                  stroke-width="1.5"
+                                                                  stroke-linecap="round"
+                                                                  stroke-linejoin="round"></path>
+                                                            <path d="M15.6034 15.6035L14.1844 14.1845"
+                                                                  stroke="#ADB8CC"
+                                                                  stroke-width="1.5"
+                                                                  stroke-linecap="round"
+                                                                  stroke-linejoin="round"></path>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_213_1507">
+                                                    <rect width="17.02" height="17.02" fill="white"></rect>
+                                                </clipPath>
+                                                <clipPath id="clip1_213_1507">
+                                                    <rect width="17.02" height="17.02" fill="white"></rect>
+                                                </clipPath>
+                                                <clipPath id="clip2_213_1507">
+                                                    <rect width="17.023"
+                                                          height="17.023"
+                                                          fill="white"
+                                                          transform="translate(-0.00152588 -0.00149536)"></rect>
+                                                </clipPath>
+                                            </defs>
+                                        </svg><!---->
+                                    </div>
+                                    <!---->
+                                    <!---->
+                                </div>
+                                <!---->
+                                <!---->
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="right svelte-cf1dav" style="
+                                                            position: relative;
+                                                            text-transform: uppercase;
+                                                            width: fit-content;
+                                                            color: #fff;
+                                                            top: 50%;
+                                                            transform: translateY(0%);
+                                                            right: 0;
+                                                            height: 40px;
+                                                            display: flex;
+                                                            align-items: center;
+                                                            justify-content: center;
+                                                            padding-right: 0.375rem;
+                                                            z-index: 2;
+                                                            padding-top: 0px;
+                                                            font-weight: 800;
+                                                            margin-right: 30px;
+                                                            font-size: 160%;
+                                                        ">
+                            <div class="core-checkbox">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" />
+                                    <span onclick="GetUnreadMessages()" class="checkmark"><!----></span>
+                                    <!---->
+                                </label>
+                                <!---->
+                            </div>
+                            <!---->
+                            <span data-group="NOTIFICATION" data-key="ONLY_UNREAD">Only Unread</span><!---->
+                        </div>
+                    </div>
+                    <!---->
+                    <div id="notification-box" style="height:610px;">
+                        <div class="notifications-list">
+                        <div role="presentation" class="notification-item svelte-11ingjt">
+                            <div class="top svelte-11ingjt">
+                                <div class="title svelte-11ingjt">
+                                    Welcome to TITANBET! Claim Your €1,500 Bonus Today!
+                                </div>
+                                <div class="delete-notification svelte-11ingjt"
+                                     role="presentation">
+                                    <svg width="16"
+                                         height="16"
+                                         viewBox="0 0 16 16"
+                                         fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 1.5H2C1.44772 1.5 1 1.94772 1 2.5V3C1 3.55228 1.44772 4 2 4H14C14.5523 4 15 3.55228 15 3V2.5C15 1.94772 14.5523 1.5 14 1.5Z"
+                                              fill="#FF485A"></path>
+                                        <path d="M2.32654 5C2.29141 4.99981 2.25664 5.00703 2.22448 5.02118C2.19233 5.03534 2.16351 5.05611 2.13993 5.08215C2.11634 5.10818 2.0985 5.1389 2.08758 5.17229C2.07666 5.20568 2.0729 5.241 2.07654 5.27594L2.89873 13.1684C2.89856 13.1707 2.89856 13.173 2.89873 13.1753C2.94169 13.5404 3.11719 13.8769 3.39192 14.1211C3.66665 14.3653 4.02148 14.5001 4.38904 14.5H11.6106C11.9781 14.5 12.3327 14.3651 12.6073 14.1209C12.8819 13.8767 13.0573 13.5403 13.1003 13.1753V13.1688L13.9212 5.27594C13.9249 5.241 13.9211 5.20568 13.9102 5.17229C13.8993 5.1389 13.8814 5.10818 13.8579 5.08215C13.8343 5.05611 13.8055 5.03534 13.7733 5.02118C13.7411 5.00703 13.7064 4.99981 13.6712 5H2.32654ZM10.1034 10.6466C10.151 10.6928 10.1888 10.7479 10.2148 10.8089C10.2409 10.8698 10.2545 10.9354 10.255 11.0016C10.2554 11.0679 10.2427 11.1336 10.2176 11.1949C10.1924 11.2562 10.1553 11.312 10.1085 11.3588C10.0616 11.4057 10.0059 11.4427 9.94454 11.4678C9.88321 11.493 9.8175 11.5057 9.75123 11.5052C9.68495 11.5047 9.61944 11.491 9.5585 11.4649C9.49755 11.4389 9.4424 11.401 9.39623 11.3534L7.99998 9.95719L6.60342 11.3534C6.50922 11.445 6.38279 11.4958 6.25145 11.4948C6.12011 11.4939 5.99441 11.4413 5.90152 11.3485C5.80862 11.2556 5.75599 11.1299 5.75501 10.9986C5.75402 10.8673 5.80475 10.7408 5.89623 10.6466L7.29279 9.25L5.89623 7.85344C5.80475 7.7592 5.75402 7.63275 5.75501 7.50141C5.75599 7.37007 5.80862 7.24439 5.90152 7.15154C5.99441 7.05869 6.12011 7.00611 6.25145 7.00518C6.38279 7.00425 6.50922 7.05504 6.60342 7.14657L7.99998 8.54282L9.39623 7.14657C9.49043 7.05504 9.61686 7.00425 9.7482 7.00518C9.87954 7.00611 10.0052 7.05869 10.0981 7.15154C10.191 7.24439 10.2437 7.37007 10.2446 7.50141C10.2456 7.63275 10.1949 7.7592 10.1034 7.85344L8.70686 9.25L10.1034 10.6466Z"
+                                              fill="#FF485A"></path>
+                                    </svg><!---->
+                                    <span data-group="NOTIFICATION" data-key="DELETE">Delete</span><!---->
+                                </div>
+                                <!---->
+                            </div>
+                            <div class="short-desc">
+                                <div class="" style="display:none;flex-direction:column" id="notice">
+
+                                    <div class="description svelte-11ingjt">
+                                        Congratulations on joining TITANBET! 🥂
+                                        <div><br /></div>
+                                        <div>
+                                            Make your first deposit now and grab up to
+                                            <span style="color: rgb(139, 195, 74)">
+                                                <b data-path-to-node="2" data-index-in-node="82">€1,500 extra</b>
+                                            </span>as a warm welcome. 💰
+                                        </div>
+                                        <div><br /></div>
+                                        <div>
+                                            Your bonus unlocks instantly, giving you more to play and more to win! 🚀
+                                        </div>
+                                    </div>
+                                    <div class="image svelte-11ingjt">
+
+                                    </div>
+                                    <!---->
+                                    <div class="buttons svelte-11ingjt">
+                                        <!----><a href="/user/deposit"
+                                                  data-sveltekit-preload-data="hover"
+                                                  data-sveltekit-noscroll="false">
+                                            <button class="core-button">
+                                                <div class="button-content">
+                                                    Select Your Preferred Deposit Method 💳/ ₿<!---->
+                                                </div>
+                                                <!---->
+                                            </button><!---->
+                                        </a><!---->
+                                        <!---->
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!---->
+                            <!---->
+                            <div class="bottom svelte-11ingjt">
+                                <span class="date svelte-11ingjt">14/08/2026 06:49</span>
+                                <button class="core-button" onclick="viewmore('notice')">
+                                    <div class="button-content">
+                                        <span data-group="NOTIFICATION" data-key="VIEW_MORE">View More</span><!---->
+                                    </div>
+                                    <!---->
+                                </button><!---->
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!----><!---->
+                </div>
+            </div>
+        </div>
+        <!---->
+    </div>
+
+    <div id="dashboardModal" class="dashboard-modal">
+        <div class="dashboard-modal-overlay" onclick="closedashboardModal()"></div>
+        <!---->
+    </div>
+
+    <div class="core-snackbars" id="success-notice-modal" style="transform:translateX(110%);transition:all ease 0.5s">
+        <div class="snackbar-container">
+            <div role="presentation" class="core-snackbar success">
+                <!---->
+                <div class="head">
+                    <span id="success-header">Copy</span><!---->
+                    <div class="close">
+                        <!----><svg width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.9998 13.4L7.0998 18.3C6.91647 18.4833 6.68314 18.575 6.3998 18.575C6.11647 18.575 5.88314 18.4833 5.6998 18.3C5.51647 18.1167 5.4248 17.8833 5.4248 17.6C5.4248 17.3167 5.51647 17.0833 5.6998 16.9L10.5998 12L5.6998 7.1C5.51647 6.91667 5.4248 6.68333 5.4248 6.4C5.4248 6.11667 5.51647 5.88333 5.6998 5.7C5.88314 5.51667 6.11647 5.425 6.3998 5.425C6.68314 5.425 6.91647 5.51667 7.0998 5.7L11.9998 10.6L16.8998 5.7C17.0831 5.51667 17.3165 5.425 17.5998 5.425C17.8831 5.425 18.1165 5.51667 18.2998 5.7C18.4831 5.88333 18.5748 6.11667 18.5748 6.4C18.5748 6.68333 18.4831 6.91667 18.2998 7.1L13.3998 12L18.2998 16.9C18.4831 17.0833 18.5748 17.3167 18.5748 17.6C18.5748 17.8833 18.4831 18.1167 18.2998 18.3C18.1165 18.4833 17.8831 18.575 17.5998 18.575C17.3165 18.575 17.0831 18.4833 16.8998 18.3L11.9998 13.4Z"
+                                  fill="#F3F3F5"
+                                  fill-opacity="0.3"></path>
+                        </svg><!---->
+                    </div>
+                </div>
+                <div id="success-body" class="message">Address Copied</div>
+            </div>
+            <!---->
+        </div>
+    </div>
+
+    <div class="core-snackbars" id="failed-notice-modal" style="transform:translateX(110%);transition:all ease 0.5s">
+        <div class="snackbar-container">
+            <div role="presentation" class="core-snackbar error">
+                <!---->
+                <div class="head">
+                    <span id="failed-header">Change Password</span><!---->
+                    <div class="close">
+                        <!----><!----><svg width="24"
+                                           height="24"
+                                           viewBox="0 0 24 24"
+                                           fill="none"
+                                           xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.9998 13.4L7.0998 18.3C6.91647 18.4833 6.68314 18.575 6.3998 18.575C6.11647 18.575 5.88314 18.4833 5.6998 18.3C5.51647 18.1167 5.4248 17.8833 5.4248 17.6C5.4248 17.3167 5.51647 17.0833 5.6998 16.9L10.5998 12L5.6998 7.1C5.51647 6.91667 5.4248 6.68333 5.4248 6.4C5.4248 6.11667 5.51647 5.88333 5.6998 5.7C5.88314 5.51667 6.11647 5.425 6.3998 5.425C6.68314 5.425 6.91647 5.51667 7.0998 5.7L11.9998 10.6L16.8998 5.7C17.0831 5.51667 17.3165 5.425 17.5998 5.425C17.8831 5.425 18.1165 5.51667 18.2998 5.7C18.4831 5.88333 18.5748 6.11667 18.5748 6.4C18.5748 6.68333 18.4831 6.91667 18.2998 7.1L13.3998 12L18.2998 16.9C18.4831 17.0833 18.5748 17.3167 18.5748 17.6C18.5748 17.8833 18.4831 18.1167 18.2998 18.3C18.1165 18.4833 17.8831 18.575 17.5998 18.575C17.3165 18.575 17.0831 18.4833 16.8998 18.3L11.9998 13.4Z"
+                                  fill="#F3F3F5"
+                                  fill-opacity="0.3"></path>
+                        </svg><!---->
+                    </div>
+                </div>
+                <div id="failed-body" class="message">Incorrect username or password</div>
+            </div>
+            <!---->
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="languageModal">
+        <!----><!----><!---->
+        <!---->
+        <div role="listbox"
+             tabindex="-1"
+             id="core-select-listbox-855a253f-f9eb-4105-9f23-5c83b2921bce"
+             class="options core-select-options down modal-box">
+            <!---->
+            <div class="options-placeholder" role="presentation">Choose Network</div>
+            <!---->
+            <div class="options-container" style="width:100%;">
+                <!---->
+                <!---->
+                <button role="option" class="modal-option option active" data-update-element="#selectedValue" aria-selected="true">
+                    <!----><!---->
+                    <span>Tether USD (ERC20)</span>
+                    <!----><!---->
+                </button><button role="option" class="modal-option option" data-update-element="#selectedValue" aria-selected="false">
+                    <!----><!---->
+                    <span>Tether USD (Tron/TRC20)</span>
+                    <!----><!---->
+                </button><button role="option" class="modal-option option" data-update-element="#selectedValue" aria-selected="false">
+                    <!----><!---->
+                    <span>Tether USD (BSC Chain)</span>
+                    <!----><!---->
+                </button><button role="option" class="modal-option option" data-update-element="#selectedValue" aria-selected="false">
+                    <!----><!---->
+                    <span>Tether USD (Polygon/MATIC)</span>
+                    <!----><!---->
+                </button><!---->
+            </div>
+        </div>
+        <!---->
+    </div>
+
+    <div class="modal-overlay" id="activitytype">
+        <div role="listbox"
+             tabindex="-1"
+             id="core-select-listbox-2cd78ffe-39c2-4a29-b920-e0f4cc2b4a11"
+             class="options core-select-options radio-style down modal-box">
+
+            <div style="position:relative;" class="options-placeholder" role="presentation">
+                Activity Type
+            </div>
+
+            <div class="options-container" style="width:100%;">
+
+                <button role="option"
+                        data-update-element="#selectedactivity"
+                        class="modal-option option"
+                        aria-selected="false">
+                    <span>Deposit</span>
+                </button>
+
+                <button role="option"
+                        data-update-element="#selectedactivity"
+                        class="modal-option option"
+                        aria-selected="false">
+                    <span>Withdraw</span>
+                </button>
+
+                <button role="option"
+                        data-update-element="#selectedactivity"
+                        class="modal-option option"
+                        aria-selected="false">
+                    <span>Bet/Win</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="statusmodal">
+        <div role="listbox"
+             tabindex="-1"
+             id="core-select-listbox-70b7dda9-14a5-42f0-9e9d-32c32afa1383"
+             class="options core-select-options radio-style down modal-box">
+
+            <div style="position:relative" class="options-placeholder" role="presentation">
+                Status
+            </div>
+
+            <div class="options-container" style="width:100%;">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Responsible Gaming Modal -->
+    <div id="responsibleGamingModal" class="rg-modal-overlay">
+        <div class="rg-modal">
+
+            <div class="rg-modal-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+
+            <div class="rg-modal-content">
+
+                <div class="rg-modal-badge">
+                    18+
+                </div>
+
+                <h2>Responsible Gaming</h2>
+
+                <p class="rg-modal-subtitle">
+                    Please confirm that you are 18 years of age or older
+                    before continuing.
+                </p>
+
+                <div class="rg-modal-notice">
+                    <i class="fas fa-info-circle"></i>
+
+                    <span>
+                        Gaming should always be enjoyed responsibly.
+                        Please make sure you meet the legal age requirement
+                        before using our services.
+                    </span>
+                </div>
+
+                <div class="rg-modal-actions">
+
+                    <button type="button"
+                            id="rgConfirmButton"
+                            class="rg-btn rg-btn-confirm">
+                        <i class="fas fa-check"></i>
+                        I am 18 or older
+                    </button>
+
+                    <button type="button"
+                            id="rgDeclineButton"
+                            class="rg-btn rg-btn-decline">
+                        <i class="fas fa-arrow-left"></i>
+                        No, take me back
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const responsibleGamingModal =
+                document.getElementById("responsibleGamingModal");
+
+            const rgConfirmButton =
+                document.getElementById("rgConfirmButton");
+
+            const rgDeclineButton =
+                document.getElementById("rgDeclineButton");
+
+            const storageKey = "responsibleGaming18Confirmed";
+            const sessionKey = "responsibleGamingHandled";
+
+
+            // ---------------------------------------------------------
+            // CHECK RESPONSIBLE GAMING STATUS
+            // ---------------------------------------------------------
+
+            const isConfirmed =
+                localStorage.getItem(storageKey) === "true";
+
+            const alreadyHandledThisVisit =
+                sessionStorage.getItem(sessionKey) === "true";
+
+
+            // Show only if:
+            // 1. User has NOT confirmed 18+
+            // 2. Modal has NOT already been handled during this visit
+
+            if (!isConfirmed && !alreadyHandledThisVisit) {
+
+                responsibleGamingModal.style.display = "flex";
+                document.body.style.overflow = "hidden";
+
+            }
+
+
+            // ---------------------------------------------------------
+            // USER CONFIRMS 18+
+            // ---------------------------------------------------------
+
+            rgConfirmButton.addEventListener("click", function () {
+
+                // Permanent confirmation
+                localStorage.setItem(storageKey, "true");
+
+                // Also mark as handled for this visit
+                sessionStorage.setItem(sessionKey, "true");
+
+                responsibleGamingModal.style.display = "none";
+                document.body.style.overflow = "";
+
+            });
+
+
+            // ---------------------------------------------------------
+            // USER DECLINES
+            // ---------------------------------------------------------
+
+            rgDeclineButton.addEventListener("click", function () {
+
+                // Do NOT save 18+ confirmation.
+                // Only remember that the modal was handled
+                // during this browser session.
+
+                sessionStorage.setItem(sessionKey, "true");
+
+                responsibleGamingModal.style.display = "none";
+                document.body.style.overflow = "";
+
+            });
+
+        });
+    </script>
+
+    <script>
+        /**
+         * Reusable Modal Controller
+         *
+         * Features:
+         * - Open any modal
+         * - Slide-up animation
+         * - Fade overlay
+         * - Close by outside click
+         * - Update text from selected button
+         *
+         * Usage:
+         *
+         * Open button:
+         * data-open-modal="#modalId"
+         *
+         * Option button:
+         * data-update-element="#targetElement"
+         *
+         */
+
+        class ModalController {
+            constructor() {
+                this.bindOpenEvents();
+                this.bindOptionEvents();
+                this.bindOutsideEvents();
+            }
+
+            // Open modal buttons
+            bindOpenEvents() {
+                document.querySelectorAll("[data-open-modal]").forEach((button) => {
+                    button.addEventListener("click", () => {
+                        const selector = button.dataset.openModal;
+
+                        const modal = document.querySelector(selector);
+
+                        this.open(modal);
+                    });
+                });
+            }
+
+            // Buttons inside modal
+            bindOptionEvents() {
+
+                document.querySelectorAll(".modal-option")
+                    .forEach(button => {
+
+                        button.addEventListener("click", () => {
+
+
+                            // Remove active class from other buttons in the same modal
+                            const modal = button.closest(".modal-overlay");
+
+                            modal.querySelectorAll(".modal-option")
+                                .forEach(option => {
+                                    option.classList.remove("active");
+                                });
+
+
+                            // Add active class to clicked button
+                            button.classList.add("active");
+
+
+                            // Update target text
+                            const targetSelector =
+                                button.dataset.updateElement;
+
+
+                            if (targetSelector) {
+
+                                const target =
+                                    document.querySelector(targetSelector);
+                                if (target) {
+
+                                    target.textContent =
+                                        button.textContent.trim();
+                                }
+                            }
+                            // Close modal
+                            this.close(modal);
+
+                        });
+
+                    });
+
+            }
+
+            // Close when clicking outside modal
+            bindOutsideEvents() {
+                document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+                    overlay.addEventListener("click", (event) => {
+                        if (event.target === overlay) {
+                            this.close(overlay);
+                        }
+                    });
+                });
+            }
+
+            open(modal) {
+                if (!modal) return;
+
+                modal.classList.add("is-open");
+            }
+
+            close(modal) {
+                if (!modal) return;
+
+                modal.classList.remove("is-open");
+            }
+        }
+
+        // Initialize reusable modal system
+        new ModalController();
+    </script>
+
+    <script>
+        function toggleLogin() {
+            $("#login").show();
+            $("#register").hide();
+        };
+        function toggleRegister() {
+            $("#login").hide();
+            $("#register").show();
+        }
+        function toggleLogin2FA() {
+            $("#login").hide();
+            $("#register").hide();
+            document.getElementById('login2FA').style.display = 'block';
+            $("#TwoFACode").val('');
+            $("#btnLogin2FA").prop("disabled", true);
+        }
+
+        function toggleEnable2FA(qrCodeImageUrl, sharedKey) {
+            // Show modal
+            const Enable2FAModal = document.getElementById("enable2FA");
+            Enable2FAModal.style.display = "block";
+
+            // Set QR code image and shared key
+            document.getElementById("QRCodeImage").src = qrCodeImageUrl;
+        }
+
+        function close2FAModal() {
+            document.getElementById("enable2FA").style.display = "none";
+        }
+
+        $(document).ready(function () {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                animation: true,            // enable animation
+                showClass: {
+                    popup: 'swal2-show'
+                },
+                hideClass: {
+                    popup: 'swal2-hide'
+                },
+                didOpen: (toast) => {
+                    toast.style.cursor = 'pointer'
+                    toast.addEventListener('click', () => {
+                        Swal.close()             // smooth fade out
+                    })
+                }
+            })
+
+            const loginmsg = sessionStorage.getItem("loginSuccessToast");
+            if (loginmsg) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed in successfully'
+                })
+                sessionStorage.removeItem("loginSuccessToast");
+            }
+
+            const registermsg = sessionStorage.getItem("registerSuccessToast");
+            if (registermsg) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed up successfully'
+                })
+                sessionStorage.removeItem("registerSuccessToast");
+            }
+        });
+
+    </script>
+
+    <script>
+        $(function () {
+
+            var today = moment();
+            var sevenDaysAgo = moment().subtract(6, 'days');
+
+            // From Date
+            $('#fromDate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'), 10),
+
+                minDate: moment('1901-01-01'),
+                maxDate: moment().endOf('year'),
+
+                startDate: sevenDaysAgo,
+
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                }
+            });
+
+            // To Date
+            $('#toDate').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'), 10),
+
+                minDate: moment('1901-01-01'),
+                maxDate: moment().endOf('year'),
+
+                startDate: today,
+
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                }
+            });
+
+        });
+    </script>
+
+    <script>
+        function openModal() {
+            const modal = document.getElementById("modernModal");
+
+            modal.classList.add("show");
+
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("modernModal");
+
+            modal.classList.remove("show");
+
+            document.body.style.overflow = "";
+        }
+    </script>
+
+    <script>
+        function opendashboardModal() {
+            const modal = document.getElementById("dashboardModal");
+
+            modal.classList.add("show");
+
+            document.body.style.overflow = "hidden";
+        }
+
+        function closedashboardModal() {
+            const modal = document.getElementById("dashboardModal");
+
+            modal.classList.remove("show");
+
+            document.body.style.overflow = "";
+        }
+
+        function viewmore(id) {
+
+            // Save viewed state locally.
+            markNotificationViewed(id);
+
+            var content = document.getElementById(id);
+
+            if (!content) {
+                return;
+            }
+
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "flex";
+            }
+            else {
+                content.style.display = "none";
+            }
+        }
+
+        function changestatus(id) {
+
+            // Save deleted state locally.
+            markNotificationDeleted(id);
+
+            // Remove notification from the current page immediately.
+            var notification = document.querySelector(
+                ".notifications-list." + CSS.escape(String(id))
+            );
+
+            if (notification) {
+                notification.remove();
+            }
+
+            updateNotificationCount();
+        }
+        // document.getElementById("copyButton").addEventListener("click", function () {
+        //     const text = document.getElementById("textToCopy").innerText;
+
+        //     navigator.clipboard.writeText(text)
+        //         .then(function () {
+        //             $("#success-header").text("Copy");
+        //             $("#success-body").text("Address copied");
+        //             const modal = document.getElementById("success-notice-modal");
+        //             modal.style.transform = "translateX(0%)";
+        //             setTimeout(function () {
+        //                 modal.style.transform = "translateX(110%)";
+        //             }, 2000);
+        //         })
+        //         .catch(function (error) {
+        //             console.error("Copy failed:", error);
+        //         });
+        // });
+        
+    </script>
+
+    <script>
+          /* ===================================================== LAZY IMAGE HANDLER ===================================================== */ function initializeLazyImages(
+            container = document,
+        ) {
+            const images = container.querySelectorAll("img.lazy-image");
+            images.forEach(function (image) {
+                const wrapper = image.closest(".image-wrapper");
+                if (!wrapper) {
+                    return;
+                }
+              /* * If the image has already loaded */ if (image.complete) {
+                    if (image.naturalWidth > 0) {
+                        wrapper.classList.remove("loading");
+                        wrapper.classList.add("loaded");
+                  /* * Image is already loaded. * Remove lazy-loading class. */ image.classList.remove(
+                            "lazy-image",
+                        );
+                  /* * Remove wrapper classes because * lazy loading is no longer needed. */ wrapper.classList.remove(
+                            "image-wrapper",
+                            "loading",
+                            "loaded",
+                        );
+                    }
+                    return;
+                }
+              /* * Image successfully loaded */ image.addEventListener(
+                    "load",
+                    function () {
+                        wrapper.classList.remove("loading");
+                        wrapper.classList.add("loaded");
+                  /* * Remove lazy-loading class. */ image.classList.remove(
+                            "lazy-image",
+                        );
+                  /* * Remove wrapper after lazy loading * has finished. */ wrapper.classList.remove(
+                            "image-wrapper",
+                            "loading",
+                            "loaded",
+                        );
+                    },
+                    { once: true },
+                );
+              /* * Image failed */ image.addEventListener(
+                    "error",
+                    function () {
+                        wrapper.classList.remove("loading");
+                    },
+                    { once: true },
+                );
+            });
+        }
+          /* ===================================================== INITIALIZE EXISTING IMAGES ===================================================== */ document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                initializeLazyImages();
+            },
+        );
+          /* ===================================================== OPTIONAL: AUTOMATICALLY HANDLE IMAGES ADDED LATER ===================================================== */ const observer =
+            new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    mutation.addedNodes.forEach(function (node) {
+                        if (node.nodeType !== 1) {
+                            return;
+                        }
+                  /* * If the added element * itself is an image */ if (
+                            node.matches &&
+                            node.matches("img.lazy-image")
+                        ) {
+                            initializeLazyImages(node.parentElement);
+                        } /* * If the added element * contains images */ else {
+                            initializeLazyImages(node);
+                        }
+                    });
+                });
+            });
+        observer.observe(document.body, { childList: true, subtree: true });
+    </script>
+
+
+    @* Nnotifications *@
+    @{
+        if(User.Identity.IsAuthenticated){
+            <script>
+                function updateNotificationCount() {
+
+                    var deleted = getDeletedNotifications()
+                        .map(String);
+
+                    var notificationElements =
+                        document.querySelectorAll(".notifications-list");
+
+                    var count = 0;
+
+                    notificationElements.forEach(function (element) {
+
+                        var classes = element.className.split(" ");
+
+                        var id = classes.find(function (item) {
+                            return item !== "notifications-list";
+                        });
+
+                        if (id && !deleted.includes(String(id))) {
+                            count++;
+                        }
+                    });
+
+                    if (count === 0) {
+                        $("#notification-count-box").css("display", "none");
+                    }
+                    else {
+                        $("#notification-count-box")
+                            .css("display", "")
+                            .html(count);
+                    }
+                }
+
+                const NOTIFICATION_VIEWED_KEY = "notification_viewed";
+                const NOTIFICATION_DELETED_KEY = "notification_deleted";
+
+
+                function getViewedNotifications() {
+                    try {
+                        return JSON.parse(
+                            localStorage.getItem(NOTIFICATION_VIEWED_KEY) || "[]"
+                        );
+                    } catch (e) {
+                        return [];
+                    }
+                }
+
+
+                function getDeletedNotifications() {
+                    try {
+                        return JSON.parse(
+                            localStorage.getItem(NOTIFICATION_DELETED_KEY) || "[]"
+                        );
+                    } catch (e) {
+                        return [];
+                    }
+                }
+
+
+                function saveViewedNotifications(list) {
+                    localStorage.setItem(
+                        NOTIFICATION_VIEWED_KEY,
+                        JSON.stringify(list)
+                    );
+                }
+
+
+                function saveDeletedNotifications(list) {
+                    localStorage.setItem(
+                        NOTIFICATION_DELETED_KEY,
+                        JSON.stringify(list)
+                    );
+                }
+
+
+                function isNotificationViewed(id) {
+                    var viewed = getViewedNotifications();
+
+                    return viewed.map(String).includes(String(id));
+                }
+
+
+                function isNotificationDeleted(id) {
+                    var deleted = getDeletedNotifications();
+
+                    return deleted.map(String).includes(String(id));
+                }
+
+
+                function markNotificationViewed(id) {
+                    var viewed = getViewedNotifications();
+
+                    id = String(id);
+
+                    if (!viewed.map(String).includes(id)) {
+                        viewed.push(id);
+                        saveViewedNotifications(viewed);
+                    }
+                }
+
+
+                function markNotificationDeleted(id) {
+                    var deleted = getDeletedNotifications();
+
+                    id = String(id);
+
+                    if (!deleted.map(String).includes(id)) {
+                        deleted.push(id);
+                        saveDeletedNotifications(deleted);
+                    }
+                }
+            </script>
+            <script>
+                function buildNotificationHtml(message) {
+                    return `
+                        <div class="notifications-list ${message.id}">
+
+                            <div role="presentation" class="notification-item svelte-11ingjt">
+
+                                <div class="top svelte-11ingjt">
+
+                                    <div class="title svelte-11ingjt">
+                                        ${message.subject}
+                                    </div>
+
+                                    <div class="delete-notification svelte-11ingjt"
+                                         role="presentation">
+
+                                        <svg width="16"
+                                             height="16"
+                                             viewBox="0 0 16 16"
+                                             fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+
+                                            <path d="M14 1.5H2C1.44772 1.5 1 1.94772 1 2.5V3C1 3.55228 1.44772 4 2 4H14C14.5523 4 15 3.55228 15 3V2.5C15 1.94772 14.5523 1.5 14 1.5Z"
+                                                  fill="#FF485A"></path>
+
+                                            <path d="M2.32654 5C2.29141 4.99981 2.25664 5.00703 2.22448 5.02118C2.19233 5.03534 2.16351 5.05611 2.13993 5.08215C2.11634 5.10818 2.0985 5.1389 2.08758 5.17229C2.07666 5.20568 2.0729 5.241 2.07654 5.27594L2.89873 13.1684C2.89856 13.1707 2.89856 13.173 2.89873 13.1753C2.94169 13.5404 3.11719 13.8769 3.39192 14.1211C3.66665 14.3653 4.02148 14.5001 4.38904 14.5H11.6106C11.9781 14.5 12.3327 14.3651 12.6073 14.1209C12.8819 13.8767 13.0573 13.5403 13.1003 13.1753V13.1688L13.9212 5.27594C13.9249 5.241 13.9211 5.20568 13.9102 5.17229C13.8993 5.1389 13.8814 5.10818 13.8579 5.08215C13.8343 5.05611 13.8055 5.03534 13.7733 5.02118C13.7411 5.00703 13.7064 4.99981 13.6712 5H2.32654ZM10.1034 10.6466C10.151 10.6928 10.1888 10.7479 10.2148 10.8089C10.2409 10.8698 10.2545 10.9354 10.255 11.0016C10.2554 11.0679 10.2427 11.1336 10.2176 11.1949C10.1924 11.2562 10.1553 11.312 10.1085 11.3588C10.0616 11.4057 10.0059 11.4427 9.94454 11.4678C9.88321 11.493 9.8175 11.5057 9.75123 11.5052C9.68495 11.5047 9.61944 11.491 9.5585 11.4649C9.49755 11.4389 9.4424 11.401 9.39623 11.3534L7.99998 9.95719L6.60342 11.3534C6.50922 11.445 6.38279 11.4958 6.25145 11.4948C6.12011 11.4939 5.99441 11.4413 5.90152 11.3485C5.80862 11.2556 5.75599 11.1299 5.75501 10.9986C5.75402 10.8673 5.80475 10.7408 5.89623 10.6466L7.29279 9.25L5.89623 7.85344C5.80475 7.7592 5.75402 7.63275 5.75501 7.50141C5.75599 7.37007 5.80862 7.24439 5.90152 7.15154C5.99441 7.05869 6.12011 7.00611 6.25145 7.00518C6.38279 7.00425 6.50922 7.05504 6.60342 7.14657L7.99998 8.54282L9.39623 7.14657C9.49043 7.05504 9.61686 7.00425 9.7482 7.00518C9.87954 7.00611 10.0052 7.05869 10.0981 7.15154C10.191 7.24439 10.2437 7.37007 10.2446 7.50141C10.2456 7.63275 10.1949 7.7592 10.1034 7.85344L8.70686 9.25L10.1034 10.6466Z"
+                                                  fill="#FF485A"></path>
+                                        </svg>
+
+                                        <span data-group="NOTIFICATION"
+                                              onclick="changestatus('${message.id}')"
+                                              data-key="DELETE">
+                                            Delete
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="short-desc">
+
+                                    <div class=""
+                                         style="display:none;flex-direction:column"
+                                         id="${message.id}">
+
+                                        <div class="description svelte-11ingjt">
+
+                                            ${message.content}
+
+                                            <div><br /></div>
+
+                                            <div>
+                                                Make your first deposit now and grab up to
+                                                <span style="color: rgb(139, 195, 74)">
+                                                    <b>€1,500 extra</b>
+                                                </span>
+                                                as a warm welcome. 💰
+                                            </div>
+
+                                            <div><br /></div>
+
+                                            <div>
+                                                Your bonus unlocks instantly, giving you more to play
+                                                and more to win! 🚀
+                                            </div>
+
+                                        </div>
+
+                                        <div class="image svelte-11ingjt">
+
+                                            <img alt=""
+                                                 class="svelte-11ingjt"
+                                                 src="${message.imageUrl}" />
+
+                                        </div>
+
+                                        <div class="buttons svelte-11ingjt">
+
+                                            <a href="/user/deposit"
+                                               data-sveltekit-preload-data="hover"
+                                               data-sveltekit-noscroll="false">
+
+                                                <button class="core-button">
+
+                                                    <div class="button-content">
+                                                        Select Your Preferred Deposit Method 💳/ ₿
+                                                    </div>
+
+                                                </button>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="bottom svelte-11ingjt">
+
+                                    <span class="date svelte-11ingjt">
+                                        ${message.createdAt}
+                                    </span>
+
+                                    <button class="core-button"
+                                            onclick="viewmore('${message.id}')">
+
+                                        <div class="button-content">
+
+                                            <span data-group="NOTIFICATION"
+                                                  data-key="VIEW_MORE">
+                                                View More
+                                            </span>
+
+                                        </div>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+                }</script>
+            <script>
+
+                        $.ajax({
+                            url: "/Home/GetNotifications",
+                            method: "POST",
+                            data: {},
+                            success: function (res) {
+
+                                if (res.success) {
+
+                                    var deletedNotifications =
+                                        getDeletedNotifications().map(String);
+
+                                    var notification = "";
+                                    var visibleCount = 0;
+
+                                    for (var i = 0; i < res.messages.length; i++) {
+
+                                        var message = res.messages[i];
+                                        var messageId = String(message.id);
+
+                                        // Never display locally deleted notifications.
+                                        if (deletedNotifications.includes(messageId)) {
+                                            continue;
+                                        }
+
+                                        // Build notification.
+                                        notification += buildNotificationHtml(message);
+
+                                        visibleCount++;
+                                    }
+
+                                    $("#notification-box").html(notification);
+
+                                    if (visibleCount === 0) {
+
+                                        $("#notification-count-box")
+                                            .css("display", "none");
+
+                                    } else {
+
+                                        $("#notification-count-box")
+                                            .css("display", "")
+                                            .html(visibleCount);
+                                    }
+                                }
+                            }
+                        });</script>
+            }
+      }
+    <script>
+        var showingUnreadOnly = false;
+
+        function GetUnreadMessages() {
+
+            // Toggle the filter state
+            showingUnreadOnly = !showingUnreadOnly;
+
+            $.ajax({
+                url: "/Home/GetUnreadMessages",
+                method: "POST",
+                data: {},
+                success: function (res) {
+
+                    if (res.success) {
+
+                        var viewedNotifications =
+                            getViewedNotifications().map(String);
+
+                        var deletedNotifications =
+                            getDeletedNotifications().map(String);
+
+                        var notification = "";
+                        var visibleCount = 0;
+
+                        for (var i = 0; i < res.messages.length; i++) {
+
+                            var message = res.messages[i];
+                            var messageId = String(message.id);
+
+                            // Never show locally deleted notifications
+                            if (deletedNotifications.includes(messageId)) {
+                                continue;
+                            }
+
+                            // When Unread filter is active,
+                            // hide notifications that have already been viewed.
+                            if (
+                                showingUnreadOnly &&
+                                viewedNotifications.includes(messageId)
+                            ) {
+                                continue;
+                            }
+
+                            // Show notification
+                            notification += buildNotificationHtml(message);
+
+                            visibleCount++;
+                        }
+
+                        $("#notification-box").html(notification);
+
+                        if (visibleCount === 0) {
+
+                            $("#notification-count-box")
+                                .css("display", "none");
+
+                        } else {
+
+                            $("#notification-count-box")
+                                .css("display", "")
+                                .html(visibleCount);
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#search-notification-input")
+            .on("input", function () {
+
+                var search =
+                    $("#search-notification-input").val();
+
+                $.ajax({
+                    url: "/Home/GetSearchNotification",
+                    method: "POST",
+                    data: {
+                        search: search
+                    },
+                    success: function (res) {
+
+                        if (res.success) {
+
+                            var deletedNotifications =
+                                getDeletedNotifications().map(String);
+
+                            var notification = "";
+                            var visibleCount = 0;
+
+                            for (var i = 0; i < res.messages.length; i++) {
+
+                                var message = res.messages[i];
+                                var messageId = String(message.id);
+
+                                // Never display locally deleted notifications.
+                                if (deletedNotifications.includes(messageId)) {
+                                    continue;
+                                }
+
+                                notification +=
+                                    buildNotificationHtml(message);
+
+                                visibleCount++;
+                            }
+
+                            $("#notification-box")
+                                .html(notification);
+
+                            if (visibleCount === 0) {
+
+                                $("#notification-count-box")
+                                    .css("display", "none");
+
+                            } else {
+
+                                $("#notification-count-box")
+                                    .css("display", "")
+                                    .html(visibleCount);
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+
+
+
+

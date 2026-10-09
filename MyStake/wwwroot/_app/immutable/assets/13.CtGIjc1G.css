@@ -1,0 +1,62 @@
+﻿.page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page :is(h1,h2).title {
+    margin-top: 4rem;
+    margin-bottom: 4.4rem !important;
+    font-family: Luckiest Guy,serif !important;
+    font-size: 5.7rem !important;
+    font-weight: 100 !important;
+    filter: drop-shadow(.3rem .5rem 0rem #672ee1)
+}
+
+    .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page :is(h1,h2).title b {
+        color: #f4ff07 !important
+    }
+
+@media not (min-width:920px) {
+    .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page :is(h1,h2).title {
+        margin-bottom: 3rem !important;
+        font-size: 4.3rem !important
+    }
+}
+
+.page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list {
+    grid-template-columns: repeat(4,1fr) !important;
+    row-gap: 8rem !important;
+    justify-content: space-between
+}
+
+    .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list .card {
+        max-width: 25.6rem
+    }
+
+        .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list .card .title {
+            display: none
+        }
+
+        .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list .card img {
+            object-fit: fill
+        }
+
+@media not (min-width:920px) {
+    .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list {
+        grid-template-columns: repeat(auto-fill,minmax(13rem,1fr)) !important;
+        gap: 1rem !important
+    }
+
+        .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .game-list .card .play-btn {
+            width: 10.5053rem !important;
+            height: 3.0738rem !important;
+            font-size: 1.5368rem !important
+        }
+}
+
+.page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page .original-games-description-item .title {
+    padding: 1.6rem 5rem !important;
+    font-size: 2rem !important
+}
+
+@media not (min-width:920px) {
+    .page-wrapper.original-games-page.svelte-4r0vqu .mini-games-page {
+        grid-template-columns: repeat(auto-fill,minmax(10.9rem,1fr)) !important;
+        gap: 1rem !important
+    }
+}

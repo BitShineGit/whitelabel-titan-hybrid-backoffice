@@ -1,0 +1,390 @@
+﻿@{
+    Layout = null;
+    var url = (string)ViewData["gameurl"];
+    var player = (Titan.Repository.Database.User)ViewData["user"];
+    var gamename = (string)ViewData["gamename"];
+}
+
+<html lang="en" dir="ltr">
+<head>
+    <style id="stndz-custom-css"></style>
+    <title>Game | TITAN BET</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.png?v=2" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+          name="viewport" />
+    <link rel="preload"
+          href="/fonts/google/roboto/roboto-latin-wght-normal.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin="anonymous" />
+
+ 
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/table-pagination.Dn4gpnRx.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/1.BC8GpWWt.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/styles.BZw_rDFM.css" />
+ 
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/language-switcher.bjca302h.css" />
+   
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/app-auth-banner.DyLyJUR6.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/app-login.BDO2FGaC.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/app-signup-form.qcdzwkbd.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/app-signup.CgXaT9ZG.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/2.B-09qx03.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/skeleton-text.EemzQql6.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/casino-page-skeleton.DdqwC09U.css" />
+    <link rel="shortcut icon"
+          href="/images/favicon/favicon.png" />
+    <meta name="theme-color" content="#00aaeb" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/10.BEBSmcOU.css" />
+    <!---->
+    <meta property="og:image"
+          content="/content/120,2311f9678ae813.webp" />
+    <!---->
+    <!---->
+
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/5.D4X5sbmd.css" />
+    <link rel="modulepreload"
+          as="script"
+          crossorigin=""
+          href="/_app/immutable/nodes/33.CZsWUn-Z.js" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/payments-page-skeleton.BFHV-0c7.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/33.CkQCVn_P.css" />
+    <link rel="stylesheet"
+          crossorigin=""
+          href="/_app/immutable/assets/20.4gZcXgdq.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .hide {
+            display: none !important;
+        }
+
+        .show {
+            display: flex !important;
+        }
+
+        .dropdown-container {
+            overflow: revert;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown.open .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown .dropdown-menu {
+            display: none;
+        }
+
+        .balance-content {
+            position: relative;
+        }
+
+        /* Not hovering: show second element */
+        .first-section {
+            display: flex !important;
+        }
+
+        .second-section {
+            display: none !important;
+        }
+
+        .third-section {
+            display: none !important;
+        }
+
+        /* Hovering: show first element */
+        .balance-content:hover .first-section {
+            display: none !important;
+        }
+
+        /* Hovering: hide second element */
+        .balance-content:hover .second-section {
+            display: flex !important;
+        }
+
+        /* Hovering: hide second element */
+        .balance-content:hover .third-section {
+            display: flex !important;
+        }
+    </style>
+
+    <style>
+        .small-dark-round-btn {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 50%;
+            border: 1px solid #333;
+            background: linear-gradient( 145deg, #242424, #0d0d0d );
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.10);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+            .small-dark-round-btn span {
+                font-size: 17px;
+                line-height: 1;
+                transition: transform 0.25s ease;
+            }
+            /* Hover */
+            .small-dark-round-btn:hover {
+                transform: translateY(-2px);
+                background: linear-gradient( 145deg, #303030, #151515 );
+                border-color: #555;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 255, 255, 0.06);
+                color: #fff;
+            }
+
+                .small-dark-round-btn:hover span {
+                    transform: translateX(3px);
+                }
+
+            /* Click */
+            .small-dark-round-btn:active {
+                transform: scale(0.92);
+            }
+    </style>
+</head>
+
+<body data-sveltekit-preload-code="off" data-sveltekit-preload-data="hover">
+    <a onclick="back()" style="position:absolute;z-index:1000;top:20px;left:20px"
+       class="small-dark-round-btn"
+       aria-label="Open">
+        <span>→</span>
+    </a>
+    <div style="display: contents">
+        <script>
+            {
+                __sveltekit_115k6qf = {
+                    base: "",
+                };
+
+                const element = document.currentScript.parentElement;
+
+                Promise.all([
+                    import("/_app/immutable/entry/start.C7zrPsqg.js"),
+                    import("/_app/immutable/entry/app.CjUZQiZv.js"),
+                ]).then(([kit, app]) => {
+                    kit.start(app, element);
+                });
+            }
+        </script>
+        <!----><!----><!----><!----><!----><!----><!---->
+        <!---->
+        <div class="core-snackbars"></div>
+        <!---->
+        <!----><!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!----><!---->
+        <!---->
+        <!---->
+        <div class="page-wrapper svelte-1v2axqk">
+            <!---->
+            <!----><!----><!---->
+            
+            <!----><!---->
+            <main class="svelte-1v2axqk full">
+                <!----><!----><!----><!----><!----><!---->
+                <div>
+                    <div class="gamepage svelte-6p7pcp">
+                        <div class="wrapper svelte-6p7pcp">
+                            <div class="game-wrapper svelte-9pgaoy box">
+                                <!----><!---->
+                                @{
+                                                <div id="game-container" class="game svelte-q568go">
+                                            <!----><iframe title="@gamename"
+                                                           id="game"
+                                                           width="100%"
+                                                           height="100%"
+                                                           frameborder="0"
+                                                           allowtransparency=""
+                                                           allowfullscreen=""
+                                                           allow="fullscreen"
+                                                           referrerpolicy="origin"
+                                                           src="@url"></iframe><!---->
+                                        </div>
+                                }
+                                <!---->
+                            </div>
+                            <!---->
+                        </div>
+                    </div>
+                    <!---->
+                </div>
+                <!---->
+            </main>
+            <!---->
+        </div>
+        <!---->
+        <div id="svelte-announcer"
+             aria-live="assertive"
+             aria-atomic="true"
+             style="
+          position: absolute;
+          left: 0;
+          top: 0;
+          clip: rect(0 0 0 0);
+          clip-path: inset(50%);
+          overflow: hidden;
+          white-space: nowrap;
+          width: 1px;
+          height: 1px;
+        ">
+            untitled page<!---->
+        </div>
+        <!---->
+    </div>
+    
+    <iframe height="1"
+            width="1"
+            style="
+        position: absolute;
+        top: 0px;
+        width:100%;
+        height:100%;
+        left: 0px;
+        border-width: medium;
+        border-style: none;
+        border-color: currentcolor;
+        border-image: none;
+        visibility: hidden;
+      "></iframe>
+
+    <script src="https://live1chats.com/v2/injector/"
+            id="chatwidget"
+            data-ref="2344e731a1f54083"></script>
+    <script src="https://js.pusher.com/7.4.0/pusher.min.js"></script>
+    <script src="https://js.pusher.com/7.4.0/pusher.min.js"></script>
+    
+    <div class=""
+         style="
+        box-sizing: border-box;
+        height: 647px;
+        width: 400px;
+        position: fixed;
+        border-radius: 16px;
+        box-shadow:
+          rgba(0, 0, 0, 0.01) 0px 8px 32px,
+          rgba(0, 0, 0, 0.08) 0px 2px 8px;
+        z-index: 99999999;
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        visibility: hidden;
+        display: none;
+        right: 80px;
+        bottom: 15px;
+      ">
+        <iframe title="Widget Iframe"
+                src="https://live1chats.com/v2/widget/?ref=2344e731a1f54083"
+                style="
+          box-sizing: border-box;
+          position: absolute;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          border: 0px;
+          margin: 0px;
+          padding: 0px;
+          border-radius: 16px;
+        "></iframe>
+    </div>
+    
+    <script src="https://static-live.hacksawgaming.com/launcher/hacksaw-launcher.min.js"></script>
+    <script>
+        function back() {
+            window.history.back();
+        };
+        function showheader() {
+            const header = document.getElementById("header");
+            header.classList.toggle("hide");
+        }
+        function showdropdown() {
+            const dropdown = document.getElementById("dropdown");
+            dropdown.classList.toggle("show");
+        }
+        function showfree() {
+            const free = document.getElementById("free");
+            free.classList.toggle("hide");
+        }
+        function back() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        // Open / Close dropdown
+        $(".dropdown-toggle").on("click", function (e) {
+            e.stopPropagation();
+
+            const dropdown = $(this).closest(".dropdown");
+
+            // Close every other dropdown
+            $(".dropdown").not(dropdown).removeClass("open");
+
+            // Toggle current one
+        });
+
+
+        // Prevent clicking inside menu from closing it
+        $(document).on("click", ".dropdown-menu", function (e) {
+            e.stopPropagation();
+        });
+
+        // Click outside closes all
+        $(document).on("click", function () {
+            $(".dropdown").removeClass("open");
+        });
+    </script>
+</body>
+</html>
