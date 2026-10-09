@@ -1,0 +1,2091 @@
+﻿@{
+    ViewData["Title"] = "Betting Logs";
+}
+
+<!-- ============================================================= -->
+<!-- DATATABLES -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+
+
+<!-- ============================================================= -->
+<!-- SELECT2 -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+<link href="~/assets/plugins/select2/css/select2.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+
+<!-- ============================================================= -->
+<!-- MOMENT / DATE RANGE PICKER -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+<script src="~/assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+<link href="~/assets/plugins/datatables/responsive.bootstrap5.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+<link href="~/assets/plugins/daterangepicker/daterangepicker.css"
+      rel="stylesheet"
+      type="text/css" />
+
+<link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- ============================================================= -->
+<!-- PAGE TITLE -->
+<!-- ============================================================= -->
+
+<div class="page-title-head d-flex align-items-center">
+
+    <div class="flex-grow-1" style="margin-left:15px;">
+
+        <h4 class="page-main-title m-0">
+            Betting Logs
+        </h4>
+
+    </div>
+
+    <div class="text-end">
+
+        <ol class="breadcrumb m-0 py-0">
+
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    MyStake
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a href="javascript: void(0);">
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active">
+                Betting Logs
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+
+
+    <!-- ========================================================= -->
+    <!-- FILTER CARD -->
+    <!-- ========================================================= -->
+
+    <div class="card mb-3">
+
+        <div class="card-header justify-content-between">
+
+            <div>
+
+                <h4 class="card-title mb-1">
+                    Search Betting Logs
+                </h4>
+
+                <p class="text-muted mb-0">
+                    Search and filter betting history by agent, user, provider, game, round and date.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form id="bettingFilterForm">
+
+                <div class="row g-3">
+
+
+                    <!-- ================================================= -->
+                    <!-- AGENT CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterAgent"
+                               class="form-label">
+
+                            Agent Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <select id="filterAgent"
+                                    class="form-control select2" data-toggle="select2">
+                                <option value="">
+                                    All Agents
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- USER CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterUser"
+                               class="form-label">
+
+                            User Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterUser"
+                                   placeholder="Search user code..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PROVIDER CODE - SELECT2 -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterProviderCode"
+                               class="form-label">
+
+                            Provider Code
+
+                        </label>
+
+                        <select id="filterProviderCode"
+                                class="form-select">
+
+                            <option value="">
+                                All Providers
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- GAME CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterGameCode"
+                               class="form-label">
+
+                            Game Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterGameCode"
+                                   placeholder="Search game code..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-device-gamepad app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ROUND ID -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterRoundId"
+                               class="form-label">
+
+                            Round ID
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterRoundId"
+                                   placeholder="Search round ID..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-hash app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- STATUS - SELECT2 -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterStatus"
+                               class="form-label">
+
+                            Status
+
+                        </label>
+
+                        <select id="filterStatus"
+                                class="form-select">
+
+                            <option value="">
+                                All Statuses
+                            </option>
+
+                            <option value="1">
+                                Success
+                            </option>
+
+                            <option value="2">
+                                Outstanding
+                            </option>
+
+                            <option value="0">
+                                Canceled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- DATE RANGE - INSPINIA CALENDAR -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label class="form-label">
+                            Date Range
+                        </label>
+
+                        <div class="position-relative">
+
+                            <div id="reportrange"
+                                 class="form-control"
+                                 data-toggle="date-picker-range"
+                                 data-target-display="#selectedValue"
+                                 data-cancel-class="btn-light">
+
+                                <i class="ti ti-calendar me-2"></i>
+
+                                <span id="selectedValue"></span>
+
+                                <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                            </div>
+
+                        </div>
+
+                        <input type="hidden"
+                               id="dateRange"
+                               value="" />
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- SEARCH / CLEAR -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6 d-flex align-items-end">
+
+                        <div class="d-flex gap-2 w-100">
+
+                            <button class="btn btn-primary flex-fill"
+                                    type="submit"
+                                    id="applyFiltersBtn">
+
+                                <i class="ti ti-search me-2"></i>
+
+                                Search
+
+                            </button>
+
+
+                            <button class="btn btn-light flex-fill"
+                                    type="button"
+                                    id="clearFiltersBtn">
+
+                                <i class="ti ti-refresh me-2"></i>
+
+                                Clear
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- BETTING TABLE CARD -->
+    <!-- ========================================================= -->
+
+    <div class="card">
+
+        <div class="card-header justify-content-between">
+
+            <div>
+
+                <h4 class="card-title mb-1">
+                    Betting Transactions
+                </h4>
+
+                <p class="text-muted mb-0">
+                    Detailed betting history and transaction information.
+                </p>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- COLUMN MENU -->
+            <!-- ===================================================== -->
+
+            <div class="dropdown">
+
+                <button type="button"
+                        class="btn btn-light"
+                        id="columnsButton"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false">
+
+                    <i class="ti ti-columns-3 me-1"></i>
+
+                    Columns
+
+                </button>
+
+
+                <div class="dropdown-menu dropdown-menu-end p-2"
+                     id="columnsMenu">
+
+                    <div class="dropdown-header">
+                        Show / Hide Columns
+                    </div>
+
+
+                    @for (int i = 0; i < 20; i++)
+                    {
+                        string columnName = i switch
+                        {
+                            0 => "ID",
+                            1 => "User Code",
+                            2 => "Agent Code",
+                            3 => "Provider Code",
+                            4 => "Game Code",
+                            5 => "Bet Amount",
+                            6 => "Win Amount",
+                            7 => "Status",
+                            8 => "Created At",
+                            9 => "Updated At",
+                            10 => "History ID",
+                            11 => "User Table ID",
+                            12 => "Agent Table ID",
+                            13 => "Agent Path",
+                            14 => "Provider ID",
+                            15 => "Provider Name",
+                            16 => "Game Name",
+                            17 => "Round ID",
+                            18 => "Before Balance",
+                            19 => "After Balance",
+                            _ => ""
+                        };
+
+                        <label class="dropdown-item d-flex align-items-center gap-2">
+
+                            <input type="checkbox"
+                                   class="form-check-input m-0 column-toggle"
+                                   data-column="@i"
+                                   checked />
+
+                            <span>
+                                @columnName
+                            </span>
+
+                        </label>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- TABLE -->
+        <!-- ========================================================= -->
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="bettingTable"
+                       class="table table-hover table-nowrap align-middle mb-0"
+                       style="width:100%;">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>User Code</th>
+                            <th>Agent Code</th>
+                            <th>Provider Code</th>
+                            <th>Game Code</th>
+                            <th>Bet Amount</th>
+                            <th>Win Amount</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>History ID</th>
+                            <th>User Table ID</th>
+                            <th>Agent Table ID</th>
+                            <th>Agent Path</th>
+                            <th>Provider ID</th>
+                            <th>Provider Name</th>
+                            <th>Game Name</th>
+                            <th>Round ID</th>
+                            <th>Before Balance</th>
+                            <th>After Balance</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- DATATABLE CONTROLS -->
+            <!-- ===================================================== -->
+
+            <div id="dataTableLengthContainer"
+                 class="mt-3 pt-2">
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3">
+
+                <div id="dataTableInfoContainer">
+                </div>
+
+                <div id="dataTablePagingContainer"
+                     class="ms-auto">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================= -->
+<!-- STATUS BADGES / DATATABLE CONTROL CSS -->
+<!-- ============================================================= -->
+
+<style>
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+
+    .status-success {
+        background-color: rgba(25, 135, 84, 0.12);
+        color: #198754;
+    }
+
+
+    .status-outstanding {
+        background-color: rgba(255, 193, 7, 0.15);
+        color: #b58100;
+    }
+
+
+    .status-canceled {
+        background-color: rgba(220, 53, 69, 0.12);
+        color: #dc3545;
+    }
+
+
+    .status-unknown {
+        background-color: rgba(108, 117, 125, 0.12);
+        color: #6c757d;
+    }
+
+
+    /*
+                 * Keep DataTables entries selector compact.
+                 */
+    #dataTableLengthContainer .dt-length select,
+    #dataTableLengthContainer .dataTables_length select {
+        width: auto !important;
+        min-width: 65px;
+        display: inline-block;
+    }
+
+
+    #dataTableLengthContainer .dt-length,
+    #dataTableLengthContainer .dataTables_length {
+        width: auto;
+    }
+
+</style>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        function loadBettingLogAgents() {
+
+            $.ajax({
+                url: '@Url.Action("GetAllAgents", "Dashboard")',
+                type: 'GET',
+                dataType: 'json',
+
+                success: function (data) {
+
+                    const agentSelect =
+                        $('#filterAgent');
+
+                    agentSelect.empty();
+
+                    agentSelect.append(
+                        new Option(
+                            'All Agents',
+                            '',
+                            true,
+                            true
+                        )
+                    );
+
+                    if (Array.isArray(data)) {
+
+                        data.forEach(function (item) {
+
+                            if (!item.agentCode) {
+                                return;
+                            }
+
+                            agentSelect.append(
+                                new Option(
+                                    item.agentCode,
+                                    item.agentCode,
+                                    false,
+                                    false
+                                )
+                            );
+
+                        });
+                    }
+
+                    agentSelect.trigger('change');
+                },
+
+                error: function (xhr) {
+
+                    console.error(
+                        'Failed to load finance log agents.',
+                        xhr
+                    );
+
+                }
+            });
+        }
+
+        loadBettingLogAgents();
+
+        /* =========================================================
+           SELECT2
+        ========================================================= */
+
+        if ($.fn.select2) {
+
+            $("#filterProviderCode").select2({
+                width: "100%"
+            });
+
+            $("#filterAgent")
+                .select2({
+                    width: "100%"
+                });
+
+        }
+
+
+
+        /* =========================================================
+           DATE RANGE - INSPINIA STYLE
+        ========================================================= */
+
+        var defaultStart =
+            moment().subtract(1, "month");
+
+
+        var defaultEnd =
+            moment();
+
+
+
+        /*
+         * Update hidden date value.
+         *
+         * This value is sent to the controller.
+         *
+         * Format:
+         *
+         * YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss
+         */
+        function updateDateRange(start, end) {
+
+            var backendValue =
+                start.format("YYYY-MM-DD HH:mm:ss") +
+                " - " +
+                end.format("YYYY-MM-DD HH:mm:ss");
+
+
+            $("#dateRange").val(
+                backendValue
+            );
+
+        }
+
+
+
+
+        /*
+         * Initialize the date picker.
+         *
+         * The HTML still uses the exact Inspinia pattern:
+         *
+         * data-toggle="date-picker-range"
+         * data-target-display="#selectedValue"
+         * data-cancel-class="btn-light"
+         *
+         * TIME PICKER ENABLED
+         */
+        if ($.fn.daterangepicker) {
+
+
+            $("#reportrange").daterangepicker({
+
+                startDate: defaultStart,
+
+                endDate: defaultEnd,
+
+
+                autoUpdateInput: false,
+
+
+                opens: "left",
+
+
+                drops: "down",
+
+
+
+                /* =================================================
+                   TIME PICKER
+                ================================================= */
+
+                timePicker: true,
+
+                timePicker24Hour: true,
+
+                timePickerSeconds: true,
+
+
+
+                locale: {
+
+                    format:
+                        "MMMM D, YYYY HH:mm:ss",
+
+
+                    cancelLabel:
+                        "Cancel",
+
+
+                    applyLabel:
+                        "Apply"
+
+                },
+
+
+
+                /* =================================================
+                   QUICK DATE RANGES
+                ================================================= */
+
+                ranges: {
+
+
+                    /*
+                     * Today
+                     *
+                     * 00:00:00 -> 23:59:59
+                     */
+                    "Today": [
+
+                        moment()
+                            .startOf("day"),
+
+
+                        moment()
+                            .endOf("day")
+
+                    ],
+
+
+
+                    /*
+                     * Yesterday
+                     *
+                     * 00:00:00 -> 23:59:59
+                     */
+                    "Yesterday": [
+
+                        moment()
+                            .subtract(1, "days")
+                            .startOf("day"),
+
+
+                        moment()
+                            .subtract(1, "days")
+                            .endOf("day")
+
+                    ],
+
+
+
+                    /*
+                     * Last 7 Days
+                     */
+                    "Last 7 Days": [
+
+                        moment()
+                            .subtract(6, "days")
+                            .startOf("day"),
+
+
+                        moment()
+                            .endOf("day")
+
+                    ],
+
+
+
+                    /*
+                     * Last 30 Days
+                     */
+                    "Last 30 Days": [
+
+                        moment()
+                            .subtract(29, "days")
+                            .startOf("day"),
+
+
+                        moment()
+                            .endOf("day")
+
+                    ],
+
+
+
+                    /*
+                     * This Month
+                     */
+                    "This Month": [
+
+                        moment()
+                            .startOf("month"),
+
+
+                        moment()
+                            .endOf("month")
+
+                    ],
+
+
+
+                    /*
+                     * Last Month
+                     */
+                    "Last Month": [
+
+                        moment()
+                            .subtract(1, "month")
+                            .startOf("month"),
+
+
+                        moment()
+                            .subtract(1, "month")
+                            .endOf("month")
+
+                    ]
+
+                }
+
+            });
+
+
+
+            /*
+             * Get the created daterangepicker instance.
+             */
+            var picker =
+                $("#reportrange")
+                    .data("daterangepicker");
+
+
+
+            /*
+             * Display the initial range.
+             */
+            if (picker) {
+
+
+                $("#selectedValue").text(
+
+                    defaultStart.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                    +
+
+                    " - "
+
+                    +
+
+                    defaultEnd.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                );
+
+
+
+                updateDateRange(
+
+                    defaultStart,
+
+                    defaultEnd
+
+                );
+
+            }
+
+
+            /*
+             * User clicks Apply.
+             */
+            $("#reportrange")
+                .off("apply.daterangepicker.betting")
+                .on(
+                    "apply.daterangepicker.betting",
+                    function (event, picker) {
+
+
+                        /*
+                         * Update visible text.
+                         */
+                        $("#selectedValue").text(
+
+                            picker.startDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                            +
+
+                            " - "
+
+                            +
+
+                            picker.endDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                        );
+
+
+
+                        /*
+                         * Update hidden backend value.
+                         */
+                        updateDateRange(
+
+                            picker.startDate,
+
+                            picker.endDate
+
+                        );
+
+                    }
+                );
+
+
+
+
+            /*
+             * User clicks Cancel.
+             */
+            $("#reportrange")
+                .off("cancel.daterangepicker.betting")
+                .on(
+                    "cancel.daterangepicker.betting",
+                    function () {
+
+
+                        /*
+                         * Keep the currently selected range.
+                         *
+                         * Do not clear the filter.
+                         */
+
+                    }
+                );
+
+
+        }
+        else {
+
+
+            console.error(
+                "daterangepicker.js is not loaded."
+            );
+
+        }
+
+
+
+
+
+        /* =========================================================
+           LOAD PROVIDERS
+        ========================================================= */
+
+        $.ajax({
+
+
+            url:
+                "@Url.Action("GetProviderCodes", "Dashboard")",
+
+
+            type:
+                "GET",
+
+
+            cache:
+                true,
+
+
+
+            success:
+                function (providers) {
+
+
+                    var $provider =
+                        $("#filterProviderCode");
+
+
+
+                    $provider.empty();
+
+
+
+                    $provider.append(
+
+                        new Option(
+                            "All Providers",
+                            ""
+                        )
+
+                    );
+
+
+
+                    $.each(
+
+                        providers || [],
+
+                        function (_, provider) {
+
+
+                            if (provider) {
+
+
+                                $provider.append(
+
+                                    new Option(
+                                        provider,
+                                        provider
+                                    )
+
+                                );
+
+                            }
+
+                        }
+
+                    );
+
+
+
+                    $provider
+                        .val("")
+                        .trigger("change");
+
+
+                },
+
+
+
+            error:
+                function (xhr) {
+
+
+                    console.error(
+
+                        "Failed to load providers:",
+
+                        xhr
+
+                    );
+
+
+                }
+
+
+        });
+
+
+
+
+
+
+        /* =========================================================
+           DATATABLE
+        ========================================================= */
+
+        var table =
+
+            $("#bettingTable").DataTable({
+
+
+                processing:
+                    true,
+
+
+                serverSide:
+                    true,
+
+
+                responsive:
+                    true,
+
+
+                dom:
+                    "lrtip",
+
+
+                pageLength:
+                    25,
+
+
+
+                lengthMenu:
+
+                    [
+
+                        [10, 25, 50, 100],
+
+                        [10, 25, 50, 100]
+
+                    ],
+
+
+
+
+                /*
+                 * Created At is now column 8.
+                 */
+                order:
+
+                    [
+
+                        [8, "desc"]
+
+                    ],
+
+
+
+
+                ajax:
+
+                {
+
+                    url:
+
+                        "@Url.Action("GetBettingLogs", "Dashboard")",
+
+
+
+                    type:
+
+                        "POST",
+
+
+
+
+                    data:
+
+                        function (d) {
+
+
+
+                            d.agent =
+
+                                $("#filterAgent")
+                                    .val();
+
+
+
+                            d.user =
+
+                                $("#filterUser")
+                                    .val();
+
+
+
+                            d.providerCode =
+
+                                $("#filterProviderCode")
+                                    .val();
+
+
+
+                            d.gameCode =
+
+                                $("#filterGameCode")
+                                    .val();
+
+
+
+                            d.roundId =
+
+                                $("#filterRoundId")
+                                    .val();
+
+
+
+                            d.status =
+
+                                $("#filterStatus")
+                                    .val();
+
+
+
+
+
+                            /*
+                             * Date range.
+                             */
+                            var range =
+
+                                $("#dateRange")
+                                    .val();
+
+
+
+
+                            if (range) {
+
+
+                                var dates =
+
+                                    range.split(
+                                        " - "
+                                    );
+
+
+
+                                if (dates.length === 2) {
+
+
+                                    d.fromDate =
+
+                                        dates[0];
+
+
+
+                                    d.toDate =
+
+                                        dates[1];
+
+
+                                }
+
+                            }
+
+
+                        }
+
+
+                },
+
+
+
+                /* =================================================
+                   COLUMNS
+                ================================================= */
+
+                columns:
+
+                    [
+
+                        /*
+                         * 0 - ID
+                         */
+                        {
+                            data:
+                                "id"
+                        },
+
+
+                        /*
+                         * 1 - USER CODE
+                         */
+                        {
+                            data:
+                                "userCode"
+                        },
+
+
+                        /*
+                         * 2 - AGENT CODE
+                         */
+                        {
+                            data:
+                                "agentCode"
+                        },
+
+
+                        /*
+                         * 3 - PROVIDER CODE
+                         */
+                        {
+                            data:
+                                "providerCode"
+                        },
+
+
+                        /*
+                         * 4 - GAME CODE
+                         */
+                        {
+                            data:
+                                "gameCode"
+                        },
+
+
+                        /*
+                         * 5 - BET AMOUNT
+                         */
+                        {
+
+                            data:
+                                "betAmount",
+
+
+                            render:
+                                function (data) {
+
+
+                                    return Number(
+
+                                        data || 0
+
+                                    ).toFixed(2);
+
+
+                                }
+
+                        },
+
+
+                        /*
+                         * 6 - WIN AMOUNT
+                         */
+                        {
+
+                            data:
+                                "winAmount",
+
+
+                            render:
+                                function (data) {
+
+
+                                    return Number(
+
+                                        data || 0
+
+                                    ).toFixed(2);
+
+
+                                }
+
+                        },
+
+
+                        /*
+                         * 7 - STATUS
+                         */
+                        {
+
+                            data:
+                                "status",
+
+
+                            render:
+                                function (data) {
+
+
+                                    switch (Number(data)) {
+
+
+                                        case 1:
+
+                                            return `
+
+                                                    <span class="status-badge status-success">
+
+                                                        Success
+
+                                                    </span>
+
+                                                `;
+
+
+
+                                        case 2:
+
+                                            return `
+
+                                                    <span class="status-badge status-outstanding">
+
+                                                        Outstanding
+
+                                                    </span>
+
+                                                `;
+
+
+
+                                        case 0:
+
+                                            return `
+
+                                                    <span class="status-badge status-canceled">
+
+                                                        Canceled
+
+                                                    </span>
+
+                                                `;
+
+
+
+                                        default:
+
+                                            return `
+
+                                                    <span class="status-badge status-unknown">
+
+                                                        Unknown
+
+                                                    </span>
+
+                                                `;
+
+
+                                    }
+
+
+                                }
+
+                        },
+
+
+                        /*
+                         * 8 - CREATED AT
+                         */
+                        {
+                            data:
+                                "createdAt",
+
+                            render:
+                                function (data) {
+
+                                    return data || "";
+
+                                }
+                        },
+
+
+                        /*
+                         * 9 - UPDATED AT
+                         */
+                        {
+                            data:
+                                "updatedAt",
+
+                            render:
+                                function (data) {
+
+                                    return data || "";
+
+                                }
+                        },
+
+
+                        /*
+                         * 10 - HISTORY ID
+                         */
+                        {
+                            data:
+                                "historyId"
+                        },
+
+
+                        /*
+                         * 11 - USER TABLE ID
+                         */
+                        {
+                            data:
+                                "userTableId"
+                        },
+
+
+                        /*
+                         * 12 - AGENT TABLE ID
+                         */
+                        {
+                            data:
+                                "agentTableId"
+                        },
+
+
+                        /*
+                         * 13 - AGENT PATH
+                         */
+                        {
+                            data:
+                                "agentPath"
+                        },
+
+
+                        /*
+                         * 14 - PROVIDER ID
+                         */
+                        {
+                            data:
+                                "providerId"
+                        },
+
+
+                        /*
+                         * 15 - PROVIDER NAME
+                         */
+                        {
+                            data:
+                                "providerName"
+                        },
+
+
+                        /*
+                         * 16 - GAME NAME
+                         */
+                        {
+                            data:
+                                "gameName"
+                        },
+
+
+                        /*
+                         * 17 - ROUND ID
+                         */
+                        {
+                            data:
+                                "roundId"
+                        },
+
+
+                        /*
+                         * 18 - BEFORE BALANCE
+                         */
+                        {
+
+                            data:
+                                "beforeBalance",
+
+
+                            render:
+                                function (data) {
+
+
+                                    return Number(
+
+                                        data || 0
+
+                                    ).toFixed(2);
+
+
+                                }
+
+                        },
+
+
+                        /*
+                         * 19 - AFTER BALANCE
+                         */
+                        {
+
+                            data:
+                                "afterBalance",
+
+
+                            render:
+                                function (data) {
+
+
+                                    return Number(
+
+                                        data || 0
+
+                                    ).toFixed(2);
+
+
+                                }
+
+                        }
+
+                    ],
+
+
+
+                /* =================================================
+                   DATATABLE CONTROLS
+                ================================================= */
+
+                initComplete:
+
+                    function () {
+
+
+                        var api =
+                            this.api();
+
+
+
+                        var container =
+                            $(api.table().container());
+
+
+
+                        var $length =
+                            container.find(
+                                ".dt-length, .dataTables_length"
+                            ).first();
+
+
+
+                        var $info =
+                            container.find(
+                                ".dt-info, .dataTables_info"
+                            ).first();
+
+
+
+                        var $paging =
+                            container.find(
+                                ".dt-paging, .dataTables_paginate"
+                            ).first();
+
+
+
+
+                        if ($length.length) {
+
+
+                            $("#dataTableLengthContainer")
+                                .empty()
+                                .append($length);
+
+
+                        }
+
+
+
+
+                        if ($info.length) {
+
+
+                            $("#dataTableInfoContainer")
+                                .empty()
+                                .append($info);
+
+
+                        }
+
+
+
+
+                        if ($paging.length) {
+
+
+                            $("#dataTablePagingContainer")
+                                .empty()
+                                .append($paging);
+
+
+                        }
+
+
+
+
+                        if (
+
+                            api.responsive &&
+
+                            typeof api.responsive.recalc ===
+                            "function"
+
+                        ) {
+
+
+                            api.responsive.recalc();
+
+
+                        }
+
+
+
+                        api.columns.adjust();
+
+
+                    }
+
+
+            });
+
+
+
+
+
+
+        /* =========================================================
+           FILTER FORM
+        ========================================================= */
+
+        $("#bettingFilterForm")
+            .on(
+                "submit",
+                function (e) {
+
+
+                    e.preventDefault();
+
+
+                    table.ajax.reload(
+
+                        null,
+
+                        true
+
+                    );
+
+
+                }
+            );
+
+
+
+
+
+
+        /* =========================================================
+           CLEAR FILTERS
+        ========================================================= */
+
+        $("#clearFiltersBtn")
+            .on(
+                "click",
+                function () {
+
+
+
+                    /*
+                     * Clear text fields.
+                     */
+
+                    $("#filterAgent").val("");
+
+                    $("#filterUser").val("");
+
+                    $("#filterGameCode").val("");
+
+                    $("#filterRoundId").val("");
+
+
+
+
+
+
+                    /*
+                     * Clear Select2.
+                     */
+
+                    $("#filterProviderCode")
+                        .val("")
+                        .trigger("change");
+
+
+
+                    $("#filterStatus")
+                        .val("")
+                        .trigger("change");
+
+
+
+
+
+
+
+
+                    /*
+                     * Reset date range.
+                     */
+
+                    var start =
+                        moment().subtract(
+                            1,
+                            "month"
+                        );
+
+
+
+                    var end =
+                        moment();
+
+
+
+
+                    var picker =
+                        $("#reportrange")
+                            .data("daterangepicker");
+
+
+
+
+
+                    if (picker) {
+
+
+                        picker.setStartDate(
+                            start
+                        );
+
+
+                        picker.setEndDate(
+                            end
+                        );
+
+
+
+
+
+                        $("#selectedValue").text(
+
+                            start.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                            +
+
+                            " - "
+
+                            +
+
+                            end.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+
+                        );
+
+                    }
+
+
+
+
+
+                    /*
+                     * Update backend date value.
+                     */
+
+                    updateDateRange(
+
+                        start,
+
+                        end
+
+                    );
+
+
+
+
+
+
+                    /*
+                     * Reload DataTable.
+                     */
+
+                    table.ajax.reload(
+
+                        null,
+
+                        true
+
+                    );
+
+
+
+                }
+            );
+
+
+
+
+
+
+
+
+        /* =========================================================
+           ENTER KEY
+        ========================================================= */
+
+        $(
+            "#filterAgent, " +
+
+            "#filterUser, " +
+
+            "#filterGameCode, " +
+
+            "#filterRoundId"
+        )
+            .on(
+                "keydown",
+                function (e) {
+
+
+                    if (e.key === "Enter") {
+
+
+                        e.preventDefault();
+
+
+
+                        $("#bettingFilterForm")
+                            .trigger("submit");
+
+
+                    }
+
+
+                }
+            );
+
+
+
+
+
+
+
+        /* =========================================================
+           COLUMN VISIBILITY
+        ========================================================= */
+
+        $(document)
+            .on(
+                "change",
+                ".column-toggle",
+                function () {
+
+
+
+                    var columnIndex =
+                        Number(
+                            $(this).data("column")
+                        );
+
+
+
+                    var column =
+                        table.column(
+                            columnIndex
+                        );
+
+
+
+                    column.visible(
+
+                        $(this).is(":checked"),
+
+                        false
+
+                    );
+
+
+
+                    table.columns.adjust();
+
+
+
+
+
+                    if (
+
+                        table.responsive &&
+
+                        typeof table.responsive.recalc ===
+                        "function"
+
+                    ) {
+
+
+                        table.responsive.recalc();
+
+
+                    }
+
+
+                }
+            );
+
+
+
+
+
+
+
+
+        /* =========================================================
+           WINDOW RESIZE
+        ========================================================= */
+
+        $(window)
+            .on(
+                "resize",
+                function () {
+
+
+
+                    table.columns.adjust();
+
+
+
+
+
+                    if (
+
+                        table.responsive &&
+
+                        typeof table.responsive.recalc ===
+                        "function"
+
+                    ) {
+
+
+                        table.responsive.recalc();
+
+
+                    }
+
+
+
+                }
+            );
+
+
+
+    });
+
+
+</script>

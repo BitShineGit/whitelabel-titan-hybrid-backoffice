@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whitelabel-backoffice", "Whitelabel-backoffice\Whitelabel-backoffice.csproj", "{EF8D30FC-4D72-4EDE-A973-3419840709DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{8CFAC832-971D-4AB7-9C6B-E1D9B6BDAC05}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.Logging", "..\..\..\1-Global\Global.Logging\Global.Logging.csproj", "{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.Logging.Sinks", "..\..\..\1-Global\Global.Logging.Sinks\Global.Logging.Sinks.csproj", "{01042151-70A3-452A-9129-9967EA313ADD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF8D30FC-4D72-4EDE-A973-3419840709DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8D30FC-4D72-4EDE-A973-3419840709DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8D30FC-4D72-4EDE-A973-3419840709DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8D30FC-4D72-4EDE-A973-3419840709DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01042151-70A3-452A-9129-9967EA313ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01042151-70A3-452A-9129-9967EA313ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01042151-70A3-452A-9129-9967EA313ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01042151-70A3-452A-9129-9967EA313ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD} = {8CFAC832-971D-4AB7-9C6B-E1D9B6BDAC05}
+		{01042151-70A3-452A-9129-9967EA313ADD} = {8CFAC832-971D-4AB7-9C6B-E1D9B6BDAC05}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4495BD61-CD26-4463-96C7-EB012177A46E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1439 @@
+﻿@using Whitelabel_backoffice.Database
+@{
+    ViewData["Title"] = "Players";
+    var UserCodeList = (List<string>)ViewData["UserCodeList"];
+    var AgentCodeList = (List<string>)ViewData["AgentCodeList"];
+    var CurrencyCodeList = (List<string>)ViewData["CurrencyCodeList"];
+
+}
+
+@section Styles {
+
+    <!-- Datatables css -->
+    <link href="assets/plugins/datatables/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Daterangepicker Plugin CSS -->
+    <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker.css" type="text/css" />
+
+    <!-- Select2 Plugin CSS -->
+    <link rel="stylesheet" href="assets/plugins/select2/select2.min.css" type="text/css" />
+}
+<link href="/assets/css/sweetalert.css" rel="stylesheet" type="text/css" />
+<script src="/assets/js/agent/sweetalert.js"></script>
+<script src="/assets/js/agent/sweetalert1.js"></script>
+<div class="page-title-head d-flex align-items-center">
+    <div class="flex-grow-1">
+        <h4 class="page-main-title m-0">Player</h4>
+    </div>
+
+    <div class="text-end">
+        <ol class="breadcrumb m-0 py-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">MyStake</a></li>
+            <li class="breadcrumb-item active">Player</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div>
+            <div class="card mb-3">
+
+                <div class="card-header justify-content-between">
+
+                    <div>
+                        <h4 class="card-title mb-1">
+                            Search Player List
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            Search and filter players by agent, user, currency, status and created date.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form id="searchFilterForm">
+
+                        <div class="row g-3">
+
+                            <!-- Agent Code -->
+                            <div class="col-xl-3 col-md-6">
+
+                                <label for="filterAgent" class="form-label">
+                                    Agent Code
+                                </label>
+
+                                <div class="app-search">
+
+                                    <input type="search"
+                                           class="form-control"
+                                           id="filterAgent"
+                                           placeholder="Search agent code..."
+                                           autocomplete="off">
+
+                                    <i class="ti ti-user app-search-icon text-muted"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- User Code -->
+                            <div class="col-xl-3 col-md-6">
+
+                                <label for="filterUser" class="form-label">
+                                    User Code
+                                </label>
+
+                                <div class="app-search">
+
+                                    <input type="search"
+                                           class="form-control"
+                                           id="filterUser"
+                                           placeholder="Search user code..."
+                                           autocomplete="off">
+
+                                    <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Provider -->
+                            <div class="col-xl-3 col-md-6">
+
+                                <label for="filterProviderCode" class="form-label">
+                                    Currency
+                                </label>
+
+                                <select id="filterCurrency"
+                                        class="form-select"
+                                        data-placeholder="Select currency">
+
+                                    <option value="">
+                                        All
+                                    </option>
+                                    @{
+                                        foreach (var currencyCode in CurrencyCodeList)
+                                        {
+                                            <option value="@currencyCode">
+                                                @currencyCode
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Status -->
+                            <div class="col-xl-3 col-md-6">
+
+                                <label for="filterStatus" class="form-label">
+                                    Status
+                                </label>
+
+                                <select id="filterStatus"
+                                        class="form-select"
+                                        data-placeholder="Select status">
+
+                                    <option value="">
+                                        All Statuses
+                                    </option>
+
+                                    <option value="1">
+                                        Active
+                                    </option>
+
+                                    <option value="0">
+                                        Blocked
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Date Range -->
+                            <div class="col-xl-9 col-md-6">
+
+                                <label class="form-label">
+                                    Created At
+                                </label>
+
+                                <div class="position-relative">
+
+                                    <div id="reportrange"
+                                         class="form-control"
+                                         data-toggle="date-picker-range"
+                                         data-target-display="#selectedValue"
+                                         data-cancel-class="btn-light">
+
+                                        <i class="ti ti-calendar me-2"></i>
+
+                                        <span id="selectedValue">
+                                            Loading...
+                                        </span>
+
+                                        <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Hidden value used by DataTables -->
+                                <input type="hidden"
+                                       id="dateRange"
+                                       value="" />
+
+                            </div>
+
+
+                            <!-- Buttons -->
+                            <div class="col-xl-3 col-md-6 d-flex align-items-end ms-auto">
+
+                                <div class="d-flex gap-2 w-100">
+
+                                    <button class="btn btn-primary flex-fill"
+                                            type="submit"
+                                            id="applyFiltersBtn">
+
+                                        <i class="ti ti-search me-2"></i>
+                                        Search
+
+                                    </button>
+
+
+                                    <button class="btn btn-light flex-fill"
+                                            type="button"
+                                            id="clearFiltersBtn">
+
+                                        <i class="ti ti-refresh me-2"></i>
+                                        Clear
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="card" style="margin-top:20px;">
+                <div class="card-body">
+
+                    <table id="playerTable" class="table table-striped dt-responsive align-middle mb-0">
+                        <thead class="thead-sm text-uppercase fs-xxs">
+                            <tr>
+                                <th>ID</th>
+                                <th>User Code</th>
+                                <th>Email</th>
+                                <th>Balance</th>
+                                <th>Currency</th>
+                                <th>Status</th>
+                                <th>Agent Code</th>
+                                <th>Created At</th>
+                                <th class="text-center">Action</th>
+
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Datatables js -->
+
+<script src="assets/plugins/datatables/dataTables.min.js"></script>
+<script src="assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+
+<!-- Daterangepicker Plugin Js -->
+<script src="assets/plugins/moment/moment.min.js"></script>
+<script src="assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+<!-- Select2 Plugin Js-->
+<script src="assets/plugins/select2/select2.min.js"></script>
+
+
+<!-- show/hide deposit/withdraw button-->
+<script>
+    const enableManualDeposit =
+    @(((bool)ViewData["EnableManualDeposit"]) ? "true" : "false");
+
+    const enableManualWithdraw =
+    @(((bool)ViewData["EnableManualWithdraw"]) ? "true" : "false");
+</script>
+<script>
+    // ==========================================
+    // PLAYER FILTER VARIABLES
+    // ==========================================
+
+    let createdAtStart = '';
+    let createdAtEnd = '';
+
+
+    // ==========================================
+    // CREATED AT DATE RANGE
+    // ==========================================
+
+    // ==========================================
+    // CREATED AT DATE RANGE
+    // ==========================================
+
+    function updateCreatedDateDisplay(start, end) {
+
+        $('#selectedValue').html(
+            start.format('MMMM D, YYYY') +
+            ' - ' +
+            end.format('MMMM D, YYYY')
+        );
+
+        $('#dateRange').val(
+            start.format('YYYY-MM-DD') +
+            '|' +
+            end.format('YYYY-MM-DD')
+        );
+
+        createdAtStart =
+            start.format('YYYY-MM-DD');
+
+        createdAtEnd =
+            end.format('YYYY-MM-DD');
+    }
+
+
+    // ==========================================
+    // INITIAL DATE
+    // ==========================================
+
+    const initialStart =
+        moment().subtract(29, 'days');
+
+    const initialEnd =
+        moment();
+
+
+    // ==========================================
+    // DATE RANGE PICKER
+    // ==========================================
+
+    $('#reportrange').daterangepicker({
+
+        startDate: initialStart,
+
+        endDate: initialEnd,
+
+        autoUpdateInput: false,
+
+        opens: 'left',
+
+        ranges: {
+
+            'Today': [
+                moment(),
+                moment()
+            ],
+
+            'Yesterday': [
+                moment().subtract(1, 'days'),
+                moment().subtract(1, 'days')
+            ],
+
+            'Last 7 Days': [
+                moment().subtract(6, 'days'),
+                moment()
+            ],
+
+            'Last 30 Days': [
+                moment().subtract(29, 'days'),
+                moment()
+            ],
+
+            'This Month': [
+                moment().startOf('month'),
+                moment().endOf('month')
+            ],
+
+            'Last Month': [
+                moment().subtract(1, 'month').startOf('month'),
+                moment().subtract(1, 'month').endOf('month')
+            ]
+
+        },
+
+        locale: {
+
+            format: 'MM/DD/YYYY',
+
+            applyLabel: 'Apply',
+
+            cancelLabel: 'Cancel',
+
+            customRangeLabel: 'Custom Range',
+
+            daysOfWeek: [
+                'Su',
+                'Mo',
+                'Tu',
+                'We',
+                'Th',
+                'Fr',
+                'Sa'
+            ],
+
+            monthNames: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ],
+
+            firstDay: 1
+        },
+
+        cancelClass: 'btn-light',
+
+        applyButtonClasses: 'btn-success'
+
+    }, function (start, end) {
+
+        updateCreatedDateDisplay(
+            start,
+            end
+        );
+
+    });
+
+
+    // ==========================================
+    // SET INITIAL DISPLAY
+    // ==========================================
+
+    updateCreatedDateDisplay(
+        initialStart,
+        initialEnd
+    );
+
+
+    // ==========================================
+    // DATE RANGE APPLY
+    // ==========================================
+
+    $('#reportrange').on(
+        'apply.daterangepicker',
+        function (ev, picker) {
+
+            updateCreatedDateDisplay(
+                picker.startDate,
+                picker.endDate
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // DATE RANGE CANCEL
+    // ==========================================
+
+    $('#reportrange').on(
+        'cancel.daterangepicker',
+        function () {
+
+            updateCreatedDateDisplay(
+                initialStart,
+                initialEnd
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // DATATABLE
+    // ==========================================
+
+    const table = new DataTable('#playerTable', {
+
+        responsive: true,
+
+        processing: true,
+
+        serverSide: true,
+
+        searching: false,
+
+        select: true,
+
+        pageLength: 10,
+
+        stateSave: false,
+
+        lengthMenu: [10, 25, 50, 100],
+
+        // Default: newest ID first
+        order: [[0, 'desc']],
+
+        dom: `
+                <'row align-items-center mt-2 mb-3'
+                    <'col-md-6'
+                        <'columnToggleWrapper'>
+                    >
+                    <'col-md-6 text-end'
+                        l
+                    >
+                >
+                rt
+                <'row align-items-center mt-2'
+                    <'col-md-6'
+                        i
+                    >
+                    <'col-md-6 text-end'
+                        p
+                    >
+                >
+            `,
+
+        language: {
+            paginate: {
+                first: '<i class="ti ti-chevrons-left"></i>',
+                previous: '<i class="ti ti-chevron-left"></i>',
+                next: '<i class="ti ti-chevron-right"></i>',
+                last: '<i class="ti ti-chevrons-right"></i>'
+            }
+        },
+
+        // ==========================================
+        // AJAX
+        // ==========================================
+
+        ajax: {
+
+            url: '@Url.Action("GetPlayers", "Player")',
+
+            type: 'POST',
+
+            data: function (d) {
+
+                // Agent Code
+                d.uplineCode =
+                    $('#filterAgent').val().trim();
+
+                // User Code
+                d.userCode =
+                    $('#filterUser').val().trim();
+
+                // Currency
+                d.currency =
+                    $('#filterCurrency').val() || '';
+
+                // Status
+                d.status =
+                    $('#filterStatus').val() || '';
+
+                // Created At
+                d.createdFrom =
+                    createdAtStart || '';
+
+                d.createdTo =
+                    createdAtEnd || '';
+            }
+        },
+
+
+        // ==========================================
+        // COLUMNS
+        // ==========================================
+
+        columns: [
+
+            // 0 - ID
+            {
+                data: 'id'
+            },
+
+            // 1 - User Code
+            {
+                data: 'userCode'
+            },
+
+            // 2 - User Email
+            {
+                data: 'userEmail',
+
+                render: function (data) {
+                    return data || '-';
+                }
+            },
+
+            // 3 - Total Balance
+            {
+                data: 'currentBalance',
+
+                render: function (data) {
+
+                    return Number(data || 0).toLocaleString(
+                        undefined,
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    );
+                }
+            },
+
+            // 4 - Currency
+            {
+                data: 'currencyCode'
+            },
+
+            // 5 - Status
+            {
+                data: 'status',
+
+                render: (e, t, n) => {
+                    const isActive = Number(e) === 1;
+
+                    return `<span class="badge badge-label badge-soft-${isActive ? "success" : "danger"}">${isActive ? "Active" : "Blocked"}</span>`;
+                }
+            },
+
+            // 6 - Upline Code
+            {
+                data: 'uplineCode',
+
+                render: function (data) {
+                    return data || '-';
+                }
+            },
+
+            // 7 - Created At
+            {
+                data: 'createdAt',
+
+                render: function (data) {
+
+                    if (!data) {
+                        return '-';
+                    }
+
+                    return moment(data)
+                        .format('YYYY-MM-DD HH:mm:ss');
+                }
+            },
+
+            // 8 - Action
+            {
+                data: null,
+
+                orderable: false,
+
+                searchable: false,
+
+                render: function (data, type, row) {
+
+                    return `
+            <div class="d-flex gap-2">
+
+                ${enableManualDeposit ? `
+                <button
+                    type="button"
+                    class="btn btn-sm btn-success player-deposit-btn"
+                    data-player-id="${row.id}"
+                    data-user-code="${row.userCode}">
+                    <i class="ti ti-plus me-1"></i>
+                    Deposit
+                </button>
+                ` : ''}
+
+
+                ${enableManualWithdraw ? `
+                <button
+                    type="button"
+                    class="btn btn-sm btn-danger player-withdraw-btn"
+                    data-player-id="${row.id}"
+                    data-user-code="${row.userCode}">
+                    <i class="ti ti-minus me-1"></i>
+                    Withdraw
+                </button>
+                ` : ''}
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-info player-detail-btn"
+                    data-player-id="${row.id}"
+                    data-user-code="${row.userCode}">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Detail
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger player-delete-btn"
+                    data-player-id="${row.id}"
+                    data-user-code="${row.userCode}">
+                    <i class="ti ti-trash me-1"></i>
+                    Delete
+                </button>
+
+            </div>
+        `;
+                }
+            }
+
+        ],
+
+
+        // ==========================================
+        // SORTABLE COLUMNS
+        // ==========================================
+
+        columnDefs: [
+
+            {
+                orderable: true,
+                targets: [0, 3, 7]
+            },
+
+            {
+                orderable: false,
+                targets: [1, 2, 4, 5, 6, 8]
+            }
+
+        ],
+
+
+        // ==========================================
+        // COLUMN TOGGLE
+        // ==========================================
+
+        initComplete: function () {
+
+            const columnNames = [
+                'ID',
+                'User Code',
+                'User Email',
+                'Total Balance',
+                'Currency',
+                'Status',
+                'Upline Code',
+                'Created At',
+                'Action'
+
+            ];
+
+            const columnToggleWrapper =
+                document.querySelector(
+                    '.columnToggleWrapper'
+                );
+
+            if (!columnToggleWrapper) {
+                return;
+            }
+
+            const dropdown =
+                document.createElement('div');
+
+            dropdown.className = 'dropdown';
+
+            dropdown.innerHTML = `
+                    <button
+                        class="btn btn-sm btn-secondary"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside">
+
+                        <i class="ti ti-columns-3 me-1"></i>
+
+                        Show / Hide Columns
+
+                    </button>
+
+                    <ul
+                        class="dropdown-menu"
+                        id="columnToggleMenu">
+
+                        ${columnNames.map(function (name, index) {
+
+                const isVisible =
+                    table.column(index).visible();
+
+                return `
+                                <li class="dropdown-item">
+
+                                    <div class="form-check">
+
+                                        <input
+                                            class="form-check-input form-check-input-light fs-14 mt-0 toggle-vis"
+                                            type="checkbox"
+                                            data-column="${index}"
+                                            id="colToggle${index}"
+                                            ${isVisible ? 'checked' : ''}>
+
+                                        <label
+                                            class="form-check-label fw-medium"
+                                            for="colToggle${index}">
+
+                                            ${name}
+
+                                        </label>
+
+                                    </div>
+
+                                </li>
+                            `;
+
+            }).join('')}
+
+                    </ul>
+                `;
+
+            columnToggleWrapper.appendChild(dropdown);
+
+
+            const columnToggleMenu =
+                document.getElementById(
+                    'columnToggleMenu'
+                );
+
+            if (columnToggleMenu) {
+
+                columnToggleMenu.addEventListener(
+                    'change',
+                    function (event) {
+
+                        if (
+                            !event.target.classList.contains(
+                                'toggle-vis'
+                            )
+                        ) {
+                            return;
+                        }
+
+                        const columnIndex =
+                            parseInt(
+                                event.target.dataset.column,
+                                10
+                            );
+
+                        table
+                            .column(columnIndex)
+                            .visible(
+                                event.target.checked
+                            );
+                    }
+                );
+            }
+        }
+
+    });
+
+    // Detail button
+    $('#playerTable tbody').on('click', '.player-detail-btn', function () {
+        const playerId = $(this).data('player-id');
+        window.location.href = '@Url.Action("Detail", "Player")/' + playerId;
+    });
+
+    // Delete button
+    $('#playerTable tbody').on('click', '.player-delete-btn', function () {
+
+        const playerId = $(this).data('player-id');
+        const userCode = $(this).data('user-code');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            html: `You are about to delete player <b>${userCode}</b>. This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc3545',
+            reverseButtons: true
+        }).then(function (result) {
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("DeletePlayer", "Player")',
+                type: 'POST',
+                data: { id: playerId },
+
+                success: function (response) {
+
+                    if (response.success) {
+
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: response.message || 'Player has been deleted.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                        table.ajax.reload(null, false);
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Failed',
+                            text: response.message || 'Unable to delete player.',
+                            icon: 'error'
+                        });
+                    }
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while deleting the player.',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    });
+
+    // ==========================================
+    // APPLY FILTERS
+    // ==========================================
+
+    $('#searchFilterForm').on(
+        'submit',
+        function (e) {
+
+            e.preventDefault();
+
+            table.ajax.reload(null, true);
+        }
+    );
+
+
+    // ==========================================
+    // CLEAR FILTERS
+    // ==========================================
+
+    $('#clearFiltersBtn').on(
+        'click',
+        function () {
+
+            // Clear Agent
+            $('#filterAgent').val('');
+
+            // Clear User
+            $('#filterUser').val('');
+
+            // Clear Currency
+            $('#filterCurrency').val('');
+
+            // Clear Status
+            $('#filterStatus').val('');
+
+
+            // Reset date
+            const start =
+                moment().subtract(29, 'days');
+
+            const end =
+                moment();
+
+
+            createdAtStart =
+                start.format('YYYY-MM-DD');
+
+            createdAtEnd =
+                end.format('YYYY-MM-DD');
+
+
+            updateCreatedDateDisplay(
+                start,
+                end
+            );
+
+
+            // Reload DataTable
+            table.ajax.reload(null, true);
+        }
+    );
+    // ==========================================
+    // PLAYER DEPOSIT
+    // ==========================================
+
+    $(document).on(
+        'click',
+        '.player-deposit-btn',
+        function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const button = $(this);
+
+            const playerId = button.data('player-id');
+            const userCode = button.data('user-code');
+
+            const row = button.closest('tr');
+
+            const rowData = table
+                .row(row)
+                .data();
+
+            const playerBalance = Number(
+                rowData?.currentBalance || 0
+            );
+
+            // Get fresh agent balance
+            $.ajax({
+                url: '@Url.Action("GetAgentBalance", "Player")',
+                type: 'GET',
+
+                success: function (response) {
+
+                    if (!response.success) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+
+                        return;
+                    }
+
+                    const agentBalance =
+                        Number(response.balance || 0);
+
+                    Swal.fire({
+                        title: 'Deposit',
+                        html: `
+                            <div class="text-start">
+
+                                <div class="mb-2">
+                                    <strong>Player:</strong>
+                                    ${userCode}
+                                </div>
+
+                                <div class="mb-2">
+                                    <strong>Agent Balance:</strong>
+                                    ${agentBalance.toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )} USD
+                                </div>
+
+                                <div class="mb-2">
+                                    <strong>Player Balance:</strong>
+                                    ${playerBalance.toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )} USD
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Currency:</strong>
+                                    USD
+                                </div>
+
+                                <input
+                                    type="number"
+                                    id="depositAmount"
+                                    class="form-control"
+                                    placeholder="Enter amount"
+                                    min="0"
+                                    step="0.01"
+                                    autocomplete="off">
+
+                            </div>
+                        `,
+
+                        showCancelButton: true,
+                        confirmButtonText: 'Continue',
+                        cancelButtonText: 'Cancel',
+
+                        preConfirm: function () {
+
+                            const amount = Number(
+                                $('#depositAmount').val()
+                            );
+
+                            if (!amount || amount <= 0) {
+
+                                Swal.showValidationMessage(
+                                    'Amount must be greater than 0.'
+                                );
+
+                                return false;
+                            }
+
+                            if (amount > agentBalance) {
+
+                                Swal.showValidationMessage(
+                                    'Amount cannot be greater than the agent balance.'
+                                );
+
+                                return false;
+                            }
+
+                            return amount;
+                        }
+
+                    }).then(function (result) {
+
+                        if (!result.isConfirmed) {
+                            return;
+                        }
+
+                        const amount = result.value;
+
+                        Swal.fire({
+                            title: 'Confirm Deposit',
+
+                            html: `
+                                Deposit
+                                <strong>
+                                    ${amount.toLocaleString(
+                                undefined,
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }
+                            )} USD
+                                </strong>
+                                to
+                                <strong>${userCode}</strong>?
+                            `,
+
+                            icon: 'question',
+
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, Deposit',
+                            cancelButtonText: 'Cancel'
+
+                        }).then(function (confirmResult) {
+
+                            if (!confirmResult.isConfirmed) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '@Url.Action("TransferPlayerBalance", "Player")',
+                                type: 'POST',
+
+                                data: {
+                                    playerId: playerId,
+                                    amount: amount,
+                                    transactionType: 'deposit'
+                                },
+
+                                success: function (response) {
+
+                                    if (!response.success) {
+
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Deposit Failed',
+                                            text: response.message
+                                        });
+
+                                        return;
+                                    }
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Deposit Completed',
+                                        text: response.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+
+                                    table.ajax.reload(
+                                        null,
+                                        false
+                                    );
+                                },
+
+                                error: function () {
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'An error occurred while processing the deposit.'
+                                    });
+                                }
+                            });
+                        });
+                    });
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Unable to get the agent balance.'
+                    });
+                }
+            });
+        }
+    );
+
+
+    // ==========================================
+    // PLAYER WITHDRAW
+    // ==========================================
+
+    $(document).on(
+        'click',
+        '.player-withdraw-btn',
+        function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const button = $(this);
+
+            const playerId = button.data('player-id');
+            const userCode = button.data('user-code');
+
+            const row = button.closest('tr');
+
+            const rowData = table
+                .row(row)
+                .data();
+
+            const playerBalance = Number(
+                rowData?.currentBalance || 0
+            );
+
+            // Get fresh agent balance
+            $.ajax({
+                url: '@Url.Action("GetAgentBalance", "Player")',
+                type: 'GET',
+
+                success: function (response) {
+
+                    if (!response.success) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+
+                        return;
+                    }
+
+                    const agentBalance =
+                        Number(response.balance || 0);
+
+                    Swal.fire({
+                        title: 'Withdraw',
+                        html: `
+                            <div class="text-start">
+
+                                <div class="mb-2">
+                                    <strong>Player:</strong>
+                                    ${userCode}
+                                </div>
+
+                                <div class="mb-2">
+                                    <strong>Agent Balance:</strong>
+                                    ${agentBalance.toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )} USD
+                                </div>
+
+                                <div class="mb-2">
+                                    <strong>Player Balance:</strong>
+                                    ${playerBalance.toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        )} USD
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Currency:</strong>
+                                    USD
+                                </div>
+
+                                <input
+                                    type="number"
+                                    id="withdrawAmount"
+                                    class="form-control"
+                                    placeholder="Enter amount"
+                                    min="0"
+                                    step="0.01"
+                                    autocomplete="off">
+
+                            </div>
+                        `,
+
+                        showCancelButton: true,
+                        confirmButtonText: 'Continue',
+                        cancelButtonText: 'Cancel',
+
+                        preConfirm: function () {
+
+                            const amount = Number(
+                                $('#withdrawAmount').val()
+                            );
+
+                            if (!amount || amount <= 0) {
+
+                                Swal.showValidationMessage(
+                                    'Amount must be greater than 0.'
+                                );
+
+                                return false;
+                            }
+
+                            if (amount > playerBalance) {
+
+                                Swal.showValidationMessage(
+                                    'Amount cannot be greater than the player balance.'
+                                );
+
+                                return false;
+                            }
+
+                            return amount;
+                        }
+
+                    }).then(function (result) {
+
+                        if (!result.isConfirmed) {
+                            return;
+                        }
+
+                        const amount = result.value;
+
+                        Swal.fire({
+                            title: 'Confirm Withdrawal',
+
+                            html: `
+                                Withdraw
+                                <strong>
+                                    ${amount.toLocaleString(
+                                undefined,
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }
+                            )} USD
+                                </strong>
+                                from
+                                <strong>${userCode}</strong>?
+                            `,
+
+                            icon: 'question',
+
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, Withdraw',
+                            cancelButtonText: 'Cancel'
+
+                        }).then(function (confirmResult) {
+
+                            if (!confirmResult.isConfirmed) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '@Url.Action("TransferPlayerBalance", "Player")',
+                                type: 'POST',
+
+                                data: {
+                                    playerId: playerId,
+                                    amount: amount,
+                                    transactionType: 'withdraw'
+                                },
+
+                                success: function (response) {
+
+                                    if (!response.success) {
+
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Withdrawal Failed',
+                                            text: response.message
+                                        });
+
+                                        return;
+                                    }
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Withdrawal Completed',
+                                        text: response.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+
+                                    table.ajax.reload(
+                                        null,
+                                        false
+                                    );
+                                },
+
+                                error: function () {
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'An error occurred while processing the withdrawal.'
+                                    });
+                                }
+                            });
+                        });
+                    });
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Unable to get the agent balance.'
+                    });
+                }
+            });
+        }
+    );
+</script>

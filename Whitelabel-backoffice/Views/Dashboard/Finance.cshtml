@@ -1,0 +1,2775 @@
+﻿@{
+    ViewData["Title"] = "Finance Logs";
+}
+
+<link rel="stylesheet" href="~/assets/plugins/datatables/responsive.bootstrap5.min.css" />
+<link rel="stylesheet" href="~/assets/plugins/select2/css/select2.min.css" />
+<link rel="stylesheet" href="~/assets/plugins/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="~/assets/plugins/sweetalert2/sweetalert2.min.css" />
+<link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<div class="page-title-head d-flex align-items-center">
+
+    <div class="flex-grow-1 ms-3">
+
+        <h4 class="page-main-title m-0">
+            Finance Logs
+        </h4>
+
+    </div>
+
+    <div class="text-end">
+
+        <ol class="breadcrumb m-0 py-0">
+
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    MyStake
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active">
+                Finance Logs
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+
+
+    <!-- =========================================================
+         FILTER CARD
+    ========================================================= -->
+
+    <div class="card">
+
+        <div class="card-body">
+
+            @Html.AntiForgeryToken()
+
+
+            <form id="financeFilterForm">
+
+                <div class="row g-3">
+
+
+                    <!-- ORDER ID -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterOrderId"
+                               class="form-label">
+
+                            Order ID
+
+                        </label>
+
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterOrderId"
+                                   placeholder="Search Order ID..."
+                                   autocomplete="off">
+
+
+                            <i class="ti ti-hash app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TARGET CODE -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterTarget"
+                               class="form-label">
+
+                            Target Code
+
+                        </label>
+
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterTarget"
+                                   placeholder="Search user code..."
+                                   autocomplete="off">
+
+
+                            <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AGENT CODE -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterAgent"
+                               class="form-label">
+
+                            Agent Code
+
+                        </label>
+
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterAgent"
+                                   placeholder="Search agent code..."
+                                   autocomplete="off">
+
+
+                            <i class="ti ti-user app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FINANCE TYPE -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterExecTypes"
+                               class="form-label">
+
+                            Finance Types
+
+                        </label>
+
+
+                        <select id="filterExecTypes"
+                                class="form-select">
+
+                            <option value="">
+                                All Finance Types
+                            </option>
+
+                            <option value="0">
+                                Self Deposit
+                            </option>
+
+                            <option value="1">
+                                Manual Deposit
+                            </option>
+
+                            <option value="2">
+                                Self Withdraw
+                            </option>
+
+                            <option value="3">
+                                Manual Withdraw
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- AMOUNT -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterAmount"
+                               class="form-label">
+
+                            Amount
+
+                        </label>
+
+
+                        <div class="app-search">
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="filterAmount"
+                                   placeholder="Search amount..."
+                                   autocomplete="off"
+                                   min="0"
+                                   step="0.01"
+                                   inputmode="decimal">
+
+
+                            <i class="ti ti-currency-dollar app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterStatus"
+                               class="form-label">
+
+                            Status
+
+                        </label>
+
+
+                        <select id="filterStatus"
+                                class="form-select">
+
+                            <option value="">
+                                All Statuses
+                            </option>
+
+                            <option value="0">
+                                Pending
+                            </option>
+
+                            <option value="2">
+                                Completed
+                            </option>
+
+                            <option value="3">
+                                Rejected
+                            </option>
+
+                            <option value="4">
+                                Failed
+                            </option>
+
+                            <option value="5">
+                                Cancelled
+                            </option>
+
+                            <option value="6">
+                                Auto Cancelled
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <!-- DATE RANGE -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label class="form-label">
+                            Date Range
+                        </label>
+
+
+                        <div class="position-relative">
+
+                            <div id="reportrange"
+                                 class="form-control"
+                                 data-toggle="date-picker-range"
+                                 data-target-display="#selectedValue"
+                                 data-cancel-class="btn-light">
+
+                                <i class="ti ti-calendar me-2"></i>
+
+                                <span id="selectedValue">
+                                </span>
+
+                                <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <input type="hidden"
+                               id="dateRange"
+                               value="" />
+
+                    </div>
+
+
+                    <!-- SEARCH / CLEAR -->
+
+                    <div class="col-xl-3 col-md-6 d-flex align-items-end">
+
+                        <div class="d-flex gap-2 w-100">
+
+                            <button class="btn btn-primary flex-fill"
+                                    type="submit"
+                                    id="applyFiltersBtn">
+
+                                <i class="ti ti-search me-2"></i>
+
+                                Search
+
+                            </button>
+
+
+                            <button class="btn btn-light flex-fill"
+                                    type="button"
+                                    id="clearFiltersBtn">
+
+                                <i class="ti ti-refresh me-2"></i>
+
+                                Clear
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         FINANCE TABLE
+    ========================================================= -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h5 class="card-title mb-1">
+                Finance Logs
+            </h5>
+
+            <small class="text-muted">
+                Finance transactions within your agent hierarchy
+            </small>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="financeLogsTable"
+                       class="table table-hover table-striped align-middle w-100">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="text-center">
+                                No
+                            </th>
+
+                            <th>
+                                Order Id
+                            </th>
+
+                            <th>
+                                Target Code
+                            </th>
+
+                            <th>
+                                Agent Code
+                            </th>
+
+                            <th>
+                                Finance Type
+                            </th>
+
+                            <th class="text-end">
+                                Amount
+                            </th>
+
+                            <th class="text-end">
+                                Balance
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th class="text-center">
+                                Details
+                            </th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="row mt-2">
+
+                <div class="col-md-4">
+
+                    <div id="dataTableLengthContainer"
+                         class="d-flex align-items-center h-100">
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div id="dataTableInfoContainer"
+                         class="d-flex align-items-center justify-content-center h-100">
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div id="dataTablePagingContainer"
+                         class="d-flex align-items-center justify-content-md-end justify-content-center h-100">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =============================================================
+     DETAILS MODAL
+============================================================= -->
+
+<div class="modal fade"
+     id="financeLogDetailsModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Finance Log Details
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="row g-3">
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Id
+                        </label>
+
+                        <div id="detailId"
+                             class="fw-semibold text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Order Id
+                        </label>
+
+                        <div id="detailOrderId"
+                             class="fw-semibold text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Agent Code
+                        </label>
+
+                        <div id="detailAgentCode"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Target Code
+                        </label>
+
+                        <div id="detailTargetCode"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Finance Type
+                        </label>
+
+                        <div id="detailFinanceType">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Target Account Type
+                        </label>
+
+                        <div id="detailTargetAccountType">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Amount
+                        </label>
+
+                        <div id="detailAmount"
+                             class="fw-semibold">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Status
+                        </label>
+
+                        <div id="detailStatus">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-12">
+
+                        <label class="form-label text-muted">
+                            Target Balance
+                        </label>
+
+                        <div id="detailTargetBalance"
+                             class="fw-semibold text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Agent Balance
+                        </label>
+
+                        <div id="detailAgentBalance"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Created At
+                        </label>
+
+                        <div id="detailCreatedAt"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Agent Path
+                        </label>
+
+                        <div id="detailAgentPath"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label class="form-label text-muted">
+                            Target Path
+                        </label>
+
+                        <div id="detailTargetPath"
+                             class="text-break">
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =============================================================
+     LIBRARIES
+============================================================= -->
+
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+
+<script src="~/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+<script src="~/assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        if (
+            !window.jQuery ||
+            !$.fn.DataTable ||
+            !$("#financeLogsTable").length
+        ) {
+            return;
+        }
+
+
+        /* =========================================================
+           HTML ESCAPE
+        ========================================================= */
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return "";
+            }
+
+            return $("<div>")
+                .text(
+                    String(value)
+                )
+                .html();
+        }
+
+
+        /* =========================================================
+           MONEY
+        ========================================================= */
+
+        function formatMoney(value) {
+
+            var number =
+                Number(value);
+
+            return Number.isFinite(number)
+                ? number.toFixed(2)
+                : "0.00";
+        }
+
+
+        /* =========================================================
+           FINANCE TYPE
+        ========================================================= */
+
+        function getFinanceTypeName(value) {
+
+            switch (Number(value)) {
+
+                case 0:
+                    return "Self Deposit";
+
+                case 1:
+                    return "Manual Deposit";
+
+                case 2:
+                    return "Self Withdraw";
+
+                case 3:
+                    return "Manual Withdraw";
+
+                default:
+                    return "Unknown";
+
+            }
+        }
+
+
+        /* =========================================================
+           TARGET ACCOUNT
+        ========================================================= */
+
+        function getTargetAccountTypeName(value) {
+
+            switch (Number(value)) {
+
+                case 0:
+                    return "Player";
+
+                case 1:
+                    return "Agent";
+
+                default:
+                    return "Unknown";
+
+            }
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        function getStatusName(value) {
+
+            switch (Number(value)) {
+
+                case 0:
+                    return "Pending";
+
+                case 1:
+                    return "";
+
+                case 2:
+                    return "Completed";
+
+                case 3:
+                    return "Rejected";
+
+                case 4:
+                    return "Failed";
+
+                case 5:
+                    return "Cancelled";
+
+                case 6:
+                    return "Auto Cancelled";
+
+                default:
+                    return "Unknown";
+
+            }
+        }
+
+
+        /* =========================================================
+           BALANCE TEXT
+        ========================================================= */
+
+        function getFinanceBalanceText(
+            beforeValue,
+            afterValue
+        ) {
+
+            var before =
+                Number(beforeValue);
+
+            var after =
+                Number(afterValue);
+
+            if (!Number.isFinite(before)) {
+                before = 0;
+            }
+
+            if (!Number.isFinite(after)) {
+                after = 0;
+            }
+
+            return (
+                formatMoney(before) +
+                " → " +
+                formatMoney(after)
+            );
+        }
+
+
+        /* =========================================================
+           BALANCE RENDERER
+
+           Always:
+               before → after
+        ========================================================= */
+
+        function renderFinanceBalance(
+            beforeValue,
+            afterValue
+        ) {
+
+            var before =
+                Number(beforeValue);
+
+            var after =
+                Number(afterValue);
+
+            if (!Number.isFinite(before)) {
+                before = 0;
+            }
+
+            if (!Number.isFinite(after)) {
+                after = 0;
+            }
+
+            var afterClass =
+                after > before
+                    ? "text-success"
+                    : after < before
+                        ? "text-danger"
+                        : "";
+
+            return (
+                '<span class="text-nowrap">' +
+                formatMoney(before) +
+                ' <span class="text-muted mx-1">→</span> ' +
+                '<span class="' +
+                afterClass +
+                '">' +
+                formatMoney(after) +
+                "</span>" +
+                "</span>"
+            );
+        }
+
+
+        /* =========================================================
+           FINANCE TYPE RENDER
+        ========================================================= */
+
+        function renderFinanceType(value) {
+
+            return escapeHtml(
+                getFinanceTypeName(value)
+            );
+        }
+
+
+        /* =========================================================
+           STATUS RENDER
+        ========================================================= */
+
+        function renderStatus(value) {
+
+            return escapeHtml(
+                getStatusName(value)
+            );
+        }
+
+
+        /* =========================================================
+           SELECT2
+        ========================================================= */
+
+        if ($.fn.select2) {
+
+            $("#filterExecTypes")
+                .select2({
+                    width: "100%"
+                });
+
+
+            $("#filterStatus")
+                .select2({
+                    width: "100%"
+                });
+
+        }
+
+
+        /* =========================================================
+           DATE RANGE
+        ========================================================= */
+
+        var defaultStart =
+            moment()
+                .subtract(
+                    1,
+                    "month"
+                );
+
+
+        var defaultEnd =
+            moment();
+
+
+        function updateDateRange(
+            start,
+            end
+        ) {
+
+            $("#dateRange")
+                .val(
+
+                    start.format(
+                        "YYYY-MM-DD HH:mm:ss"
+                    )
+
+                    + " - " +
+
+                    end.format(
+                        "YYYY-MM-DD HH:mm:ss"
+                    )
+
+                );
+        }
+
+
+        if ($.fn.daterangepicker) {
+
+            $("#reportrange")
+                .daterangepicker({
+
+                    startDate:
+                        defaultStart,
+
+                    endDate:
+                        defaultEnd,
+
+                    autoUpdateInput:
+                        false,
+
+                    opens:
+                        "left",
+
+                    drops:
+                        "down",
+
+                    timePicker:
+                        true,
+
+                    timePicker24Hour:
+                        true,
+
+                    timePickerSeconds:
+                        true,
+
+                    locale: {
+
+                        format:
+                            "MMMM D, YYYY HH:mm:ss",
+
+                        cancelLabel:
+                            "Cancel",
+
+                        applyLabel:
+                            "Apply"
+
+                    },
+
+                    ranges: {
+
+                        "Today": [
+
+                            moment()
+                                .startOf("day"),
+
+                            moment()
+                                .endOf("day")
+
+                        ],
+
+
+                        "Yesterday": [
+
+                            moment()
+                                .subtract(
+                                    1,
+                                    "days"
+                                )
+                                .startOf("day"),
+
+                            moment()
+                                .subtract(
+                                    1,
+                                    "days"
+                                )
+                                .endOf("day")
+
+                        ],
+
+
+                        "Last 7 Days": [
+
+                            moment()
+                                .subtract(
+                                    6,
+                                    "days"
+                                )
+                                .startOf("day"),
+
+                            moment()
+                                .endOf("day")
+
+                        ],
+
+
+                        "Last 30 Days": [
+
+                            moment()
+                                .subtract(
+                                    29,
+                                    "days"
+                                )
+                                .startOf("day"),
+
+                            moment()
+                                .endOf("day")
+
+                        ],
+
+
+                        "This Month": [
+
+                            moment()
+                                .startOf("month"),
+
+                            moment()
+                                .endOf("month")
+
+                        ],
+
+
+                        "Last Month": [
+
+                            moment()
+                                .subtract(
+                                    1,
+                                    "month"
+                                )
+                                .startOf("month"),
+
+                            moment()
+                                .subtract(
+                                    1,
+                                    "month"
+                                )
+                                .endOf("month")
+
+                        ]
+
+                    }
+
+                });
+
+
+            $("#selectedValue")
+                .text(
+
+                    defaultStart.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                    + " - " +
+
+                    defaultEnd.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                );
+
+
+            updateDateRange(
+                defaultStart,
+                defaultEnd
+            );
+
+
+            $("#reportrange")
+                .off(
+                    "apply.daterangepicker.finance"
+                )
+                .on(
+                    "apply.daterangepicker.finance",
+                    function (
+                        event,
+                        picker
+                    ) {
+
+                        $("#selectedValue")
+                            .text(
+
+                                picker.startDate.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                )
+
+                                + " - " +
+
+                                picker.endDate.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                )
+
+                            );
+
+
+                        updateDateRange(
+                            picker.startDate,
+                            picker.endDate
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           DATATABLE
+        ========================================================= */
+
+        var table =
+            $("#financeLogsTable")
+                .DataTable({
+
+                    processing:
+                        true,
+
+                    serverSide:
+                        true,
+
+                    responsive:
+                        true,
+
+                    autoWidth:
+                        false,
+
+                    searching:
+                        false,
+
+                    deferRender:
+                        true,
+
+                    pageLength:
+                        25,
+
+                    lengthMenu:
+                        [
+                            [10, 25, 50, 100],
+                            [10, 25, 50, 100]
+                        ],
+
+                    dom:
+                        "lrtip",
+
+                    order:
+                        [
+                            [7, "desc"]
+                        ],
+
+                    columnDefs:
+                        [
+
+                            {
+                                responsivePriority:
+                                    1,
+
+                                targets:
+                                    0
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    2,
+
+                                targets:
+                                    10
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    3,
+
+                                targets:
+                                    9
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    4,
+
+                                targets:
+                                    [
+                                        5,
+                                        6,
+                                        8
+                                    ]
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    5,
+
+                                targets:
+                                    [
+                                        2,
+                                        3
+                                    ]
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    6,
+
+                                targets:
+                                    4
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    7,
+
+                                targets:
+                                    7
+                            },
+
+
+                            {
+                                responsivePriority:
+                                    8,
+
+                                targets:
+                                    1
+                            },
+
+
+                            {
+                                orderable:
+                                    false,
+
+                                targets:
+                                    [
+                                        0,
+                                        1,
+                                        2,
+                                        3,
+                                        6,
+                                        9,
+                                        10
+                                    ]
+                            }
+
+                        ],
+
+
+                    ajax:
+                    {
+
+                        url:
+                            "@Url.Action("GetFinanceLogs", "Dashboard")",
+
+                        type:
+                            "POST",
+
+                        data:
+                            function (d) {
+
+                                d.__RequestVerificationToken =
+                                    $(
+                                        "input[name='__RequestVerificationToken']"
+                                    ).val();
+
+
+                                d.agentCode =
+                                    $("#filterAgent")
+                                        .val();
+
+
+                                d.targetCode =
+                                    $("#filterTarget")
+                                        .val();
+
+
+                                d.financeType =
+                                    $("#filterExecTypes")
+                                        .val();
+
+
+                                d.amount =
+                                    $("#filterAmount")
+                                        .val();
+
+
+                                d.orderId =
+                                    $("#filterOrderId")
+                                        .val();
+
+
+                                d.status =
+                                    $("#filterStatus")
+                                        .val();
+
+
+                                var range =
+                                    $("#dateRange")
+                                        .val();
+
+
+                                if (range) {
+
+                                    var dates =
+                                        range.split(
+                                            " - "
+                                        );
+
+
+                                    if (
+                                        dates.length ===
+                                        2
+                                    ) {
+
+                                        d.fromDate =
+                                            dates[0];
+
+                                        d.toDate =
+                                            dates[1];
+
+                                    }
+
+                                }
+
+                            },
+
+
+                        error:
+                            function (
+                                xhr,
+                                status,
+                                error
+                            ) {
+
+                                console.error(
+                                    "GetFinanceLogs AJAX ERROR",
+                                    xhr.status,
+                                    status,
+                                    error,
+                                    xhr.responseText
+                                );
+
+                            }
+
+                    },
+
+
+                    columns:
+                        [
+
+                            /* 0 - No */
+
+                            {
+                                data:
+                                    null,
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                searchable:
+                                    false,
+
+                                className:
+                                    "text-center text-muted",
+
+                                render:
+                                    function (
+                                        data,
+                                        type,
+                                        row,
+                                        meta
+                                    ) {
+
+                                        return (
+                                            meta.row +
+                                            meta.settings._iDisplayStart +
+                                            1
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 1 - Order Id */
+
+                            {
+                                data:
+                                    "orderId",
+
+                                defaultContent:
+                                    "",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return escapeHtml(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 2 - Target Code */
+
+                            {
+                                data:
+                                    "targetCode",
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return escapeHtml(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 3 - Agent Code */
+
+                            {
+                                data:
+                                    "agentCode",
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return escapeHtml(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 4 - Finance Type */
+
+                            {
+                                data:
+                                    "financeType",
+
+                                defaultContent:
+                                    "",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return renderFinanceType(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 5 - Amount */
+
+                            {
+                                data:
+                                    "amount",
+
+                                defaultContent:
+                                    "",
+
+                                className:
+                                    "text-end text-nowrap",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return formatMoney(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 6 - Balance */
+
+                            {
+                                data:
+                                    null,
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                className:
+                                    "text-end",
+
+                                render:
+                                    function (
+                                        data,
+                                        type,
+                                        row
+                                    ) {
+
+                                        if (!row) {
+                                            return "";
+                                        }
+
+
+                                        return renderFinanceBalance(
+
+                                            row.targetBeforeBalance,
+
+                                            row.targetAfterBalance
+
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 7 - Date */
+
+                            {
+                                data:
+                                    "createdAt",
+
+                                defaultContent:
+                                    "",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return escapeHtml(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 8 - Status */
+
+                            {
+                                data:
+                                    "status",
+
+                                defaultContent:
+                                    "",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return renderStatus(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 9 - Details */
+
+                            {
+                                data:
+                                    null,
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                searchable:
+                                    false,
+
+                                className:
+                                    "text-center",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        if (!data) {
+                                            return "";
+                                        }
+
+
+                                        return (
+
+                                            '<button type="button" ' +
+
+                                            'class="btn btn-sm btn-light js-finance-details" ' +
+
+                                            'data-log-id="' +
+
+                                            escapeHtml(
+                                                data.id
+                                            ) +
+
+                                            '" ' +
+
+                                            'title="View details" ' +
+
+                                            'aria-label="View finance log details">' +
+
+                                            '<i class="ti ti-eye"></i>' +
+
+                                            "</button>"
+
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* 10 - Actions */
+
+                            {
+                                data:
+                                    null,
+
+                                defaultContent:
+                                    "",
+
+                                orderable:
+                                    false,
+
+                                searchable:
+                                    false,
+
+                                className:
+                                    "text-center",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        if (!data) {
+
+                                            return (
+
+                                                '<span class="text-muted small">' +
+
+                                                "No actions" +
+
+                                                "</span>"
+
+                                            );
+
+                                        }
+
+
+                                        var canManage =
+
+                                            Number(
+                                                data.financeType
+                                            ) ===
+                                            2
+
+                                            &&
+
+                                            Number(
+                                                data.status
+                                            ) ===
+                                            0;
+
+
+                                        if (!canManage) {
+
+                                            return (
+
+                                                '<span class="text-muted small">' +
+
+                                                "No actions" +
+
+                                                "</span>"
+
+                                            );
+
+                                        }
+
+
+                                        return (
+
+                                            '<div class="d-inline-flex gap-1">' +
+
+                                            '<button type="button" ' +
+
+                                            'class="btn btn-sm btn-success js-finance-action" ' +
+
+                                            'data-action="complete" ' +
+
+                                            'data-log-id="' +
+
+                                            escapeHtml(
+                                                data.id
+                                            ) +
+
+                                            '" ' +
+
+                                            'title="Complete transaction">' +
+
+                                            '<i class="ti ti-check me-1"></i>' +
+
+                                            "Complete" +
+
+                                            "</button>" +
+
+
+                                            '<button type="button" ' +
+
+                                            'class="btn btn-sm btn-danger js-finance-action" ' +
+
+                                            'data-action="reject" ' +
+
+                                            'data-log-id="' +
+
+                                            escapeHtml(
+                                                data.id
+                                            ) +
+
+                                            '" ' +
+
+                                            'title="Reject transaction">' +
+
+                                            '<i class="ti ti-x me-1"></i>' +
+
+                                            "Reject" +
+
+                                            "</button>" +
+
+                                            "</div>"
+
+                                        );
+
+                                    }
+
+                            }
+
+                        ],
+
+
+                    initComplete:
+                        function () {
+
+                            var api =
+                                this.api();
+
+
+                            var container =
+                                $(
+                                    api.table()
+                                        .container()
+                                );
+
+
+                            var length =
+                                container
+                                    .find(
+                                        ".dt-length, .dataTables_length"
+                                    )
+                                    .first();
+
+
+                            var info =
+                                container
+                                    .find(
+                                        ".dt-info, .dataTables_info"
+                                    )
+                                    .first();
+
+
+                            var paging =
+                                container
+                                    .find(
+                                        ".dt-paging, .dataTables_paginate"
+                                    )
+                                    .first();
+
+
+                            if (
+                                length.length
+                            ) {
+
+                                $(
+                                    "#dataTableLengthContainer"
+                                )
+                                    .empty()
+                                    .append(
+                                        length
+                                    );
+
+                            }
+
+
+                            if (
+                                info.length
+                            ) {
+
+                                $(
+                                    "#dataTableInfoContainer"
+                                )
+                                    .empty()
+                                    .append(
+                                        info
+                                    );
+
+                            }
+
+
+                            if (
+                                paging.length
+                            ) {
+
+                                $(
+                                    "#dataTablePagingContainer"
+                                )
+                                    .empty()
+                                    .append(
+                                        paging
+                                    );
+
+                            }
+
+
+                            api.columns.adjust();
+
+
+                            if (
+                                api.responsive &&
+                                typeof api.responsive.recalc ===
+                                "function"
+                            ) {
+
+                                api.responsive.recalc();
+
+                            }
+
+                        }
+
+                });
+
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        $("#financeFilterForm")
+            .on(
+                "submit",
+                function (e) {
+
+                    e.preventDefault();
+
+
+                    table.ajax.reload(
+                        null,
+                        true
+                    );
+
+                }
+            );
+
+
+        $(
+            "#filterAgent, " +
+            "#filterTarget, " +
+            "#filterAmount, " +
+            "#filterOrderId"
+        )
+            .on(
+                "keydown",
+                function (e) {
+
+                    if (
+                        e.key ===
+                        "Enter"
+                    ) {
+
+                        e.preventDefault();
+
+
+                        $(
+                            "#financeFilterForm"
+                        )
+                            .trigger(
+                                "submit"
+                            );
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================================
+           CLEAR
+        ========================================================= */
+
+        $("#clearFiltersBtn")
+            .on(
+                "click",
+                function () {
+
+                    $(
+                        "#filterAgent, " +
+                        "#filterTarget, " +
+                        "#filterAmount, " +
+                        "#filterOrderId"
+                    )
+                        .val("");
+
+
+                    $(
+                        "#filterExecTypes, " +
+                        "#filterStatus"
+                    )
+                        .val("")
+                        .trigger(
+                            "change"
+                        );
+
+
+                    var start =
+                        moment()
+                            .subtract(
+                                1,
+                                "month"
+                            );
+
+
+                    var end =
+                        moment();
+
+
+                    var picker =
+                        $("#reportrange")
+                            .data(
+                                "daterangepicker"
+                            );
+
+
+                    if (picker) {
+
+                        picker.setStartDate(
+                            start
+                        );
+
+
+                        picker.setEndDate(
+                            end
+                        );
+
+                    }
+
+
+                    $("#selectedValue")
+                        .text(
+
+                            start.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                            + " - " +
+
+                            end.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                        );
+
+
+                    updateDateRange(
+                        start,
+                        end
+                    );
+
+
+                    table.ajax.reload(
+                        null,
+                        true
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           FIND CURRENT ROW
+        ========================================================= */
+
+        function getSelectedRow(
+            id
+        ) {
+
+            var rows =
+                table.rows().data();
+
+
+            for (
+                var i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                if (
+
+                    Number(
+                        rows[i].id
+                    ) ===
+
+                    Number(
+                        id
+                    )
+
+                ) {
+
+                    return rows[i];
+
+                }
+
+            }
+
+
+            return null;
+        }
+
+
+        /* =========================================================
+           COMPLETE / REJECT
+        ========================================================= */
+
+        $(document)
+            .on(
+                "click",
+                ".js-finance-action",
+                function () {
+
+                    var $button =
+                        $(this);
+
+
+                    var action =
+                        String(
+                            $button.data(
+                                "action"
+                            )
+                        );
+
+
+                    var logId =
+                        Number(
+                            $button.data(
+                                "log-id"
+                            )
+                        );
+
+
+                    if (
+
+                        (
+
+                            action !==
+                            "complete"
+
+                            &&
+
+                            action !==
+                            "reject"
+
+                        )
+
+                        ||
+
+                        !Number.isFinite(
+                            logId
+                        )
+
+                        ||
+
+                        $button.prop(
+                            "disabled"
+                        )
+
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    var selected =
+                        getSelectedRow(
+                            logId
+                        );
+
+
+                    if (
+
+                        !selected
+
+                        ||
+
+                        Number(
+                            selected.financeType
+                        ) !==
+                        2
+
+                        ||
+
+                        Number(
+                            selected.status
+                        ) !==
+                        0
+
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    var amount =
+                        formatMoney(
+                            selected.amount
+                        );
+
+
+                    var targetCode =
+                        selected.targetCode ||
+                        "";
+
+
+                    var orderId =
+                        selected.orderId ||
+                        "-";
+
+
+                    var isComplete =
+                        action ===
+                        "complete";
+
+
+                    var title =
+                        isComplete
+
+                            ?
+
+                            "Complete Self Withdraw?"
+
+                            :
+
+                            "Reject Self Withdraw?";
+
+
+                    var confirmText =
+                        isComplete
+
+                            ?
+
+                            "Complete"
+
+                            :
+
+                            "Reject";
+
+
+                    var message =
+                        isComplete
+
+                            ?
+
+                            "Target: " +
+                            targetCode +
+                            "\nAmount: " +
+                            amount +
+                            "\nOrder ID: " +
+                            orderId +
+                            "\n\nPlayer CurrentBalance will decrease and agent Balance will increase."
+
+                            :
+
+                            "Target: " +
+                            targetCode +
+                            "\nAmount: " +
+                            amount +
+                            "\nOrder ID: " +
+                            orderId +
+                            "\n\nNo balance will be changed.";
+
+
+                    $button.prop(
+                        "disabled",
+                        true
+                    );
+
+
+                    Swal.fire({
+
+                        title:
+                            title,
+
+                        text:
+                            message,
+
+                        icon:
+                            "warning",
+
+                        showCancelButton:
+                            true,
+
+                        confirmButtonText:
+                            confirmText,
+
+                        cancelButtonText:
+                            "Cancel"
+
+                    })
+                        .then(
+                            function (result) {
+
+                                if (
+
+                                    !result
+
+                                    ||
+
+                                    !result.isConfirmed
+
+                                ) {
+
+                                    $button.prop(
+                                        "disabled",
+                                        false
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                var endpoint =
+                                    isComplete
+
+                                        ?
+
+                                        "@Url.Action("CompleteFinanceLog", "Dashboard")"
+
+                                        :
+
+                                        "@Url.Action("RejectFinanceLog", "Dashboard")";
+
+
+                                $.ajax({
+
+                                    url:
+                                        endpoint,
+
+                                    type:
+                                        "POST",
+
+                                    data:
+                                    {
+                                        __RequestVerificationToken:
+                                            $(
+                                                "input[name='__RequestVerificationToken']"
+                                            ).val(),
+
+                                        id:
+                                            selected.id
+                                    },
+
+
+                                    success:
+                                        function (
+                                            response
+                                        ) {
+
+                                            if (
+
+                                                !response
+
+                                                ||
+
+                                                !response.success
+
+                                            ) {
+
+                                                $button.prop(
+                                                    "disabled",
+                                                    false
+                                                );
+
+
+                                                showFinanceError(
+
+                                                    response?.message
+
+                                                    ||
+
+                                                    (
+                                                        isComplete
+
+                                                            ?
+
+                                                            "Unable to complete this transaction."
+
+                                                            :
+
+                                                            "Unable to reject this transaction."
+                                                    )
+
+                                                );
+
+
+                                                return;
+
+                                            }
+
+
+                                            showFinanceSuccess(
+
+                                                isComplete
+
+                                                    ?
+
+                                                    "Completed. Player and agent balances updated."
+
+                                                    :
+
+                                                    "Rejected. No balance was changed."
+
+                                            );
+
+
+                                            table.ajax.reload(
+                                                null,
+                                                false
+                                            );
+
+                                        },
+
+
+                                    error:
+                                        function (
+                                            xhr
+                                        ) {
+
+                                            $button.prop(
+                                                "disabled",
+                                                false
+                                            );
+
+
+                                            showFinanceError(
+
+                                                xhr.responseJSON?.message
+
+                                                ||
+
+                                                "An unexpected error occurred."
+
+                                            );
+
+                                        }
+
+                                });
+
+                            }
+
+                        );
+
+                }
+
+            );
+
+
+        /* =========================================================
+           SWEETALERT ERROR
+
+           Uses project's native SweetAlert2.
+        ========================================================= */
+
+        function showFinanceError(
+            message
+        ) {
+
+            Swal.fire({
+
+                title:
+                    "Operation Failed",
+
+                text:
+                    message,
+
+                icon:
+                    "error"
+
+            });
+
+        }
+
+
+        /* =========================================================
+           SWEETALERT SUCCESS TOAST
+
+           Uses native SweetAlert2 toast.
+        ========================================================= */
+
+        function showFinanceSuccess(
+            message
+        ) {
+
+            Swal.fire({
+
+                toast:
+                    true,
+
+                position:
+                    "top-end",
+
+                icon:
+                    "success",
+
+                title:
+                    message,
+
+                timer:
+                    1800,
+
+                showConfirmButton:
+                    false
+
+            });
+
+        }
+
+
+        /* =========================================================
+           DETAILS
+        ========================================================= */
+
+        $(document)
+            .on(
+                "click",
+                ".js-finance-details",
+                function () {
+
+                    var logId =
+                        Number(
+                            $(this).data(
+                                "log-id"
+                            )
+                        );
+
+
+                    if (
+                        !Number.isFinite(
+                            logId
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    var selected =
+                        getSelectedRow(
+                            logId
+                        );
+
+
+                    if (!selected) {
+
+                        return;
+
+                    }
+
+
+                    $("#detailId")
+                        .text(
+                            selected.id
+                        );
+
+
+                    $("#detailOrderId")
+                        .text(
+                            selected.orderId ||
+                            ""
+                        );
+
+
+                    $("#detailAgentCode")
+                        .text(
+                            selected.agentCode ||
+                            ""
+                        );
+
+
+                    $("#detailTargetCode")
+                        .text(
+                            selected.targetCode ||
+                            ""
+                        );
+
+
+                    $("#detailFinanceType")
+                        .text(
+                            getFinanceTypeName(
+                                selected.financeType
+                            )
+                        );
+
+
+                    $("#detailTargetAccountType")
+                        .text(
+                            getTargetAccountTypeName(
+                                selected.targetAccountType
+                            )
+                        );
+
+
+                    $("#detailAmount")
+                        .text(
+                            formatMoney(
+                                selected.amount
+                            )
+                        );
+
+
+                    $("#detailStatus")
+                        .text(
+                            getStatusName(
+                                selected.status
+                            )
+                        );
+
+
+                    $("#detailTargetBalance")
+                        .text(
+
+                            getFinanceBalanceText(
+
+                                selected.targetBeforeBalance,
+
+                                selected.targetAfterBalance
+
+                            )
+
+                        );
+
+
+                    $("#detailAgentBalance")
+                        .text(
+
+                            getFinanceBalanceText(
+
+                                selected.agentBeforeBalance,
+
+                                selected.agentAfterBalance
+
+                            )
+
+                        );
+
+
+                    $("#detailCreatedAt")
+                        .text(
+                            selected.createdAt ||
+                            ""
+                        );
+
+
+                    $("#detailAgentPath")
+                        .text(
+                            selected.agentPath ||
+                            ""
+                        );
+
+
+                    $("#detailTargetPath")
+                        .text(
+                            selected.targetPath ||
+                            ""
+                        );
+
+
+                    var modalElement =
+                        document.getElementById(
+                            "financeLogDetailsModal"
+                        );
+
+
+                    if (
+
+                        modalElement
+
+                        &&
+
+                        typeof bootstrap !==
+                        "undefined"
+
+                        &&
+
+                        bootstrap.Modal
+
+                    ) {
+
+                        bootstrap.Modal
+                            .getOrCreateInstance(
+                                modalElement
+                            )
+                            .show();
+
+                    }
+
+                }
+
+            );
+
+
+        /* =========================================================
+           RESIZE
+        ========================================================= */
+
+        $(window)
+            .on(
+                "resize",
+                function () {
+
+                    table.columns.adjust();
+
+
+                    if (
+
+                        table.responsive
+
+                        &&
+
+                        typeof table.responsive.recalc ===
+                        "function"
+
+                    ) {
+
+                        table.responsive.recalc();
+
+                    }
+
+                }
+
+            );
+
+    });
+</script>

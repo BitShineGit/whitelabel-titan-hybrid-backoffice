@@ -1,0 +1,3396 @@
+﻿@using Whitelabel_backoffice.Database
+@section Styles {
+    <link href="~/assets/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+}
+@{
+    ViewData["Title"] = "Player Detail";
+    string userCode = (string)ViewData["UserCode"];
+    int id = (int)ViewData["UserId"];
+    var user = (User)ViewData["User"];
+    var providerCodeList = (List<string>)ViewData["ProviderCodeList"];
+    DateTime UserCreatedAtLocal = (DateTime)ViewData["UserCreatedAtLocal"];
+}
+
+<div class="container-fluid">
+    <div class="page-title-head d-flex align-items-center">
+        <div class="flex-grow-1">
+            <h4 class="page-main-title m-0">Player</h4>
+        </div>
+
+        <div class="text-end">
+            <ol class="breadcrumb m-0 py-0">
+                <li class="breadcrumb-item"><a href="/">MyStake</a></li>
+                <li class="breadcrumb-item"><a href="/player">Player</a></li>
+                <li class="breadcrumb-item active">Detail</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-start align-items-center gap-3">
+                            <div class="avatar avatar-xxl">
+                                <div class="img-fluid img-thumbnail rounded-circle" style="height:80px; width:80px;">
+                                    <span class="avatar-title text-bg-primary rounded-circle fs-48">
+                                        <i class="ti ti-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-nowrap fw-bold mb-1">@user.UserNickName</h4>
+                                <p class="text-muted mb-1">@user.UserCode</p>
+                                <span class="badge badge-soft-primary fw-medium fs-xs ms-auto">Player</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-outline-primary gap-1" id="btnBackToList" style="font-size: larger;" href="/player">
+                                <i class="ti ti-list"></i>
+                                List
+                            </a>
+                            <a class="btn btn-danger gap-1" id="btnRemove" style="font-size: larger;" href="#!">
+                                <i class="ti ti-trash"></i>
+                                Remove
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col-->
+    </div>
+    <!-- end row-->
+
+    <div class="row">
+
+        <div>
+            <div class="row row-cols-xxl-4 row-cols-md-2 row-cols-1 align-items-center">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 title="Number of Tasks">My Tasks</h5>
+                            <div class="d-flex align-items-center gap-2 my-3">
+                                <div class="avatar-md flex-shrink-0">
+                                    <span class="avatar-title text-bg-primary rounded-circle fs-22">
+                                        <i class="ti ti-clipboard-list"></i>
+                                    </span>
+                                </div>
+                                <h3 class="mb-0">124</h3>
+                                <span class="badge badge-soft-primary fw-medium fs-xs ms-auto">+3 New</span>
+                            </div>
+                            <p class="mb-0">
+                                <span class="text-primary">
+                                    <i class="ti ti-circle align-middle"></i>
+                                </span>
+                                <span class="text-nowrap text-muted">Total Tasks</span>
+                                <span class="float-end"><b>12,450</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 title="Number of Messages">Messages</h5>
+                            <div class="d-flex align-items-center gap-2 my-3">
+                                <div class="avatar-md flex-shrink-0">
+                                    <span class="avatar-title text-bg-secondary rounded-circle fs-22">
+                                        <i class="ti ti-messages"></i>
+                                    </span>
+                                </div>
+                                <h3 class="mb-0">69.5k</h3>
+                                <span class="badge badge-soft-secondary fw-medium fs-xs ms-auto">+5 New</span>
+                            </div>
+                            <p class="mb-0">
+                                <span class="text-secondary">
+                                    <i class="ti ti-circle align-middle"></i>
+                                </span>
+                                <span class="text-nowrap text-muted">Total Messages</span>
+                                <span class="float-end"><b>32.1M</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 title="Total Clients">Clients</h5>
+                            <div class="d-flex align-items-center gap-2 my-3">
+                                <div class="avatar-md flex-shrink-0">
+                                    <span class="avatar-title text-bg-secondary rounded-circle fs-22">
+                                        <i class="ti ti-users"></i>
+                                    </span>
+                                </div>
+                                <h3 class="mb-0">184</h3>
+                                <span class="badge badge-soft-secondary fw-medium fs-xs ms-auto">+4 New</span>
+                            </div>
+                            <p class="mb-0">
+                                <span class="text-secondary">
+                                    <i class="ti ti-circle align-middle"></i>
+                                </span>
+                                <span class="text-nowrap text-muted">Total Clients</span>
+                                <span class="float-end"><b>9,835</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 title="Revenue Generated">Revenue</h5>
+                            <div class="d-flex align-items-center gap-2 my-3">
+                                <div class="avatar-md flex-shrink-0">
+                                    <span class="avatar-title text-bg-primary rounded-circle fs-22">
+                                        <i class="ti ti-credit-card"></i>
+                                    </span>
+                                </div>
+                                <h3 class="mb-0">$25.5k</h3>
+                                <span class="badge badge-soft-primary fw-medium fs-xs ms-auto">+1.5%</span>
+                            </div>
+                            <p class="mb-0">
+                                <span class="text-primary">
+                                    <i class="ti ti-circle align-middle"></i>
+                                </span>
+                                <span class="text-nowrap text-muted">Total Revenue</span>
+                                <span class="float-end"><b>$12.5M</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+
+            <div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <ul class="nav nav-justified nav-tabs mb-3">
+                                    <li class="nav-item">
+                                        <a href="#detail_profile" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">Profile</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#detail_finance" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Finance</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#detail_history" data-bs-toggle="tab" aria-expanded="false" class="nav-link">History</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#detail_settings" data-bs-toggle="tab" aria-expanded="false" class="nav-link">Settings</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div class="tab-pane mb-3 show active" id="detail_profile">
+                                        <div class="card-body">
+                                            <form id="profileForm">
+                                                <div class="row g-3 row-cols-2">
+                                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                                        <h5 class="text-uppercase bg-light-subtle p-1 border-dashed border rounded border-light d-flex justify-content-center align-items-center gap-1">
+                                                            <i class="ti ti-key fs-24"></i>
+                                                            Identity
+                                                        </h5>
+
+                                                        <!-- User ID -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">User Code</label>
+                                                            <input type="text" class="form-control" id="userCode" value="@user.UserCode" disabled="" wfd-id="id2">
+                                                        </div>
+
+                                                        <!-- Status -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">Status</label>
+                                                            <select class="form-select" id="userStatus">
+                                                                <option value="1">Active</option>
+                                                                <option value="0">Blocked</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- User Name -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">User Name</label>
+                                                            <input type="text" class="form-control" id="userName" value="@user.UserNickName" wfd-id="id5">
+                                                        </div>
+
+                                                        <!-- User Email -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">User Email</label>
+                                                            <input type="email" class="form-control" id="userEmail" value="@user.UserEmail" wfd-id="id6">
+                                                        </div>
+                                                    </div>
+                                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                                        <h5 class="text-uppercase bg-light-subtle p-1 border-dashed border rounded border-light d-flex justify-content-center align-items-center gap-1">
+                                                            <i class="ti ti-user fs-24"></i>
+                                                            Personal Info
+                                                        </h5>
+
+                                                        <!-- User PhoneNumber -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">Phone Number</label>
+                                                            <input type="text" class="form-control" id="userPhone" value="@user.PhoneNumber" wfd-id="id5">
+                                                        </div>
+
+                                                        <!-- Currency -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">Currency</label>
+                                                            <input class="form-control" disabled id="currency"></input>
+                                                        </div>
+
+                                                        <!-- Created At -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">Created Date</label>
+                                                            <input type="text" class="form-control" id="createDate" value="@UserCreatedAtLocal" wfd-id="id8">
+                                                        </div>
+
+                                                        <!-- Last Login At -->
+                                                        <div class="col-12 mb-3">
+                                                            <label class="form-label">Last Login Date</label>
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   id="lastLoginDate"
+                                                                   value="@(user.LastLoginAt == DateTime.MinValue
+                                                                    ? "-"
+                                                                    : user.LastLoginAt.ToString("yyyy-MM-dd hh:mm:ss tt"))">
+                                                        </div>
+                                                    </div>
+                                                    <div></div>
+                                                    <div class="text-end mt-4 gap-2 justify-content-end" style="display: flex;">
+                                                        <button type="submit" id="btnSaveProfile" class="btn btn-success" disabled>Save Changes</button>
+                                                        <button type="button" id="btnCancelProfile" class="btn btn-danger" disabled>Cancel</button>
+                                                    </div>
+
+                                                </div>
+                                                <!-- end row -->
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="detail_finance">
+                                        <div class="card mb-3">
+
+                                            <div class="card-header justify-content-between">
+
+                                                <div>
+
+                                                    <h4 class="card-title mb-1">
+                                                        Search Finance Logs
+                                                    </h4>
+
+                                                    <p class="text-muted mb-0">
+                                                        Search and filter finance logs by agent and date.
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="card-body">
+
+                                                <form id="financeFilterForm">
+
+                                                    <div class="row g-3">
+
+                                                        <!-- ORDER ID -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="financeFilterOrderId"
+                                                                   class="form-label">
+
+                                                                Order ID
+
+                                                            </label>
+
+
+                                                            <div class="app-search">
+
+                                                                <input type="search"
+                                                                       class="form-control"
+                                                                       id="financeFilterOrderId"
+                                                                       placeholder="Search Order ID..."
+                                                                       autocomplete="off">
+
+
+                                                                <i class="ti ti-hash app-search-icon text-muted"></i>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- ================================================= -->
+                                                        <!-- Agent CODE - SELECT2 -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="financeFilterAgentCode"
+                                                                   class="form-label">
+
+                                                                Agent Code
+
+                                                            </label>
+
+                                                            <select id="financeFilterAgentCode" class="form-control select2" data-toggle="select2">
+                                                                <option value="">
+                                                                    All Agents
+                                                                </option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- FINANCE TYPE -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="financeFilterExecTypes"
+                                                                   class="form-label">
+
+                                                                Finance Types
+
+                                                            </label>
+
+
+                                                            <select id="financeFilterExecTypes"
+                                                                    class="form-select">
+
+                                                                <option value="">
+                                                                    All Finance Types
+                                                                </option>
+
+                                                                <option value="0">
+                                                                    Self Deposit
+                                                                </option>
+
+                                                                <option value="1">
+                                                                    Manual Deposit
+                                                                </option>
+
+                                                                <option value="2">
+                                                                    Self Withdraw
+                                                                </option>
+
+                                                                <option value="3">
+                                                                    Manual Withdraw
+                                                                </option>
+
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- AMOUNT -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="financeFilterAmount"
+                                                                   class="form-label">
+
+                                                                Amount
+
+                                                            </label>
+
+
+                                                            <div class="app-search">
+
+                                                                <input type="number"
+                                                                       class="form-control"
+                                                                       id="financeFilterAmount"
+                                                                       placeholder="Search amount..."
+                                                                       autocomplete="off"
+                                                                       min="0"
+                                                                       step="0.01"
+                                                                       inputmode="decimal">
+
+
+                                                                <i class="ti ti-currency-dollar app-search-icon text-muted"></i>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- STATUS -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="financeFilterStatus"
+                                                                   class="form-label">
+
+                                                                Status
+
+                                                            </label>
+
+
+                                                            <select id="financeFilterStatus"
+                                                                    class="form-select">
+
+                                                                <option value="">
+                                                                    All Statuses
+                                                                </option>
+
+                                                                <option value="0">
+                                                                    Pending
+                                                                </option>
+
+                                                                <option value="2">
+                                                                    Completed
+                                                                </option>
+
+                                                                <option value="3">
+                                                                    Rejected
+                                                                </option>
+
+                                                                <option value="4">
+                                                                    Failed
+                                                                </option>
+
+                                                                <option value="5">
+                                                                    Cancelled
+                                                                </option>
+
+
+                                                                <option value="6">
+                                                                    Auto Cancelled
+                                                                </option>
+
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- DATE RANGE -->
+
+                                                        <div class="col-xl-6 col-md-6">
+
+                                                            <label class="form-label">
+                                                                Date Range
+                                                            </label>
+
+
+                                                            <div class="position-relative">
+
+                                                                <div id="financeReportrange"
+                                                                     class="form-control"
+                                                                     data-toggle="date-picker-range"
+                                                                     data-target-display="#selectedValue"
+                                                                     data-cancel-class="btn-light">
+
+                                                                    <i class="ti ti-calendar me-2"></i>
+
+                                                                    <span id="selectedValue">
+                                                                    </span>
+
+                                                                    <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <input type="hidden"
+                                                                   id="dateRange"
+                                                                   value="" />
+
+                                                        </div>
+
+                                                        <!-- ================================================= -->
+                                                        <!-- SEARCH / CLEAR -->
+
+                                                        <div class="col-xl-3 col-md-6 d-flex align-items-end">
+
+                                                            <div class="d-flex gap-2 w-100">
+
+                                                                <button class="btn btn-primary flex-fill"
+                                                                        type="submit"
+                                                                        id="financeApplyFiltersBtn">
+
+                                                                    <i class="ti ti-search me-2"></i>
+
+                                                                    Search
+
+                                                                </button>
+
+
+                                                                <button class="btn btn-light flex-fill"
+                                                                        type="button"
+                                                                        id="financeClearFiltersBtn">
+
+                                                                    <i class="ti ti-refresh me-2"></i>
+
+                                                                    Clear
+
+                                                                </button>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card">
+
+                                            <div class="card-header justify-content-between">
+
+                                                <div>
+                                                    <h4 class="card-title mb-1">
+                                                        Finance History
+                                                    </h4>
+
+                                                    <p class="text-muted mb-0">
+                                                        View financial transactions related to this player.
+                                                    </p>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="card-body">
+
+                                                <div class="table-responsive">
+
+                                                    <table id="financeLogsTable"
+                                                           class="table table-hover table-striped align-middle w-100">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">No</th>
+                                                                <th>Order Id</th>
+                                                                <th>Agent Code</th>
+                                                                <th>Finance Type</th>
+                                                                <th class="text-end">Amount</th>
+                                                                <th class="text-end">Balance</th>
+                                                                <th>Date</th>
+                                                                <th>Status</th>
+                                                                <th class="text-center">Details</th>
+                                                                <th class="text-center">Actions</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+                                                <div class="row mt-2">
+
+                                                    <div class="col-md-4">
+
+                                                        <div id="dataTableLengthContainer"
+                                                             class="d-flex align-items-center h-100">
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+
+                                                        <div id="dataTableInfoContainer"
+                                                             class="d-flex align-items-center justify-content-center h-100">
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+
+                                                        <div id="dataTablePagingContainer"
+                                                             class="d-flex align-items-center justify-content-md-end justify-content-center h-100">
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="modal fade"
+                                         id="financeLogDetailsModal"
+                                         tabindex="-1"
+                                         aria-hidden="true">
+
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+
+                                                    <h5 class="modal-title">
+                                                        Finance Log Details
+                                                    </h5>
+
+
+                                                    <button type="button"
+                                                            class="btn-close"
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                    </button>
+
+                                                </div>
+
+
+                                                <div class="modal-body">
+
+                                                    <div class="row g-3">
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Id
+                                                            </label>
+
+                                                            <div id="detailId"
+                                                                 class="fw-semibold text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Order Id
+                                                            </label>
+
+                                                            <div id="detailOrderId"
+                                                                 class="fw-semibold text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Agent Code
+                                                            </label>
+
+                                                            <div id="detailAgentCode"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Target Code
+                                                            </label>
+
+                                                            <div id="detailTargetCode"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Finance Type
+                                                            </label>
+
+                                                            <div id="detailFinanceType">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Target Account Type
+                                                            </label>
+
+                                                            <div id="detailTargetAccountType">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Amount
+                                                            </label>
+
+                                                            <div id="detailAmount"
+                                                                 class="fw-semibold">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Status
+                                                            </label>
+
+                                                            <div id="detailStatus">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-12">
+
+                                                            <label class="form-label text-muted">
+                                                                Target Balance
+                                                            </label>
+
+                                                            <div id="detailTargetBalance"
+                                                                 class="fw-semibold text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Agent Balance
+                                                            </label>
+
+                                                            <div id="detailAgentBalance"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Created At
+                                                            </label>
+
+                                                            <div id="detailCreatedAt"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Agent Path
+                                                            </label>
+
+                                                            <div id="detailAgentPath"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-6">
+
+                                                            <label class="form-label text-muted">
+                                                                Target Path
+                                                            </label>
+
+                                                            <div id="detailTargetPath"
+                                                                 class="text-break">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="detail_history">
+                                        <div class="card mb-3">
+
+                                            <div class="card-header justify-content-between">
+
+                                                <div>
+
+                                                    <h4 class="card-title mb-1">
+                                                        Search Betting Logs
+                                                    </h4>
+
+                                                    <p class="text-muted mb-0">
+                                                        Search and filter betting history by agent, user, provider, game, round and date.
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="card-body">
+
+                                                <form id="bettingFilterForm">
+
+                                                    <div class="row g-3">
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- PROVIDER CODE - SELECT2 -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="filterProviderCode"
+                                                                   class="form-label">
+
+                                                                Provider Code
+
+                                                            </label>
+
+                                                            <select id="filterProviderCode"
+                                                                    class="form-select">
+                                                                <option value="">
+                                                                    All Providers
+                                                                </option>
+                                                            </select>
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- GAME CODE -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="filterGameCode"
+                                                                   class="form-label">
+
+                                                                Game Code
+
+                                                            </label>
+
+                                                            <div class="app-search">
+
+                                                                <input type="search"
+                                                                       class="form-control"
+                                                                       id="filterGameCode"
+                                                                       placeholder="Search game code..."
+                                                                       autocomplete="off">
+
+                                                                <i class="ti ti-device-gamepad app-search-icon text-muted"></i>
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- ROUND ID -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="filterRoundId"
+                                                                   class="form-label">
+
+                                                                Round ID
+
+                                                            </label>
+
+                                                            <div class="app-search">
+
+                                                                <input type="search"
+                                                                       class="form-control"
+                                                                       id="filterRoundId"
+                                                                       placeholder="Search round ID..."
+                                                                       autocomplete="off">
+
+                                                                <i class="ti ti-hash app-search-icon text-muted"></i>
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- HISTORY ID -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="filterHistoryId" class="form-label">
+                                                                History ID
+                                                            </label>
+
+                                                            <div class="app-search">
+
+                                                                <input type="search"
+                                                                       class="form-control"
+                                                                       id="filterHistoryId"
+                                                                       placeholder="Search history ID..."
+                                                                       autocomplete="off">
+
+                                                                <i class="ti ti-hash app-search-icon text-muted"></i>
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- STATUS - SELECT2 -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6">
+
+                                                            <label for="filterStatus"
+                                                                   class="form-label">
+
+                                                                Status
+
+                                                            </label>
+
+                                                            <select id="filterStatus"
+                                                                    class="form-select">
+
+                                                                <option value="">
+                                                                    All Statuses
+                                                                </option>
+
+                                                                <option value="1">
+                                                                    Success
+                                                                </option>
+
+                                                                <option value="2">
+                                                                    Outstanding
+                                                                </option>
+
+                                                                <option value="0">
+                                                                    Canceled
+                                                                </option>
+
+                                                            </select>
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- DATE RANGE - INSPINIA CALENDAR -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-6 col-md-6">
+
+                                                            <label class="form-label">
+                                                                Date Range
+                                                            </label>
+
+                                                            <div class="position-relative">
+
+                                                                <div id="reportrange"
+                                                                     class="form-control"
+                                                                     data-toggle="date-picker-range"
+                                                                     data-target-display="#selectedValue"
+                                                                     data-cancel-class="btn-light">
+
+                                                                    <i class="ti ti-calendar me-2"></i>
+
+                                                                    <span id="selectedValue">
+                                                                        August 13, 2026 - September 11, 2026
+                                                                    </span>
+
+                                                                    <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <input type="hidden"
+                                                                   id="dateRange"
+                                                                   value="" />
+
+                                                        </div>
+
+
+                                                        <!-- ================================================= -->
+                                                        <!-- SEARCH / CLEAR -->
+                                                        <!-- ================================================= -->
+
+                                                        <div class="col-xl-3 col-md-6 d-flex align-items-end ms-auto">
+
+                                                            <div class="d-flex gap-2 w-100">
+
+                                                                <button class="btn btn-primary flex-fill"
+                                                                        type="submit"
+                                                                        id="applyFiltersBtn">
+
+                                                                    <i class="ti ti-search me-2"></i>
+
+                                                                    Search
+
+                                                                </button>
+
+
+                                                                <button class="btn btn-light flex-fill"
+                                                                        type="button"
+                                                                        id="clearBettingLogFiltersBtn">
+
+                                                                    <i class="ti ti-refresh me-2"></i>
+
+                                                                    Clear
+
+                                                                </button>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <div class="row align-items-center mb-3">
+
+                                                    <div class="col-md-6">
+                                                        <h5 class="mb-1">Betting Logs</h5>
+                                                        <p class="text-muted mb-0">
+                                                            Player betting history
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="table-responsive pt-1">
+                                                    <table id="bettingLogTable"
+                                                           class="table table-striped dt-responsive align-middle mb-0"
+                                                           style="width:100%;">
+
+                                                        <thead class="thead-sm text-uppercase fs-xxs">
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Provider Code</th>
+                                                                <th>Game Code</th>
+                                                                <th>Round ID</th>
+                                                                <th>History ID</th>
+                                                                <th>Bet Amount</th>
+                                                                <th>Win Amount</th>
+                                                                <th>Before Balance</th>
+                                                                <th>After Balance</th>
+                                                                <th>Status</th>
+                                                                <th>Created At</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="detail_settings">
+                                        <p class="mb-0">View and manage all ongoing projects, tasks, and milestones. Collaborate with your team and track progress in real-time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row-->
+</div>
+<!-- end col -->
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+<script src="~/assets/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="~/assets/plugins/select2/select2.min.js"></script>
+
+<script>
+    const profileFormDiv = document.querySelector('#profileForm .row-cols-2');
+    const btnBackToList = document.querySelector('#btnBackToList');
+    const btnRemove = document.querySelector('#btnRemove');
+
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+
+    function checkScreenWidth(e) {
+        profileFormDiv.classList.toggle('row-cols-2', !e.matches);
+
+        if (e.matches) {
+            btnBackToList.innerHTML = '<i class="ti ti-list"></i>';
+            btnRemove.innerHTML = '<i class="ti ti-trash"></i>';
+        } else {
+            btnBackToList.innerHTML = '<i class="ti ti-list"></i>List';
+            btnRemove.innerHTML = '<i class="ti ti-trash"></i>Remove';
+        }
+    }
+
+    checkScreenWidth(mediaQuery);
+    mediaQuery.addEventListener('change', checkScreenWidth);
+
+    $('#btnRemove').on('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            html: `You are about to delete player <b>@userCode</b>. This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc3545',
+            reverseButtons: true
+        }).then(function (result) {
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("DeletePlayer", "Player")',
+                type: 'POST',
+                data: { id: @id },
+
+                success: function (response) {
+
+                    if (response.success) {
+
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: response.message || 'Player has been deleted.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(function () {
+                            window.location.href = '@Url.Action("Index", "Player")';
+                        });
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Failed',
+                            text: response.message || 'Unable to delete player.',
+                            icon: 'error'
+                        });
+                    }
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while deleting the player.',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    });
+
+    jQuery().select2 && $('[data-toggle="select2"]').select2();
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("userStatus").value = @user.Status;
+        document.getElementById("currency").value = "@user.CurrencyCode";
+
+        const form = document.getElementById("profileForm");
+        const saveButton = document.getElementById("btnSaveProfile");
+        const cancelButton = document.getElementById("btnCancelProfile");
+
+        if (!form) return;
+
+        let originalValues = {};
+
+        const fields = form.querySelectorAll(
+            "input:not([disabled]), select, textarea"
+        );
+
+        function getCurrentValues() {
+            const values = {};
+
+            fields.forEach(field => {
+                values[field.id] = field.value;
+            });
+
+            return values;
+        }
+
+        function hasChanges() {
+            const currentValues = getCurrentValues();
+
+            return Object.keys(originalValues).some(id =>
+                originalValues[id] !== currentValues[id]
+            );
+        }
+
+        function updateButtons() {
+
+            const changed = hasChanges();
+
+            saveButton.disabled = !changed;
+            cancelButton.disabled = !changed;
+        }
+
+        // Store original values
+        originalValues = getCurrentValues();
+
+        // Detect changes
+        fields.forEach(field => {
+
+            field.addEventListener("input", updateButtons);
+            field.addEventListener("change", updateButtons);
+
+        });
+
+
+        // ==========================================
+        // CANCEL
+        // ==========================================
+
+        cancelButton.addEventListener("click", function () {
+
+            fields.forEach(field => {
+                field.value = originalValues[field.id];
+            });
+
+            updateButtons();
+        });
+
+
+        // ==========================================
+        // SAVE / CONFIRM
+        // ==========================================
+
+        form.addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            if (!hasChanges()) {
+                return;
+            }
+
+
+            // Show confirmation
+            const result = await Swal.fire({
+
+                title: "Confirm Changes",
+
+                text: "Are you sure you want to save these changes?",
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonText: "Yes, save changes",
+
+                cancelButtonText: "Cancel",
+
+                showCloseButton: true,
+
+                buttonsStyling: false,
+
+                customClass: {
+                    confirmButton: "btn btn-primary me-2 mt-2",
+                    cancelButton: "btn btn-danger mt-2"
+                }
+
+            });
+
+
+            // User clicked Cancel / closed alert
+            if (!result.isConfirmed) {
+                return;
+            }
+
+
+            // ==========================================
+            // USER CONFIRMED
+            // ==========================================
+
+            const data = {
+
+                userCode: "@userCode",
+
+                status:
+                    document.getElementById("userStatus").value,
+
+                nickName:
+                    document.getElementById("userName").value,
+
+                userEmail:
+                    document.getElementById("userEmail").value,
+
+                phoneNumber:
+                    document.getElementById("userPhone").value,
+
+                currencyId:
+                    document.getElementById("currency").value
+            };
+
+
+            try {
+
+                saveButton.disabled = true;
+                cancelButton.disabled = true;
+
+
+                const response = await fetch(
+                    '@Url.Action("UpdateProfile", "Player")',
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(data)
+                    }
+                );
+
+
+                if (!response.ok) {
+                    throw new Error("Failed to update profile.");
+                }
+
+
+                const responseData =
+                    await response.json();
+
+
+                if (!responseData.success) {
+
+                    throw new Error(
+                        responseData.message ||
+                        "Unable to update profile."
+                    );
+                }
+
+
+                // ==========================================
+                // UPDATE ORIGINAL VALUES
+                // ==========================================
+
+                originalValues = getCurrentValues();
+
+                updateButtons();
+
+
+                // ==========================================
+                // SUCCESS ALERT
+                // ==========================================
+
+                Swal.fire({
+
+                    title: "Updated!",
+
+                    text: "Player profile has been updated successfully.",
+
+                    icon: "success",
+
+                    confirmButtonText: "OK",
+
+                    buttonsStyling: false,
+
+                    customClass: {
+                        confirmButton: "btn btn-primary mt-2"
+                    }
+
+                });
+
+
+            }
+            catch (error) {
+
+                console.error(error);
+
+                updateButtons();
+
+
+                Swal.fire({
+
+                    title: "Update Failed",
+
+                    text: error.message ||
+                          "Something went wrong while updating the profile.",
+
+                    icon: "error",
+
+                    confirmButtonText: "OK",
+
+                    buttonsStyling: false,
+
+                    customClass: {
+                        confirmButton: "btn btn-primary mt-2"
+                    }
+
+                });
+            }
+
+        });
+
+    });
+</script>
+<script>
+    // ============================================================
+    // BETTING LOG FILTER VARIABLES
+    // ============================================================
+
+    let bettingCreatedAtStart = '';
+    let bettingCreatedAtEnd = '';
+
+
+    // ============================================================
+    // PROVIDER CODE - SELECT2
+    // ============================================================
+
+    $('#filterProviderCode').select2({
+        placeholder: 'All Providers',
+        allowClear: true,
+        width: '100%'
+    });
+
+
+    // ============================================================
+    // LOAD PROVIDERS FROM BETTING LOGS
+    // ============================================================
+
+    function loadBettingLogProviders() {
+
+        $.ajax({
+            url: '@Url.Action("GetBettingLogProviders", "Player")',
+            type: 'GET',
+            dataType: 'json',
+
+            success: function (data) {
+
+                const providerSelect =
+                    $('#filterProviderCode');
+
+                providerSelect.empty();
+
+                providerSelect.append(
+                    new Option(
+                        'All Providers',
+                        '',
+                        true,
+                        true
+                    )
+                );
+
+                if (Array.isArray(data)) {
+
+                    data.forEach(function (item) {
+
+                        if (!item.providerCode) {
+                            return;
+                        }
+
+                        providerSelect.append(
+                            new Option(
+                                item.providerCode,
+                                item.providerCode,
+                                false,
+                                false
+                            )
+                        );
+                    });
+                }
+
+                providerSelect.trigger('change');
+            },
+
+            error: function (xhr) {
+
+                console.error(
+                    'Failed to load betting log providers.',
+                    xhr
+                );
+            }
+        });
+    }
+
+
+    // Load providers
+    loadBettingLogProviders();
+
+
+    // ============================================================
+    // DATE RANGE
+    // ============================================================
+
+    function updateBettingDateDisplay(start, end) {
+
+        $('#selectedValue').html(
+            start.format('MMMM D, YYYY HH:mm:ss') +
+            ' - ' +
+            end.format('MMMM D, YYYY HH:mm:ss')
+        );
+
+        bettingCreatedAtStart =
+            start.format('YYYY-MM-DD HH:mm:ss');
+
+        bettingCreatedAtEnd =
+            end.format('YYYY-MM-DD HH:mm:ss');
+
+        $('#dateRange').val(
+            bettingCreatedAtStart +
+            '|' +
+            bettingCreatedAtEnd
+        );
+    }
+
+
+    $('#reportrange').daterangepicker({
+
+        startDate: moment().subtract(29, 'days').startOf('day'),
+
+        endDate: moment().endOf('day'),
+
+        timePicker: true,
+
+        timePicker24Hour: true,
+
+        timePickerSeconds: true,
+
+        ranges: {
+
+            'Today': [
+                moment().startOf('day'),
+                moment().endOf('day')
+            ],
+
+            'Yesterday': [
+                moment().subtract(1, 'days').startOf('day'),
+                moment().subtract(1, 'days').endOf('day')
+            ],
+
+            'Last 7 Days': [
+                moment().subtract(6, 'days').startOf('day'),
+                moment().endOf('day')
+            ],
+
+            'Last 30 Days': [
+                moment().subtract(29, 'days').startOf('day'),
+                moment().endOf('day')
+            ],
+
+            'This Month': [
+                moment().startOf('month').startOf('day'),
+                moment().endOf('month').endOf('day')
+            ],
+
+            'Last Month': [
+                moment().subtract(1, 'month').startOf('month').startOf('day'),
+                moment().subtract(1, 'month').endOf('month').endOf('day')
+            ]
+
+        },
+
+        locale: {
+
+            format: 'MM/DD/YYYY HH:mm:ss',
+
+            applyLabel: 'Apply',
+
+            cancelLabel: 'Cancel',
+
+            customRangeLabel: 'Custom Range'
+        },
+
+        cancelClass: 'btn-light',
+
+        applyButtonClasses: 'btn-success'
+
+    }, function (start, end) {
+
+        updateBettingDateDisplay(
+            start,
+            end
+        );
+
+    });
+
+
+    // Initial date
+    updateBettingDateDisplay(
+        moment().subtract(29, 'days').startOf('day'),
+        moment().endOf('day')
+    );
+
+    // ============================================================
+    // BETTING LOG DATATABLE
+    // ============================================================
+
+    const bettingTable = new DataTable(
+        '#bettingLogTable',
+        {
+
+            responsive: true,
+
+            processing: true,
+
+            serverSide: true,
+
+            searching: false,
+
+            select: true,
+
+            pageLength: 10,
+
+            stateSave: false,
+
+            lengthMenu: [
+                10,
+                25,
+                50,
+                100
+            ],
+
+            // Newest logs first
+            order: [
+                [0, 'desc']
+            ],
+
+
+            // ====================================================
+            // DOM
+            // ====================================================
+
+            dom: `
+                <'row align-items-center mt-2 mb-3'
+                    <'col-md-6'
+                        <'columnToggleWrapper'>
+                    >
+                    <'col-md-6 text-end'
+                        l
+                    >
+                >
+                rt
+                <'row align-items-center mt-2'
+                    <'col-md-6'
+                        i
+                    >
+                    <'col-md-6 text-end'
+                        p
+                    >
+                >
+            `,
+
+
+            // ====================================================
+            // LANGUAGE
+            // ====================================================
+
+            language: {
+
+                paginate: {
+
+                    first:
+                        '<i class="ti ti-chevrons-left"></i>',
+
+                    previous:
+                        '<i class="ti ti-chevron-left"></i>',
+
+                    next:
+                        '<i class="ti ti-chevron-right"></i>',
+
+                    last:
+                        '<i class="ti ti-chevrons-right"></i>'
+                }
+            },
+
+
+            // ====================================================
+            // AJAX
+            // ====================================================
+
+            ajax: {
+
+                url:
+                    '@Url.Action("GetBettingLogs", "Player")',
+
+                type: 'POST',
+
+                data: function (d) {
+
+                    d.playerCode = '@userCode';
+
+                    // Provider
+                    d.providerCode =
+                        $('#filterProviderCode').val() || '';
+
+                    // Game Code
+                    d.gameCode =
+                        $('#filterGameCode').val().trim();
+
+                    // Round ID
+                    d.roundId =
+                        $('#filterRoundId').val().trim();
+
+                    // History ID
+                    d.historyId =
+                        $('#filterHistoryId').val().trim();
+
+                    // Status
+                    d.status =
+                        $('#filterStatus').val() || '';
+
+                    // Date
+                    d.createdFrom =
+                        bettingCreatedAtStart || '';
+
+                    d.createdTo =
+                        bettingCreatedAtEnd || '';
+                }
+            },
+
+
+            // ====================================================
+            // COLUMNS
+            // ====================================================
+
+            columns: [
+
+                // 0 - ID
+                {
+                    data: 'id'
+                },
+
+                // 1 - Provider Code
+                {
+                    data: 'providerCode',
+
+                    render: function (data) {
+                        return data || '-';
+                    }
+                },
+
+                // 2 - Game Code
+                {
+                    data: 'gameCode',
+
+                    render: function (data) {
+                        return data || '-';
+                    }
+                },
+
+                // 3 - Round ID
+                {
+                    data: 'roundId',
+
+                    render: function (data) {
+                        return data || '-';
+                    }
+                },
+
+                // 4 - History ID
+                {
+                    data: 'historyId',
+
+                },
+
+                // 5 - Bet Amount
+                {
+                    data: 'betAmount',
+
+                    render: function (data) {
+
+                        return Number(
+                            data || 0
+                        ).toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        );
+                    }
+                },
+
+                // 6 - Win Amount
+                {
+                    data: 'winAmount',
+
+                    render: function (data) {
+
+                        return Number(
+                            data || 0
+                        ).toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        );
+                    }
+                },
+
+                // 7 - Before Balance
+                {
+                    data: 'beforeBalance',
+
+                    render: function (data) {
+
+                        return Number(
+                            data || 0
+                        ).toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        );
+                    }
+                },
+
+                // 8 - After Balance
+                {
+                    data: 'afterBalance',
+
+                    render: function (data) {
+
+                        return Number(
+                            data || 0
+                        ).toLocaleString(
+                            undefined,
+                            {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }
+                        );
+                    }
+                },
+
+                // 9 - Status
+                {
+                    data: 'status',
+
+                    render: (e, t, n) => {
+                        const status = Number(e);
+
+                        if (status === 1)
+                            return `<span class="badge badge-label badge-soft-success">Success</span>`;
+
+                        if (status === 2)
+                            return `<span class="badge badge-label badge-soft-warning">Outstanding</span>`;
+
+                        return `<span class="badge badge-label badge-soft-danger">Canceled</span>`;
+                    }
+                },
+
+                // 10 - Created At
+                {
+                    data: 'createdAt',
+
+                    render: function (data) {
+
+                        if (!data) {
+                            return '-';
+                        }
+
+                        return moment(data)
+                            .format(
+                                'YYYY-MM-DD HH:mm:ss'
+                            );
+                    }
+                }
+
+            ],
+
+
+            // ====================================================
+            // SORTABLE COLUMNS
+            // ====================================================
+
+            columnDefs: [
+
+                {
+                    orderable: true,
+                    targets: [0, 5, 6, 10]
+                },
+
+                {
+                    orderable: false,
+                    targets: [
+                        1,
+                        2,
+                        3,
+                        4,
+                        7,
+                        8,
+                        9
+                    ]
+                }
+
+            ],
+
+
+            // ====================================================
+            // COLUMN TOGGLE
+            // ====================================================
+
+            initComplete: function () {
+
+                const columnNames = [
+
+                    'ID',
+
+                    'Provider Code',
+
+                    'Game Code',
+
+                    'Round ID',
+
+                    'History ID',
+
+                    'Bet Amount',
+
+                    'Win Amount',
+
+                    'Before Balance',
+
+                    'After Balance',
+
+                    'Status',
+
+                    'Created At'
+
+                ];
+
+
+                const wrapper =
+                    document.querySelector(
+                        '.columnToggleWrapper'
+                    );
+
+
+                if (!wrapper) {
+                    return;
+                }
+
+
+                const dropdown =
+                    document.createElement('div');
+
+                dropdown.className =
+                    'dropdown';
+
+
+                dropdown.innerHTML = `
+
+                    <button
+                        class="btn btn-sm btn-secondary"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside">
+
+                        <i class="ti ti-columns-3 me-1"></i>
+
+                        Show / Hide Columns
+
+                    </button>
+
+
+                    <ul
+                        class="dropdown-menu"
+                        id="columnToggleMenu">
+
+                        ${columnNames.map(
+                    function (name, index) {
+
+                        const visible =
+                            bettingTable
+                                .column(index)
+                                .visible();
+
+                        return `
+
+                                    <li class="dropdown-item">
+
+                                        <div class="form-check">
+
+                                            <input
+                                                class="form-check-input form-check-input-light fs-14 mt-0 toggle-vis"
+                                                type="checkbox"
+                                                data-column="${index}"
+                                                id="bettingColToggle${index}"
+                                                ${visible ? 'checked' : ''}>
+
+                                            <label
+                                                class="form-check-label fw-medium"
+                                                for="bettingColToggle${index}">
+
+                                                ${name}
+
+                                            </label>
+
+                                        </div>
+
+                                    </li>
+
+                                `;
+                    }
+                ).join('')}
+
+                    </ul>
+                `;
+
+
+                wrapper.appendChild(dropdown);
+
+
+                const menu =
+                    document.getElementById(
+                        'columnToggleMenu'
+                    );
+
+
+                if (menu) {
+
+                    menu.addEventListener(
+                        'change',
+                        function (event) {
+
+                            if (
+                                !event.target.classList.contains(
+                                    'toggle-vis'
+                                )
+                            ) {
+                                return;
+                            }
+
+
+                            const columnIndex =
+                                parseInt(
+                                    event.target.dataset.column,
+                                    10
+                                );
+
+
+                            bettingTable
+                                .column(columnIndex)
+                                .visible(
+                                    event.target.checked
+                                );
+                        }
+                    );
+                }
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // APPLY FILTERS
+    // ============================================================
+
+    $('#bettingFilterForm').on(
+        'submit',
+        function (e) {
+
+            e.preventDefault();
+
+            bettingTable.ajax.reload(
+                null,
+                true
+            );
+        }
+    );
+
+
+    // ============================================================
+    // CLEAR FILTERS
+    // ============================================================
+
+    $('#clearBettingLogFiltersBtn').on(
+        'click',
+        function () {
+
+            // Provider
+            $('#filterProviderCode')
+                .val('')
+                .trigger('change');
+
+
+            // Game
+            $('#filterGameCode')
+                .val('');
+
+
+            // Round
+            $('#filterRoundId')
+                .val('');
+
+
+            // History
+            $('#filterHistoryId')
+                .val('');
+
+
+            // Status
+            $('#filterStatus')
+                .val('')
+                .trigger('change');
+
+
+            // Reset date
+            const start =
+                moment().subtract(29, 'days');
+
+            const end =
+                moment();
+
+
+            updateBettingDateDisplay(
+                start,
+                end
+            );
+
+
+            // Reload
+            bettingTable.ajax.reload(
+                null,
+                true
+            );
+        }
+    );
+</script>
+<script>
+    $(document).ready(function () {
+
+        if (
+            !window.jQuery ||
+            !$.fn.DataTable ||
+            !$("#financeLogsTable").length
+        ) {
+            return;
+        }
+
+        $("#financeFilterAgentCode").select2({
+            placeholder: "All Agents",
+            allowClear: true,
+            width: "100%"
+        });
+
+        function loadFinanceLogAgents() {
+            $.ajax({
+                url: '@Url.Action("GetFinanceLogAgents", "Player")',
+                type: "GET",
+                data: {
+                    playerId: @id
+            },
+                dataType: "json",
+                success: function (data) {
+                    var agentSelect =
+                        $("#financeFilterAgentCode");
+
+                    agentSelect.empty();
+
+                    agentSelect.append(
+                        new Option(
+                            "All Agents",
+                            "",
+                            true,
+                            true
+                        )
+                    );
+
+                    if (Array.isArray(data)) {
+                        data.forEach(function (item) {
+                            if (!item.agentCode) {
+                                return;
+                            }
+
+                            agentSelect.append(
+                                new Option(
+                                    item.agentCode,
+                                    item.agentCode,
+                                    false,
+                                    false
+                                )
+                            );
+                        });
+                    }
+
+                    agentSelect.trigger("change");
+                },
+                error: function (xhr) {
+                    console.error(
+                        "Failed to load finance log agents.",
+                        xhr
+                    );
+                }
+            });
+        }
+
+        loadFinanceLogAgents();
+
+        function escapeHtml(value) {
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return "";
+            }
+
+            return $("<div>")
+                .text(
+                    String(value)
+                )
+                .html();
+        }
+
+        function formatMoney(value) {
+            var number =
+                Number(value);
+
+            return Number.isFinite(number)
+                ? number.toFixed(2)
+                : "0.00";
+        }
+
+        function getFinanceTypeName(value) {
+            switch (Number(value)) {
+                case 0:
+                    return "Self Deposit";
+                case 1:
+                    return "Manual Deposit";
+                case 2:
+                    return "Self Withdraw";
+                case 3:
+                    return "Manual Withdraw";
+                default:
+                    return "Unknown";
+            }
+        }
+
+        function getTargetAccountTypeName(value) {
+            switch (Number(value)) {
+                case 0:
+                    return "Player";
+                case 1:
+                    return "Agent";
+                case 2:
+                    return "Subaccount";
+                default:
+                    return "Unknown";
+            }
+        }
+
+        function getStatusName(value) {
+            switch (Number(value)) {
+                case 0:
+                    return "Pending";
+                case 1:
+                    return "";
+                case 2:
+                    return "Completed";
+                case 3:
+                    return "Rejected";
+                case 4:
+                    return "Failed";
+                case 5:
+                    return "Cancelled";
+                case 6:
+                    return "Auto Cancelled";
+                default:
+                    return "Unknown";
+            }
+        }
+
+        function getFinanceBalanceText(
+            beforeValue,
+            afterValue
+        ) {
+            var before =
+                Number(beforeValue);
+
+            var after =
+                Number(afterValue);
+
+            if (!Number.isFinite(before)) {
+                before = 0;
+            }
+
+            if (!Number.isFinite(after)) {
+                after = 0;
+            }
+
+            return (
+                formatMoney(before) +
+                " → " +
+                formatMoney(after)
+            );
+        }
+
+        function renderFinanceBalance(
+            beforeValue,
+            afterValue
+        ) {
+            var before =
+                Number(beforeValue);
+
+            var after =
+                Number(afterValue);
+
+            if (!Number.isFinite(before)) {
+                before = 0;
+            }
+
+            if (!Number.isFinite(after)) {
+                after = 0;
+            }
+
+            var afterClass =
+                after > before
+                    ? "text-success"
+                    : after < before
+                        ? "text-danger"
+                        : "";
+
+            return (
+                '<span class="text-nowrap">' +
+                formatMoney(before) +
+                ' <span class="text-muted mx-1">→</span> ' +
+                '<span class="' +
+                afterClass +
+                '">' +
+                formatMoney(after) +
+                "</span>" +
+                "</span>"
+            );
+        }
+
+        function renderFinanceType(value) {
+            return escapeHtml(
+                getFinanceTypeName(value)
+            );
+        }
+
+        function renderStatus(value) {
+            return escapeHtml(
+                getStatusName(value)
+            );
+        }
+
+        var defaultStart =
+            moment()
+                .subtract(
+                    1,
+                    "month"
+                );
+
+        var defaultEnd =
+            moment();
+
+        function updateDateRange(
+            start,
+            end
+        ) {
+            $("#dateRange")
+                .val(
+                    start.format(
+                        "YYYY-MM-DD HH:mm:ss"
+                    ) +
+                    "|" +
+                    end.format(
+                        "YYYY-MM-DD HH:mm:ss"
+                    )
+                );
+        }
+
+        if ($.fn.daterangepicker) {
+            $("#financeReportrange")
+                .daterangepicker({
+                    startDate:
+                        defaultStart,
+                    endDate:
+                        defaultEnd,
+                    autoUpdateInput:
+                        false,
+                    opens:
+                        "left",
+                    drops:
+                        "down",
+                    timePicker:
+                        true,
+                    timePicker24Hour:
+                        true,
+                    timePickerSeconds:
+                        true,
+                    locale: {
+                        format:
+                            "MMMM D, YYYY HH:mm:ss",
+                        cancelLabel:
+                            "Cancel",
+                        applyLabel:
+                            "Apply"
+                    },
+                    ranges: {
+                        "Today": [
+                            moment()
+                                .startOf("day"),
+                            moment()
+                                .endOf("day")
+                        ],
+                        "Yesterday": [
+                            moment()
+                                .subtract(
+                                    1,
+                                    "days"
+                                )
+                                .startOf("day"),
+                            moment()
+                                .subtract(
+                                    1,
+                                    "days"
+                                )
+                                .endOf("day")
+                        ],
+                        "Last 7 Days": [
+                            moment()
+                                .subtract(
+                                    6,
+                                    "days"
+                                )
+                                .startOf("day"),
+                            moment()
+                                .endOf("day")
+                        ],
+                        "Last 30 Days": [
+                            moment()
+                                .subtract(
+                                    29,
+                                    "days"
+                                )
+                                .startOf("day"),
+                            moment()
+                                .endOf("day")
+                        ],
+                        "This Month": [
+                            moment()
+                                .startOf("month"),
+                            moment()
+                                .endOf("month")
+                        ],
+                        "Last Month": [
+                            moment()
+                                .subtract(
+                                    1,
+                                    "month"
+                                )
+                                .startOf("month"),
+                            moment()
+                                .subtract(
+                                    1,
+                                    "month"
+                                )
+                                .endOf("month")
+                        ]
+                    }
+                });
+
+            $("#selectedValue")
+                .text(
+                    defaultStart.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    ) +
+                    " - " +
+                    defaultEnd.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+                );
+
+            updateDateRange(
+                defaultStart,
+                defaultEnd
+            );
+
+            $("#financeReportrange")
+                .off(
+                    "apply.daterangepicker.finance"
+                )
+                .on(
+                    "apply.daterangepicker.finance",
+                    function (
+                        event,
+                        picker
+                    ) {
+                        $("#selectedValue")
+                            .text(
+                                picker.startDate.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                ) +
+                                " - " +
+                                picker.endDate.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                )
+                            );
+
+                        updateDateRange(
+                            picker.startDate,
+                            picker.endDate
+                        );
+                    }
+                );
+        }
+
+        /* =========================================================
+           DATATABLE
+        ========================================================= */
+
+        var financeLogsTable = $("#financeLogsTable").DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            searching: false,
+            deferRender: true,
+            stateSave: false,
+            pageLength: 25,
+            lengthMenu: [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+            dom: "lrtip",
+            order: [[6, "desc"]],
+            columnDefs: [
+                {
+                    responsivePriority: 1,
+                    targets: 0
+                },
+                {
+                    responsivePriority: 2,
+                    targets: 9
+                },
+                {
+                    responsivePriority: 3,
+                    targets: 8
+                },
+                {
+                    responsivePriority: 4,
+                    targets: 7
+                },
+                {
+                    responsivePriority: 5,
+                    targets: [2, 3]
+                },
+                {
+                    responsivePriority: 6,
+                    targets: 4
+                },
+                {
+                    responsivePriority: 7,
+                    targets: 5
+                },
+                {
+                    responsivePriority: 8,
+                    targets: 1
+                },
+                {
+                    orderable: false,
+                    targets: [0, 8, 9]
+                }
+            ],
+            ajax: {
+                url: "@Url.Action("GetFinanceLogs", "Player")",
+                type: "POST",
+                data: function (d) {
+                    d.playerId = @id;
+                    d.orderId = $("#financeFilterOrderId").val();
+                    d.agentCode = $("#financeFilterAgent").val();
+                    d.financeType = $("#financeFilterExecTypes").val();
+                    d.amount = $("#financeFilterAmount").val();
+                    d.status = $("#financeFilterStatus").val();
+
+                    var range = $("#dateRange").val();
+
+                    if (range) {
+                        var dates = range.split("|");
+
+                        if (dates.length === 2) {
+                            d.fromDate = dates[0];
+                            d.toDate = dates[1];
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(
+                        "GetFinanceLogs AJAX ERROR",
+                        xhr.status,
+                        status,
+                        error,
+                        xhr.responseText
+                    );
+                }
+            },
+            columns: [
+                {
+                    data: null,
+                    defaultContent: "",
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center text-muted",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: "orderId",
+                    defaultContent: "",
+                    render: function (data) {
+                        return data == null ? "" : escapeHtml(data);
+                    }
+                },
+                {
+                    data: "agentCode",
+                    defaultContent: "",
+                    render: function (data) {
+                        return data == null ? "" : escapeHtml(data);
+                    }
+                },
+                {
+                    data: "financeType",
+                    defaultContent: "",
+                    render: function (data) {
+                        return renderFinanceType(data);
+                    }
+                },
+                {
+                    data: "amount",
+                    defaultContent: "",
+                    className: "text-end text-nowrap",
+                    render: function (data) {
+                        return formatMoney(data);
+                    }
+                },
+                {
+                    data: null,
+                    defaultContent: "",
+                    orderable: false,
+                    className: "text-end",
+                    render: function (data, type, row) {
+                        if (!row) {
+                            return "";
+                        }
+
+                        return renderFinanceBalance(
+                            row.targetBeforeBalance,
+                            row.targetAfterBalance
+                        );
+                    }
+                },
+                {
+                    data: "createdAt",
+                    defaultContent: "",
+                    render: function (data) {
+                        return data == null ? "" : escapeHtml(data);
+                    }
+                },
+                {
+                    data: "status",
+                    defaultContent: "",
+                    render: function (data) {
+                        return renderStatus(data);
+                    }
+                },
+                {
+                    data: null,
+                    defaultContent: "",
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: function (data) {
+                        if (!data) {
+                            return "";
+                        }
+
+                        return '<button type="button" ' +
+                            'class="btn btn-sm btn-light js-finance-details" ' +
+                            'data-log-id="' + escapeHtml(data.id) + '" ' +
+                            'title="View details" ' +
+                            'aria-label="View finance log details">' +
+                            '<i class="ti ti-eye"></i>' +
+                            '</button>';
+                    }
+                },
+                {
+                    data: null,
+                    defaultContent: "",
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: function (data) {
+                        if (!data) {
+                            return '<span class="text-muted small">No actions</span>';
+                        }
+
+                        var canManage =
+                            Number(data.financeType) === 2 &&
+                            Number(data.status) === 0;
+
+                        if (!canManage) {
+                            return '<span class="text-muted small">No actions</span>';
+                        }
+
+                        return '<div class="d-inline-flex gap-1">' +
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-success js-finance-action" ' +
+                            'data-action="complete" ' +
+                            'data-log-id="' + escapeHtml(data.id) + '" ' +
+                            'title="Complete transaction">' +
+                            '<i class="ti ti-check me-1"></i>' +
+                            'Complete' +
+                            '</button>' +
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-danger js-finance-action" ' +
+                            'data-action="reject" ' +
+                            'data-log-id="' + escapeHtml(data.id) + '" ' +
+                            'title="Reject transaction">' +
+                            '<i class="ti ti-x me-1"></i>' +
+                            'Reject' +
+                            '</button>' +
+                            '</div>';
+                    }
+                }
+            ],
+            initComplete: function () {
+                var api = this.api();
+                var container = $(api.table().container());
+                var length = container.find(".dt-length, .dataTables_length").first();
+                var info = container.find(".dt-info, .dataTables_info").first();
+                var paging = container.find(".dt-paging, .dataTables_paginate").first();
+
+                if (length.length) {
+                    $("#dataTableLengthContainer").empty().append(length);
+                }
+
+                if (info.length) {
+                    $("#dataTableInfoContainer").empty().append(info);
+                }
+
+                if (paging.length) {
+                    $("#dataTablePagingContainer").empty().append(paging);
+                }
+
+                api.columns.adjust();
+
+                if (api.responsive && typeof api.responsive.recalc === "function") {
+                    api.responsive.recalc();
+                }
+            }
+        });
+
+        $("#financeFilterForm")
+            .on(
+                "submit",
+                function (e) {
+                    e.preventDefault();
+
+                    financeLogsTable.ajax.reload(
+                        null,
+                        true
+                    );
+                }
+            );
+
+        $(
+            "#financeFilterAgentCode, " +
+            "#financeFilterAmount, " +
+            "#financeFilterOrderId"
+        )
+            .on(
+                "keydown",
+                function (e) {
+                    if (
+                        e.key ===
+                        "Enter"
+                    ) {
+                        e.preventDefault();
+
+                        $("#financeFilterForm")
+                            .trigger(
+                                "submit"
+                            );
+                    }
+                }
+            );
+
+        /* =========================================================
+           CLEAR
+        ========================================================= */
+
+        $("#financeClearFiltersBtn")
+            .on(
+                "click",
+                function () {
+                    $("#financeFilterAgentCode")
+                        .val("")
+                        .trigger(
+                            "change"
+                        );
+
+                    $("#financeFilterExecTypes, " +
+                        "#financeFilterStatus")
+                        .val("")
+                        .trigger(
+                            "change"
+                        );
+
+                    $("#financeFilterAmount")
+                        .val("");
+
+                    $("#financeFilterOrderId")
+                        .val("");
+
+                    var start =
+                        moment()
+                            .subtract(
+                                1,
+                                "month"
+                            );
+
+                    var end =
+                        moment();
+
+                    var picker =
+                        $("#financeReportrange")
+                            .data(
+                                "daterangepicker"
+                            );
+
+                    if (picker) {
+                        picker.setStartDate(
+                            start
+                        );
+
+                        picker.setEndDate(
+                            end
+                        );
+                    }
+
+                    $("#selectedValue")
+                        .text(
+                            start.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            ) +
+                            " - " +
+                            end.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+                        );
+
+                    updateDateRange(
+                        start,
+                        end
+                    );
+
+                    financeLogsTable.ajax.reload(
+                        null,
+                        true
+                    );
+                }
+            );
+
+        /* =========================================================
+           FIND CURRENT ROW
+        ========================================================= */
+
+        function getSelectedRow(id) {
+
+            var rows =
+                financeLogsTable.rows().data();
+
+            for (
+                var i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                if (
+                    Number(rows[i].id) ===
+                    Number(id)
+                ) {
+
+                    return rows[i];
+
+                }
+
+            }
+
+            return null;
+        }
+
+
+        /* =========================================================
+           COMPLETE / REJECT
+        ========================================================= */
+
+        $(document)
+            .off(
+                "click.financeAction",
+                ".js-finance-action"
+            )
+            .on(
+                "click.financeAction",
+                ".js-finance-action",
+                function () {
+
+                    var $button =
+                        $(this);
+
+                    var action =
+                        String(
+                            $button.data("action")
+                        );
+
+                    var logId =
+                        Number(
+                            $button.data("log-id")
+                        );
+
+                    if (
+                        (
+                            action !== "complete" &&
+                            action !== "reject"
+                        ) ||
+                        !Number.isFinite(logId) ||
+                        $button.prop("disabled")
+                    ) {
+                        return;
+                    }
+
+                    var selected =
+                        getSelectedRow(logId);
+
+                    if (
+                        !selected ||
+                        Number(selected.financeType) !== 2 ||
+                        Number(selected.status) !== 0
+                    ) {
+                        return;
+                    }
+
+                    var amount =
+                        formatMoney(selected.amount);
+
+                    var targetCode =
+                        selected.targetCode || "";
+
+                    var orderId =
+                        selected.orderId || "-";
+
+                    var isComplete =
+                        action === "complete";
+
+                    var title =
+                        isComplete
+                            ? "Complete Self Withdraw?"
+                            : "Reject Self Withdraw?";
+
+                    var confirmText =
+                        isComplete
+                            ? "Complete"
+                            : "Reject";
+
+                    var message =
+                        isComplete
+                            ?
+                            "Target: " +
+                            targetCode +
+                            "\nAmount: " +
+                            amount +
+                            "\nOrder ID: " +
+                            orderId +
+                            "\n\nPlayer CurrentBalance will decrease and agent Balance will increase."
+                            :
+                            "Target: " +
+                            targetCode +
+                            "\nAmount: " +
+                            amount +
+                            "\nOrder ID: " +
+                            orderId +
+                            "\n\nNo balance will be changed.";
+
+                    $button.prop(
+                        "disabled",
+                        true
+                    );
+
+                    Swal.fire({
+
+                        title: title,
+
+                        text: message,
+
+                        icon: "warning",
+
+                        showCancelButton: true,
+
+                        confirmButtonText:
+                            confirmText,
+
+                        cancelButtonText:
+                            "Cancel",
+
+                        reverseButtons: true
+
+                    })
+                        .then(
+                            function (result) {
+
+                                if (
+                                    !result ||
+                                    !result.isConfirmed
+                                ) {
+
+                                    $button.prop(
+                                        "disabled",
+                                        false
+                                    );
+
+                                    return;
+
+                                }
+
+                                var endpoint =
+                                    isComplete
+                                        ?
+                                        "@Url.Action("CompleteFinanceLog", "Player")"
+                                        :
+                                        "@Url.Action("RejectFinanceLog", "Player")";
+
+                                $.ajax({
+
+                                    url: endpoint,
+
+                                    type: "POST",
+
+                                    data: {
+                                        __RequestVerificationToken:
+                                            $("input[name='__RequestVerificationToken']").val(),
+
+                                        id: selected.id
+                                    },
+
+                                    success:
+                                        function (response) {
+
+                                            if (
+                                                !response ||
+                                                !response.success
+                                            ) {
+
+                                                $button.prop(
+                                                    "disabled",
+                                                    false
+                                                );
+
+                                                showFinanceError(
+                                                    response?.message ||
+                                                    (
+                                                        isComplete
+                                                            ?
+                                                            "Unable to complete this transaction."
+                                                            :
+                                                            "Unable to reject this transaction."
+                                                    )
+                                                );
+
+                                                return;
+
+                                            }
+
+                                            showFinanceSuccess(
+                                                isComplete
+                                                    ?
+                                                    "Completed. Player and agent balances updated."
+                                                    :
+                                                    "Rejected. No balance was changed."
+                                            );
+
+                                            financeLogsTable.ajax.reload(
+                                                null,
+                                                false
+                                            );
+
+                                        },
+
+                                    error:
+                                        function (xhr) {
+
+                                            $button.prop(
+                                                "disabled",
+                                                false
+                                            );
+
+                                            var message =
+                                                xhr.responseJSON?.message ||
+                                                "An unexpected error occurred.";
+
+                                            showFinanceError(
+                                                message
+                                            );
+
+                                        }
+
+                                });
+
+                            }
+                        );
+
+                }
+            );
+
+
+        /* =========================================================
+           SWEETALERT ERROR
+        ========================================================= */
+
+        function showFinanceError(message) {
+
+            Swal.fire({
+
+                title:
+                    "Operation Failed",
+
+                text:
+                    message,
+
+                icon:
+                    "error"
+
+            });
+
+        }
+
+
+        /* =========================================================
+           SWEETALERT SUCCESS TOAST
+        ========================================================= */
+
+        function showFinanceSuccess(message) {
+
+            Swal.fire({
+
+                toast:
+                    true,
+
+                position:
+                    "top-end",
+
+                icon:
+                    "success",
+
+                title:
+                    message,
+
+                timer:
+                    1800,
+
+                showConfirmButton:
+                    false
+
+            });
+
+        }
+
+
+        /* =========================================================
+           DETAILS
+        ========================================================= */
+
+        $(document)
+            .off(
+                "click.financeDetails",
+                ".js-finance-details"
+            )
+            .on(
+                "click.financeDetails",
+                ".js-finance-details",
+                function () {
+
+                    var logId =
+                        Number(
+                            $(this).data("log-id")
+                        );
+
+                    if (
+                        !Number.isFinite(logId)
+                    ) {
+
+                        return;
+
+                    }
+
+                    var selected =
+                        getSelectedRow(logId);
+
+                    if (!selected) {
+
+                        return;
+
+                    }
+
+                    $("#detailId")
+                        .text(
+                            selected.id ?? ""
+                        );
+
+                    $("#detailOrderId")
+                        .text(
+                            selected.orderId ?? ""
+                        );
+
+                    $("#detailAgentCode")
+                        .text(
+                            selected.agentCode ?? ""
+                        );
+
+                    $("#detailTargetCode")
+                        .text(
+                            selected.targetCode ?? ""
+                        );
+
+                    $("#detailFinanceType")
+                        .text(
+                            getFinanceTypeName(
+                                selected.financeType
+                            )
+                        );
+
+                    $("#detailTargetAccountType")
+                        .text(
+                            getTargetAccountTypeName(
+                                selected.targetAccountType
+                            )
+                        );
+
+                    $("#detailAmount")
+                        .text(
+                            formatMoney(
+                                selected.amount
+                            )
+                        );
+
+                    $("#detailStatus")
+                        .text(
+                            getStatusName(
+                                selected.status
+                            )
+                        );
+
+                    $("#detailTargetBalance")
+                        .text(
+                            getFinanceBalanceText(
+                                selected.targetBeforeBalance,
+                                selected.targetAfterBalance
+                            )
+                        );
+
+                    $("#detailAgentBalance")
+                        .text(
+                            getFinanceBalanceText(
+                                selected.agentBeforeBalance,
+                                selected.agentAfterBalance
+                            )
+                        );
+
+                    $("#detailCreatedAt")
+                        .text(
+                            selected.createdAt ?? ""
+                        );
+
+                    $("#detailAgentPath")
+                        .text(
+                            selected.agentPath ?? ""
+                        );
+
+                    $("#detailTargetPath")
+                        .text(
+                            selected.targetPath ?? ""
+                        );
+
+                    var modalElement =
+                        document.getElementById(
+                            "financeLogDetailsModal"
+                        );
+
+                    if (
+                        modalElement &&
+                        typeof bootstrap !== "undefined" &&
+                        bootstrap.Modal
+                    ) {
+
+                        bootstrap.Modal
+                            .getOrCreateInstance(
+                                modalElement
+                            )
+                            .show();
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================================
+           RESIZE
+        ========================================================= */
+
+        $(window)
+            .off(
+                "resize.financeLogs"
+            )
+            .on(
+                "resize.financeLogs",
+                function () {
+
+                    financeLogsTable
+                        .columns
+                        .adjust();
+
+                    if (
+                        financeLogsTable.responsive &&
+                        typeof financeLogsTable.responsive.recalc ===
+                        "function"
+                    ) {
+
+                        financeLogsTable
+                            .responsive
+                            .recalc();
+
+                    }
+
+                }
+            );
+    });
+</script>

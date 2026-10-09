@@ -1,0 +1,1570 @@
+﻿@model Whitelabel_backoffice.Models.LoginViewModel
+
+@{
+    Layout = null;
+    string ReturnUrl = "";
+
+    if (ViewData["ReturnUrl"] != null)
+    {
+        ReturnUrl = (string)ViewData["ReturnUrl"];
+    }
+}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        Login | TITAN BET
+    </title>
+
+
+    <link rel="stylesheet"
+          href="/assets/css/login.css" />
+    <style>
+
+    /* =========================================================
+       TWO FACTOR LOGIN OVERLAY
+    ========================================================= */
+
+    .two-factor-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background: rgba(3, 8, 16, 0.82);
+
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+
+    .two-factor-overlay.show {
+        display: flex;
+    }
+
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
+    .two-factor-modal {
+        width: 100%;
+        max-width: 430px;
+
+        background: #151d27;
+
+        border: 1px solid rgba(255,255,255,0.10);
+
+        border-radius: 16px;
+
+        box-shadow:
+            0 25px 80px rgba(0,0,0,0.55);
+
+        overflow: hidden;
+
+        animation: twoFactorModalIn 0.2s ease-out;
+    }
+
+
+    @@keyframes twoFactorModalIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(15px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .two-factor-header {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 20px 22px;
+
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+
+    .two-factor-title {
+        color: #f5f7fa;
+
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+
+    .two-factor-subtitle {
+        margin-top: 4px;
+
+        color: #758398;
+
+        font-size: 11px;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    .two-factor-close {
+        width: 32px;
+        height: 32px;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #8290a3;
+
+        font-size: 25px;
+        line-height: 30px;
+
+        cursor: pointer;
+
+        border-radius: 8px;
+
+        transition: 0.2s;
+    }
+
+
+    .two-factor-close:hover {
+        background: rgba(255,255,255,0.06);
+
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
+       BODY
+    ========================================================= */
+
+    .two-factor-body {
+        padding: 28px 26px 26px;
+
+        text-align: center;
+    }
+
+
+    .two-factor-icon {
+        width: 64px;
+        height: 64px;
+
+        margin: 0 auto 18px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: rgba(55, 180, 255, 0.08);
+
+        border: 1px solid rgba(55, 180, 255, 0.18);
+
+        font-size: 27px;
+    }
+
+
+    .two-factor-body h3 {
+        margin: 0 0 8px;
+
+        color: #f4f7fb;
+
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+
+    .two-factor-body p {
+        margin: 0 auto 24px;
+
+        max-width: 320px;
+
+        color: #7f8da0;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       ERROR
+    ========================================================= */
+
+    .two-factor-error {
+        display: none;
+
+        margin-bottom: 15px;
+
+        padding: 10px 12px;
+
+        border-radius: 8px;
+
+        background: rgba(255, 70, 70, 0.10);
+
+        border: 1px solid rgba(255, 70, 70, 0.20);
+
+        color: #ff7373;
+
+        font-size: 12px;
+
+        text-align: left;
+    }
+
+
+    /* =========================================================
+       INPUT
+    ========================================================= */
+
+    .two-factor-input-wrapper {
+        text-align: left;
+
+        margin-bottom: 18px;
+    }
+
+
+    .two-factor-input-wrapper label {
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #9aa7b8;
+
+        font-size: 12px;
+    }
+
+
+    #twoFactorCode {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        height: 52px;
+
+        padding: 0 15px;
+
+        border-radius: 9px;
+
+        border: 1px solid rgba(255,255,255,0.12);
+
+        outline: none;
+
+        background: #0e151f;
+
+        color: #ffffff;
+
+        font-size: 22px;
+
+        font-weight: 600;
+
+        letter-spacing: 7px;
+
+        text-align: center;
+
+        transition: 0.2s;
+    }
+
+
+    #twoFactorCode:focus {
+        border-color: rgba(90, 190, 255, 0.65);
+
+        box-shadow:
+            0 0 0 3px rgba(90, 190, 255, 0.08);
+    }
+
+
+    #twoFactorCode::placeholder {
+        color: #465365;
+
+        letter-spacing: 7px;
+    }
+
+
+    /* =========================================================
+       VERIFY BUTTON
+    ========================================================= */
+
+    .two-factor-verify {
+        width: 100%;
+
+        height: 48px;
+
+        border: 0;
+
+        border-radius: 9px;
+
+        background: #2d4056;
+
+        color: #ffffff;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.5px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .two-factor-verify:hover {
+        background: #38516d;
+    }
+
+
+    .two-factor-verify:disabled {
+        opacity: 0.65;
+
+        cursor: not-allowed;
+    }
+
+
+    .two-factor-loading {
+        display: none;
+    }
+
+
+    .two-factor-verify.is-loading
+    .two-factor-verify-text {
+        display: none;
+    }
+
+
+    .two-factor-verify.is-loading
+    .two-factor-loading {
+        display: inline;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @@media (max-width: 500px) {
+
+        .two-factor-modal {
+            max-width: 100%;
+        }
+
+        .two-factor-body {
+            padding: 25px 20px 22px;
+        }
+
+    }
+
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+
+<body>
+
+
+    <div class="login-background">
+
+        <div class="background-orb background-orb-one"></div>
+
+        <div class="background-orb background-orb-two"></div>
+
+        <div class="background-grid"></div>
+
+    </div>
+
+
+
+    <div class="login-container">
+
+
+        <!-- =====================================================
+             BRAND
+        ====================================================== -->
+
+        <div class="brand-side">
+
+
+            <div class="brand-logo">
+
+                <div class="brand-mark">
+                    ◆
+                </div>
+
+                <div class="brand-name">
+
+                    <span>MY</span>
+
+                    <strong>STAKE</strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-content">
+
+
+                <div class="brand-eyebrow">
+                    OPERATOR CONTROL CENTER
+                </div>
+
+
+                <h1>
+                    BackOffice
+                </h1>
+
+
+                <p>
+                    A single control surface for
+                    operations, agents and business
+                    intelligence.
+                </p>
+
+
+                <div class="features">
+
+
+                    <div class="feature-item">
+
+                        <span class="feature-dot"></span>
+
+                        <span>
+                            Real-time monitoring
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <span class="feature-dot"></span>
+
+                        <span>
+                            Agent management
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <span class="feature-dot"></span>
+
+                        <span>
+                            Business analytics
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="brand-footer">
+
+                <span>
+                    Secure operator access
+                </span>
+
+
+                <span class="status-indicator">
+
+                    <span></span>
+
+                    SYSTEM READY
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <!-- =====================================================
+             LOGIN CARD
+        ====================================================== -->
+
+        <div class="login-card">
+
+
+            <div class="login-card-glow"></div>
+
+
+            <div class="login-header">
+
+
+                <span class="login-overline">
+                    BACKOFFICE ACCESS
+                </span>
+
+
+                <h2>
+                    Sign In
+                </h2>
+
+
+                <p>
+                    Welcome back. Enter your account
+                    credentials to continue.
+                </p>
+
+
+            </div>
+
+
+
+            <form method="post" id="loginForm" novalidate>
+
+                <!-- =================================================
+                     USERNAME
+                ================================================== -->
+                @Html.AntiForgeryToken()
+
+                <div class="input-group">
+
+                    <input asp-for="Username"
+                           id="username"
+                           autocomplete="username"
+                           spellcheck="false"
+                           placeholder=" "
+                           required />
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                </div>
+
+                <!-- =================================================
+                     PASSWORD
+                ================================================== -->
+
+                <div class="input-group password-group">
+
+                    <input asp-for="Password"
+                           id="password"
+                           type="password"
+                           autocomplete="current-password"
+                           placeholder=" "
+                           required />
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <button type="button"
+                            id="password-toggle"
+                            class="password-toggle"
+                            aria-label="Show password"
+                            aria-pressed="false">
+
+                        <svg id="password-eye"
+                             class="password-icon"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
+
+                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+
+                            <circle cx="12"
+                                    cy="12"
+                                    r="2.8"></circle>
+
+                            <!-- slash will be added by JS/CSS when hidden -->
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+                <!-- =================================================
+                     REMEMBER ME
+                ================================================== -->
+
+                <div class="login-options">
+
+                    <label class="remember-me">
+
+                        <input asp-for="RememberMe"
+                               id="remember-me"
+                               type="checkbox" />
+
+                        <span class="remember-box">
+
+                            <svg viewBox="0 0 24 24"
+                                 aria-hidden="true">
+
+                                <path d="M5 12.5 10 17 19 7">
+                                </path>
+
+                            </svg>
+
+                        </span>
+
+
+                        <span class="remember-label">
+                            Keep me signed in
+                        </span>
+
+
+                    </label>
+
+
+                </div>
+
+                <div class="login-error" role="alert" style="display: none">
+
+                    <span class="error-icon">
+                        !
+                    </span>
+
+                    <span id="showError">
+                    </span>
+
+                </div>
+
+                <button id="login-submit" class="signin-button">
+                    <span class="signin-content">
+
+                        <span class="signin-text">
+                            SIGN IN
+                        </span>
+                        <span class="signin-arrow">
+                            →
+                        </span>
+
+                    </span>
+
+                    <span class="signin-loading" aria-hidden="true">
+
+                        <span class="spinner"></span>
+
+                        AUTHENTICATING
+
+                    </span>
+                </button>
+            </form>
+
+            <div class="login-footer">
+
+                Authorized personnel only
+
+                <span>•</span>
+
+                White-label control environment
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div id="twoFactorLoginModal" class="two-factor-overlay">
+
+        <div class="two-factor-modal">
+
+            <div class="two-factor-header">
+
+                <div>
+                    <div class="two-factor-title">
+                        Two-Factor Authentication
+                    </div>
+
+                    <div class="two-factor-subtitle">
+                        Secure account verification
+                    </div>
+                </div>
+
+                <button type="button"
+                        id="twoFactorClose"
+                        class="two-factor-close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="two-factor-body">
+
+                <div class="two-factor-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Verify your identity
+                </h3>
+
+                <p>
+                    Enter the 6-digit code from your
+                    authenticator app.
+                </p>
+
+
+                <div id="twoFactorError"
+                     class="two-factor-error">
+                </div>
+
+
+                <div class="two-factor-input-wrapper">
+
+                    <label for="twoFactorCode">
+                        Authentication Code
+                    </label>
+
+                    <input type="text"
+                           id="twoFactorCode"
+                           maxlength="6"
+                           inputmode="numeric"
+                           autocomplete="one-time-code"
+                           placeholder="000000"
+                           pattern="[0-9]*" />
+
+                </div>
+
+
+                <button type="button"
+                        id="twoFactorVerify"
+                        class="two-factor-verify">
+
+                    <span class="two-factor-verify-text">
+                        VERIFY & SIGN IN
+                    </span>
+
+                    <span class="two-factor-loading">
+                        VERIFYING...
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    Replace your entire current
+    <script>...</script> with this:
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* =================================================
+               COMMON
+            ================================================== */
+
+            const passwordInput =
+                document.getElementById("password");
+
+            const passwordToggle =
+                document.getElementById("password-toggle");
+
+            const token =
+                $("#loginForm input[name='__RequestVerificationToken']").val();
+
+
+            /* =================================================
+               PASSWORD VISIBILITY
+            ================================================== */
+
+            if (passwordToggle && passwordInput) {
+
+                passwordToggle.addEventListener("click", function () {
+
+                    const isPassword =
+                        passwordInput.type === "password";
+
+                    passwordInput.type =
+                        isPassword ? "text" : "password";
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        isPassword ? "Hide password" : "Show password"
+                    );
+
+                    passwordToggle.setAttribute(
+                        "aria-pressed",
+                        isPassword ? "true" : "false"
+                    );
+
+                });
+
+            }
+
+
+            /* =================================================
+               LOGIN SUBMIT
+            ================================================== */
+
+            let isLoginInProgress = false;
+
+
+            $("#loginForm").on("submit", function (e) {
+
+                e.preventDefault();
+
+
+                if (isLoginInProgress) {
+                    return;
+                }
+
+
+                const loginButton =
+                    $("#login-submit");
+
+                const errorBox =
+                    $(".login-error");
+
+                const errorMessage =
+                    $("#showError");
+
+
+                const username =
+                    $("#username").val().trim();
+
+                const password =
+                    $("#password").val();
+
+                const rememberMe =
+                    $("#remember-me").is(":checked");
+
+
+                /* ---------------------------------------------
+                   CLEAR ERROR
+                --------------------------------------------- */
+
+                errorMessage
+                    .text("");
+
+                errorBox
+                    .hide();
+
+
+                /* ---------------------------------------------
+                   VALIDATION
+                --------------------------------------------- */
+
+                if (!username) {
+
+                    errorMessage
+                        .text("Please enter your username.");
+
+                    errorBox.show();
+
+                    return;
+                }
+
+
+                if (!password) {
+
+                    errorMessage
+                        .text("Please enter your password.");
+
+                    errorBox.show();
+
+                    return;
+                }
+
+
+                /* ---------------------------------------------
+                   START LOGIN
+                --------------------------------------------- */
+
+                isLoginInProgress = true;
+
+
+                loginButton
+                    .addClass("is-loading")
+                    .prop("disabled", true);
+
+
+                $.ajax({
+
+                    url: "/account/login",
+
+                    type: "POST",
+
+                    data: {
+
+                        __RequestVerificationToken:
+                            token,
+
+                        Username:
+                            username,
+
+                        Password:
+                            password,
+
+                        RememberMe:
+                            rememberMe
+
+                    },
+
+
+                    /* =========================================
+                       LOGIN RESPONSE
+                    ========================================== */
+
+                    success: function (res) {
+
+                        console.log(
+                            "Login response:",
+                            res
+                        );
+
+
+                        /* -------------------------------------
+                           NORMAL LOGIN SUCCESS
+                        -------------------------------------- */
+
+                        if (res.success) {
+
+                            if ("@ReturnUrl" != "") {
+
+                                window.location.href =
+                                    "@Html.Raw(ReturnUrl)";
+
+                            }
+                            else {
+
+                                window.location.reload();
+
+                            }
+
+                            return;
+                        }
+
+
+                        /* -------------------------------------
+                           TWO FACTOR REQUIRED
+                        -------------------------------------- */
+
+                        if (res.requiresTwoFactor === true) {
+
+                            console.log(
+                                "Two-factor authentication required."
+                            );
+
+
+                            showTwoFactorLogin();
+
+
+                            return;
+                        }
+
+
+                        /* -------------------------------------
+                           LOGIN FAILED
+                        -------------------------------------- */
+
+                        let message =
+                            "Invalid username or password.";
+
+
+                        if (res.errorPassword) {
+
+                            message =
+                                res.errorPassword;
+
+                        }
+                        else if (res.errorEmail) {
+
+                            message =
+                                res.errorEmail;
+
+                        }
+                        else if (res.msg) {
+
+                            message =
+                                res.msg;
+
+                        }
+                        else if (res.message) {
+
+                            message =
+                                res.message;
+
+                        }
+
+
+                        errorMessage
+                            .text(message);
+
+                        errorBox
+                            .show();
+
+                    },
+
+
+                    /* =========================================
+                       AJAX ERROR
+                    ========================================== */
+
+                    error: function (xhr) {
+
+                        console.error(
+                            "Login AJAX error:",
+                            xhr
+                        );
+
+
+                        let message =
+                            "Server Error.";
+
+
+                        if (xhr.responseJSON) {
+
+                            if (xhr.responseJSON.msg) {
+
+                                message =
+                                    xhr.responseJSON.msg;
+
+                            }
+                            else if (
+                                xhr.responseJSON.message
+                            ) {
+
+                                message =
+                                    xhr.responseJSON.message;
+
+                            }
+
+                        }
+
+
+                        errorMessage
+                            .text(message);
+
+                        errorBox
+                            .show();
+
+                    },
+
+
+                    /* =========================================
+                       LOGIN COMPLETE
+                    ========================================== */
+
+                    complete: function () {
+
+                        isLoginInProgress = false;
+
+
+                        loginButton
+                            .removeClass("is-loading")
+                            .prop("disabled", false);
+
+                    }
+
+                });
+
+            });
+
+
+            /* =================================================
+               SHOW TWO FACTOR MODAL
+            ================================================== */
+
+            window.showTwoFactorLogin = function () {
+
+                console.log(
+                    "Opening Two-Factor Authentication..."
+                );
+
+
+                const modal =
+                    document.getElementById(
+                        "twoFactorLoginModal"
+                    );
+
+
+                if (!modal) {
+
+                    console.error(
+                        "ERROR: #twoFactorLoginModal not found."
+                    );
+
+                    return;
+                }
+
+
+                const codeInput =
+                    document.getElementById(
+                        "twoFactorCode"
+                    );
+
+
+                const errorBox =
+                    document.getElementById(
+                        "twoFactorError"
+                    );
+
+
+                /* ---------------------------------------------
+                   RESET
+                --------------------------------------------- */
+
+                if (codeInput) {
+
+                    codeInput.value = "";
+
+                }
+
+
+                if (errorBox) {
+
+                    errorBox
+                        .style
+                        .display = "none";
+
+                    errorBox.textContent = "";
+
+                }
+
+
+                /* ---------------------------------------------
+                   SHOW MODAL
+                --------------------------------------------- */
+
+                modal.classList.add("show");
+
+
+                /* ---------------------------------------------
+                   PREVENT BACKGROUND SCROLL
+                --------------------------------------------- */
+
+                document.body.style.overflow = "hidden";
+
+
+                /* ---------------------------------------------
+                   FOCUS CODE INPUT
+                --------------------------------------------- */
+
+                setTimeout(function () {
+
+                    if (codeInput) {
+
+                        codeInput.focus();
+
+                    }
+
+                }, 200);
+
+            };
+
+
+            /* =================================================
+               HIDE TWO FACTOR MODAL
+            ================================================== */
+
+            window.closeTwoFactorLogin = function () {
+
+                const modal =
+                    document.getElementById(
+                        "twoFactorLoginModal"
+                    );
+
+
+                if (!modal) {
+                    return;
+                }
+
+
+                modal.classList.remove("show");
+
+
+                document.body.style.overflow = "";
+
+
+                const codeInput =
+                    document.getElementById(
+                        "twoFactorCode"
+                    );
+
+
+                if (codeInput) {
+
+                    codeInput.value = "";
+
+                }
+
+
+                const errorBox =
+                    document.getElementById(
+                        "twoFactorError"
+                    );
+
+
+                if (errorBox) {
+
+                    errorBox
+                        .style
+                        .display = "none";
+
+                    errorBox.textContent = "";
+
+                }
+
+            };
+
+
+            /* =================================================
+               CLOSE BUTTON
+            ================================================== */
+
+            $("#twoFactorClose").on(
+                "click",
+                function () {
+
+                    closeTwoFactorLogin();
+
+                }
+            );
+
+
+            /* =================================================
+               CLICK OUTSIDE MODAL TO CLOSE
+            ================================================== */
+
+            $("#twoFactorLoginModal").on(
+                "click",
+                function (e) {
+
+                    if (
+                        e.target ===
+                        this
+                    ) {
+
+                        closeTwoFactorLogin();
+
+                    }
+
+                }
+            );
+
+
+            /* =================================================
+               TWO FACTOR VERIFY
+            ================================================== */
+
+            let isTwoFactorInProgress = false;
+
+
+            $("#twoFactorVerify").on(
+                "click",
+                function () {
+
+                    if (isTwoFactorInProgress) {
+
+                        return;
+                    }
+
+
+                    const button =
+                        $("#twoFactorVerify");
+
+
+                    const codeInput =
+                        $("#twoFactorCode");
+
+
+                    const errorBox =
+                        $("#twoFactorError");
+
+
+                    const code =
+                        codeInput
+                            .val()
+                            .replace(/\s/g, "")
+                            .replace(/-/g, "");
+
+
+                    const rememberMe =
+                        $("#remember-me")
+                            .is(":checked");
+
+
+                    /* -----------------------------------------
+                       VALIDATE CODE
+                    ------------------------------------------ */
+
+                    if (!/^\d{6}$/.test(code)) {
+
+                        errorBox
+                            .text(
+                                "Please enter a valid 6-digit code."
+                            )
+                            .show();
+
+
+                        codeInput
+                            .focus();
+
+
+                        return;
+                    }
+
+
+                    /* -----------------------------------------
+                       START VERIFICATION
+                    ------------------------------------------ */
+
+                    isTwoFactorInProgress = true;
+
+
+                    button
+                        .addClass("is-loading")
+                        .prop("disabled", true);
+
+
+                    errorBox
+                        .hide()
+                        .text("");
+
+
+                    console.log(
+                        "Sending 2FA verification..."
+                    );
+
+
+                    /* -----------------------------------------
+                       VERIFY
+                    ------------------------------------------ */
+
+                    $.ajax({
+
+                        url:
+                            "/account/VerifyTwoFactor",
+
+                        type:
+                            "POST",
+
+                        data: {
+
+                            __RequestVerificationToken:
+                                token,
+
+                            code:
+                                code,
+
+                            rememberMe:
+                                rememberMe
+
+                        },
+
+
+                        /* =====================================
+                           RESPONSE
+                        ====================================== */
+
+                        success: function (res) {
+
+                            console.log(
+                                "2FA response:",
+                                res
+                            );
+
+
+                            /* ---------------------------------
+                               SUCCESS
+                            ---------------------------------- */
+
+                            if (res.success) {
+
+                                console.log(
+                                    "2FA verification successful."
+                                );
+
+
+                                if ("@ReturnUrl" != "") {
+
+                                    window.location.href =
+                                        "@Html.Raw(ReturnUrl)";
+
+                                }
+                                else {
+
+                                    window.location.reload();
+
+                                }
+
+                                return;
+                            }
+
+
+                            /* ---------------------------------
+                               FAILED
+                            ---------------------------------- */
+
+                            errorBox
+                                .text(
+                                    res.msg ||
+                                    "Invalid authentication code."
+                                )
+                                .show();
+
+
+                            codeInput
+                                .val("")
+                                .focus();
+
+                        },
+
+
+                        /* =====================================
+                           AJAX ERROR
+                        ====================================== */
+
+                        error: function (xhr) {
+
+                            console.error(
+                                "2FA AJAX error:",
+                                xhr
+                            );
+
+
+                            let message =
+                                "Server Error.";
+
+
+                            if (xhr.responseJSON) {
+
+                                if (xhr.responseJSON.msg) {
+
+                                    message =
+                                        xhr.responseJSON.msg;
+
+                                }
+                                else if (
+                                    xhr.responseJSON.message
+                                ) {
+
+                                    message =
+                                        xhr.responseJSON.message;
+
+                                }
+
+                            }
+
+
+                            errorBox
+                                .text(message)
+                                .show();
+
+                        },
+
+
+                        /* =====================================
+                           COMPLETE
+                        ====================================== */
+
+                        complete: function () {
+
+                            isTwoFactorInProgress =
+                                false;
+
+
+                            button
+                                .removeClass("is-loading")
+                                .prop("disabled", false);
+
+                        }
+
+                    });
+
+                }
+            );
+
+
+            /* =================================================
+               ENTER KEY - 2FA
+            ================================================== */
+
+            $("#twoFactorCode").on(
+                "keydown",
+                function (e) {
+
+                    if (e.key === "Enter") {
+
+                        e.preventDefault();
+
+                        $("#twoFactorVerify")
+                            .trigger("click");
+
+                    }
+
+                }
+            );
+
+
+            /* =================================================
+               ONLY ALLOW NUMBERS IN 2FA CODE
+            ================================================== */
+
+            $("#twoFactorCode").on(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value
+                            .replace(/\D/g, "")
+                            .substring(0, 6);
+
+                }
+            );
+
+        });
+
+    </script>
+</body>
+</html>

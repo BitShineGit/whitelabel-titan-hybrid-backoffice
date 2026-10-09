@@ -1,0 +1,753 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] | TITAN BET</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="MyStake is the #1 best-selling admin dashboard template on Wrapmarket. Perfect for building CRM, CMS, project management tools, and custom web apps with clean UI, responsive design, and powerful features." />
+    <meta name="keywords" content="MyStake, admin dashboard, Wrapmarket, Wrapbootstrap, HTML template, Bootstrap admin, CRM template, CMS template, responsive admin, web app UI, admin theme, best admin template" />
+    <meta name="author" content="WebAppLayers" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.png" />
+
+    <!-- Theme Config Js -->
+    <script src="/assets/js/config.js"></script>
+    <link href="/assets/css/sweetalert.css" rel="stylesheet" type="text/css" />
+
+    <!-- Vendor css -->
+    <link href="/assets/css/vendors.min.css" rel="stylesheet" type="text/css" />
+
+    @await RenderSectionAsync("Styles", required: false)
+
+    <!-- App css -->
+    <link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="/assets/js/vendors.min.js"></script>
+
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+
+    <script src="/assets/js/agent/sweetalert.js"></script>
+    <script src="/assets/js/agent/sweetalert1.js"></script>
+
+    <!-- App js -->
+    <script src="/assets/js/app.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <style>
+        .content-page {
+            padding:0rem 1.25rem 0rem 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="wrapper">
+
+        @await Html.PartialAsync("_Header")
+
+        <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-transparent">
+                    <form>
+                        <div class="card mb-1">
+                            <div class="px-3 py-2 d-flex flex-row align-items-center" id="top-search">
+                                <i class="ti ti-search fs-22"></i>
+                                <input type="search" class="form-control border-0" id="search-modal-input" placeholder="Search for actions, people," />
+                                <button type="submit" class="btn p-0" data-bs-dismiss="modal" aria-label="Close">[esc]</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_Sidebar")
+
+        <div class="content-page">
+
+            @RenderBody()
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start">
+                            ©
+                            <span data-current-year></span>
+                            MyStake By
+                            <span class="fw-semibold">WebAppLayers</span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-md-end d-none d-md-block">
+                                10GB of
+                                <span class="fw-bold">250GB</span>
+                                Free.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+
+    </div>
+
+</body>
+<script>
+
+    let socket = new WebSocket(`wss://${window.location.host}/ws`);
+
+    const NOTIFICATION_STORAGE_KEY = "adminNotifications";
+
+
+    /* =========================================================
+       STORAGE
+    ========================================================= */
+
+    function getNotifications() {
+
+        try {
+
+            const data = localStorage.getItem(
+                NOTIFICATION_STORAGE_KEY
+            );
+
+            if (!data) {
+                return [];
+            }
+
+            const notifications = JSON.parse(data);
+
+            return Array.isArray(notifications)
+                ? notifications
+                : [];
+
+        }
+        catch (error) {
+
+            console.error(
+                "Failed to read notifications:",
+                error
+            );
+
+            return [];
+        }
+    }
+
+
+    function saveNotifications(notifications) {
+
+        try {
+
+            localStorage.setItem(
+                NOTIFICATION_STORAGE_KEY,
+                JSON.stringify(notifications)
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Failed to save notifications:",
+                error
+            );
+        }
+    }
+
+
+    function addNotification(notification) {
+
+        const notifications =
+            getNotifications();
+
+        notifications.unshift(notification);
+
+        saveNotifications(notifications);
+
+        renderNotifications();
+    }
+
+
+    function removeNotification(notificationId) {
+
+        const notifications =
+            getNotifications();
+
+        const filtered =
+            notifications.filter(x =>
+                x.id !== notificationId
+            );
+
+        saveNotifications(filtered);
+
+        renderNotifications();
+    }
+
+
+    /* =========================================================
+       NOTIFICATION CONTAINER
+    ========================================================= */
+
+    function createNotificationContainer() {
+
+        let container =
+            document.getElementById(
+                "adminNotificationContainer"
+            );
+
+        if (container) {
+            return container;
+        }
+
+        container = document.createElement("div");
+
+        container.id =
+            "adminNotificationContainer";
+
+        container.style.position = "fixed";
+        container.style.top = "20px";
+        container.style.right = "20px";
+        container.style.width = "360px";
+        container.style.maxWidth = "calc(100vw - 40px)";
+        container.style.zIndex = "99999";
+
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.gap = "12px";
+
+        container.style.pointerEvents = "none";
+
+        document.body.appendChild(container);
+
+        return container;
+    }
+
+
+    /* =========================================================
+       NOTIFICATION TYPE
+    ========================================================= */
+
+    function getNotificationData(message) {
+
+        if (message.type === "withdraw") {
+
+            return {
+                icon: "warning",
+                iconColor: "#f8bb86",
+                title: "New Withdrawal Request",
+                description: ""
+            };
+        }
+
+
+        if (message.type === "deposit_created") {
+
+            return {
+                icon: "info",
+                iconColor: "#3fc3ee",
+                title: "New Deposit Request",
+                description:
+                    "Deposit checkout has been created."
+            };
+        }
+
+
+        if (message.type === "deposit_cancelled") {
+
+            return {
+                icon: "warning",
+                iconColor: "#f8bb86",
+                title: "Deposit Cancelled",
+                description:
+                    "The user cancelled the deposit."
+            };
+        }
+
+
+        if (message.type === "deposit_success") {
+
+            return {
+                icon: "success",
+                iconColor: "#a5dc86",
+                title: "Deposit Successful",
+                description:
+                    "The deposit has been completed successfully."
+            };
+        }
+
+
+        return null;
+    }
+
+
+    /* =========================================================
+       CREATE NOTIFICATION
+    ========================================================= */
+
+    function createNotification(message) {
+
+        const data =
+            getNotificationData(message);
+
+        if (!data) {
+            return;
+        }
+
+
+        const notification = {
+
+            id:
+                message.type +
+                "_" +
+                message.orderId +
+                "_" +
+                Date.now(),
+
+            type: message.type,
+
+            title: data.title,
+
+            description: data.description,
+
+            icon: data.icon,
+
+            iconColor: data.iconColor,
+
+            userCode: message.userCode,
+
+            amount: message.amount,
+
+            orderId: message.orderId,
+
+            createdAt: Date.now()
+        };
+
+
+        addNotification(notification);
+    }
+
+
+    /* =========================================================
+       RENDER ALL NOTIFICATIONS
+    ========================================================= */
+
+    function renderNotifications() {
+
+        const container =
+            createNotificationContainer();
+
+        container.innerHTML = "";
+
+        const notifications =
+            getNotifications();
+
+
+        /*
+         * Newest notification first.
+         */
+
+        notifications
+            .sort((a, b) =>
+                b.createdAt - a.createdAt
+            )
+            .forEach(notification => {
+
+                const element =
+                    createNotificationElement(
+                        notification
+                    );
+
+                container.appendChild(element);
+            });
+    }
+
+
+    /* =========================================================
+       CREATE NOTIFICATION ELEMENT
+    ========================================================= */
+
+    function createNotificationElement(
+        notification
+    ) {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.style.pointerEvents = "auto";
+
+        wrapper.style.background = "#ffffff";
+        wrapper.style.borderRadius = "8px";
+
+        wrapper.style.boxShadow =
+            "0 6px 25px rgba(0,0,0,0.18)";
+
+        wrapper.style.padding = "16px";
+
+        wrapper.style.width = "100%";
+        wrapper.style.boxSizing = "border-box";
+
+        wrapper.style.border =
+            "1px solid rgba(0,0,0,0.08)";
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        const header =
+            document.createElement("div");
+
+        header.style.display = "flex";
+        header.style.alignItems = "center";
+
+        header.style.gap = "10px";
+
+
+        const icon =
+            document.createElement("div");
+
+        icon.style.width = "30px";
+        icon.style.height = "30px";
+
+        icon.style.borderRadius = "50%";
+
+        icon.style.display = "flex";
+        icon.style.alignItems = "center";
+        icon.style.justifyContent = "center";
+
+        icon.style.flexShrink = "0";
+
+        icon.innerHTML =
+            getNotificationIcon(
+                notification.icon,
+                notification.iconColor
+            );
+
+
+        const title =
+            document.createElement("div");
+
+        title.innerText =
+            notification.title;
+
+        title.style.fontSize = "15px";
+        title.style.fontWeight = "600";
+        title.style.color = "#333";
+
+
+        header.appendChild(icon);
+        header.appendChild(title);
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        const body =
+            document.createElement("div");
+
+        body.style.marginTop = "12px";
+
+        body.style.fontSize = "13px";
+        body.style.color = "#555";
+
+        body.innerHTML =
+
+            "<div>" +
+            "<strong>User:</strong> " +
+            escapeHtml(
+                notification.userCode
+            ) +
+            "</div>" +
+
+            "<div style='margin-top:6px;'>" +
+            "<strong>Amount:</strong> " +
+            escapeHtml(
+                String(notification.amount)
+            ) +
+            "</div>" +
+
+            "<div style='margin-top:6px;'>" +
+            "<strong>Order ID:</strong> " +
+            escapeHtml(
+                notification.orderId
+            ) +
+            "</div>";
+
+
+        if (notification.description) {
+
+            const description =
+                document.createElement("div");
+
+            description.innerText =
+                notification.description;
+
+            description.style.marginTop = "10px";
+
+            description.style.color = "#888";
+
+            body.appendChild(description);
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        const buttons =
+            document.createElement("div");
+
+        buttons.style.display = "flex";
+        buttons.style.gap = "8px";
+
+        buttons.style.marginTop = "14px";
+
+
+        const financeButton =
+            document.createElement("button");
+
+        financeButton.type = "button";
+
+        financeButton.className =
+            "btn btn-primary btn-sm";
+
+        financeButton.innerText =
+            "Go to Finance";
+
+
+        financeButton.onclick = function () {
+
+            removeNotification(
+                notification.id
+            );
+
+            window.location.href =
+                "/Dashboard/Finance";
+        };
+
+
+        const closeButton =
+            document.createElement("button");
+
+        closeButton.type = "button";
+
+        closeButton.className =
+            "btn btn-secondary btn-sm";
+
+        closeButton.innerText =
+            "Close";
+
+
+        closeButton.onclick = function () {
+
+            removeNotification(
+                notification.id
+            );
+        };
+
+
+        buttons.appendChild(financeButton);
+        buttons.appendChild(closeButton);
+
+
+        /* =====================================================
+           FINAL
+        ===================================================== */
+
+        wrapper.appendChild(header);
+        wrapper.appendChild(body);
+        wrapper.appendChild(buttons);
+
+
+        return wrapper;
+    }
+
+
+    /* =========================================================
+       ICON
+    ========================================================= */
+
+    function getNotificationIcon(
+        type,
+        color
+    ) {
+
+        if (type === "success") {
+
+            return `
+                    <div style="
+                        color:${color};
+                        font-size:20px;
+                        line-height:1;
+                    ">
+                        ✓
+                    </div>
+                `;
+        }
+
+
+        if (type === "warning") {
+
+            return `
+                    <div style="
+                        color:${color};
+                        font-size:20px;
+                        line-height:1;
+                        font-weight:bold;
+                    ">
+                        !
+                    </div>
+                `;
+        }
+
+
+        return `
+                <div style="
+                    color:${color};
+                    font-size:20px;
+                    line-height:1;
+                    font-weight:bold;
+                ">
+                    i
+                </div>
+            `;
+    }
+
+
+    /* =========================================================
+       HTML ESCAPE
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value ?? "";
+
+        return div.innerHTML;
+    }
+
+
+    /* =========================================================
+       WEBSOCKET OPEN
+    ========================================================= */
+
+    socket.onopen = () => {
+
+        socket.send(JSON.stringify({
+
+            type: "register",
+
+            userId: "@User.Identity.Name"
+
+        }));
+
+        console.log("Connected!");
+
+
+        /*
+         * Important:
+         *
+         * When the agent opens another page,
+         * refreshes the page, or comes back later,
+         * render everything still stored in localStorage.
+         */
+
+        renderNotifications();
+    };
+
+
+    /* =========================================================
+       WEBSOCKET MESSAGE
+    ========================================================= */
+
+    socket.onmessage = (event) => {
+
+        try {
+
+            const message =
+                JSON.parse(event.data);
+
+
+            /*
+             * Withdrawal / Deposit notification
+             */
+
+            if (
+                message.type === "withdraw" ||
+                message.type === "deposit_created" ||
+                message.type === "deposit_cancelled" ||
+                message.type === "deposit_success"
+            ) {
+
+                createNotification(message);
+
+                return;
+            }
+
+
+            /*
+             * Existing socket messages
+             */
+
+            const balanceElement =
+                document.getElementById("balance");
+
+            if (balanceElement) {
+
+                balanceElement.innerText =
+                    event.data;
+            }
+
+        }
+        catch (error) {
+
+            /*
+             * Existing non-JSON socket messages
+             */
+
+            const balanceElement =
+                document.getElementById("balance");
+
+            if (balanceElement) {
+
+                balanceElement.innerText =
+                    event.data;
+            }
+        }
+    };
+
+
+    /* =========================================================
+       WEBSOCKET CLOSE
+    ========================================================= */
+
+    socket.onclose = () => {
+
+        console.log("Disconnected!");
+
+    };
+
+
+    /*
+     * Also render immediately in case the page
+     * is already loaded before WebSocket opens.
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            renderNotifications();
+
+        }
+    );
+
+</script>
+</html>

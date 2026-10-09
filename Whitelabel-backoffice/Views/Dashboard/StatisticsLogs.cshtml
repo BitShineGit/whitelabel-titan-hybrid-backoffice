@@ -1,0 +1,3257 @@
+﻿@{
+    ViewData["Title"] = "Statistics Logs";
+}
+
+<!-- ============================================================= -->
+<!-- DATATABLES -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+
+
+<!-- ============================================================= -->
+<!-- SELECT2 -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+
+<link href="~/assets/plugins/select2/css/select2.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+
+<!-- ============================================================= -->
+<!-- MOMENT / DATE RANGE PICKER -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+<script src="~/assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+<link href="~/assets/plugins/datatables/responsive.bootstrap5.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+<link href="~/assets/plugins/daterangepicker/daterangepicker.css"
+      rel="stylesheet"
+      type="text/css" />
+
+<link id="app-style"
+      href="/assets/css/app.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+
+<!-- ============================================================= -->
+<!-- PAGE TITLE -->
+<!-- ============================================================= -->
+
+<div class="page-title-head d-flex align-items-center">
+
+    <div class="flex-grow-1" style="margin-left:15px;">
+
+        <h4 class="page-main-title m-0">
+            Statistics Logs
+        </h4>
+
+    </div>
+
+    <div class="text-end">
+
+        <ol class="breadcrumb m-0 py-0"
+             id="statisticsBreadcrumb">
+
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    MyStake
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active">
+                Statistics Logs
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+
+    <!-- ========================================================= -->
+    <!-- FILTER CARD -->
+    <!-- ========================================================= -->
+
+    <div class="card mb-3">
+
+        <div class="card-header justify-content-between">
+
+            <div>
+
+                <h4 class="card-title mb-1">
+                    Search Statistics Logs
+                </h4>
+
+                <p class="text-muted mb-0">
+                    Filter statistics by agent, user, provider, game and date range.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form id="statisticsFilterForm">
+
+                <div class="row g-3">
+
+                    <!-- ================================================= -->
+                    <!-- AGENT CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterAgent"
+                               class="form-label">
+
+                            Agent Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterAgent"
+                                   placeholder="Search agent code..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- USER CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterUser"
+                               class="form-label">
+
+                            User Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterUser"
+                                   placeholder="Search user code..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PROVIDER CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterProviderCode"
+                               class="form-label">
+
+                            Provider Code
+
+                        </label>
+
+                        <select id="filterProviderCode"
+                                class="form-select">
+
+                            <option value="">
+                                All Providers
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- GAME CODE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterGameCode"
+                               class="form-label">
+
+                            Game Code
+
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterGameCode"
+                                   placeholder="Search game code..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-device-gamepad app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- DATE RANGE -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label class="form-label">
+                            Date Range
+                        </label>
+
+                        <div class="position-relative">
+
+                            <div id="reportrange"
+                                 class="form-control"
+                                 data-toggle="date-picker-range"
+                                 data-target-display="#selectedValue"
+                                 data-cancel-class="btn-light">
+
+                                <i class="ti ti-calendar me-2"></i>
+
+                                <span id="selectedValue"></span>
+
+                                <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+
+                            </div>
+
+                        </div>
+
+                        <input type="hidden"
+                               id="dateRange"
+                               value="" />
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- SEARCH / CLEAR -->
+                    <!-- ================================================= -->
+
+                    <div class="col-xl-3 col-md-6 d-flex align-items-end">
+
+                        <div class="d-flex gap-2 w-100">
+
+                            <button class="btn btn-primary flex-fill"
+                                    type="submit"
+                                    id="applyFiltersBtn">
+
+                                <i class="ti ti-search me-2"></i>
+
+                                Search
+
+                            </button>
+
+
+                            <button class="btn btn-light flex-fill"
+                                    type="button"
+                                    id="clearFiltersBtn">
+
+                                <i class="ti ti-refresh me-2"></i>
+
+                                Clear
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- DIRECT DOWNLINE AGENTS CARD -->
+    <!-- ========================================================= -->
+
+    <div class="card">
+
+        <div class="card-header justify-content-between">
+
+            <div>
+
+                <h4 class="card-title mb-1"
+                    id="agentTableTitle">
+
+                    Direct Downline Agents
+
+                </h4>
+
+                <p class="text-muted mb-0"
+                   id="agentTableSubtitle">
+
+                    Aggregated statistics for direct downline agents.
+
+                </p>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- COLUMN MENU -->
+            <!-- ===================================================== -->
+
+            <div class="dropdown">
+
+                <button type="button"
+                        class="btn btn-light"
+                        id="columnsButton"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false">
+
+                    <i class="ti ti-columns-3 me-1"></i>
+
+                    Columns
+
+                </button>
+
+
+                <div class="dropdown-menu dropdown-menu-end p-2"
+                     id="columnsMenu">
+
+                    <div class="dropdown-header">
+                        Show / Hide Columns
+                    </div>
+
+
+                    <label class="dropdown-item d-flex align-items-center gap-2">
+
+                        <input type="checkbox"
+                               class="form-check-input m-0 column-toggle"
+                               data-column="0"
+                               checked />
+
+                        <span>
+                            Agent Code
+                        </span>
+
+                    </label>
+
+
+                    <label class="dropdown-item d-flex align-items-center gap-2">
+
+                        <input type="checkbox"
+                               class="form-check-input m-0 column-toggle"
+                               data-column="1"
+                               checked />
+
+                        <span>
+                            Total Bet Amount
+                        </span>
+
+                    </label>
+
+
+                    <label class="dropdown-item d-flex align-items-center gap-2">
+
+                        <input type="checkbox"
+                               class="form-check-input m-0 column-toggle"
+                               data-column="2"
+                               checked />
+
+                        <span>
+                            Total Win Amount
+                        </span>
+
+                    </label>
+
+
+                    <label class="dropdown-item d-flex align-items-center gap-2">
+
+                        <input type="checkbox"
+                               class="form-check-input m-0 column-toggle"
+                               data-column="3"
+                               checked />
+
+                        <span>
+                            Total Bet Count
+                        </span>
+
+                    </label>
+
+
+                    <label class="dropdown-item d-flex align-items-center gap-2">
+
+                        <input type="checkbox"
+                               class="form-check-input m-0 column-toggle"
+                               data-column="4"
+                               checked />
+
+                        <span>
+                            Total Win Count
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- AGENT TABLE -->
+        <!-- ========================================================= -->
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="statisticsTable"
+                       class="table table-hover table-nowrap align-middle mb-0"
+                       style="width:100%;">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Agent Code</th>
+                            <th>Total Bet Amount</th>
+                            <th>Total Win Amount</th>
+                            <th>Total Bet Count</th>
+                            <th>Total Win Count</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- DATATABLE CONTROLS -->
+            <!-- ===================================================== -->
+
+            <div id="dataTableLengthContainer"
+                 class="mt-3 pt-2">
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3">
+
+                <div id="dataTableInfoContainer">
+                </div>
+
+                <div id="dataTablePagingContainer"
+                     class="ms-auto">
+                </div>
+
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- DIRECT PLAYERS BUTTON -->
+            <!-- ===================================================== -->
+
+            <div class="border-top mt-3 pt-3">
+
+                <button type="button"
+                        class="btn btn-light"
+                        id="toggleDirectPlayersBtn">
+
+                    <i class="ti ti-users me-1"></i>
+
+                    Show Direct Players
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- DIRECT PLAYERS CARD -->
+    <!-- HIDDEN UNTIL USER REQUESTS IT -->
+    <!-- ========================================================= -->
+
+    <div class="card mt-3"
+         id="directPlayersCard"
+         style="display:none;">
+
+        <div class="card-header justify-content-between">
+
+            <div>
+
+                <h4 class="card-title mb-1">
+                    Direct Players
+                </h4>
+
+                <p class="text-muted mb-0">
+                    Aggregated statistics for players directly under the current agent.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="directPlayersTable"
+                       class="table table-hover table-nowrap align-middle mb-0"
+                       style="width:100%;">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Player Code</th>
+                            <th>Total Bet Amount</th>
+                            <th>Total Win Amount</th>
+                            <th>Total Bet Count</th>
+                            <th>Total Win Count</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div id="directPlayersLengthContainer"
+                 class="mt-3 pt-2">
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3">
+
+                <div id="directPlayersInfoContainer">
+                </div>
+
+                <div id="directPlayersPagingContainer"
+                     class="ms-auto">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================= -->
+<!-- DATATABLE CONTROL CSS -->
+<!-- ============================================================= -->
+
+<style>
+
+    #dataTableLengthContainer .dt-length select,
+    #dataTableLengthContainer .dataTables_length select,
+    #directPlayersLengthContainer .dt-length select,
+    #directPlayersLengthContainer .dataTables_length select {
+        width: auto !important;
+        min-width: 65px;
+        display: inline-block;
+    }
+
+
+    #dataTableLengthContainer .dt-length,
+    #dataTableLengthContainer .dataTables_length,
+    #directPlayersLengthContainer .dt-length,
+    #directPlayersLengthContainer .dataTables_length {
+        width: auto;
+    }
+
+
+    .statistics-expand-btn {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        margin-right: 6px;
+        line-height: 1;
+        vertical-align: middle;
+    }
+
+
+    .statistics-expand-btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+
+    .statistics-provider-table td,
+    .statistics-player-provider-table td {
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+    }
+
+
+    .statistics-child-wrapper {
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+    }
+
+</style>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        /* =========================================================
+           STATE
+        ========================================================= */
+
+        var directPlayersTable = null;
+
+        var directPlayersLoaded = false;
+
+        var directPlayersVisible = false;
+
+        var targetAgent = getTargetAgentFromUrl();
+
+
+        /* =========================================================
+           HELPERS
+        ========================================================= */
+
+        function escapeHtml(value) {
+
+            if (value === null || value === undefined) {
+                return "";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        function getTargetAgentFromUrl() {
+
+            try {
+
+                var url =
+                    new URL(
+                        window.location.href
+                    );
+
+
+                var queryAgent =
+                    url.searchParams.get("Agent");
+
+
+                if (queryAgent) {
+
+                    return queryAgent;
+
+                }
+
+
+                var path =
+                    url.pathname
+                        .replace(/\/+$/, "");
+
+
+                var parts =
+                    path
+                        .split("/")
+                        .filter(Boolean);
+
+
+                if (!parts.length) {
+
+                    return "";
+
+                }
+
+
+                var lastPart =
+                    decodeURIComponent(
+                        parts[parts.length - 1]
+                    );
+
+
+                var reserved =
+                    [
+                        "dashboard",
+                        "index",
+                        "statisticslogs",
+                        "statistics-logs",
+                        "statistics",
+                        "logs"
+                    ];
+
+
+                if (
+                    reserved.includes(
+                        lastPart.toLowerCase()
+                    )
+                ) {
+
+                    return "";
+
+                }
+
+
+                return lastPart;
+
+            }
+            catch (e) {
+
+                return "";
+
+            }
+
+        }
+
+
+        function navigateToAgent(agentCode) {
+
+            if (!agentCode) {
+                return;
+            }
+
+
+            /*
+             * Target-agent URL format:
+             *
+             * ../{AgentCode}
+             */
+
+            window.location.href =
+                "../" +
+                encodeURIComponent(
+                    agentCode
+                );
+
+        }
+
+
+        function getFilters() {
+
+            var filters = {
+
+                targetAgent:
+                    targetAgent,
+
+                agent:
+                    $("#filterAgent")
+                        .val(),
+
+                user:
+                    $("#filterUser")
+                        .val(),
+
+                providerCode:
+                    $("#filterProviderCode")
+                        .val(),
+
+                gameCode:
+                    $("#filterGameCode")
+                        .val()
+
+            };
+
+
+            var range =
+                $("#dateRange")
+                    .val();
+
+
+            if (range) {
+
+                var dates =
+                    range.split(
+                        " - "
+                    );
+
+
+                if (dates.length === 2) {
+
+                    filters.fromDate =
+                        dates[0];
+
+                    filters.toDate =
+                        dates[1];
+
+                }
+
+            }
+
+
+            return filters;
+
+        }
+
+
+        function formatAmount(data) {
+
+            return Number(
+                data || 0
+            ).toFixed(2);
+
+        }
+
+
+        function formatCount(data) {
+
+            return Number(
+                data || 0
+            ).toFixed(0);
+
+        }
+
+
+        function getProviderExpandButton(
+            expanded
+        ) {
+
+            return `
+                <button type="button"
+                        class="statistics-expand-btn provider-expand-btn"
+                        aria-label="${expanded ? "Collapse" : "Expand"} providers">
+
+                    <i class="ti ti-chevron-${expanded ? "down" : "right"}"></i>
+
+                </button>
+            `;
+
+        }
+
+
+        function getPlayerProviderExpandButton(
+            expanded
+        ) {
+
+            return `
+                <button type="button"
+                        class="statistics-expand-btn player-provider-expand-btn"
+                        aria-label="${expanded ? "Collapse" : "Expand"} providers">
+
+                    <i class="ti ti-chevron-${expanded ? "down" : "right"}"></i>
+
+                </button>
+            `;
+
+        }
+
+
+        /* =========================================================
+           BREADCRUMB
+        ========================================================= */
+
+        function renderBreadcrumb(
+            breadcrumb
+        ) {
+
+            var $breadcrumb =
+                $("#statisticsBreadcrumb");
+
+
+            if (
+                !Array.isArray(
+                    breadcrumb
+                )
+            ) {
+
+                if (targetAgent) {
+
+                    $breadcrumb
+                        .append(`
+                            <li class="breadcrumb-item active">
+                                ${escapeHtml(targetAgent)}
+                            </li>
+                        `);
+
+                }
+
+                return;
+
+            }
+
+
+            $breadcrumb.empty();
+
+
+            $breadcrumb.append(`
+                <li class="breadcrumb-item">
+                    <a href="~/dashboard/index">
+                        MyStake
+                    </a>
+                </li>
+            `);
+
+
+            $breadcrumb.append(`
+                <li class="breadcrumb-item">
+                    <a href="javascript:void(0);">
+                        Dashboard
+                    </a>
+                </li>
+            `);
+
+
+            $breadcrumb.append(`
+                <li class="breadcrumb-item">
+                    <a href="${escapeHtml(
+                        getStatisticsRootUrl()
+                    )}">
+                        Statistics Logs
+                    </a>
+                </li>
+            `);
+
+
+            breadcrumb.forEach(
+                function (item, index) {
+
+                    var code =
+                        typeof item === "string"
+                            ? item
+                            : item.agentCode;
+
+                    var isLast =
+                        index === breadcrumb.length - 1;
+
+
+                    if (!code) {
+                        return;
+                    }
+
+
+                    if (isLast) {
+
+                        $breadcrumb.append(`
+                            <li class="breadcrumb-item active">
+                                ${escapeHtml(code)}
+                            </li>
+                        `);
+
+                    }
+                    else {
+
+                        $breadcrumb.append(`
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0);"
+                                   class="breadcrumb-agent-link"
+                                   data-agent-code="${escapeHtml(code)}">
+
+                                    ${escapeHtml(code)}
+
+                                </a>
+                            </li>
+                        `);
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        function getStatisticsRootUrl() {
+
+            /*
+             * The root URL is the current page without
+             * the final target-agent path segment.
+             *
+             * The backend can later provide an explicit
+             * root URL if your route structure requires it.
+             */
+
+            try {
+
+                var url =
+                    new URL(
+                        window.location.href
+                    );
+
+
+                if (!targetAgent) {
+
+                    return (
+                        url.pathname +
+                        url.search
+                    );
+
+                }
+
+
+                var parts =
+                    url.pathname
+                        .replace(/\/+$/, "")
+                        .split("/");
+
+
+                parts.pop();
+
+
+                var rootPath =
+                    parts.join("/");
+
+
+                if (!rootPath) {
+                    rootPath = "/";
+                }
+
+
+                return rootPath;
+
+            }
+            catch (e) {
+
+                return window.location.pathname;
+
+            }
+
+        }
+
+
+        $(document)
+            .on(
+                "click",
+                ".breadcrumb-agent-link",
+                function () {
+
+                    var code =
+                        $(this)
+                            .data("agent-code");
+
+
+                    navigateToAgent(code);
+
+                }
+            );
+
+
+        /* =========================================================
+           SELECT2
+        ========================================================= */
+
+        if ($.fn.select2) {
+
+            $("#filterProviderCode").select2({
+                width: "100%"
+            });
+
+        }
+
+
+        /* =========================================================
+           DATE RANGE
+        ========================================================= */
+
+        var defaultStart =
+            moment().subtract(
+                1,
+                "month"
+            );
+
+
+        var defaultEnd =
+            moment();
+
+
+        function updateDateRange(
+            start,
+            end
+        ) {
+
+            var backendValue =
+                start.format(
+                    "YYYY-MM-DD HH:mm:ss"
+                )
+
+                +
+
+                " - "
+
+                +
+
+                end.format(
+                    "YYYY-MM-DD HH:mm:ss"
+                );
+
+
+            $("#dateRange")
+                .val(
+                    backendValue
+                );
+
+        }
+
+
+        if ($.fn.daterangepicker) {
+
+            $("#reportrange").daterangepicker({
+
+                startDate:
+                    defaultStart,
+
+                endDate:
+                    defaultEnd,
+
+                autoUpdateInput:
+                    false,
+
+                opens:
+                    "left",
+
+                drops:
+                    "down",
+
+                timePicker:
+                    true,
+
+                timePicker24Hour:
+                    true,
+
+                timePickerSeconds:
+                    true,
+
+                locale: {
+
+                    format:
+                        "MMMM D, YYYY HH:mm:ss",
+
+                    cancelLabel:
+                        "Cancel",
+
+                    applyLabel:
+                        "Apply"
+
+                },
+
+                ranges: {
+
+                    "Today": [
+
+                        moment()
+                            .startOf("day"),
+
+                        moment()
+                            .endOf("day")
+
+                    ],
+
+                    "Yesterday": [
+
+                        moment()
+                            .subtract(
+                                1,
+                                "days"
+                            )
+                            .startOf(
+                                "day"
+                            ),
+
+                        moment()
+                            .subtract(
+                                1,
+                                "days"
+                            )
+                            .endOf(
+                                "day"
+                            )
+
+                    ],
+
+                    "Last 7 Days": [
+
+                        moment()
+                            .subtract(
+                                6,
+                                "days"
+                            )
+                            .startOf(
+                                "day"
+                            ),
+
+                        moment()
+                            .endOf(
+                                "day"
+                            )
+
+                    ],
+
+                    "Last 30 Days": [
+
+                        moment()
+                            .subtract(
+                                29,
+                                "days"
+                            )
+                            .startOf(
+                                "day"
+                            ),
+
+                        moment()
+                            .endOf(
+                                "day"
+                            )
+
+                    ],
+
+                    "This Month": [
+
+                        moment()
+                            .startOf(
+                                "month"
+                            ),
+
+                        moment()
+                            .endOf(
+                                "month"
+                            )
+
+                    ],
+
+                    "Last Month": [
+
+                        moment()
+                            .subtract(
+                                1,
+                                "month"
+                            )
+                            .startOf(
+                                "month"
+                            ),
+
+                        moment()
+                            .subtract(
+                                1,
+                                "month"
+                            )
+                            .endOf(
+                                "month"
+                            )
+
+                    ]
+
+                }
+
+            });
+
+
+            var picker =
+                $("#reportrange")
+                    .data(
+                        "daterangepicker"
+                    );
+
+
+            if (picker) {
+
+                $("#selectedValue").text(
+
+                    defaultStart.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                    +
+
+                    " - "
+
+                    +
+
+                    defaultEnd.format(
+                        "MMMM D, YYYY HH:mm:ss"
+                    )
+
+                );
+
+
+                updateDateRange(
+                    defaultStart,
+                    defaultEnd
+                );
+
+            }
+
+
+            $("#reportrange")
+                .off(
+                    "apply.daterangepicker.statistics"
+                )
+                .on(
+                    "apply.daterangepicker.statistics",
+                    function (
+                        event,
+                        picker
+                    ) {
+
+                        $("#selectedValue").text(
+
+                            picker.startDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                            +
+
+                            " - "
+
+                            +
+
+                            picker.endDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                        );
+
+
+                        updateDateRange(
+                            picker.startDate,
+                            picker.endDate
+                        );
+
+                    }
+                );
+
+
+            $("#reportrange")
+                .off(
+                    "cancel.daterangepicker.statistics"
+                )
+                .on(
+                    "cancel.daterangepicker.statistics",
+                    function () {
+
+                        /*
+                         * Keep current date range.
+                         */
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           LOAD PROVIDERS
+        ========================================================= */
+
+        $.ajax({
+
+            url:
+                "@Url.Action("GetProviderCodes", "Dashboard")",
+
+            type:
+                "GET",
+
+            cache:
+                true,
+
+            success:
+                function (providers) {
+
+                    var $provider =
+                        $("#filterProviderCode");
+
+
+                    $provider.empty();
+
+
+                    $provider.append(
+                        new Option(
+                            "All Providers",
+                            ""
+                        )
+                    );
+
+
+                    $.each(
+                        providers || [],
+                        function (
+                            _,
+                            provider
+                        ) {
+
+                            if (provider) {
+
+                                $provider.append(
+                                    new Option(
+                                        provider,
+                                        provider
+                                    )
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    $provider
+                        .val("")
+                        .trigger(
+                            "change"
+                        );
+
+                },
+
+            error:
+                function (xhr) {
+
+                    console.error(
+                        "Failed to load providers:",
+                        xhr
+                    );
+
+                }
+
+        });
+
+
+        /* =========================================================
+           UPDATE CURRENT SCOPE
+        ========================================================= */
+
+        function updateCurrentScopeText() {
+
+            if (targetAgent) {
+
+                $("#agentTableSubtitle")
+                    .text(
+                        "Direct downline agents of " +
+                        targetAgent +
+                        ", aggregated for the selected period."
+                    );
+
+            }
+            else {
+
+                $("#agentTableSubtitle")
+                    .text(
+                        "Direct downline agents, aggregated for the selected period."
+                    );
+
+            }
+
+        }
+
+
+        updateCurrentScopeText();
+
+
+        /* =========================================================
+           LOAD AGENT PROVIDERS
+        ========================================================= */
+
+        function loadAgentProviders(
+            row,
+            agentCode,
+            $button
+        ) {
+
+            var $loading =
+                $(`
+                    <div class="statistics-child-wrapper text-muted">
+                        <i class="ti ti-loader-2 me-1"></i>
+                        Loading provider statistics...
+                    </div>
+                `);
+
+
+            row.child(
+                $loading
+            ).show();
+
+
+            $button
+                .prop(
+                    "disabled",
+                    true
+                );
+
+
+            $.ajax({
+
+                url:
+                    "@Url.Action("GetStatisticsAgentProviders", "Dashboard")",
+
+                type:
+                    "POST",
+
+                data:
+                    $.extend(
+                        {},
+                        getFilters(),
+                        {
+                            agentCode:
+                                agentCode
+                        }
+                    ),
+
+                success:
+                    function (response) {
+
+                        var providers =
+                            response &&
+                            Array.isArray(
+                                response.data
+                            )
+                                ? response.data
+                                : (
+                                    Array.isArray(
+                                        response
+                                    )
+                                        ? response
+                                        : []
+                                );
+
+
+                        var html =
+
+                            '<div class="statistics-child-wrapper">';
+
+                        html +=
+                            '<div class="table-responsive">';
+
+                        html +=
+                            '<table class="table table-sm table-hover align-middle mb-0 statistics-provider-table">';
+
+                        html +=
+                            '<thead>';
+
+                        html +=
+                            '<tr>';
+
+                        html +=
+                            '<th>Provider Code</th>';
+
+                        html +=
+                            '<th>Provider Name</th>';
+
+                        html +=
+                            '<th>Total Bet Amount</th>';
+
+                        html +=
+                            '<th>Total Win Amount</th>';
+
+                        html +=
+                            '<th>Total Bet Count</th>';
+
+                        html +=
+                            '<th>Total Win Count</th>';
+
+                        html +=
+                            '</tr>';
+
+                        html +=
+                            '</thead>';
+
+                        html +=
+                            '<tbody>';
+
+
+                        if (!providers.length) {
+
+                            html +=
+                                '<tr>';
+
+                            html +=
+                                '<td colspan="6" class="text-muted">';
+
+                            html +=
+                                'No provider statistics found.';
+
+                            html +=
+                                '</td>';
+
+                            html +=
+                                '</tr>';
+
+                        }
+                        else {
+
+                            providers.forEach(
+                                function (
+                                    provider
+                                ) {
+
+                                    html +=
+                                        '<tr>';
+
+                                    html +=
+                                        '<td>' +
+                                        escapeHtml(
+                                            provider.providerCode
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '<td>' +
+                                        escapeHtml(
+                                            provider.providerName
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '<td>' +
+                                        formatAmount(
+                                            provider.totalBetAmount
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '<td>' +
+                                        formatAmount(
+                                            provider.totalWinAmount
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '<td>' +
+                                        formatCount(
+                                            provider.totalBetCount
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '<td>' +
+                                        formatCount(
+                                            provider.totalWinCount
+                                        ) +
+                                        '</td>';
+
+                                    html +=
+                                        '</tr>';
+
+                                }
+                            );
+
+                        }
+
+
+                        html +=
+                            '</tbody>';
+
+                        html +=
+                            '</table>';
+
+                        html +=
+                            '</div>';
+
+                        html +=
+                            '</div>';
+
+
+                        row.child(
+                            $(html)
+                        ).show();
+
+
+                        $button
+                            .html(
+                                getProviderExpandButton(
+                                    true
+                                )
+                            )
+                            .prop(
+                                "disabled",
+                                false
+                            );
+
+                    },
+
+                error:
+                    function () {
+
+                        row.child(
+                            $(`
+                                <div class="statistics-child-wrapper text-danger">
+                                    Failed to load provider statistics.
+                                </div>
+                            `)
+                        ).show();
+
+
+                        $button
+                            .html(
+                                getProviderExpandButton(
+                                    true
+                                )
+                            )
+                            .prop(
+                                "disabled",
+                                false
+                            );
+
+                    }
+
+            });
+
+        }
+
+
+        /* =========================================================
+           AGENT DATATABLE
+        ========================================================= */
+
+        var table =
+            $("#statisticsTable")
+                .DataTable({
+
+                    processing:
+                        true,
+
+                    serverSide:
+                        true,
+
+                    responsive:
+                        false,
+
+                    autoWidth:
+                        false,
+
+                    searching:
+                        false,
+
+                    lengthChange:
+                        true,
+
+                    pageLength:
+                        25,
+
+                    lengthMenu:
+                        [
+                            [
+                                10,
+                                25,
+                                50,
+                                100
+                            ],
+                            [
+                                10,
+                                25,
+                                50,
+                                100
+                            ]
+                        ],
+
+                    order:
+                        [
+                            [
+                                0,
+                                "asc"
+                            ]
+                        ],
+
+                    language: {
+
+                        emptyTable:
+                            "No direct downline agents found.",
+
+                        zeroRecords:
+                            "No direct downline agents found.",
+
+                        processing:
+                            "Loading statistics..."
+
+                    },
+
+                    ajax:
+                    {
+
+                        url:
+                            "@Url.Action("GetStatisticsLogs", "Dashboard")",
+
+                        type:
+                            "POST",
+
+                        data:
+                            function (d) {
+
+                                var filters =
+                                    getFilters();
+
+
+                                d.targetAgent =
+                                    filters.targetAgent;
+
+                                d.agent =
+                                    filters.agent;
+
+                                d.user =
+                                    filters.user;
+
+                                d.providerCode =
+                                    filters.providerCode;
+
+                                d.gameCode =
+                                    filters.gameCode;
+
+                                d.fromDate =
+                                    filters.fromDate;
+
+                                d.toDate =
+                                    filters.toDate;
+
+                            },
+
+                        dataSrc:
+                            function (
+                                json
+                            ) {
+
+                                if (
+                                    json &&
+                                    json.breadcrumb
+                                ) {
+
+                                    renderBreadcrumb(
+                                        json.breadcrumb
+                                    );
+
+                                }
+                                else {
+
+                                    renderBreadcrumb(
+                                        null
+                                    );
+
+                                }
+
+
+                                if (
+                                    json &&
+                                    json.targetAgent
+                                ) {
+
+                                    targetAgent =
+                                        json.targetAgent;
+
+                                    updateCurrentScopeText();
+
+                                }
+
+
+                                return (
+                                    json &&
+                                    Array.isArray(
+                                        json.data
+                                    )
+                                )
+                                    ? json.data
+                                    : [];
+
+                            }
+
+                    },
+
+
+                    columns:
+                    [
+
+                        /* =================================================
+                           AGENT CODE
+                        ================================================= */
+
+                        {
+
+                            data:
+                                "agentCode",
+
+                            orderable:
+                                true,
+
+                            render:
+                                function (
+                                    data,
+                                    type,
+                                    row
+                                ) {
+
+                                    if (
+                                        type ===
+                                        "sort"
+                                    ) {
+
+                                        return data ||
+                                            "";
+
+                                    }
+
+
+                                    var code =
+                                        data ||
+                                        "";
+
+
+                                    return `
+
+                                        <div class="d-flex align-items-center">
+
+                                            <button type="button"
+                                                    class="statistics-expand-btn provider-expand-btn"
+                                                    data-agent-code="${escapeHtml(code)}"
+                                                    title="Show providers">
+
+                                                <i class="ti ti-chevron-right"></i>
+
+                                            </button>
+
+                                            <a href="javascript:void(0);"
+                                               class="agent-link"
+                                               data-agent-code="${escapeHtml(code)}">
+
+                                                ${escapeHtml(code)}
+
+                                            </a>
+
+                                        </div>
+
+                                    `;
+
+                                }
+
+                        },
+
+
+                        /* =================================================
+                           TOTAL BET AMOUNT
+                        ================================================= */
+
+                        {
+
+                            data:
+                                "totalBetAmount",
+
+                            render:
+                                function (
+                                    data
+                                ) {
+
+                                    return formatAmount(
+                                        data
+                                    );
+
+                                }
+
+                        },
+
+
+                        /* =================================================
+                           TOTAL WIN AMOUNT
+                        ================================================= */
+
+                        {
+
+                            data:
+                                "totalWinAmount",
+
+                            render:
+                                function (
+                                    data
+                                ) {
+
+                                    return formatAmount(
+                                        data
+                                    );
+
+                                }
+
+                        },
+
+
+                        /* =================================================
+                           TOTAL BET COUNT
+                        ================================================= */
+
+                        {
+
+                            data:
+                                "totalBetCount",
+
+                            render:
+                                function (
+                                    data
+                                ) {
+
+                                    return formatCount(
+                                        data
+                                    );
+
+                                }
+
+                        },
+
+
+                        /* =================================================
+                           TOTAL WIN COUNT
+                        ================================================= */
+
+                        {
+
+                            data:
+                                "totalWinCount",
+
+                            render:
+                                function (
+                                    data
+                                ) {
+
+                                    return formatCount(
+                                        data
+                                    );
+
+                                }
+
+                        }
+
+                    ],
+
+
+                    initComplete:
+                        function () {
+
+                            var api =
+                                this.api();
+
+
+                            var container =
+                                $(api.table().container());
+
+
+                            var $length =
+                                container.find(
+                                    ".dt-length, .dataTables_length"
+                                ).first();
+
+
+                            var $info =
+                                container.find(
+                                    ".dt-info, .dataTables_info"
+                                ).first();
+
+
+                            var $paging =
+                                container.find(
+                                    ".dt-paging, .dataTables_paginate"
+                                ).first();
+
+
+                            if ($length.length) {
+
+                                $("#dataTableLengthContainer")
+                                    .empty()
+                                    .append(
+                                        $length
+                                    );
+
+                            }
+
+
+                            if ($info.length) {
+
+                                $("#dataTableInfoContainer")
+                                    .empty()
+                                    .append(
+                                        $info
+                                    );
+
+                            }
+
+
+                            if ($paging.length) {
+
+                                $("#dataTablePagingContainer")
+                                    .empty()
+                                    .append(
+                                        $paging
+                                    );
+
+                            }
+
+
+                            api.columns.adjust();
+
+                        }
+
+                });
+
+
+        /* =========================================================
+           AGENT CODE CLICK
+        ========================================================= */
+
+        $(document)
+            .on(
+                "click",
+                ".agent-link",
+                function () {
+
+                    var agentCode =
+                        $(this)
+                            .data(
+                                "agent-code"
+                            );
+
+
+                    navigateToAgent(
+                        agentCode
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           AGENT PROVIDER EXPANSION
+        ========================================================= */
+
+        $("#statisticsTable tbody")
+            .on(
+                "click",
+                ".provider-expand-btn",
+                function (
+                    e
+                ) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+
+                    var $button =
+                        $(this);
+
+
+                    var tr =
+                        $button.closest(
+                            "tr"
+                        );
+
+
+                    var row =
+                        table.row(
+                            tr
+                        );
+
+
+                    var agentCode =
+                        $button.data(
+                            "agent-code"
+                        );
+
+
+                    if (
+                        row.child.isShown()
+                    ) {
+
+                        row.child.hide();
+
+                        $button.html(
+                            getProviderExpandButton(
+                                false
+                            )
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Avoid repeated request after
+                     * expansion is collapsed/reopened.
+                     *
+                     * The child content belongs to
+                     * this DataTable row for the current
+                     * filter state.
+                     */
+
+                    loadAgentProviders(
+                        row,
+                        agentCode,
+                        $button
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           FILTER FORM
+        ========================================================= */
+
+        $("#statisticsFilterForm")
+            .on(
+                "submit",
+                function (
+                    e
+                ) {
+
+                    e.preventDefault();
+
+
+                    /*
+                     * Current page becomes a fresh
+                     * statistics view after filtering.
+                     */
+
+                    table.ajax.reload(
+                        null,
+                        true
+                    );
+
+
+                    /*
+                     * Existing player data is no longer
+                     * guaranteed to match the new filters.
+                     */
+
+                    if (
+                        directPlayersTable
+                    ) {
+
+                        directPlayersTable
+                            .clear()
+                            .draw();
+
+                    }
+
+
+                    directPlayersLoaded =
+                        false;
+
+
+                    if (
+                        directPlayersVisible
+                    ) {
+
+                        $("#directPlayersCard")
+                            .hide();
+
+                        directPlayersVisible =
+                            false;
+
+                    }
+
+
+                    $("#toggleDirectPlayersBtn")
+                        .html(`
+                            <i class="ti ti-users me-1"></i>
+                            Show Direct Players
+                        `);
+
+                }
+            );
+
+
+        /* =========================================================
+           CLEAR FILTERS
+        ========================================================= */
+
+        $("#clearFiltersBtn")
+            .on(
+                "click",
+                function () {
+
+                    $("#filterAgent")
+                        .val("");
+
+
+                    $("#filterUser")
+                        .val("");
+
+
+                    $("#filterGameCode")
+                        .val("");
+
+
+                    $("#filterProviderCode")
+                        .val("")
+                        .trigger(
+                            "change"
+                        );
+
+
+                    var start =
+                        moment().subtract(
+                            1,
+                            "month"
+                        );
+
+
+                    var end =
+                        moment();
+
+
+                    var picker =
+                        $("#reportrange")
+                            .data(
+                                "daterangepicker"
+                            );
+
+
+                    if (picker) {
+
+                        picker.setStartDate(
+                            start
+                        );
+
+                        picker.setEndDate(
+                            end
+                        );
+
+
+                        $("#selectedValue")
+                            .text(
+
+                                start.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                )
+
+                                +
+
+                                " - "
+
+                                +
+
+                                end.format(
+                                    "MMMM D, YYYY HH:mm:ss"
+                                )
+
+                            );
+
+                    }
+
+
+                    updateDateRange(
+                        start,
+                        end
+                    );
+
+
+                    table.ajax.reload(
+                        null,
+                        true
+                    );
+
+
+                    if (
+                        directPlayersTable
+                    ) {
+
+                        directPlayersTable
+                            .clear()
+                            .draw();
+
+                    }
+
+
+                    directPlayersLoaded =
+                        false;
+
+
+                    if (
+                        directPlayersVisible
+                    ) {
+
+                        $("#directPlayersCard")
+                            .hide();
+
+                        directPlayersVisible =
+                            false;
+
+                    }
+
+
+                    $("#toggleDirectPlayersBtn")
+                        .html(`
+                            <i class="ti ti-users me-1"></i>
+                            Show Direct Players
+                        `);
+
+                }
+            );
+
+
+        /* =========================================================
+           ENTER KEY
+        ========================================================= */
+
+        $(
+            "#filterAgent, " +
+            "#filterUser, " +
+            "#filterGameCode"
+        )
+            .on(
+                "keydown",
+                function (
+                    e
+                ) {
+
+                    if (
+                        e.key ===
+                        "Enter"
+                    ) {
+
+                        e.preventDefault();
+
+
+                        $("#statisticsFilterForm")
+                            .trigger(
+                                "submit"
+                            );
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================================
+           COLUMN VISIBILITY
+        ========================================================= */
+
+        $(document)
+            .on(
+                "change",
+                ".column-toggle",
+                function () {
+
+                    var columnIndex =
+                        Number(
+                            $(this)
+                                .data(
+                                    "column"
+                                )
+                        );
+
+
+                    table.column(
+                        columnIndex
+                    )
+                    .visible(
+                        $(this).is(
+                            ":checked"
+                        ),
+                        false
+                    );
+
+
+                    table.columns.adjust();
+
+                }
+            );
+
+
+        /* =========================================================
+           LOAD DIRECT PLAYERS
+        ========================================================= */
+
+        function initializeDirectPlayersTable() {
+
+            directPlayersTable =
+                $("#directPlayersTable")
+                    .DataTable({
+
+                        processing:
+                            true,
+
+                        serverSide:
+                            true,
+
+                        responsive:
+                            false,
+
+                        autoWidth:
+                            false,
+
+                        searching:
+                            false,
+
+                        pageLength:
+                            25,
+
+                        lengthMenu:
+                            [
+                                [
+                                    10,
+                                    25,
+                                    50,
+                                    100
+                                ],
+                                [
+                                    10,
+                                    25,
+                                    50,
+                                    100
+                                ]
+                            ],
+
+                        order:
+                            [
+                                [
+                                    0,
+                                    "asc"
+                                ]
+                            ],
+
+                        language: {
+
+                            emptyTable:
+                                "No direct players found.",
+
+                            zeroRecords:
+                                "No direct players found.",
+
+                            processing:
+                                "Loading player statistics..."
+
+                        },
+
+                        ajax:
+                        {
+
+                            url:
+                                "@Url.Action("GetStatisticsDirectPlayers", "Dashboard")",
+
+                            type:
+                                "POST",
+
+                            data:
+                                function (
+                                    d
+                                ) {
+
+                                    var filters =
+                                        getFilters();
+
+
+                                    d.targetAgent =
+                                        filters.targetAgent;
+
+                                    d.agent =
+                                        filters.agent;
+
+                                    d.user =
+                                        filters.user;
+
+                                    d.providerCode =
+                                        filters.providerCode;
+
+                                    d.gameCode =
+                                        filters.gameCode;
+
+                                    d.fromDate =
+                                        filters.fromDate;
+
+                                    d.toDate =
+                                        filters.toDate;
+
+                                }
+
+                        },
+
+
+                        columns:
+                        [
+
+                            /* =================================================
+                               PLAYER CODE
+                            ================================================= */
+
+                            {
+
+                                data:
+                                    "playerCode",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        var code =
+                                            data ||
+                                            "";
+
+
+                                        return `
+
+                                            <div class="d-flex align-items-center">
+
+                                                <button type="button"
+                                                        class="statistics-expand-btn player-provider-expand-btn"
+                                                        data-player-code="${escapeHtml(code)}"
+                                                        title="Show providers">
+
+                                                    <i class="ti ti-chevron-right"></i>
+
+                                                </button>
+
+                                                <span>
+                                                    ${escapeHtml(code)}
+                                                </span>
+
+                                            </div>
+
+                                        `;
+
+                                    }
+
+                            },
+
+
+                            /* =================================================
+                               TOTAL BET AMOUNT
+                            ================================================= */
+
+                            {
+
+                                data:
+                                    "totalBetAmount",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return formatAmount(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* =================================================
+                               TOTAL WIN AMOUNT
+                            ================================================= */
+
+                            {
+
+                                data:
+                                    "totalWinAmount",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return formatAmount(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* =================================================
+                               TOTAL BET COUNT
+                            ================================================= */
+
+                            {
+
+                                data:
+                                    "totalBetCount",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return formatCount(
+                                            data
+                                        );
+
+                                    }
+
+                            },
+
+
+                            /* =================================================
+                               TOTAL WIN COUNT
+                            ================================================= */
+
+                            {
+
+                                data:
+                                    "totalWinCount",
+
+                                render:
+                                    function (
+                                        data
+                                    ) {
+
+                                        return formatCount(
+                                            data
+                                        );
+
+                                    }
+
+                            }
+
+                        ],
+
+
+                        initComplete:
+                            function () {
+
+                                var api =
+                                    this.api();
+
+
+                                var container =
+                                    $(api.table().container());
+
+
+                                var $length =
+                                    container.find(
+                                        ".dt-length, .dataTables_length"
+                                    ).first();
+
+
+                                var $info =
+                                    container.find(
+                                        ".dt-info, .dataTables_info"
+                                    ).first();
+
+
+                                var $paging =
+                                    container.find(
+                                        ".dt-paging, .dataTables_paginate"
+                                    ).first();
+
+
+                                if ($length.length) {
+
+                                    $("#directPlayersLengthContainer")
+                                        .empty()
+                                        .append(
+                                            $length
+                                        );
+
+                                }
+
+
+                                if ($info.length) {
+
+                                    $("#directPlayersInfoContainer")
+                                        .empty()
+                                        .append(
+                                            $info
+                                        );
+
+                                }
+
+
+                                if ($paging.length) {
+
+                                    $("#directPlayersPagingContainer")
+                                        .empty()
+                                        .append(
+                                            $paging
+                                        );
+
+                                }
+
+
+                                api.columns.adjust();
+
+                            }
+
+                    });
+
+
+            /*
+             * Player provider expansion.
+             */
+
+            $("#directPlayersTable tbody")
+                .on(
+                    "click",
+                    ".player-provider-expand-btn",
+                    function (
+                        e
+                    ) {
+
+                        e.preventDefault();
+
+                        e.stopPropagation();
+
+
+                        var $button =
+                            $(this);
+
+
+                        var tr =
+                            $button.closest(
+                                "tr"
+                            );
+
+
+                        var row =
+                            directPlayersTable.row(
+                                tr
+                            );
+
+
+                        var playerCode =
+                            $button.data(
+                                "player-code"
+                            );
+
+
+                        if (
+                            row.child.isShown()
+                        ) {
+
+                            row.child.hide();
+
+                            $button.html(
+                                getPlayerProviderExpandButton(
+                                    false
+                                )
+                            );
+
+                            return;
+
+                        }
+
+
+                        var $loading =
+                            $(`
+                                <div class="statistics-child-wrapper text-muted">
+                                    <i class="ti ti-loader-2 me-1"></i>
+                                    Loading provider statistics...
+                                </div>
+                            `);
+
+
+                        row.child(
+                            $loading
+                        ).show();
+
+
+                        $button.prop(
+                            "disabled",
+                            true
+                        );
+
+
+                        $.ajax({
+
+                            url:
+                                "@Url.Action("GetStatisticsPlayerProviders", "Dashboard")",
+
+                            type:
+                                "POST",
+
+                            data:
+                                $.extend(
+                                    {},
+                                    getFilters(),
+                                    {
+                                        playerCode:
+                                            playerCode
+                                    }
+                                ),
+
+                            success:
+                                function (
+                                    response
+                                ) {
+
+                                    var providers =
+                                        response &&
+                                        Array.isArray(
+                                            response.data
+                                        )
+                                            ? response.data
+                                            : (
+                                                Array.isArray(
+                                                    response
+                                                )
+                                                    ? response
+                                                    : []
+                                            );
+
+
+                                    var html =
+                                        '<div class="statistics-child-wrapper">';
+
+                                    html +=
+                                        '<div class="table-responsive">';
+
+                                    html +=
+                                        '<table class="table table-sm table-hover align-middle mb-0 statistics-player-provider-table">';
+
+                                    html +=
+                                        '<thead>';
+
+                                    html +=
+                                        '<tr>';
+
+                                    html +=
+                                        '<th>Provider Code</th>';
+
+                                    html +=
+                                        '<th>Provider Name</th>';
+
+                                    html +=
+                                        '<th>Total Bet Amount</th>';
+
+                                    html +=
+                                        '<th>Total Win Amount</th>';
+
+                                    html +=
+                                        '<th>Total Bet Count</th>';
+
+                                    html +=
+                                        '<th>Total Win Count</th>';
+
+                                    html +=
+                                        '</tr>';
+
+                                    html +=
+                                        '</thead>';
+
+                                    html +=
+                                        '<tbody>';
+
+
+                                    if (
+                                        !providers.length
+                                    ) {
+
+                                        html +=
+                                            '<tr>';
+
+                                        html +=
+                                            '<td colspan="6" class="text-muted">';
+
+                                        html +=
+                                            'No provider statistics found.';
+
+                                        html +=
+                                            '</td>';
+
+                                        html +=
+                                            '</tr>';
+
+                                    }
+                                    else {
+
+                                        providers.forEach(
+                                            function (
+                                                provider
+                                            ) {
+
+                                                html +=
+                                                    '<tr>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    escapeHtml(
+                                                        provider.providerCode
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    escapeHtml(
+                                                        provider.providerName
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    formatAmount(
+                                                        provider.totalBetAmount
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    formatAmount(
+                                                        provider.totalWinAmount
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    formatCount(
+                                                        provider.totalBetCount
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '<td>' +
+                                                    formatCount(
+                                                        provider.totalWinCount
+                                                    ) +
+                                                    '</td>';
+
+                                                html +=
+                                                    '</tr>';
+
+                                            }
+                                        );
+
+                                    }
+
+
+                                    html +=
+                                        '</tbody>';
+
+                                    html +=
+                                        '</table>';
+
+                                    html +=
+                                        '</div>';
+
+                                    html +=
+                                        '</div>';
+
+
+                                    row.child(
+                                        $(html)
+                                    ).show();
+
+
+                                    $button
+                                        .html(
+                                            getPlayerProviderExpandButton(
+                                                true
+                                            )
+                                        )
+                                        .prop(
+                                            "disabled",
+                                            false
+                                        );
+
+                                },
+
+                            error:
+                                function () {
+
+                                    row.child(
+                                        $(`
+                                            <div class="statistics-child-wrapper text-danger">
+                                                Failed to load provider statistics.
+                                            </div>
+                                        `)
+                                    ).show();
+
+
+                                    $button
+                                        .html(
+                                            getPlayerProviderExpandButton(
+                                                true
+                                            )
+                                        )
+                                        .prop(
+                                            "disabled",
+                                            false
+                                        );
+
+                                }
+
+                        });
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================================
+           SHOW / HIDE DIRECT PLAYERS
+        ========================================================= */
+
+        $("#toggleDirectPlayersBtn")
+            .on(
+                "click",
+                function () {
+
+                    var $button =
+                        $(this);
+
+
+                    if (
+                        directPlayersVisible
+                    ) {
+
+                        $("#directPlayersCard")
+                            .slideUp(
+                                150
+                            );
+
+
+                        directPlayersVisible =
+                            false;
+
+
+                        $button.html(`
+                            <i class="ti ti-users me-1"></i>
+                            Show Direct Players
+                        `);
+
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !directPlayersTable
+                    ) {
+
+                        $("#directPlayersCard")
+                            .show();
+
+
+                        directPlayersVisible =
+                            true;
+
+
+                        $button.html(`
+                            <i class="ti ti-users-off me-1"></i>
+                            Hide Direct Players
+                        `);
+
+
+                        initializeDirectPlayersTable();
+
+
+                        $("#directPlayersCard")
+                            .hide()
+                            .slideDown(
+                                150
+                            );
+
+
+                    }
+                    else {
+
+                        directPlayersTable
+                            .ajax
+                            .reload(
+                                null,
+                                true
+                            );
+
+
+                        $("#directPlayersCard")
+                            .slideDown(
+                                150
+                            );
+
+
+                        directPlayersVisible =
+                            true;
+
+
+                        $button.html(`
+                            <i class="ti ti-users-off me-1"></i>
+                            Hide Direct Players
+                        `);
+
+                    }
+
+
+                    setTimeout(
+                        function () {
+
+                            if (
+                                directPlayersTable
+                            ) {
+
+                                directPlayersTable
+                                    .columns
+                                    .adjust();
+
+                            }
+
+
+                            var card =
+                                document.getElementById(
+                                    "directPlayersCard"
+                                );
+
+
+                            if (card) {
+
+                                card.scrollIntoView({
+                                    behavior:
+                                        "smooth",
+
+                                    block:
+                                        "start"
+                                });
+
+                            }
+
+                        },
+                        180
+                    );
+
+                }
+            );
+
+
+    });
+
+</script>

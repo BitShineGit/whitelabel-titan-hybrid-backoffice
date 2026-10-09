@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Whitelabel_backoffice.Database;
+
+public partial class Game
+{
+    public int Id { get; set; }
+
+    public int ProviderId { get; set; }
+
+    public string GameCode { get; set; } = null!;
+
+    public string GameName { get; set; } = null!;
+
+    public byte GameType { get; set; }
+
+    public string Thumbnail { get; set; } = null!;
+
+    public byte Status { get; set; }
+
+    public bool IsHot { get; set; }
+
+    public bool IsNew { get; set; }
+
+    public int SortNumber { get; set; }
+}

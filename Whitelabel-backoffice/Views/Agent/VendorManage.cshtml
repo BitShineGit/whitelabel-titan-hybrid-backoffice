@@ -1,0 +1,765 @@
+﻿@using Whitelabel_backoffice.Models;
+@{
+    ViewData["Title"] = "Vendor Manage";
+    List<Whitelabel_backoffice.Models.VendorManage> providerlist = (List<Whitelabel_backoffice.Models.VendorManage>)ViewData["providerlist"];
+
+}
+
+<link href="/assets/css/sweetalert.css" rel="stylesheet" type="text/css" />
+
+<style>
+    .update-btn {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0;
+        border: 1px solid #00b894;
+        border-radius: 10px;
+        background: #00b296;
+        color: #bfc5ce;
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        transition: width 0.3s ease, color 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
+    }
+
+    /* SVG */
+    .update-icon {
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .update-icon svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease, stroke 0.25s ease;
+        }
+
+    /* Text hidden normally */
+    .update-text {
+        max-width: 0;
+        opacity: 0;
+        white-space: nowrap;
+        font-size: 13px;
+        font-weight: 600;
+        transform: translateX(-5px);
+        transition: max-width 0.3s ease, opacity 0.2s ease, transform 0.3s ease;
+    }
+
+    /* Hover */
+    .update-btn:hover {
+        width: 100px;
+        color: #ffffff;
+        background: #00b894;
+        border-color: #00b894;
+        box-shadow: 0 0 0 1px rgba(61, 139, 253, 0.15), 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(61, 139, 253, 0.15);
+    }
+
+        .update-btn:hover .update-icon svg {
+            transform: rotate(-8deg) scale(1.05);
+        }
+
+        .update-btn:hover .update-text {
+            max-width: 55px;
+            opacity: 1;
+            transform: translateX(0);
+        }
+</style>
+<style>
+    .Close {
+        --theme-badge-color: var(--theme-danger);
+        background-color: var(--theme-danger-bg-subtle);
+    }
+
+    .Open {
+        --theme-badge-color: var(--theme-success);
+        background-color: var(--theme-success-bg-subtle);
+    }
+
+    .table-select tbody tr:has(input[type=checkbox]:checked:not(.form-switch>input)) {
+        background-color: unset;
+    }
+</style>
+<style>
+    .switch-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .mini-switch {
+        position: relative;
+        width: 24px;
+        height: 14px;
+        display: inline-block;
+    }
+
+        .mini-switch input {
+            display: none;
+        }
+
+    .switch-slider {
+        position: absolute;
+        inset: 0;
+        background: #3a3f46;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background .25s ease;
+    }
+
+        .switch-slider::before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: 2px;
+            top: 2px;
+            background: #777;
+            border-radius: 50%;
+            transition: .25s ease;
+        }
+
+    .mini-switch input:checked + .switch-slider {
+        background: #00b894;
+    }
+
+        .mini-switch input:checked + .switch-slider::before {
+            transform: translateX(10px);
+            background: white;
+        }
+
+    .switch-text {
+        font-size: 10px;
+        font-weight: 600;
+        color: #ff3b4d;
+        cursor: pointer;
+        transition: color .25s ease;
+    }
+    /* Same page spacing / empty space style as Betting Logs */
+    .vendor-manage-page {
+        width: calc(100% - 40px);
+        max-width: 1600px;
+        margin: 22px auto 40px;
+    }
+
+    @@media (max-width: 1300px) {
+        .vendor-manage-page {
+            width: calc(100% - 30px);
+        }
+    }
+
+    @@media (max-width: 1000px) {
+        .vendor-manage-page {
+            width: calc(100% - 24px);
+        }
+    }
+
+    @@media (max-width: 650px) {
+        .vendor-manage-page {
+            width: calc(100% - 14px);
+            margin: 8px auto 20px;
+        }
+    }
+
+    @@media (max-width: 400px) {
+        .vendor-manage-page {
+            width: calc(100% - 8px);
+        }
+    }
+</style>
+<div class="page-title-head d-flex align-items-center">
+
+    <div class="flex-grow-1">
+
+        <h4 class="page-main-title m-0">
+            Vendor Manage
+        </h4>
+
+    </div>
+
+    <div class="text-end">
+
+        <ol class="breadcrumb m-0 py-0">
+
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    Inspinia
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a href="javascript: void(0);">
+                    Agent
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active">
+                Vendor Manage
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div data-table data-table-rows-per-page="5" class="card">
+            <div class="card-header">
+                <h4 class="card-title">Vendor Manage</h4>
+            </div>
+            <div class="card-header border-light justify-content-between">
+                <div class="d-flex gap-2">
+                    <div class="app-search">
+                        <input data-table-search
+                               type="search"
+                               class="form-control"
+                               placeholder="Search product name..." />
+                        <i class="ti ti-search app-search-icon text-muted"></i>
+                    </div>
+@*                     <button data-table-delete-selected class="btn btn-danger d-none">
+                        Delete
+                    </button> *@
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="me-2 fw-semibold">Filter By:</span>
+
+                    <!-- Category Filter -->
+                    <div class="app-search">
+                        <select data-table-filter="category"
+                                class="form-select form-control my-1 my-md-0">
+                            <option value="All">Category</option>
+                            <option value="Live Casino">Live Casino</option>
+                            <option value="Slot">Slot</option>
+                            <option value="Mini">Mini</option>
+                            <option value="Fishing">Fishing</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Poker">Poker</option>
+                        </select>
+                        <i class="ti ti-category app-search-icon text-muted"></i>
+                    </div>
+
+                    <!-- Stock Filter -->
+                    <div class="app-search">
+                        <select data-table-filter="status"
+                                class="form-select form-control my-1 my-md-0">
+                            <option value="">Status</option>
+                            <option value="Open">Open</option>
+                            <option value="Close">Close</option>
+                        </select>
+                        <i class="ti ti-box app-search-icon text-muted"></i>
+                    </div>
+
+                    <!-- Price Range Filter -->
+                    @* <div class="app-search">
+                        <select data-table-range-filter="price"
+                                class="form-select form-control my-1 my-md-0">
+                            <option value="">Price Range</option>
+                            <option value="0-50">$0 - $50</option>
+                            <option value="51-150">$51 - $150</option>
+                            <option value="151-500">$151 - $500</option>
+                            <option value="500+">$500+</option>
+                        </select>
+                        <i class="ti ti-currency-dollar app-search-icon text-muted"></i>
+                    </div> *@
+
+                    <!-- Records Per Page -->
+                    <div>
+                        <select data-table-set-rows-per-page
+                                class="form-select form-control my-1 my-md-0">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-custom table-centered table-select table-hover w-100 mb-0">
+                    <thead class="bg-light align-middle bg-opacity-25 thead-sm">
+                        <tr class="text-uppercase fs-xxs">
+                            <th data-table-sort>#</th>
+                            <th data-table-sort="product">Provider Name</th>
+                            <th>Provider Code</th>
+                            <th data-table-sort data-column="category">Category</th>
+                            <th data-table-sort>TotalGameCount</th>
+                            <th data-table-sort data-column="status">Status</th>
+                            <th class="text-center" style="width: 1%">Actions</th>  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Product Row -->
+                    @{
+                            foreach (Whitelabel_backoffice.Models.VendorManage Provider in providerlist)
+                        {
+                                        <tr>
+                                            <td>@Provider.Id</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="avatar-md me-3">
+                                                        <img src="@Provider.Logo" style="height:100%"
+                                                        alt="Product"
+                                                        class="img-fluid rounded" />
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="mb-1" style="height: 100%;
+                                                                                align-items: center;
+                                                                                display: flex;
+                                                                                justify-content: center;">
+                                                            <a data-sort="product" href="#!" class="link-reset">@Provider.ProviderName</a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@Provider.ProviderCode</td>
+                                            <td>@Provider.Category</td>
+                                            <td>
+                                                <h5 id="@Provider.ProviderCode" class="fs-base mb-0 fw-medium">@Provider.TotalGameCount</h5>
+                                            </td>
+                                            <td>
+                                                <div class="switch-item">
+                                                    <label class="mini-switch">
+                                                <input type="checkbox" class="toggle-status @Provider.StatusText" onclick="updatestatus('@Provider.Id')">
+                                                        <span class="switch-slider"></span>
+                                                    </label>
+
+                                                    <span class="switch-text" id="@Provider.Id" >@Provider.StatusText</span>
+                                                </div>
+                                            </td>
+                                            <td style="min-width:130px;">
+                                                <div class="d-flex justify-content-center gap-1">
+
+                                            <button class="update-btn sweetalert-confirm-button" type="button" onclick="Update('@Provider.ProviderCode')">
+                                                <span class="update-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 24 24"
+                                                         fill="none"
+                                                         stroke="currentColor"
+                                                         stroke-width="2"
+                                                         stroke-linecap="round"
+                                                         stroke-linejoin="round">
+                                                        <path d="M12 20h9" />
+                                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                                                    </svg>
+                                                </span>
+
+                                                <span class="update-text">Update</span>
+                                            </button>
+                                                    @*<a href="#"
+                                                class="btn btn-light btn-icon btn-sm rounded-circle">
+                                                    <i class="ti ti-edit fs-lg"></i>
+                                                </a>
+                                                <a href="#"
+                                                data-table-delete-row
+                                                class="btn btn-danger btn-icon btn-sm rounded-circle">
+                                                    <i class="ti ti-trash fs-lg"></i>
+                                                </a>*@
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                
+                        }
+                     }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div data-table-pagination-info="providers"></div>
+                    <div data-table-pagination></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+
+<script src="/assets/js/agent/vendormanage.js"></script>
+<script src="/assets/js/agent/sweetalert.js"></script>
+<script src="/assets/js/agent/sweetalert1.js"></script>
+
+<script>
+    document.querySelectorAll(".switch-item").forEach(item => {
+
+        const checkbox = item.querySelector("input");
+        const text = item.querySelector(".switch-text");
+
+        function updateSwitch() {
+
+            if (checkbox.classList.contains("open")) {
+
+                checkbox.checked = true;
+
+                text.textContent = "open";
+                text.style.color = "#00b894";
+
+            } else {
+
+                checkbox.classList.remove("open");
+                checkbox.classList.add("close");
+
+                checkbox.checked = false;
+
+                text.textContent = "close";
+                text.style.color = "#ff3b4d";
+            }
+        }
+
+        checkbox.addEventListener("change", function () {
+
+            // IMPORTANT:
+            // Do nothing here when the change comes from
+            // updatestatus(). The AJAX response will handle it.
+            if (this.dataset.updating === "true") {
+                return;
+            }
+
+            if (this.checked) {
+
+                this.classList.remove("close");
+                this.classList.add("open");
+
+            } else {
+
+                this.classList.remove("open");
+                this.classList.add("close");
+            }
+
+            updateSwitch();
+        });
+
+        text.addEventListener("click", function () {
+            checkbox.click();
+        });
+
+        // Initial state
+        updateSwitch();
+    });</script>
+<script>
+    function updatestatus(id) {
+
+        const checkbox = event.currentTarget;
+        const item = checkbox.closest(".switch-item");
+        const text = item.querySelector(".switch-text");
+
+        // Get the REAL status before the checkbox changes
+        const wasOpen = checkbox.classList.contains("open");
+
+        // Prevent the change event from changing the UI
+        checkbox.dataset.updating = "true";
+
+        // Keep the original visual state
+        checkbox.checked = wasOpen;
+
+        const status = wasOpen ? "open" : "close";
+
+        let title;
+        let message;
+        let confirmText;
+
+        if (wasOpen) {
+
+            title = "Close Provider?";
+            message = "Are you sure you want to close this provider?";
+            confirmText = "Yes, Close";
+
+        } else {
+
+            title = "Open Provider?";
+            message = "Are you sure you want to open this provider?";
+            confirmText = "Yes, Open";
+        }
+
+        Swal.fire({
+            title: title,
+            text: message,
+            icon: "question",
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: confirmText,
+            cancelButtonText: "Cancel",
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: "btn btn-primary me-2 mt-2",
+                cancelButton: "btn btn-danger mt-2"
+            }
+        }).then(function (result) {
+
+            // ==========================================
+            // CANCEL
+            // ==========================================
+
+            if (!result.isConfirmed) {
+
+                checkbox.dataset.updating = "false";
+
+                // Keep original state
+                checkbox.checked = wasOpen;
+
+                return;
+            }
+
+            // ==========================================
+            // LOADING
+            // ==========================================
+
+            Swal.fire({
+                title: "Updating...",
+                text: "Please wait while the provider status is being updated.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+
+                didOpen: function () {
+                    Swal.showLoading();
+                }
+            });
+
+            // ==========================================
+            // AJAX
+            // ==========================================
+
+            $.ajax({
+                url: "/Agent/UpdateStatus",
+                method: "POST",
+
+                data: {
+                    id: id,
+                    status: status
+                },
+
+                success: function (res) {
+
+                    if (res.success) {
+
+                        // ==========================================
+                        // ONLY NOW CHANGE THE SWITCH
+                        // ==========================================
+
+                        if (wasOpen) {
+
+                            // OPEN -> CLOSE
+
+                            checkbox.classList.remove("open");
+                            checkbox.classList.add("close");
+
+                            checkbox.checked = false;
+
+                            text.textContent = "close";
+                            text.style.color = "#ff3b4d";
+
+                        } else {
+
+                            // CLOSE -> OPEN
+
+                            checkbox.classList.remove("close");
+                            checkbox.classList.add("open");
+
+                            checkbox.checked = true;
+
+                            text.textContent = "open";
+                            text.style.color = "#00b894";
+                        }
+
+                        // Allow normal change events again
+                        checkbox.dataset.updating = "false";
+
+                        // ==========================================
+                        // SUCCESS ALERT
+                        // ==========================================
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: wasOpen
+                                ? "Provider has been closed successfully."
+                                : "Provider has been opened successfully.",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            buttonsStyling: false
+                        });
+
+                    } else {
+
+                        // ==========================================
+                        // FAILED RESPONSE
+                        // ==========================================
+
+                        checkbox.dataset.updating = "false";
+
+                        // Keep original state
+                        checkbox.checked = wasOpen;
+
+                        if (wasOpen) {
+                            checkbox.classList.remove("close");
+                            checkbox.classList.add("open");
+                        } else {
+                            checkbox.classList.remove("open");
+                            checkbox.classList.add("close");
+                        }
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Update Failed",
+                            text: res.message || "Unable to update provider status.",
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary mt-2"
+                            }
+                        });
+                    }
+                },
+
+                error: function () {
+
+                    // ==========================================
+                    // AJAX ERROR
+                    // ==========================================
+
+                    checkbox.dataset.updating = "false";
+
+                    // Keep original state
+                    checkbox.checked = wasOpen;
+
+                    if (wasOpen) {
+                        checkbox.classList.remove("close");
+                        checkbox.classList.add("open");
+                    } else {
+                        checkbox.classList.remove("open");
+                        checkbox.classList.add("close");
+                    }
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "An error occurred while updating the provider status.",
+                        confirmButtonText: "OK",
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary mt-2"
+                        }
+                    });
+                }
+            });
+        });
+    }
+    /*
+    * ============================================================
+    * UPDATE TOTAL GAME COUNT
+    * ============================================================
+    */
+
+    function Update(providerCode) {
+
+        Swal.fire({
+            title: "Update Provider Games?",
+            text: "This will sync the provider's game list and update the database.",
+            icon: "question",
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: "Yes, Update",
+            cancelButtonText: "Cancel",
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: "btn btn-primary me-2 mt-2",
+                cancelButton: "btn btn-danger mt-2"
+            }
+        }).then(function (result) {
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            Swal.fire({
+                title: "Updating...",
+                text: "Please wait while the provider games are being synchronized.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: function () {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                url: "/service/agent/vendormanage/update",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    ProviderCode: providerCode
+                }),
+
+                success: function (res) {
+
+                    if (res.success) {
+
+                        // Update TotalGameCount in the table
+                        $("#" + providerCode).text(res.totalGameCount);
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Update Successful!",
+                            text:
+                                "Added: " + res.addedCount +
+                                " | Updated: " + res.updatedCount +
+                                " | Deactivated: " + res.deactivatedCount +
+                                " | Total: " + res.totalGameCount,
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary mt-2"
+                            }
+                        });
+
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Update Failed",
+                            text: res.message || "Unable to update provider games.",
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary mt-2"
+                            }
+                        });
+                    }
+                },
+
+                error: function (xhr) {
+
+                    let message = "An error occurred while updating provider games.";
+
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Update Failed",
+                        text: message,
+                        confirmButtonText: "OK",
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary mt-2"
+                        }
+                    });
+                }
+            });
+        });
+    }
+    </script>
+
+

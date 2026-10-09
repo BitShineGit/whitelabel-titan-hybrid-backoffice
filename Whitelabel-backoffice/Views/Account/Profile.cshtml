@@ -1,0 +1,2175 @@
+﻿@using Whitelabel_backoffice.Database
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Profile";
+    var agent = ViewData["Agent"] as Agent;
+    var currency = ViewData["Currency"] as Currency;
+    var identityUser = ViewData["IdentityUser"] as IdentityUser;
+
+    var twoFactorEnabled =
+        identityUser?.TwoFactorEnabled ?? false;
+}
+<title>Profile</title>
+<link href="/assets/css/sweetalert.css" rel="stylesheet" type="text/css" />
+
+<!-- ============================================================= -->
+<!-- DATATABLES -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+
+
+<!-- ============================================================= -->
+<!-- SELECT2 -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+
+<link href="~/assets/plugins/select2/css/select2.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+
+<!-- ============================================================= -->
+<!-- MOMENT / DATE RANGE PICKER -->
+<!-- ============================================================= -->
+
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+
+<link href="~/assets/plugins/datatables/responsive.bootstrap5.min.css"
+      rel="stylesheet"
+      type="text/css" />
+<link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+
+<style>
+    .content-page {
+        padding: 0rem 1.25rem 0rem 1.25rem;
+    }
+</style>
+
+<!-- =========================================================
+     PAGE TITLE
+========================================================= -->
+
+<div class="page-title-head d-flex align-items-center">
+    
+    <div class="flex-grow-1" style="margin-left:15px;">
+
+        <h4 class="page-main-title m-0">
+            Account
+        </h4>
+
+    </div>
+
+
+    <div class="text-end">
+
+        <ol class="breadcrumb m-0 py-0">
+
+            <li class="breadcrumb-item">
+                                            
+                <a href="~/dashboard/index">
+                    Inspinia
+                </a>
+
+            </li>
+
+
+            <li class="breadcrumb-item active">
+                Account
+            </li>
+
+        </ol>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ACCOUNT CARD
+========================================================= -->
+
+<div class="row">
+
+    <div class="col-xxl-6"
+         style="width:100%">
+
+
+        <div class="card">
+
+
+            <!-- =================================================
+                 CARD HEADER
+            ================================================= -->
+
+            <div class="card-header card-tabs d-flex align-items-center">
+
+
+                <div class="flex-grow-1">
+
+                    <h4 class="card-title">
+                        Account
+                    </h4>
+
+                </div>
+
+
+                <ul class="nav nav-tabs nav-justified card-header-tabs nav-bordered"
+                    role="tablist">
+
+
+                    <!-- PROFILE -->
+
+                    <li class="nav-item"
+                        role="presentation">
+
+
+                        <a href="#account-information"
+                           data-bs-toggle="tab"
+                           class="nav-link active"
+                           role="tab">
+
+
+                            <i class="ti ti-user-circle fs-22 d-md-none d-block"></i>
+
+
+                            <span class="d-none d-md-block">
+                                Profile
+                            </span>
+
+
+                        </a>
+
+
+                    </li>
+
+
+                    <!-- CHANGE PASSWORD -->
+
+                    <li class="nav-item"
+                        role="presentation">
+
+
+                        <a href="#change-password"
+                           data-bs-toggle="tab"
+                           class="nav-link"
+                           role="tab">
+
+
+                            <i class="ti ti-lock fs-22 d-md-none d-block"></i>
+
+
+                            <span class="d-none d-md-block">
+                                Password
+                            </span>
+
+
+                        </a>
+
+
+                    </li>
+
+
+                </ul>
+
+
+            </div>
+
+
+
+
+            <!-- =================================================
+                 CARD BODY
+            ================================================= -->
+
+            <div class="card-body">
+
+
+                <div class="tab-content">
+
+
+
+                    <!-- =================================================
+                         PROFILE TAB
+                    ================================================= -->
+
+                    <div class="tab-pane active"
+                         id="account-information"
+                         role="tabpanel">
+
+
+                        <div class="row g-3">
+
+
+
+                            <!-- =================================================
+                                 ID
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    ID
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.Id" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 LOGIN NAME
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Agent Login Name
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.AgentLoginName" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 BALANCE
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Balance
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.Balance.ToString("0.00")" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 LAST LOGIN
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Last Login At
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.LastLoginAt.ToString("yyyy-MM-dd HH:mm:ss")" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 LOGIN IP
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Login IP
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.LoginIp" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 PASSWORD
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+
+                                <input type="password"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.Password" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 NICK NAME
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Nick Name
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@agent?.NickName" />
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 CURRENCY
+                            ================================================= -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Currency
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       disabled
+                                       value="@currency?.CurrencyCode" />
+
+                            </div>
+
+
+
+                            <!-- TIME ZONE -->
+
+                            <div class="col-md-6">
+
+                                <label for="TimeZone" class="form-label">
+                                    Time Zone
+                                </label>
+
+                                <select id="TimeZone"
+                                        class="form-control select2"
+                                        data-toggle="select2">
+                                    @foreach (var timeZone in TimeZoneInfo.GetSystemTimeZones())
+                                    {
+                                        var offset = timeZone.BaseUtcOffset;
+
+
+                                        var offsetText =
+                                        $"{(offset < TimeSpan.Zero ? "-" : "+")}{offset.Duration():hh\\:mm}";
+
+
+                                        var displayText =
+                                        $"{timeZone.Id} {offsetText}";
+
+
+                                        <option value="@offsetText"
+                                                selected="@(offsetText == agent?.TimeZone)">
+                                            @displayText
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 TWO-FACTOR AUTHENTICATION
+                            ================================================= -->
+
+                            <div class="col-12 mt-3">
+
+                                <div class="card border">
+
+                                    <div class="card-header d-flex align-items-center">
+
+                                        <div class="flex-grow-1">
+
+                                            <h5 class="card-title mb-1">
+                                                Two-Factor Authentication
+                                            </h5>
+
+                                            <p class="text-muted mb-0">
+                                                Add an extra layer of security to your account.
+                                            </p>
+
+                                        </div>
+
+                                        <div>
+
+                                            @if (twoFactorEnabled)
+                                            {
+                                                <span id="twoFactorStatus"
+                                                      class="badge bg-success">
+                                                    Enabled
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span id="twoFactorStatus"
+                                                      class="badge bg-danger">
+                                                    Disabled
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="card-body">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <div>
+
+                                                <h6 class="mb-1">
+                                                    Authenticator App
+                                                </h6>
+
+                                                <p class="text-muted mb-0">
+                                                    Use an authenticator app to securely verify
+                                                    your identity when signing in.
+                                                </p>
+
+                                            </div>
+
+
+                                            <div class="ms-3">
+
+                                                @if (twoFactorEnabled)
+                                                {
+                                                    <button type="button"
+                                                            id="twoFactorButton"
+                                                            class="btn btn-danger"
+                                                            data-enabled="true">
+
+                                                        <i class="ti ti-shield-off me-1"></i>
+                                                        Disable 2FA
+
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button"
+                                                            id="twoFactorButton"
+                                                            class="btn btn-primary"
+                                                            data-enabled="false">
+
+                                                        <i class="ti ti-shield-lock me-1"></i>
+                                                        Enable 2FA
+
+                                                    </button>
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- =================================================
+                         CHANGE PASSWORD TAB
+                    ================================================= -->
+
+                    <div class="tab-pane"
+                         id="change-password"
+                         role="tabpanel">
+
+
+                        <form id="changePasswordForm">
+
+
+                            <!-- =================================================
+                                 CURRENT PASSWORD
+                            ================================================= -->
+
+                            <div class="mb-3">
+
+
+                                <label class="form-label">
+                                    Current Password
+                                </label>
+
+
+                                <div class="input-group">
+
+
+                                    <input type="password"
+                                           id="currentPassword"
+                                           class="form-control"
+                                           placeholder="Enter your password">
+
+
+                                    <div class="input-group-text password-eye"
+                                         data-password="false">
+
+
+                                        <i class="ti ti-eye d-block eye-icon"
+                                           data-pass="show">
+                                        </i>
+
+
+                                        <i class="ti ti-eye-off d-none eye-icon"
+                                           data-pass="hide">
+                                        </i>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <span class="text-danger validation-error"
+                                      id="currentPasswordError">
+                                </span>
+
+
+                            </div>
+
+
+
+
+                            <!-- =================================================
+                                 NEW PASSWORD
+                            ================================================= -->
+
+                            <div class="mb-3">
+
+
+                                <label class="form-label">
+                                    New Password
+                                </label>
+
+
+                                <div class="input-group">
+
+
+                                    <input type="password"
+                                           id="newPassword"
+                                           class="form-control"
+                                           placeholder="Enter new password">
+
+
+                                    <div class="input-group-text password-eye"
+                                         data-password="false">
+
+
+                                        <i class="ti ti-eye d-block eye-icon"
+                                           data-pass="show">
+                                        </i>
+
+
+                                        <i class="ti ti-eye-off d-none eye-icon"
+                                           data-pass="hide">
+                                        </i>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <span class="text-danger validation-error"
+                                      id="newPasswordError">
+                                </span>
+
+
+                            </div>
+
+
+
+
+                            <!-- =================================================
+                                 CONFIRM PASSWORD
+                            ================================================= -->
+
+                            <div class="mb-3">
+
+
+                                <label class="form-label">
+                                    Confirm Password
+                                </label>
+
+
+                                <div class="input-group">
+
+
+                                    <input type="password"
+                                           id="confirmPassword"
+                                           class="form-control"
+                                           placeholder="Confirm password">
+
+
+                                    <div class="input-group-text password-eye"
+                                         data-password="false">
+
+
+                                        <i class="ti ti-eye d-block eye-icon"
+                                           data-pass="show">
+                                        </i>
+
+
+                                        <i class="ti ti-eye-off d-none eye-icon"
+                                           data-pass="hide">
+                                        </i>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <span class="text-danger validation-error"
+                                      id="confirmPasswordError">
+                                </span>
+
+
+                            </div>
+
+
+
+
+                            <!-- =================================================
+                                 CHANGE PASSWORD BUTTON
+                            ================================================= -->
+
+                            <div class="col-12">
+
+
+                                <button class="btn btn-primary"
+                                        type="submit">
+
+                                    Change Password
+
+                                </button>
+
+
+                            </div>
+
+
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SWEET ALERT
+========================================================= -->
+
+<script src="/assets/js/agent/sweetalert.js"></script>
+
+<script src="/assets/js/agent/sweetalert1.js"></script>
+
+<style>
+    .select2-selection__clear {
+        display: none !important;
+    }
+</style>
+
+<!-- =========================================================
+     PAGE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    $(document).ready(function () {
+
+        // =========================================================
+        // TWO-FACTOR AUTHENTICATION
+        // =========================================================
+
+        $("#twoFactorButton").on("click", function () {
+
+            const button =
+                $(this);
+
+            const isEnabled =
+                button.attr("data-enabled") === "true";
+
+
+            // =====================================================
+            // DISABLE
+            // =====================================================
+
+            if (isEnabled) {
+
+                Swal.fire({
+
+                    title: "Disable Two-Factor Authentication?",
+
+                    text:
+                        "Are you sure you want to disable 2FA for your account?",
+
+                    icon: "warning",
+
+                    showCancelButton: true,
+
+                    showCloseButton: false,
+
+                    confirmButtonText: "Yes, Disable",
+
+                    cancelButtonText: "Cancel",
+
+                    buttonsStyling: false,
+
+                    customClass: {
+                        confirmButton: "btn btn-danger me-2 mt-2",
+                        cancelButton: "btn btn-primary mt-2"
+                    }
+
+                }).then(function (result) {
+
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+
+
+                    // =====================================================
+                    // ENTER AUTHENTICATOR CODE
+                    // =====================================================
+
+                    Swal.fire({
+
+                        title: "Verify Authentication",
+
+                        text:
+                            "Enter the 6-digit code from your authenticator app.",
+
+                        input: "text",
+
+                        inputPlaceholder: "Enter 6-digit code",
+
+                        inputAttributes: {
+                            maxlength: 6,
+                            inputmode: "numeric",
+                            autocomplete: "one-time-code"
+                        },
+
+                        showCancelButton: true,
+
+                        showCloseButton: false,
+
+                        confirmButtonText: "Verify & Disable",
+
+                        cancelButtonText: "Cancel",
+
+                        buttonsStyling: false,
+
+                        customClass: {
+                            confirmButton: "btn btn-danger me-2 mt-2",
+                            cancelButton: "btn btn-primary mt-2"
+                        },
+
+                        inputValidator: function (value) {
+
+                            if (!value) {
+                                return "Please enter the authentication code.";
+                            }
+
+                            value = value
+                                .replace(/\s/g, "")
+                                .replace(/-/g, "");
+
+                            if (!/^\d{6}$/.test(value)) {
+                                return "Please enter a valid 6-digit code.";
+                            }
+
+                            return null;
+                        }
+
+                    }).then(function (codeResult) {
+
+                        if (!codeResult.isConfirmed) {
+                            return;
+                        }
+
+
+                        const code =
+                            codeResult.value
+                                .replace(/\s/g, "")
+                                .replace(/-/g, "");
+
+
+                        // =================================================
+                        // LOADING
+                        // =================================================
+
+                        Swal.fire({
+
+                            title: "Disabling 2FA...",
+
+                            text: "Please wait.",
+
+                            allowOutsideClick: false,
+
+                            allowEscapeKey: false,
+
+                            showConfirmButton: false,
+
+                            showCloseButton: false,
+
+                            didOpen: function () {
+
+                                Swal.showLoading();
+
+                            }
+
+                        });
+
+
+                        // =================================================
+                        // AJAX
+                        // =================================================
+
+                        $.ajax({
+
+                            url: "/Account/DisableTwoFactor",
+
+                            type: "POST",
+
+                            data: {
+                                code: code
+                            },
+
+                            success: function (res) {
+
+                                if (res.success) {
+
+                                    Swal.fire({
+
+                                        icon: "success",
+
+                                        title: "2FA Disabled",
+
+                                        text:
+                                            "Two-factor authentication has been disabled successfully.",
+
+                                        showConfirmButton: false,
+
+                                        showCloseButton: false,
+
+                                        timer: 1800
+
+                                    });
+
+
+                                    // =====================================
+                                    // UPDATE STATUS
+                                    // =====================================
+
+                                    $("#twoFactorStatus")
+                                        .removeClass("bg-success")
+                                        .addClass("bg-danger")
+                                        .text("Disabled");
+
+
+                                    // =====================================
+                                    // UPDATE BUTTON
+                                    // =====================================
+
+                                    button
+                                        .attr("data-enabled", "false")
+                                        .removeClass("btn-danger")
+                                        .addClass("btn-primary")
+                                        .html(
+                                            '<i class="ti ti-shield-lock me-1"></i> Enable 2FA'
+                                        );
+
+                                }
+                                else {
+
+                                    Swal.fire({
+
+                                        icon: "error",
+
+                                        title: "Disable Failed",
+
+                                        text:
+                                            res.msg ||
+                                            "Unable to disable 2FA.",
+
+                                        showCloseButton: false,
+
+                                        confirmButtonText: "OK",
+
+                                        buttonsStyling: false,
+
+                                        customClass: {
+                                            confirmButton:
+                                                "btn btn-primary mt-2"
+                                        }
+
+                                    });
+
+                                }
+
+                            },
+
+                            error: function () {
+
+                                Swal.fire({
+
+                                    icon: "error",
+
+                                    title: "Error",
+
+                                    text:
+                                        "An error occurred while disabling 2FA.",
+
+                                    showCloseButton: false,
+
+                                    confirmButtonText: "OK",
+
+                                    buttonsStyling: false,
+
+                                    customClass: {
+                                        confirmButton:
+                                            "btn btn-primary mt-2"
+                                    }
+
+                                });
+
+                            }
+
+                        });
+
+                    });
+
+                });
+
+                return;
+            }
+
+
+            // =====================================================
+            // ENABLE CONFIRMATION
+            // =====================================================
+
+            Swal.fire({
+
+                title:
+                    "Enable Two-Factor Authentication?",
+
+                text:
+                    "You will need an authenticator app to complete the setup.",
+
+                icon:
+                    "question",
+
+                showCancelButton:
+                    true,
+
+                showCloseButton:
+                    false,
+
+                confirmButtonText:
+                    "Yes, Enable",
+
+                cancelButtonText:
+                    "Cancel",
+
+                buttonsStyling:
+                    false,
+
+                customClass:
+                {
+                    confirmButton:
+                        "btn btn-primary me-2 mt-2",
+
+                    cancelButton:
+                        "btn btn-danger mt-2"
+                }
+
+            }).then(function (result) {
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+
+
+                // =================================================
+                // LOADING
+                // =================================================
+
+                Swal.fire({
+
+                    title:
+                        "Preparing 2FA...",
+
+                    text:
+                        "Please wait.",
+
+                    allowOutsideClick:
+                        false,
+
+                    allowEscapeKey:
+                        false,
+
+                    showConfirmButton:
+                        false,
+
+                    showCloseButton:
+                        false,
+
+                    didOpen:
+                        function () {
+
+                            Swal.showLoading();
+
+                        }
+
+                });
+
+
+                // =================================================
+                // GET QR CODE
+                // =================================================
+
+                $.ajax({
+
+                    url:
+                        "/Account/SetupTwoFactor",
+
+                    type:
+                        "POST",
+
+                    success:
+                        function (res) {
+
+                            if (!res.success) {
+
+                                Swal.fire({
+
+                                    icon:
+                                        "error",
+
+                                    title:
+                                        "Setup Failed",
+
+                                    text:
+                                        res.msg ||
+                                        "Unable to setup 2FA.",
+
+                                    showCloseButton:
+                                        false,
+
+                                    buttonsStyling:
+                                        false,
+
+                                    confirmButtonText:
+                                        "OK",
+
+                                    customClass:
+                                    {
+                                        confirmButton:
+                                            "btn btn-primary mt-2"
+                                    }
+
+                                });
+
+                                return;
+                            }
+
+
+                            // =====================================
+                            // SHOW QR CODE
+                            // =====================================
+
+                            Swal.fire({
+
+                                title:
+                                    "Set Up Authenticator",
+
+                                html:
+                                                                `
+                                    <div class="text-center">
+
+                                        <p class="text-muted mb-3">
+                                            Scan this QR code with your
+                                            authenticator app.
+                                        </p>
+
+                                        <div class="mb-3">
+                                            <img
+                                                id="enableTwoFactorQrCode"
+                                                src="${res.qrCode}"
+                                                style="
+                                                    width:220px;
+                                                    height:220px;
+                                                    border-radius:8px;
+                                                "
+                                            />
+                                        </div>
+
+                                        <p class="text-muted mb-2">
+                                            Or enter this setup key manually:
+                                        </p>
+
+                                        <div class="mb-3">
+                                            <code
+                                                id="enableTwoFactorSecret"
+                                                style="
+                                                    user-select:text;
+                                                    word-break:break-all;
+                                                ">
+                                                ${res.secret}
+                                            </code>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            id="regenerateTwoFactorQr"
+                                            class="btn btn-outline-primary btn-sm mb-3">
+                                            <i class="ti ti-refresh me-1"></i>
+                                            Generate New QR Code
+                                        </button>
+
+                                        <input
+                                            type="text"
+                                            id="enableTwoFactorCode"
+                                            class="form-control text-center"
+                                            maxlength="6"
+                                            inputmode="numeric"
+                                            autocomplete="one-time-code"
+                                            placeholder="Enter 6-digit code"
+                                        />
+
+                                        <div
+                                            id="enableTwoFactorError"
+                                            class="text-danger mt-2"
+                                            style="display:none;">
+                                        </div>
+
+                                    </div>
+                                    `,
+
+                                showCancelButton:
+                                    true,
+
+                                showCloseButton:
+                                    false,
+
+                                confirmButtonText:
+                                    "Verify & Enable",
+
+                                cancelButtonText:
+                                    "Cancel",
+
+                                buttonsStyling:
+                                    false,
+
+                                customClass:
+                                {
+                                    confirmButton:
+                                        "btn btn-primary me-2 mt-2",
+
+                                    cancelButton:
+                                        "btn btn-danger mt-2"
+                                },
+
+                                didOpen:
+                                    function () {
+
+                                        $("#enableTwoFactorCode")
+                                            .focus();
+
+
+                                        // =====================================
+                                        // GENERATE NEW QR CODE
+                                        // =====================================
+
+                                        $("#regenerateTwoFactorQr").on(
+                                            "click",
+                                            function () {
+
+                                                const regenerateButton =
+                                                    $(this);
+
+                                                regenerateButton
+                                                    .prop("disabled", true)
+                                                    .html(
+                                                        '<i class="ti ti-loader-2 me-1"></i> Generating...'
+                                                    );
+
+
+                                                $.ajax({
+
+                                                    url:
+                                                        "/Account/SetupTwoFactor",
+
+                                                    type:
+                                                        "POST",
+
+                                                    success:
+                                                        function (newRes) {
+
+                                                            if (!newRes.success) {
+
+                                                                Swal.fire({
+
+                                                                    icon:
+                                                                        "error",
+
+                                                                    title:
+                                                                        "Unable to Generate",
+
+                                                                    text:
+                                                                        newRes.msg ||
+                                                                        "Unable to generate a new QR code.",
+
+                                                                    showCloseButton:
+                                                                        false,
+
+                                                                    buttonsStyling:
+                                                                        false,
+
+                                                                    confirmButtonText:
+                                                                        "OK",
+
+                                                                    customClass:
+                                                                    {
+                                                                        confirmButton:
+                                                                            "btn btn-primary mt-2"
+                                                                    }
+
+                                                                });
+
+                                                                return;
+                                                            }
+
+
+                                                            // =========================
+                                                            // UPDATE QR CODE
+                                                            // =========================
+
+                                                            $("#enableTwoFactorQrCode")
+                                                                .attr(
+                                                                    "src",
+                                                                    newRes.qrCode
+                                                                );
+
+
+                                                            // =========================
+                                                            // UPDATE SECRET
+                                                            // =========================
+
+                                                            $("#enableTwoFactorSecret")
+                                                                .text(
+                                                                    newRes.secret
+                                                                );
+
+
+                                                            // =========================
+                                                            // CLEAR OLD CODE
+                                                            // =========================
+
+                                                            $("#enableTwoFactorCode")
+                                                                .val("")
+                                                                .focus();
+
+
+                                                            // =========================
+                                                            // CLEAR ERROR
+                                                            // =========================
+
+                                                            $("#enableTwoFactorError")
+                                                                .hide()
+                                                                .text("");
+
+                                                        },
+
+                                                    error:
+                                                        function () {
+
+                                                            Swal.fire({
+
+                                                                icon:
+                                                                    "error",
+
+                                                                title:
+                                                                    "Error",
+
+                                                                text:
+                                                                    "Unable to generate a new QR code.",
+
+                                                                showCloseButton:
+                                                                    false,
+
+                                                                confirmButtonText:
+                                                                    "OK",
+
+                                                                buttonsStyling:
+                                                                    false,
+
+                                                                customClass:
+                                                                {
+                                                                    confirmButton:
+                                                                        "btn btn-primary mt-2"
+                                                                }
+
+                                                            });
+
+                                                        },
+
+                                                    complete:
+                                                        function () {
+
+                                                            regenerateButton
+                                                                .prop("disabled", false)
+                                                                .html(
+                                                                    '<i class="ti ti-refresh me-1"></i> Generate New QR Code'
+                                                                );
+
+                                                        }
+
+                                                });
+
+                                            }
+                                        );
+
+                                    },
+
+                                preConfirm:
+                                    function () {
+
+                                        const code =
+                                            $("#enableTwoFactorCode")
+                                                .val()
+                                                .trim();
+
+
+                                        if (!/^\d{6}$/.test(code)) {
+
+                                            $("#enableTwoFactorError")
+                                                .text(
+                                                    "Please enter a valid 6-digit code."
+                                                )
+                                                .show();
+
+                                            return false;
+                                        }
+
+
+                                        return code;
+                                    }
+
+                            }).then(function (result) {
+
+                                if (!result.isConfirmed) {
+                                    return;
+                                }
+
+
+                                // =================================
+                                // VERIFY CODE
+                                // =================================
+
+                                const code =
+                                    result.value;
+
+
+                                Swal.fire({
+
+                                    title:
+                                        "Verifying...",
+
+                                    text:
+                                        "Please wait.",
+
+                                    allowOutsideClick:
+                                        false,
+
+                                    allowEscapeKey:
+                                        false,
+
+                                    showConfirmButton:
+                                        false,
+
+                                    showCloseButton:
+                                        false,
+
+                                    didOpen:
+                                        function () {
+
+                                            Swal.showLoading();
+
+                                        }
+
+                                });
+
+
+                                $.ajax({
+
+                                    url:
+                                        "/Account/EnableTwoFactor",
+
+                                    type:
+                                        "POST",
+
+                                    data:
+                                    {
+                                        code:
+                                            code
+                                    },
+
+                                    success:
+                                        function (verifyRes) {
+
+                                            if (verifyRes.success) {
+
+                                                Swal.fire({
+
+                                                    icon:
+                                                        "success",
+
+                                                    title:
+                                                        "2FA Enabled",
+
+                                                    text:
+                                                        "Two-factor authentication has been enabled successfully.",
+
+                                                    showConfirmButton:
+                                                        false,
+
+                                                    showCloseButton:
+                                                        false,
+
+                                                    timer:
+                                                        1800
+
+                                                });
+
+
+                                                // =================
+                                                // UPDATE UI
+                                                // =================
+
+                                                $("#twoFactorStatus")
+                                                    .removeClass("bg-danger")
+                                                    .addClass("bg-success")
+                                                    .text("Enabled");
+
+
+                                                button
+                                                    .attr(
+                                                        "data-enabled",
+                                                        "true"
+                                                    )
+                                                    .removeClass("btn-primary")
+                                                    .addClass("btn-danger")
+                                                    .html(
+                                                        '<i class="ti ti-shield-off me-1"></i> Disable 2FA'
+                                                    );
+
+                                            }
+                                            else {
+
+                                                Swal.fire({
+
+                                                    icon:
+                                                        "error",
+
+                                                    title:
+                                                        "Verification Failed",
+
+                                                    text:
+                                                        verifyRes.msg ||
+                                                        "Invalid authentication code.",
+
+                                                    showCloseButton:
+                                                        false,
+
+                                                    confirmButtonText:
+                                                        "OK",
+
+                                                    buttonsStyling:
+                                                        false,
+
+                                                    customClass:
+                                                    {
+                                                        confirmButton:
+                                                            "btn btn-primary mt-2"
+                                                    }
+
+                                                });
+
+                                            }
+
+                                        },
+
+                                    error:
+                                        function () {
+
+                                            Swal.fire({
+
+                                                icon:
+                                                    "error",
+
+                                                title:
+                                                    "Error",
+
+                                                text:
+                                                    "An error occurred while enabling 2FA.",
+
+                                                showCloseButton:
+                                                    false,
+
+                                                confirmButtonText:
+                                                    "OK",
+
+                                                buttonsStyling:
+                                                    false,
+
+                                                customClass:
+                                                {
+                                                    confirmButton:
+                                                        "btn btn-primary mt-2"
+                                                }
+
+                                            });
+
+                                        }
+
+                                });
+
+                            });
+
+                        },
+
+                    error:
+                        function () {
+
+                            Swal.fire({
+
+                                icon:
+                                    "error",
+
+                                title:
+                                    "Error",
+
+                                text:
+                                    "Unable to setup two-factor authentication.",
+
+                                showCloseButton:
+                                    false,
+
+                                confirmButtonText:
+                                    "OK",
+
+                                buttonsStyling:
+                                    false,
+
+                                customClass:
+                                {
+                                    confirmButton:
+                                        "btn btn-primary mt-2"
+                                }
+
+                            });
+
+                        }
+
+                });
+
+            });
+
+        });
+        // =========================================================
+        // TIME ZONE SELECT2
+        // =========================================================
+
+        $("#TimeZone").select2({
+
+            width: "100%",
+
+            placeholder: "Search Time Zone",
+
+            allowClear: true,
+
+            minimumResultsForSearch: 0
+
+        });
+
+
+
+        // =========================================================
+        // TIME ZONE UPDATE
+        // =========================================================
+
+        let previousTimeZone = $("#TimeZone").val();
+        $("#TimeZone").on("change", function () {
+            const select = $(this);
+            const newTimeZone = select.val();
+            if (!newTimeZone) {
+                select.val(previousTimeZone).trigger("change.select2");
+                return;
+            }
+            Swal.fire({
+                title: "Change Time Zone?",
+                text:
+                    "Are you sure you want to change your time zone to " +
+                    newTimeZone +
+                    "?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Change It",
+                cancelButtonText: "Cancel",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: "btn btn-primary mt-2 me-2",
+                    cancelButton: "btn btn-secondary mt-2",
+                },
+            }).then(function (result) {
+                if (!result.isConfirmed) {
+                    select.val(previousTimeZone).trigger("change.select2");
+                    return;
+                }
+                $.ajax({
+                    url: "/Account/UpdateTimeZone",
+                    type: "POST",
+                    data: { timeZone: newTimeZone },
+                    success: function (res) {
+                        if (res.success) {
+                            previousTimeZone = newTimeZone;
+                            Swal.fire({
+                                icon: "success",
+                                title: "Time Zone Updated",
+                                text: "Your time zone has been updated successfully.",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        } else {
+                            select.val(previousTimeZone).trigger("change.select2");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Update Failed",
+                                text: res.msg || "Unable to update time zone.",
+                                confirmButtonText: "OK",
+                                buttonsStyling: false,
+                                customClass: { confirmButton: "btn btn-primary mt-2" },
+                            });
+                        }
+                    },
+                    error: function () {
+                        select.val(previousTimeZone).trigger("change.select2");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred while updating the time zone.",
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: { confirmButton: "btn btn-primary mt-2" },
+                        });
+                    },
+                });
+            });
+        });
+
+        // =========================================================
+        // PASSWORD SHOW / HIDE
+        // =========================================================
+
+        $(".password-eye").on("click", function () {
+
+
+            var input =
+                $(this)
+                    .closest(".input-group")
+                    .find("input");
+
+
+            var showIcon =
+                $(this)
+                    .find('[data-pass="show"]');
+
+
+            var hideIcon =
+                $(this)
+                    .find('[data-pass="hide"]');
+
+
+            if (input.attr("type") === "password") {
+
+
+                input.attr(
+                    "type",
+                    "text"
+                );
+
+
+                showIcon
+                    .removeClass("d-block")
+                    .addClass("d-none");
+
+
+                hideIcon
+                    .removeClass("d-none")
+                    .addClass("d-block");
+
+
+            }
+            else {
+
+
+                input.attr(
+                    "type",
+                    "password"
+                );
+
+
+                showIcon
+                    .removeClass("d-none")
+                    .addClass("d-block");
+
+
+                hideIcon
+                    .removeClass("d-block")
+                    .addClass("d-none");
+
+
+            }
+
+        });
+
+
+
+        // =========================================================
+        // CHANGE PASSWORD SUBMIT
+        // =========================================================
+
+        $("#changePasswordForm").on(
+            "submit",
+            function (e) {
+
+
+                e.preventDefault();
+
+
+                // =================================================
+                // CLEAR PREVIOUS ERRORS
+                // =================================================
+
+                $(".validation-error")
+                    .text("");
+
+
+                let currentPassword =
+                    $("#currentPassword")
+                        .val()
+                        .trim();
+
+
+                let newPassword =
+                    $("#newPassword")
+                        .val()
+                        .trim();
+
+
+                let confirmPassword =
+                    $("#confirmPassword")
+                        .val()
+                        .trim();
+
+
+                let valid = true;
+
+
+
+                // =================================================
+                // CURRENT PASSWORD
+                // =================================================
+
+                if (currentPassword === "") {
+
+                    $("#currentPasswordError")
+                        .text(
+                            "Current password is required."
+                        );
+
+                    valid = false;
+
+                }
+
+
+
+                // =================================================
+                // NEW PASSWORD
+                // =================================================
+
+                let passwordRegex =
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,16}$/;
+
+
+                if (newPassword === "") {
+
+                    $("#newPasswordError")
+                        .text(
+                            "New password is required."
+                        );
+
+                    valid = false;
+
+                }
+                else if (!passwordRegex.test(newPassword)) {
+
+                    $("#newPasswordError")
+                        .text(
+                            "Password must be 8-16 characters and contain uppercase, lowercase letters and a number."
+                        );
+
+                    valid = false;
+
+                }
+
+
+
+                // =================================================
+                // CONFIRM PASSWORD
+                // =================================================
+
+                if (confirmPassword === "") {
+
+                    $("#confirmPasswordError")
+                        .text(
+                            "Confirm password is required."
+                        );
+
+                    valid = false;
+
+                }
+                else if (newPassword !== confirmPassword) {
+
+                    $("#confirmPasswordError")
+                        .text(
+                            "Confirm password doesn't match."
+                        );
+
+                    valid = false;
+
+                }
+
+
+
+                // =================================================
+                // STOP IF INVALID
+                // =================================================
+
+                if (!valid) {
+
+                    return;
+
+                }
+
+
+
+                // =================================================
+                // SWEET ALERT CONFIRM
+                // =================================================
+
+                Swal.fire({
+
+                    title: "Change Password?",
+
+                    text: "Are you sure you want to change your password?",
+
+                    icon: "question",
+
+                    showCancelButton: true,
+
+                    showCloseButton: false,
+
+                    confirmButtonText: "Yes, Change",
+
+                    cancelButtonText: "Cancel",
+
+                    buttonsStyling: false,
+
+                    customClass: {
+
+                        confirmButton: "btn btn-primary me-2 mt-2",
+
+                        cancelButton: "btn btn-danger mt-2"
+
+                    }
+
+                })
+                    .then(function (result) {
+
+
+                        if (!result.isConfirmed) {
+
+                            return;
+
+                        }
+
+
+
+                        // =================================================
+                        // LOADING
+                        // =================================================
+
+                        Swal.fire({
+
+                            title:
+                                "Updating...",
+
+                            text:
+                                "Please wait while your password is being changed.",
+
+                            allowOutsideClick:
+                                false,
+
+                            allowEscapeKey:
+                                false,
+
+                            showConfirmButton:
+                                false,
+
+                            didOpen:
+                                function () {
+
+                                    Swal.showLoading();
+
+                                }
+
+                        });
+
+
+
+                        // =================================================
+                        // AJAX
+                        // =================================================
+
+                        $.ajax({
+
+                            url:
+                                "/Account/ChangePassword",
+
+                            type:
+                                "POST",
+
+                            data:
+                            {
+
+                                CurrentPassword:
+                                    currentPassword,
+
+                                NewPassword:
+                                    newPassword,
+
+                                ConfirmPassword:
+                                    confirmPassword
+
+                            },
+
+
+                            // =================================================
+                            // SUCCESS
+                            // =================================================
+
+                            success:
+                                function (res) {
+
+
+                                    if (res.success) {
+
+
+                                        Swal.fire({
+
+                                            icon:
+                                                "success",
+
+                                            title:
+                                                "Success!",
+
+                                            text:
+                                                "Password changed successfully.",
+
+                                            showConfirmButton:
+                                                false,
+
+                                            timer:
+                                                1500,
+
+                                            buttonsStyling:
+                                                false
+
+                                        });
+
+
+                                        $("#changePasswordForm")[0]
+                                            .reset();
+
+
+                                    }
+                                    else {
+
+
+                                        Swal.fire({
+
+                                            icon:
+                                                "error",
+
+                                            title:
+                                                "Update Failed",
+
+                                            text:
+                                                res.msg ||
+                                                "Unable to change password.",
+
+                                            confirmButtonText:
+                                                "OK",
+
+                                            buttonsStyling:
+                                                false,
+
+                                            customClass:
+                                            {
+
+                                                confirmButton:
+                                                    "btn btn-primary mt-2"
+
+                                            }
+
+                                        });
+
+
+
+                                        if (res.errorPassword) {
+
+                                            $("#currentPasswordError")
+                                                .text(
+                                                    res.errorPassword
+                                                );
+
+                                        }
+
+
+
+                                        if (res.errorConfirmPassword) {
+
+                                            $("#confirmPasswordError")
+                                                .text(
+                                                    res.errorConfirmPassword
+                                                );
+
+                                        }
+
+                                    }
+
+                                },
+
+
+                            // =================================================
+                            // ERROR
+                            // =================================================
+
+                            error:
+                                function () {
+
+
+                                    Swal.fire({
+
+                                        icon:
+                                            "error",
+
+                                        title:
+                                            "Error",
+
+                                        text:
+                                            "An error occurred while changing your password.",
+
+                                        confirmButtonText:
+                                            "OK",
+
+                                        buttonsStyling:
+                                            false,
+
+                                        customClass:
+                                        {
+
+                                            confirmButton:
+                                                "btn btn-primary mt-2"
+
+                                        }
+
+                                    });
+
+                                }
+
+                        });
+
+                    });
+
+            }
+
+        );
+
+    });
+
+  
+
+</script>
+
+
