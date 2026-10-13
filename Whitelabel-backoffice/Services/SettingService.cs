@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository;
+using Titan.HybridRepository.Database;
 
 namespace Whitelabel_backoffice.Services
 {

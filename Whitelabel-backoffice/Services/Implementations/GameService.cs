@@ -1,5 +1,5 @@
 ﻿using Whitelabel_backoffice.Constants.Enums;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Services.Exceptions;
 using Whitelabel_backoffice.Services.Interfaces;
 using Whitelabel_backoffice.Services.Messaging.IntegratedApi;
@@ -8,6 +8,7 @@ using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Security.Authentication;
 using System.Text;
+using Titan.HybridRepository;
 
 namespace Whitelabel_backoffice.Services.Implementations
 {

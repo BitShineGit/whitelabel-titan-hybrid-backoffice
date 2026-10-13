@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Whitelabel_backoffice.Models.ViewModels;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
@@ -11,6 +11,7 @@ using Whitelabel_backoffice.Services.Interfaces;
 using System.Globalization;
 using Azure.Core;
 using System.Security.Claims;
+using Titan.HybridRepository;
 
 namespace Whitelabel_backoffice.Controllers
 {

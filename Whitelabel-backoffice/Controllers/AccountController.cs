@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models;
 using Whitelabel_backoffice.Services.Interfaces;
 

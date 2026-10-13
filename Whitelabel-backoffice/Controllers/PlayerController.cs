@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models.Requests;
 using Whitelabel_backoffice.Services;
 

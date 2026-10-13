@@ -1,10 +1,11 @@
 ﻿using Whitelabel_backoffice.Constants.Enums;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models;
 using Whitelabel_backoffice.Services.Interfaces;
 using Whitelabel_backoffice.Services.Messaging.IntegratedApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Titan.HybridRepository;
 
 namespace Whitelabel_backoffice.Services.Implementations
 {
