@@ -163,7 +163,7 @@
                                             var value = row.GetValueOrDefault(column.Field);
 
                                             <td class="text-center">
-                                                @if (column.Field == "Ggxstatus")
+                                                @if (column.Field == "BoltStatus")
                                                 {
                                                     var status = Convert.ToInt32(value ?? 0);
 
@@ -178,7 +178,7 @@
                                                         @statusText
                                                     </span>
                                                 }
-                                                else if (column.Field == "GgxisNew")
+                                                else if (column.Field == "BoltIsNew")
                                                 {
                                                 var isNew = Convert.ToBoolean(value ?? false);
 
@@ -270,13 +270,13 @@
         const $selectedCount = $("#selectedGameCount");
         const $bulkSetting = $("#bulkGameSetting");
 
-        const apiCode = () => $apiSelector.val() || "ggx";
+        const apiCode = () => $apiSelector.val() || "bolt";
 
         const urls = {
             setSetting: "/System/SetAPIGameSetting",
             bulkSetting: "/System/SetBulkAPIGameSetting",
             updateSort: "/System/UpdateAPIGameSortNumber",
-            sync: "/System/SyncGgxGames"
+            sync: "/System/SyncBoltGames"
         };
 
         const toast = Swal.mixin({
@@ -635,7 +635,7 @@
             const apiCode = String($("#apiCodeSelector").val() || "").toLowerCase();
             const providerCode = String($("#providerCodeSelector").val() || "").trim();
 
-            if (apiCode !== "ggx") {
+            if (apiCode !== "bolt") {
                 notifyError("Game sync is currently supported only for GGX.");
                 return;
             }

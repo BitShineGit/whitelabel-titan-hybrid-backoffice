@@ -396,7 +396,7 @@ namespace Whitelabel_backoffice.Controllers
                 return Unauthorized();
             }
 
-            var providerCodeList = await _dbStorage.Context.Providers.Select(p => p.ProviderCode).ToListAsync();
+            var providerCodeList = await _dbStorage.Context.BoltProviders.Select(p => p).ToListAsync();
 
             var currentAgentOffset = await GetCurrentAgentTimeZoneOffsetAsync();
 
