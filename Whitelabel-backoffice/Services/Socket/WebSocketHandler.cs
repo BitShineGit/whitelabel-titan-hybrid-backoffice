@@ -18,49 +18,118 @@ public class WebSocketHandler
 
         var buffer = new byte[1024 * 4];
 
-        while (socket.State == WebSocketState.Open)
+
+        try
         {
-            var result = await socket.ReceiveAsync(buffer, CancellationToken.None);
-
-            if (result.MessageType == WebSocketMessageType.Text)
+            while (socket.State == WebSocketState.Open)
             {
-                var msgText = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                var result =
+                    await socket.ReceiveAsync(
+                        buffer,
+                        CancellationToken.None
+                    );
 
-                var message = JsonSerializer.Deserialize<Dictionary<string, string>>(msgText);
-                if (message != null && message.ContainsKey("type"))
+
+                if (result.MessageType == WebSocketMessageType.Text)
                 {
-                    if (message["type"] == "register")
+                    var msgText =
+                        Encoding.UTF8.GetString(
+                            buffer,
+                            0,
+                            result.Count
+                        );
+
+
+                    var message =
+                        JsonSerializer.Deserialize<Dictionary<string, string>>(msgText);
+
+
+
+                    if (message != null &&
+                       message["type"] == "register")
                     {
-                        string userId = message["userId"];
-                        _manager.AddUser(userId, socketId);
-                        Console.WriteLine($"User registered: {userId} -> {socketId}");
+                        _manager.AddUser(
+                            message["userId"],
+                            socketId
+                        );
                     }
+
+                }
+
+
+                if (result.MessageType ==
+                   WebSocketMessageType.Close)
+                {
+                    break;
                 }
             }
 
-
-
-            if (result.MessageType == WebSocketMessageType.Close)
-            {
-                await _manager.RemoveSocket(socketId);
-            }
-
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(
+                ex.Message
+            );
+        }
+        finally
+        {
+            await _manager.RemoveSocket(socketId);
         }
     }
 
-    public async Task SendToUserAsync(string userId, string message)
+    public async Task SendToUserAsync(
+        string userId,
+        string message)
     {
-        var socket = _manager.GetSocketByUserId(userId);
+
+        var socket =
+            _manager.GetSocketByUserId(userId);
+
+
+
         if (socket == null)
         {
-            Console.WriteLine("User doesn't exist.");
+
+            Console.WriteLine(
+                $"NO SOCKET FOR USER:{userId}"
+            );
+
             return;
+
         }
-        else
+
+
+
+        if (socket.State != WebSocketState.Open)
         {
-            var bytes = Encoding.UTF8.GetBytes(message);
-            await socket.SendAsync(bytes, WebSocketMessageType.Text, true, CancellationToken.None);
+
+            Console.WriteLine(
+                $"SOCKET CLOSED USER:{userId}"
+            );
+
+            return;
+
         }
+
+
+
+        var bytes =
+            Encoding.UTF8.GetBytes(message);
+
+
+
+        await socket.SendAsync(
+            bytes,
+            WebSocketMessageType.Text,
+            true,
+            CancellationToken.None
+        );
+
+
+
+        Console.WriteLine(
+            $"WITHDRAW SOCKET SENT USER:{userId}"
+        );
 
     }
 }

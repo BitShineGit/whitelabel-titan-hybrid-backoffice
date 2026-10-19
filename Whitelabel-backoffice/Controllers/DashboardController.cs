@@ -12,6 +12,8 @@ using System.Globalization;
 using Azure.Core;
 using System.Security.Claims;
 using Titan.HybridRepository;
+using System.Text.Json;
+using Whitelabel_backoffice.Services;
 
 namespace Whitelabel_backoffice.Controllers
 {
@@ -23,8 +25,11 @@ namespace Whitelabel_backoffice.Controllers
         private readonly IWhitelabelDBStorage _dbStorage;
         private readonly IConfiguration _configuration;
         private readonly IGameService _gameService;
-        private readonly AppSettings _appSetting;
         public Global.Logging.ILogger _logger;
+        private readonly WebSocketHandler _webSocketHandler;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ISettingService _settingService;
+        private readonly AppSettings _appSettings;
 
 
 
@@ -36,7 +41,11 @@ namespace Whitelabel_backoffice.Controllers
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
             IGameService gameService,
-            IOptions<AppSettings> appsettings
+            WebSocketHandler webSocketHandler,
+            IHttpClientFactory httpClientFactory,
+            ISettingService settingService,
+            IOptions<AppSettings> appSettings
+
         ) : base(lang)
         {
             _logger = logger;
@@ -45,130 +54,134 @@ namespace Whitelabel_backoffice.Controllers
             _signInManager = signInManager;
             _configuration = configuration;
             _gameService = gameService;
-            _appSetting = appsettings.Value;
+            _httpClientFactory = httpClientFactory;
+            _webSocketHandler = webSocketHandler;
+            _settingService = settingService;
+            _appSettings = appSettings.Value;
+
         }
 
-        public async Task<IActionResult> Index()
-        {
-            try
-            {
-                // =========================================================
-                // Resolve current agent + timezone offset
-                // =========================================================
+        //public async Task<IActionResult> Index()
+        //{
+        //    try
+        //    {
+        //        // =========================================================
+        //        // Resolve current agent + timezone offset
+        //        // =========================================================
 
-                var currentAgent = await GetCurrentAgentAsync();
+        //        var currentAgent = await GetCurrentAgentAsync();
 
-                if (currentAgent == null)
-                {
-                    return Unauthorized();
-                }
+        //        if (currentAgent == null)
+        //        {
+        //            return Unauthorized();
+        //        }
 
-                var offset = TryParseOffset(currentAgent.TimeZone, out var parsedOffset)
-                    ? parsedOffset
-                    : TimeSpan.Zero;
-
-
-                // =========================================================
-                // Compute "today" boundaries in the agent's local timezone,
-                // converted to UTC for querying (CreatedAt is stored UTC)
-                // =========================================================
-
-                var nowLocal = DateTime.UtcNow + offset;
-
-                var todayLocalStart = nowLocal.Date;
-
-                var todayLocalEnd = todayLocalStart.AddDays(1);
-
-                var startUtc = todayLocalStart - offset;
-
-                var endUtc = todayLocalEnd - offset;
+        //        var offset = TryParseOffset(currentAgent.TimeZone, out var parsedOffset)
+        //            ? parsedOffset
+        //            : TimeSpan.Zero;
 
 
-                // =========================================================
-                // Downline scope: this agent's own records + everything
-                // under their AgentPath (same pattern as GetBettingLogs)
-                // =========================================================
+        //        // =========================================================
+        //        // Compute "today" boundaries in the agent's local timezone,
+        //        // converted to UTC for querying (CreatedAt is stored UTC)
+        //        // =========================================================
 
-                var agentPathPrefix = currentAgent.AgentPath + currentAgent.Id + ".";
+        //        var nowLocal = DateTime.UtcNow + offset;
 
+        //        var todayLocalStart = nowLocal.Date;
 
-                // =========================================================
-                // Betting logs — total bet amount / total win amount
-                // Status == 1 (Success) only
-                // =========================================================
+        //        var todayLocalEnd = todayLocalStart.AddDays(1);
 
-                var bettingQuery = _dbStorage.Context.BettingLogs
-                    .AsNoTracking()
-                    .Where(x =>
-                        x.Status == 1 &&
-                        x.CreatedAt >= startUtc &&
-                        x.CreatedAt < endUtc &&
-                        (
-                            x.AgentPath.StartsWith(agentPathPrefix) ||
-                            x.AgentCode == currentAgent.AgentCode
-                        ));
+        //        var startUtc = todayLocalStart - offset;
 
-                // BetAmount is stored negative (see insert code), negate for display
-                var totalBetAmount =
-                    -(await bettingQuery.SumAsync(x => (decimal?)x.BetAmount) ?? 0m);
-
-                var totalWinAmount =
-                    await bettingQuery.SumAsync(x => (decimal?)x.WinAmount) ?? 0m;
+        //        var endUtc = todayLocalEnd - offset;
 
 
-                // =========================================================
-                // Finance logs — total deposit / total withdraw
-                // Status == 2 (Completed) only
-                //
-                // FinanceType: 0 = Self Deposit, 1 = Manual Deposit,
-                //              2 = Self Withdraw, 3 = Manual Withdraw
-                // =========================================================
+        //        // =========================================================
+        //        // Downline scope: this agent's own records + everything
+        //        // under their AgentPath (same pattern as GetBettingLogs)
+        //        // =========================================================
 
-                var depositTypes = new byte[] { 0, 1 };
+        //        var agentPathPrefix = currentAgent.AgentPath + currentAgent.Id + ".";
 
-                var withdrawTypes = new byte[] { 2, 3 };
 
-                var financeQuery = _dbStorage.Context.FinanceLogs
-                    .AsNoTracking()
-                    .Where(x =>
-                        x.Status == 2 &&
-                        x.CreatedAt >= startUtc &&
-                        x.CreatedAt < endUtc &&
-                        (
-                            x.TargetPath.StartsWith(agentPathPrefix) ||
-                            x.TargetCode == currentAgent.AgentCode
-                        ));
+        //        // =========================================================
+        //        // Betting logs — total bet amount / total win amount
+        //        // Status == 1 (Success) only
+        //        // =========================================================
 
-                var totalDepositAmount =
-                    await financeQuery
-                        .Where(x => depositTypes.Contains(x.FinanceType))
-                        .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+        //        var bettingQuery = _dbStorage.Context.BettingLogs
+        //            .AsNoTracking()
+        //            .Where(x =>
+        //                x.Status == 1 &&
+        //                x.CreatedAt >= startUtc &&
+        //                x.CreatedAt < endUtc &&
+        //                (
+        //                    x.AgentPath.StartsWith(agentPathPrefix) ||
+        //                    x.AgentCode == currentAgent.AgentCode
+        //                ));
 
-                var totalWithdrawAmount =
-                    await financeQuery
-                        .Where(x => withdrawTypes.Contains(x.FinanceType))
-                        .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+        //        // BetAmount is stored negative (see insert code), negate for display
+        //        var totalBetAmount =
+        //            -(await bettingQuery.SumAsync(x => (decimal?)x.BetAmount) ?? 0m);
 
-                ViewData["TotalBetAmount"] = totalBetAmount;
-                ViewData["TotalWinAmount"] = totalWinAmount;
-                ViewData["TotalDepositAmount"] = totalDepositAmount;
-                ViewData["TotalWithdrawAmount"] = totalWithdrawAmount;
+        //        var totalWinAmount =
+        //            await bettingQuery.SumAsync(x => (decimal?)x.WinAmount) ?? 0m;
 
-                // =========================================================
-                // Response
-                // =========================================================
 
-                return View();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"GetTodaySummary: {ex}");
+        //        // =========================================================
+        //        // Finance logs — total deposit / total withdraw
+        //        // Status == 2 (Completed) only
+        //        //
+        //        // FinanceType: 0 = Self Deposit, 1 = Manual Deposit,
+        //        //              2 = Self Withdraw, 3 = Manual Withdraw
+        //        // =========================================================
 
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new { error = "Failed to load today's summary." });
-            }
-        }
+        //        var depositTypes = new byte[] { 0, 1 };
+
+        //        var withdrawTypes = new byte[] { 2, 3 };
+
+        //        var financeQuery = _dbStorage.Context.FinanceLogs
+        //            .AsNoTracking()
+        //            .Where(x =>
+        //                x.Status == 2 &&
+        //                x.CreatedAt >= startUtc &&
+        //                x.CreatedAt < endUtc &&
+        //                (
+        //                    x.TargetPath.StartsWith(agentPathPrefix) ||
+        //                    x.TargetCode == currentAgent.AgentCode
+        //                ));
+
+        //        var totalDepositAmount =
+        //            await financeQuery
+        //                .Where(x => depositTypes.Contains(x.FinanceType))
+        //                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+
+        //        var totalWithdrawAmount =
+        //            await financeQuery
+        //                .Where(x => withdrawTypes.Contains(x.FinanceType))
+        //                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+
+        //        ViewData["TotalBetAmount"] = totalBetAmount;
+        //        ViewData["TotalWinAmount"] = totalWinAmount;
+        //        ViewData["TotalDepositAmount"] = totalDepositAmount;
+        //        ViewData["TotalWithdrawAmount"] = totalWithdrawAmount;
+
+        //        // =========================================================
+        //        // Response
+        //        // =========================================================
+
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Error($"GetTodaySummary: {ex}");
+
+        //        return StatusCode(
+        //            StatusCodes.Status500InternalServerError,
+        //            new { error = "Failed to load today's summary." });
+        //    }
+        //}
 
 
         // =========================================================
@@ -1899,12 +1912,27 @@ namespace Whitelabel_backoffice.Controllers
                                     x.Status,
 
                                 orderId =
-                                    x.OrderId
+                                    x.OrderId,
+                                userWalletId =
+                                    x.UserWalletId
                             }
                         )
                         .ToListAsync();
 
+                var walletIds =
+                    logs
+                        .Select(x => x.userWalletId)
+                        .Where(x => x > 0)
+                        .Distinct()
+                        .ToList();
 
+
+                var wallets =
+                    await _dbStorage.Context.UserWallets
+                        .Where(x => walletIds.Contains(x.Id))
+                        .ToDictionaryAsync(
+                            x => x.Id
+                        );
                 // =========================================================
                 // CONVERT CREATED AT:
                 //
@@ -1970,7 +1998,32 @@ namespace Whitelabel_backoffice.Controllers
                                 x.status,
 
                             orderId =
-                                x.orderId
+                                x.orderId,
+                            walletAddress =
+                                wallets.TryGetValue(
+                                    x.userWalletId,
+                                    out var walletInfo
+                                )
+                                    ? walletInfo.WalletAddress
+                                    : "",
+
+
+                            network =
+                                wallets.TryGetValue(
+                                    x.userWalletId,
+                                    out walletInfo
+                                )
+                                    ? walletInfo.Network
+                                    : "",
+
+
+                            currency =
+                                wallets.TryGetValue(
+                                    x.userWalletId,
+                                    out walletInfo
+                                )
+                                    ? walletInfo.Currency
+                                    : ""
                         }
                     )
                     .ToList();
@@ -1979,7 +2032,9 @@ namespace Whitelabel_backoffice.Controllers
                 // =========================================================
                 // DATATABLE RESPONSE
                 // =========================================================
-
+                _logger.Error(
+                        $"[DashboardController->GetFinanceLogs] Logs:{logs.Count} Wallets:{wallets.Count}"
+                    );
                 return Json(
                     new
                     {
@@ -2029,376 +2084,7 @@ namespace Whitelabel_backoffice.Controllers
         // This action does NOT directly change balances.
         // =============================================================
 
-        [HttpPost]
-        public async Task<IActionResult> CompleteFinanceLog(int id)
-        {
-            await using var transaction =
-                await _dbStorage.Context.Database
-                    .BeginTransactionAsync(
-                        System.Data.IsolationLevel.Serializable
-                    );
 
-            try
-            {
-                // ---------------------------------------------------------
-                // LOGGED-IN AGENT
-                // ---------------------------------------------------------
-
-                var loggedInAgent =
-                    await ResolveFinanceLogAgentAsync();
-
-                if (loggedInAgent == null)
-                {
-                    return Unauthorized(new
-                    {
-                        success = false,
-                        message = "Agent not found."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // FINANCE LOG + AGENT SECURITY SCOPE
-                // ---------------------------------------------------------
-
-                var financeLogQuery =
-                    _dbStorage.Context.FinanceLogs
-                        .AsQueryable();
-
-
-                financeLogQuery =
-                    ApplyFinanceLogAgentScope(
-                        financeLogQuery,
-                        loggedInAgent
-                    );
-
-
-                var financeLog =
-                    await financeLogQuery
-                        .FirstOrDefaultAsync(
-                            x => x.Id == id
-                        );
-
-
-                if (financeLog == null)
-                {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message = "Finance log not found."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // SELF WITHDRAW ONLY
-                // ---------------------------------------------------------
-
-                if (financeLog.FinanceType != 2)
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message =
-                            "Only Self Withdraw can be completed."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // PENDING ONLY
-                // ---------------------------------------------------------
-
-                if (financeLog.Status != 0)
-                {
-                    return Conflict(new
-                    {
-                        success = false,
-                        message =
-                            "This transaction is no longer Pending."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // PLAYER TARGET ONLY
-                //
-                // 0 = Player
-                // 1 = Agent
-                // ---------------------------------------------------------
-
-                if (financeLog.TargetAccountType != 0)
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message =
-                            "Self Withdraw target is not a Player."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // AMOUNT
-                // ---------------------------------------------------------
-
-                var amount =
-                    financeLog.Amount;
-
-
-                if (amount <= 0)
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message =
-                            "Finance amount must be greater than zero."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // PLAYER
-                //
-                // TargetTableId = User.Id
-                // TargetCode    = User.UserCode
-                // ---------------------------------------------------------
-
-                var player =
-                    await _dbStorage.Context.Users
-                        .FirstOrDefaultAsync(
-                            x =>
-                                x.Id ==
-                                financeLog.TargetTableId
-
-                                &&
-
-                                x.UserCode ==
-                                financeLog.TargetCode
-                        );
-
-
-                if (player == null)
-                {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message =
-                            "Target player was not found."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // TRANSACTION AGENT
-                //
-                // AgentTableId = Agent.Id
-                // AgentCode    = Agent.AgentCode
-                //
-                // IMPORTANT:
-                // Do NOT use loggedInAgent here.
-                // The finance log may belong to a child agent.
-                // ---------------------------------------------------------
-
-                var transactionAgent =
-                    await _dbStorage.Context.Agents
-                        .FirstOrDefaultAsync(
-                            x =>
-                                x.Id ==
-                                financeLog.AgentTableId
-
-                                &&
-
-                                x.AgentCode ==
-                                financeLog.AgentCode
-                        );
-
-
-                if (transactionAgent == null)
-                {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message =
-                            "Finance log agent was not found."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // PLAYER BALANCE CHECK
-                // ---------------------------------------------------------
-
-                if (player.CurrentBalance < amount)
-                {
-                    return Conflict(new
-                    {
-                        success = false,
-                        message =
-                            "Player does not have enough balance."
-                    });
-                }
-
-
-                // ---------------------------------------------------------
-                // PLAYER BALANCE BEFORE
-                // ---------------------------------------------------------
-
-                var playerBeforeBalance =
-                    player.CurrentBalance;
-
-
-                // ---------------------------------------------------------
-                // AGENT BALANCE BEFORE
-                // ---------------------------------------------------------
-
-                var agentBeforeBalance =
-                    transactionAgent.Balance;
-
-
-                // ---------------------------------------------------------
-                // ACTUAL SELF WITHDRAW
-                //
-                // Player gives the amount back to the agent.
-                //
-                // Player:
-                // CurrentBalance decreases.
-                //
-                // Agent:
-                // Balance increases.
-                // ---------------------------------------------------------
-
-                player.CurrentBalance =
-                    playerBeforeBalance - amount;
-
-
-                transactionAgent.Balance =
-                    agentBeforeBalance + amount;
-
-
-                // ---------------------------------------------------------
-                // PLAYER WITHDRAW INFORMATION
-                // ---------------------------------------------------------
-
-                player.TotalWithdrawAmount += amount;
-
-                if (player.FirstWithdrawAt == null)
-                {
-                    player.FirstWithdrawAt = DateTime.UtcNow;
-                }
-
-
-                // ---------------------------------------------------------
-                // FINANCE LOG PLAYER BALANCE SNAPSHOT
-                // ---------------------------------------------------------
-
-                financeLog.TargetBeforeBalance =
-                    playerBeforeBalance;
-
-
-                financeLog.TargetAfterBalance =
-                    player.CurrentBalance;
-
-
-                // ---------------------------------------------------------
-                // FINANCE LOG AGENT BALANCE SNAPSHOT
-                // ---------------------------------------------------------
-
-                financeLog.AgentBeforeBalance =
-                    agentBeforeBalance;
-
-
-                financeLog.AgentAfterBalance =
-                    transactionAgent.Balance;
-
-
-                // ---------------------------------------------------------
-                // STATUS
-                //
-                // Pending   = 0
-                // Completed = 2
-                // ---------------------------------------------------------
-
-                financeLog.Status =
-                    2;
-
-
-                // ---------------------------------------------------------
-                // PLAYER UPDATED AT
-                // ---------------------------------------------------------
-
-                player.UpdatedAt =
-                    DateTime.UtcNow;
-
-
-                // ---------------------------------------------------------
-                // SAVE BOTH BALANCES + LOG ATOMICALLY
-                // ---------------------------------------------------------
-
-                await _dbStorage.Context
-                    .SaveChangesAsync();
-
-
-                // ---------------------------------------------------------
-                // COMMIT
-                // ---------------------------------------------------------
-
-                await transaction.CommitAsync();
-
-
-                // ---------------------------------------------------------
-                // SUCCESS
-                // ---------------------------------------------------------
-
-                return Json(new
-                {
-                    success = true,
-
-                    message =
-                        "Self Withdraw completed.",
-
-                    id =
-                        financeLog.Id,
-
-                    status =
-                        financeLog.Status,
-
-                    targetCode =
-                        player.UserCode,
-
-                    agentCode =
-                        transactionAgent.AgentCode,
-
-                    amount =
-                        amount,
-
-                    playerBeforeBalance =
-                        playerBeforeBalance,
-
-                    playerAfterBalance =
-                        player.CurrentBalance,
-
-                    agentBeforeBalance =
-                        agentBeforeBalance,
-
-                    agentAfterBalance =
-                        transactionAgent.Balance
-                });
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-
-                return StatusCode(
-                    500,
-                    new
-                    {
-                        success = false,
-                        message = ex.Message
-                    }
-                );
-            }
-        }
 
 
         [HttpPost]
@@ -2475,13 +2161,16 @@ namespace Whitelabel_backoffice.Controllers
                 // PENDING ONLY
                 // ---------------------------------------------------------
 
-                if (financeLog.Status != 0)
+                if (
+                    financeLog.Status != 0 &&
+                    financeLog.Status != 1
+                )
                 {
                     return Conflict(new
                     {
                         success = false,
                         message =
-                            "This transaction is no longer Pending."
+                            "This transaction cannot be rejected."
                     });
                 }
 
@@ -2513,7 +2202,7 @@ namespace Whitelabel_backoffice.Controllers
 
                 await _dbStorage.Context
                     .SaveChangesAsync();
-
+                await SendWithdrawNotificationAsync(financeLog);
 
                 return Json(new
                 {
@@ -2539,6 +2228,298 @@ namespace Whitelabel_backoffice.Controllers
                         message = ex.Message
                     }
                 );
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveWithdraw(int id)
+        {
+            try
+            {
+                var financeLog = await _dbStorage.Context.FinanceLogs
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (financeLog == null)
+                {
+                    _logger.Error(
+                        $"[FinanceController->ApproveWithdraw] Finance log not found. Id:{id}");
+
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Finance log not found."
+                    });
+                }
+
+
+                // Only self withdraw pending can be approved
+                if (financeLog.FinanceType != 2 ||
+                    financeLog.Status != 0)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Invalid withdrawal status."
+                    });
+                }
+
+
+                // Pending -> Processing
+                financeLog.Status = 1;
+
+
+                await _dbStorage.Context.SaveChangesAsync();
+                await SendWithdrawNotificationAsync(financeLog);
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Withdrawal moved to Processing."
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    $"[FinanceController->ApproveWithdraw] {ex}");
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Approve withdrawal failed."
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteWithdraw(int id)
+        {
+            await using var transaction =
+                await _dbStorage.Context.Database
+                    .BeginTransactionAsync(
+                        System.Data.IsolationLevel.Serializable
+                    );
+
+            try
+            {
+                var financeLog =
+                    await _dbStorage.Context.FinanceLogs
+                        .FirstOrDefaultAsync(
+                            x => x.Id == id
+                        );
+
+
+                if (financeLog == null)
+                {
+                    _logger.Error(
+                        $"[FinanceController->CompleteWithdraw] Finance log not found. Id:{id}"
+                    );
+
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Finance log not found."
+                    });
+                }
+
+
+                // Self Withdraw only
+                if (
+                    financeLog.FinanceType != 2
+                    ||
+                    financeLog.Status != 1
+                )
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Withdrawal is not pending."
+                    });
+                }
+
+
+                var wallet =
+                    await _dbStorage.Context.UserWallets
+                        .FirstOrDefaultAsync(
+                            x => x.Id == financeLog.UserWalletId
+                        );
+
+
+                if (wallet == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Wallet not found."
+                    });
+                }
+
+
+                var player =
+                    await _dbStorage.Context.Users
+                        .FirstOrDefaultAsync(
+                            x =>
+                                x.Id == financeLog.TargetTableId
+                                &&
+                                x.UserCode == financeLog.TargetCode
+                        );
+
+
+                if (player == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Player not found."
+                    });
+                }
+
+
+
+                var agent =
+                    await _dbStorage.Context.Agents
+                        .FirstOrDefaultAsync(
+                            x =>
+                                x.Id == financeLog.AgentTableId
+                                &&
+                                x.AgentCode == financeLog.AgentCode
+                        );
+
+
+                if (agent == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Agent not found."
+                    });
+                }
+
+
+
+                decimal amount =
+                    financeLog.Amount;
+
+
+                if (player.CurrentBalance < amount)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Insufficient player balance."
+                    });
+                }
+
+
+
+                var playerBefore =
+                    player.CurrentBalance;
+
+
+                var agentBefore =
+                    agent.Balance;
+
+
+
+                // Player -> Agent
+
+                player.CurrentBalance -= amount;
+
+                agent.Balance += amount;
+
+
+
+                player.TotalWithdrawAmount += amount;
+
+
+                if (player.FirstWithdrawAt == null)
+                {
+                    player.FirstWithdrawAt =
+                        DateTime.UtcNow;
+                }
+
+
+                player.UpdatedAt =
+                    DateTime.UtcNow;
+
+
+
+                financeLog.TargetBeforeBalance =
+                    playerBefore;
+
+
+                financeLog.TargetAfterBalance =
+                    player.CurrentBalance;
+
+
+                financeLog.AgentBeforeBalance =
+                    agentBefore;
+
+
+                financeLog.AgentAfterBalance =
+                    agent.Balance;
+
+
+
+                // Completed
+
+                financeLog.Status = 2;
+
+
+
+                await _dbStorage.Context.SaveChangesAsync();
+                await SendWithdrawNotificationAsync(financeLog);
+
+                await transaction.CommitAsync();
+
+
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Withdrawal completed."
+                });
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+
+
+                _logger.Error(
+                    $"[FinanceController->CompleteWithdraw] {ex}"
+                );
+
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Complete withdrawal failed."
+                });
+            }
+        }
+
+        private async Task<bool> TestPaymentGateway(object request)
+        {
+            try
+            {
+                _logger.Error(
+                    $"[TestPaymentGateway] Request: {JsonSerializer.Serialize(request)}");
+
+
+                // simulate API response
+
+                await Task.Delay(500);
+
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    $"[TestPaymentGateway] {ex}");
+
+                return false;
             }
         }
 
@@ -2586,7 +2567,95 @@ namespace Whitelabel_backoffice.Controllers
             return agent;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetWithdrawInfo(int id)
+        {
+            try
+            {
+                var financeLog =
+                    await _dbStorage.Context.FinanceLogs
+                        .FirstOrDefaultAsync(
+                            x => x.Id == id
+                        );
 
+
+                if (financeLog == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Finance log not found."
+                    });
+                }
+
+
+                if (financeLog.FinanceType != 2 ||
+                    financeLog.Status != 1)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Withdrawal is not ready."
+                    });
+                }
+
+
+                var wallet =
+                    await _dbStorage.Context.UserWallets
+                        .FirstOrDefaultAsync(
+                            x =>
+                                x.Id ==
+                                financeLog.UserWalletId
+                        );
+
+
+                if (wallet == null)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Wallet not found."
+                    });
+                }
+
+
+                return Json(new
+                {
+                    success = true,
+
+                    id =
+                        financeLog.Id,
+
+                    amount =
+                        financeLog.Amount,
+
+                    currency =
+                        wallet.Currency,
+
+                    network =
+                        wallet.Network,
+
+                    walletAddress =
+                        wallet.WalletAddress,
+
+                    orderId =
+                        financeLog.OrderId
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    $"[FinanceController->GetWithdrawInfo] {ex}"
+                );
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Failed to load withdraw information."
+                });
+            }
+        }
         // =============================================================
         // APPLY AGENT HIERARCHY SECURITY
         //
@@ -5280,525 +5349,94 @@ namespace Whitelabel_backoffice.Controllers
         //===========================================================================
         //===========================================================================
 
-        [HttpPost]
-        public async Task<IActionResult> GetStatisticsPlayerProviders()
+
+        private async Task SendWithdrawNotificationAsync(
+            FinanceLog financeLog)
         {
             try
             {
-                // =========================================================
-                // TARGET AGENT
-                // =========================================================
-
-                string? targetAgentCode =
-                    Request.Form["targetAgent"]
-                        .FirstOrDefault();
-
-
-                if (
-                    string.IsNullOrWhiteSpace(
-                        targetAgentCode
-                    )
-                )
-                {
-                    targetAgentCode =
-                        Request.Form["targetAgentCode"]
-                            .FirstOrDefault();
-                }
-
-
-                if (
-                    string.IsNullOrWhiteSpace(
-                        targetAgentCode
-                    )
-                )
-                {
-                    targetAgentCode =
-                        Request.Query["targetAgent"]
-                            .FirstOrDefault();
-                }
-
-
-                // =========================================================
-                // PLAYER CODE
-                //
-                // CURRENT RAZOR:
-                //
-                // playerCode
-                //
-                // Also accept userCode/user for compatibility.
-                // =========================================================
-
-                string? userCode =
-                    Request.Form["playerCode"]
-                        .FirstOrDefault();
-
-
-                if (
-                    string.IsNullOrWhiteSpace(
-                        userCode
-                    )
-                )
-                {
-                    userCode =
-                        Request.Form["userCode"]
-                            .FirstOrDefault();
-                }
-
-
-                if (
-                    string.IsNullOrWhiteSpace(
-                        userCode
-                    )
-                )
-                {
-                    userCode =
-                        Request.Form["user"]
-                            .FirstOrDefault();
-                }
-
-
-                if (
-                    string.IsNullOrWhiteSpace(
-                        userCode
-                    )
-                )
-                {
-                    return Json(
-                        new
-                        {
-                            recordsTotal = 0,
-
-                            recordsFiltered = 0,
-
-                            data =
-                                new List<object>()
-                        }
-                    );
-                }
-
-
-                userCode =
-                    userCode.Trim();
-
-
-                // =========================================================
-                // FILTERS
-                // =========================================================
-
-                string? providerCode =
-                    Request.Form["providerCode"]
-                        .FirstOrDefault();
-
-
-                string? gameCode =
-                    Request.Form["gameCode"]
-                        .FirstOrDefault();
-
-
-                string? totalBetAmountText =
-                    Request.Form["totalBetAmount"]
-                        .FirstOrDefault();
-
-
-                string? totalWinAmountText =
-                    Request.Form["totalWinAmount"]
-                        .FirstOrDefault();
-
-
-                string? fromDate =
-                    Request.Form["fromDate"]
-                        .FirstOrDefault();
-
-
-                string? toDate =
-                    Request.Form["toDate"]
-                        .FirstOrDefault();
-
-
-                // =========================================================
-                // CURRENT AGENT
-                // =========================================================
-
-                Agent? currentAgent =
-                    await GetCurrentAgentAsync();
-
-
-                if (currentAgent == null)
-                {
-                    return Unauthorized();
-                }
-
-
-                // =========================================================
-                // TARGET AGENT
-                // =========================================================
-
-                Agent? targetAgent =
-                    await ResolveStatisticsTargetAgentAsync(
-                        targetAgentCode,
-                        currentAgent
+                var user = await _dbStorage.Context.Users
+                    .FirstOrDefaultAsync(
+                        x => x.Id == financeLog.TargetTableId
                     );
 
-
-                if (targetAgent == null)
+                if (user == null)
                 {
-                    return Forbid();
+                    _logger.Error(
+                        $"[SendWithdrawNotificationAsync] [user not found] TargetTableId: {financeLog.TargetTableId}"
+                    );
+
+                    return;
                 }
 
+                var client = _httpClientFactory.CreateClient();
 
-                // =========================================================
-                // TIMEZONE
-                // =========================================================
+                var internalKey = _appSettings.InternalApiKey;
 
-                TimeSpan agentOffset =
-                    TryParseOffset(
-                        currentAgent.TimeZone,
-                        out var parsedOffset
-                    )
-                        ? parsedOffset
-                        : TimeSpan.Zero;
+                if (string.IsNullOrWhiteSpace(internalKey))
+                {
+                    _logger.Error(
+                        "[SendWithdrawNotificationAsync] [internal API key missing]"
+                    );
 
+                    return;
+                }
 
-                // =========================================================
-                // DATE RANGE
-                // =========================================================
+                client.DefaultRequestHeaders.Remove("X-Internal-Key");
 
-                GetStatisticsUtcRange(
-                    fromDate,
-                    toDate,
-                    agentOffset,
-                    out DateTime fromUtc,
-                    out DateTime toUtcExclusive
+                client.DefaultRequestHeaders.Add(
+                    "X-Internal-Key",
+                    internalKey
                 );
 
+                var url =
+                    $"{_appSettings.UserSiteDomain.TrimEnd('/')}/internal/send-withdraw-notification";
 
-                // =========================================================
-                // DIRECT PLAYER QUERY
-                //
-                // Only this player's statistics under target agent.
-                // =========================================================
-
-                IQueryable<StatisticsLog> query =
-                    _dbStorage.Context.StatisticsLogs
-                        .AsNoTracking()
-                        .Where(
-                            x =>
-                                x.AgentCode ==
-                                    targetAgent.AgentCode
-                                &&
-                                x.UserCode ==
-                                    userCode
-                                &&
-                                x.StartTime >= fromUtc
-                                &&
-                                x.StartTime < toUtcExclusive
-                        );
-
-
-                // =========================================================
-                // PROVIDER FILTER
-                // =========================================================
-
-                if (
-                    !string.IsNullOrWhiteSpace(
-                        providerCode
-                    )
-                )
-                {
-                    providerCode =
-                        providerCode.Trim();
-
-
-                    query =
-                        query.Where(
-                            x =>
-                                x.ProviderCode ==
-                                providerCode
-                        );
-                }
-
-
-                // =========================================================
-                // GAME FILTER
-                // =========================================================
-
-                if (
-                    !string.IsNullOrWhiteSpace(
-                        gameCode
-                    )
-                )
-                {
-                    gameCode =
-                        gameCode.Trim();
-
-
-                    query =
-                        query.Where(
-                            x =>
-                                x.GameCode.Contains(
-                                    gameCode
-                                )
-                        );
-                }
-
-
-                // =========================================================
-                // GROUP BY PROVIDER
-                // =========================================================
-
-                var providerQuery =
-                    query
-                        .GroupBy(
-                            x =>
-                                new
-                                {
-                                    x.ProviderCode,
-                                    x.ProviderName
-                                }
-                        )
-                        .Select(
-                            g =>
-                                new
-                                {
-                                    ProviderCode =
-                                        g.Key.ProviderCode,
-
-                                    ProviderName =
-                                        g.Key.ProviderName,
-
-                                    TotalBetAmount =
-                                        g.Sum(
-                                            x =>
-                                                x.TotalBetAmount
-                                        ),
-
-                                    TotalWinAmount =
-                                        g.Sum(
-                                            x =>
-                                                x.TotalWinAmount
-                                        ),
-
-                                    TotalBetCount =
-                                        g.Sum(
-                                            x =>
-                                                x.TotalBetCount
-                                        ),
-
-                                    TotalWinCount =
-                                        g.Sum(
-                                            x =>
-                                                x.TotalWinCount
-                                        )
-                                }
-                        );
-
-
-                // =========================================================
-                // NUMERIC FILTERS
-                // =========================================================
-
-                bool hasBetAmountFilter =
-                    false;
-
-
-                decimal parsedBetAmount =
-                    0m;
-
-
-                if (
-                    !string.IsNullOrWhiteSpace(
-                        totalBetAmountText
-                    )
-                )
-                {
-                    string normalized =
-                        totalBetAmountText
-                            .Trim()
-                            .Replace(",", "");
-
-
-                    hasBetAmountFilter =
-                        decimal.TryParse(
-                            normalized,
-                            NumberStyles.Number,
-                            CultureInfo.InvariantCulture,
-                            out parsedBetAmount
-                        );
-                }
-
-
-                bool hasWinAmountFilter =
-                    false;
-
-
-                decimal parsedWinAmount =
-                    0m;
-
-
-                if (
-                    !string.IsNullOrWhiteSpace(
-                        totalWinAmountText
-                    )
-                )
-                {
-                    string normalized =
-                        totalWinAmountText
-                            .Trim()
-                            .Replace(",", "");
-
-
-                    hasWinAmountFilter =
-                        decimal.TryParse(
-                            normalized,
-                            NumberStyles.Number,
-                            CultureInfo.InvariantCulture,
-                            out parsedWinAmount
-                        );
-                }
-
-
-                bool invalidBetAmount =
-                    !string.IsNullOrWhiteSpace(
-                        totalBetAmountText
-                    )
-                    &&
-                    !hasBetAmountFilter;
-
-
-                bool invalidWinAmount =
-                    !string.IsNullOrWhiteSpace(
-                        totalWinAmountText
-                    )
-                    &&
-                    !hasWinAmountFilter;
-
-
-                if (
-                    invalidBetAmount
-                    ||
-                    invalidWinAmount
-                )
-                {
-                    return Json(
-                        new
-                        {
-                            recordsTotal = 0,
-
-                            recordsFiltered = 0,
-
-                            data =
-                                new List<object>()
-                        }
-                    );
-                }
-
-
-                if (hasBetAmountFilter)
-                {
-                    providerQuery =
-                        providerQuery.Where(
-                            x =>
-                                x.TotalBetAmount ==
-                                parsedBetAmount
-                        );
-                }
-
-
-                if (hasWinAmountFilter)
-                {
-                    providerQuery =
-                        providerQuery.Where(
-                            x =>
-                                x.TotalWinAmount ==
-                                parsedWinAmount
-                        );
-                }
-
-
-                // =========================================================
-                // PROVIDER RESULT
-                //
-                // Current Razor builds a normal HTML table.
-                //
-                // Default:
-                // Total Bet Amount DESC
-                // =========================================================
-
-                var data =
-                    await providerQuery
-                        .OrderByDescending(
-                            x =>
-                                x.TotalBetAmount
-                        )
-                        .ThenBy(
-                            x =>
-                                x.ProviderName
-                        )
-                        .Select(
-                            x =>
-                                new
-                                {
-                                    x.ProviderCode,
-
-                                    x.ProviderName,
-
-                                    x.TotalBetAmount,
-
-                                    x.TotalWinAmount,
-
-                                    x.TotalBetCount,
-
-                                    x.TotalWinCount
-                                }
-                        )
-                        .ToListAsync();
-
-
-                // =========================================================
-                // RESPONSE
-                // =========================================================
-
-                return Json(
+                var response = await client.PostAsJsonAsync(
+                    url,
                     new
                     {
-                        recordsTotal =
-                            data.Count,
-
-                        recordsFiltered =
-                            data.Count,
-
-                        data =
-                            data
+                        UserCode = user.UserCode,
+                        Id = financeLog.Id,
+                        OrderId = financeLog.OrderId,
+                        Amount = financeLog.Amount,
+                        Status = financeLog.Status,
+                        CreatedAt = financeLog.CreatedAt
                     }
+                );
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseBody =
+                        await response.Content.ReadAsStringAsync();
+
+                    _logger.Error(
+                        $"[SendWithdrawNotificationAsync] " +
+                        $"[request failed] " +
+                        $"URL: {url}, " +
+                        $"StatusCode: {(int)response.StatusCode}, " +
+                        $"Reason: {response.ReasonPhrase}, " +
+                        $"Response: {responseBody}, " +
+                        $"FinanceLogId: {financeLog.Id}"
+                    );
+
+                    return;
+                }
+
+                _logger.Error(
+                    $"[SendWithdrawNotificationAsync] [notification sent] UserCode: {user.UserCode}, FinanceLogId: {financeLog.Id}, Status: {financeLog.Status}"
                 );
             }
             catch (Exception ex)
             {
                 _logger.Error(
                     ex,
-                    "Error loading statistics player providers."
-                );
-
-
-                return Json(
-                    new
-                    {
-                        recordsTotal =
-                            0,
-
-                        recordsFiltered =
-                            0,
-
-                        data =
-                            new List<object>(),
-
-                        error =
-                            "Failed to load player provider statistics."
-                    }
+                    $"[SendWithdrawNotificationAsync] [error] FinanceLogId: {financeLog.Id}"
                 );
             }
         }
-
     }
+
 }
+
 

@@ -11,5 +11,7 @@
         public bool IsTest { get; set; }
         public string ApiCode { get; set; }
         public string MainDomain { get; set; }
+        public string UserSiteDomain { get; set; }
+        public string InternalApiKey { get; set; }
     }
 }

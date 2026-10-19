@@ -1,6 +1,6 @@
 ﻿<div class="sidenav-menu">
     <!-- Brand Logo -->
-    <a href="/dashboard/index" class="logo">
+    <a href="/account/index" class="logo">
         <span class="logo logo-light">
             <span class="logo-lg"><img style="transform:scale(1.5)" src="/assets/images/logo.png" alt="logo"></span>
             <span class="logo-sm"><img src="/assets/images/logo-sm.png" alt="small logo"></span>
@@ -32,14 +32,14 @@
                             <div id="user-profile-settings" class="sidenav-user" style="background: url(/assets/images/user-bg-pattern.svg)">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <a href="/bootstrap/pages-empty.html#!" class="link-reset">
-                                            <img src="/assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle mb-2 avatar-md">
-                                            <span class="sidenav-user-name fw-bold">Damian D.</span>
-                                            <span class="fs-12 fw-semibold" data-lang="user-role">Creative Director</span>
-                                        </a>
+                                        <a class="link-reset">
+                                            <img src="/assets/images/users/user.jpg" alt="user-image" class="rounded-circle mb-2 avatar-md">
+                                            <span class="sidenav-user-name fw-bold">@User.Identity.Name.</span>
+@*                                             <span class="fs-12 fw-semibold" data-lang="user-role">Creative Director</span>
+ *@                                        </a>
                                     </div>
                                     <div>
-                                        <a class="dropdown-toggle drop-arrow-none link-reset sidenav-user-set-icon" data-bs-toggle="dropdown" data-bs-offset="0,12" href="/bootstrap/pages-empty.html#!" aria-haspopup="false" aria-expanded="false">
+                                        <a class="dropdown-toggle drop-arrow-none link-reset sidenav-user-set-icon" data-bs-toggle="dropdown" data-bs-offset="0,12" aria-haspopup="false" aria-expanded="false">
                                             <i class="ti ti-settings fs-24 align-middle ms-1"></i>
                                         </a>
 
@@ -50,22 +50,22 @@
                                             </div>
 
                                             <!-- My Profile -->
-                                            <a href="/bootstrap/pages-empty.html#!" class="dropdown-item">
+                                            <a href="/Account/Index" class="dropdown-item">
                                                 <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
                                                 <span class="align-middle">Profile</span>
                                             </a>
 
                                             <!-- Settings -->
-                                            <a href="javascript:void(0);" class="dropdown-item">
+                                            <a href="/Account/Index" class="dropdown-item">
                                                 <i class="ti ti-settings-2 me-1 fs-lg align-middle"></i>
                                                 <span class="align-middle">Account Settings</span>
                                             </a>
 
-                                            <!-- Lock -->
+@*                                             <!-- Lock -->
                                             <a href="/bootstrap/auth-lock-screen.html" class="dropdown-item">
                                                 <i class="ti ti-lock me-1 fs-lg align-middle"></i>
                                                 <span class="align-middle">Lock Screen</span>
-                                            </a>
+                                            </a> *@
 
                                             <!-- Logout -->
                                             <a href="/account/logout" class="dropdown-item text-danger fw-semibold">
@@ -89,11 +89,11 @@
                                         </a>
                                         <div class="collapse" id="dashboards">
                                             <ul class="sub-menu">
-                                                <li class="side-nav-item">
+@*                                                 <li class="side-nav-item">
                                                     <a href="/" class="side-nav-link">
                                                         <span class="menu-text" data-lang="overview">Overview</span>
                                                     </a>
-                                                </li>
+                                                </li> *@
                                                 <li class="side-nav-item">
                                                     <a asp-action="Finance" asp-controller="Dashboard" class="side-nav-link">
                                                         <span class="menu-text" data-lang="finance">Finance</span>
@@ -120,7 +120,7 @@
                                         </div>
                                     </li>
                                     <li class="side-nav-item">
-                                        <a href="/account/profile" class="side-nav-link">
+                                        <a href="/account/index" class="side-nav-link">
                                             <span class="menu-icon"><i class="ti ti-rocket"></i></span>
                                             <span class="menu-text" data-lang="account">Account</span>
                                         </a>                                     
@@ -134,11 +134,11 @@
                                         </a>
                                         <div class="collapse" id="plugins">
                                             <ul class="sub-menu">
-                                                <li class="side-nav-item">
+@*                                                 <li class="side-nav-item">
                                                     <a href="/bootstrap/plugins-sortable.html" class="side-nav-link">
                                                         <span class="menu-text" data-lang="finance">Finance</span>
                                                     </a>
-                                                </li>
+                                                </li> *@
                                                 <li class="side-nav-item">
                                                     <a asp-action="VendorManage" asp-controller="Agent" class="side-nav-link">
                                                         <span class="menu-text" data-lang="Vendor Manage">Vendor Manage</span>
@@ -157,10 +157,10 @@
                                             <ul class="sub-menu">
                                                 <li class="side-nav-item">
                                                     <a asp-action="Index" asp-controller="Player" class="side-nav-link">
-                                                        <span class="menu-text" data-lang=player-list">Player List</span>
+                                                        <span class="menu-text" data-lang="player-list">Player List</span>
                                                     </a>
                                                 </li>
-                                                <li class="side-nav-item">
+@*                                                 <li class="side-nav-item">
                                                     <a href="/bootstrap/pages-account-settings.html" class="side-nav-link">
                                                         <span class="menu-text" data-lang="player-segments">Player Segments</span>
                                                     </a>
@@ -184,11 +184,11 @@
                                                     <a href="/bootstrap/pages-timeline.html" class="side-nav-link">
                                                         <span class="menu-text" data-lang="risk-profile">Risk Profile</span>
                                                     </a>
-                                                </li>
+                                                </li> *@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="side-nav-title mt-2" data-lang="system">SYSTEM</li>
+@*                                     <li class="side-nav-title mt-2" data-lang="system">SYSTEM</li>
                                     <li class="side-nav-item">
                                         <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#layout-options" aria-expanded="false" aria-controls="layout-options" class="side-nav-link collapsed">
                                             <span class="menu-icon"><i class="ti ti-layout"></i></span>
@@ -255,7 +255,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
+                                    </li> *@
                                 </ul>
                             </div>
                         </div>

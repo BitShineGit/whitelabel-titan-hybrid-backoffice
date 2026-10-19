@@ -202,7 +202,7 @@ app.Map("/ws", async context =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}"
+    pattern: "{controller=Account}/{action=Index}"
 );
 
 
