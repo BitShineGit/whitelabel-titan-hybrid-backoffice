@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\1-Global\Global.Logging.Sinks\Global.Logging.Sinks.csproj" />
-    <ProjectReference Include="..\..\..\..\..\1-Global\Global.Logging\Global.Logging.csproj" />
-    <ProjectReference Include="..\..\..\..\1-Whitelabel_Global\whitelabel-global\Titan.HybridRepository\Titan.HybridRepository\Titan.HybridRepository.csproj" />
+    <ProjectReference Include="..\..\..\..\1-Global\Global.Logging.Sinks\Global.Logging.Sinks.csproj" />
+    <ProjectReference Include="..\..\..\..\1-Global\Global.Logging\Global.Logging.csproj" />
+    <ProjectReference Include="..\..\..\1-Whitelabel_Global\whitelabel-global\Titan.HybridRepository\Titan.HybridRepository\Titan.HybridRepository.csproj" />
   </ItemGroup>
 
 </Project>

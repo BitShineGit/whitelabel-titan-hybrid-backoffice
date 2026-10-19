@@ -526,7 +526,7 @@ namespace Whitelabel_backoffice.Controllers
             if (long.TryParse(historyId, out var historyIdValue))
             {
                 query = query.Where(x =>
-                    x.HistoryId == historyIdValue);
+                    x.TransactionId == historyIdValue.ToString());
             }
 
             if (!string.IsNullOrWhiteSpace(status) &&
@@ -685,7 +685,7 @@ namespace Whitelabel_backoffice.Controllers
 
                     createdAt = x.CreatedAt + currentAgentOffset,
 
-                    historyId = x.HistoryId
+                    historyId = x.TransactionId
                 })
                 .ToListAsync();
 

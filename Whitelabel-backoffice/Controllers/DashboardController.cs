@@ -950,8 +950,8 @@ namespace Whitelabel_backoffice.Controllers
 
                         19 =>
                             descending
-                                ? query.OrderByDescending(x => x.HistoryId)
-                                : query.OrderBy(x => x.HistoryId),
+                                ? query.OrderByDescending(x => x.TransactionId)
+                                : query.OrderBy(x => x.TransactionId),
 
 
                         _ =>
@@ -1020,7 +1020,7 @@ namespace Whitelabel_backoffice.Controllers
 
                                 x.UpdatedAt,
 
-                                x.HistoryId
+                                x.TransactionId
 
                             }
 
@@ -1117,7 +1117,7 @@ namespace Whitelabel_backoffice.Controllers
                                     ),
 
 
-                                x.HistoryId
+                                x.TransactionId
 
                             };
 

@@ -1,0 +1,819 @@
+﻿@model List<Titan.HybridRepository.Database.Wlprovider>
+
+@{
+    ViewData["Title"] = "WL Providers";
+    List<Titan.HybridRepository.Database.Api> apis = (List<Titan.HybridRepository.Database.Api>)ViewData["ApiList"];
+}
+
+<div class="page-title-head d-flex align-items-center">
+    <div class="flex-grow-1 ms-3">
+        <h4 class="page-main-title m-0">
+            WL Providers
+        </h4>
+    </div>
+    <div class="text-end">
+        <ol class="breadcrumb m-0 py-0">
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    MyStake
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">
+                    System
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                WL Providers
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div data-table data-table-rows-per-page="100" class="card">
+                <div class="card-header">
+                    <h4 class="card-title">WL Providers</h4>
+                </div>
+
+                <div class="card-header border-light justify-content-between">
+                    <div class="d-flex gap-2">
+                        <div class="app-search">
+                            <input data-table-search type="search" class="form-control" placeholder="Search product name..." />
+                            <i class="ti ti-search app-search-icon text-muted"></i>
+                        </div>
+                        <button class="btn btn-success" id="addProviderButton">Add +</button>
+                        <button id="deleteSelectedButton" class="btn btn-danger">Delete</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <select id="bulkStatusSetting" class="form-select" style="width: 170px;">
+                            <option value="IsPromo">Promotion</option>
+                            <option value="ShowJackpot">Show Jackpot</option>
+                            <option value="Wlstatus">WL Status</option>
+                            <option value="Maintenance">Maintenance</option>
+                        </select>
+
+                        <button type="button" id="bulkStatusOn" class="btn btn-success">
+                            <i class="ti ti-check me-1"></i> On
+                        </button>
+
+                        <button type="button" id="bulkStatusOff" class="btn btn-secondary">
+                            <i class="ti ti-x me-1"></i> Off
+                        </button>
+
+                        <span id="selectedProviderCount" class="text-muted small">
+                            0 selected
+                        </span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="me-2 fw-semibold">Filter By:</span>
+
+                        <!-- Category Filter -->
+                        <div class="app-search">
+                            <select data-table-filter="category" class="form-select form-control my-1 my-md-0">
+                                <option value="All">Category</option>
+                                <option value="Live">Live</option>
+                                <option value="Slot">Slot</option>
+                                <option value="Mini">Mini</option>
+                                <option value="Fishing">Fishing</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Board">Board</option>
+                            </select>
+                            <i class="ti ti-category app-search-icon text-muted"></i>
+                        </div>
+
+                        <!-- Records Per Page -->
+                        <div>
+                            <select data-table-set-rows-per-page class="form-select form-control my-1 my-md-0">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-custom table-centered table-select table-hover w-100 mb-0" id="wlProvidersTable">
+                        <thead class="bg-light align-middle bg-opacity-25 thead-sm">
+                            <tr class="text-uppercase fs-xxs">
+                                <th class="ps-3" style="width: 1%">
+                                    <input data-table-select-all class="form-check-input form-check-input-light fs-14 mt-0" type="checkbox" value="option" />
+                                </th>
+                                <th class="text-left">WL Provider Code</th>
+                                <th class="text-left">WL Provider Name</th>
+                                <th class="text-center">Logo</th>
+                                <th class="text-center" data-column="category">Category</th>
+                                <th class="text-center">Total Game Count</th>
+                                <th class="text-center">Order</th>
+                                <th class="text-center">IsPromo</th>
+                                <th class="text-center">ShowJackpot</th>
+                                <th class="text-center">WL Status</th>
+                                <th class="text-center">Maintenance</th>
+                                <th class="text-center" style="width: 1%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Product Row -->
+                            @foreach(var wlprovider in Model)
+                            {
+                                <tr data-provider-id="@wlprovider.Id">
+                                    <td class="ps-3 text-center">
+                                        <input class="form-check-input form-check-input-light fs-14 product-item-check mt-0"
+                                               type="checkbox"
+                                               value="@wlprovider.Id" />
+                                    </td>
+                                    <td>@wlprovider.WlproviderCode</td>
+                                    <td>@wlprovider.WlproviderName</td>
+                                    <td><img class="wllogo" src="@wlprovider.Wllogo" /></td>
+                                    <td class="text-center category-@wlprovider.Category">
+                                        @{
+                                            var categoryName = wlprovider.Category switch
+                                            {
+                                                1 => "Live",
+                                                2 => "Slot",
+                                                3 => "Mini",
+                                                4 => "Fishing",
+                                                5 => "Sports",
+                                                6 => "Board",
+                                                _ => "Unknown"
+                                            };
+                                        }
+                                        @categoryName
+                                    </td>
+                                    <td class="text-center">@wlprovider.WltotalGameCount</td>
+                                    <td class="text-center">@wlprovider.Order</td>
+                                    <td class="text-center">
+                                        <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                            <input type="checkbox"
+                                                   class="form-check-input mt-1 provider-status-switch"
+                                                   data-setting="IsPromo"
+                                                   data-setting-name="Promotion"
+                                            @(wlprovider.IsPromo ? "checked" : "") />
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                            <input type="checkbox"
+                                                   class="form-check-input mt-1 provider-status-switch"
+                                                   data-setting="ShowJackpot"
+                                                   data-setting-name="Show Jackpot"
+                                            @(wlprovider.ShowJackpot ? "checked" : "") />
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                            <input type="checkbox"
+                                                   class="form-check-input mt-1 provider-status-switch"
+                                                   data-setting="Wlstatus"
+                                                   data-setting-name="WL Status"
+                                            @(wlprovider.Wlstatus != 0 ? "checked" : "") />
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                            <input type="checkbox"
+                                                   class="form-check-input mt-1 provider-status-switch"
+                                                   data-setting="Maintenance"
+                                                   data-setting-name="Maintenance"
+                                            @(wlprovider.Wlstatus == 2 ? "checked" : "") />
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <button type="button"
+                                                    class="btn btn-light btn-icon btn-sm rounded-circle provider-edit-button"
+                                                    data-provider-id="@wlprovider.Id"
+                                                    data-provider-code="@wlprovider.WlproviderCode"
+                                                    data-provider-name="@wlprovider.WlproviderName"
+                                                    data-provider-logo="@wlprovider.Wllogo"
+                                                    data-provider-category="@wlprovider.Category"
+                                                    data-provider-game-count="@wlprovider.WltotalGameCount"
+                                                    data-provider-order="@wlprovider.Order"
+                                                    title="Edit">
+                                                <i class="ti ti-edit fs-lg"></i>
+                                            </button>
+                                            <button type="button" data-provider-delete data-provider-id="@wlprovider.Id"
+                                                    class="btn btn-danger btn-icon btn-sm rounded-circle delete-provider-button"
+                                                    title="Delete">
+                                                <i class="ti ti-trash fs-lg"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div data-table-pagination-info="products"></div>
+                        <div data-table-pagination></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+
+<div class="modal fade" id="providerEditModal" tabindex="-1"
+     aria-labelledby="providerEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="providerEditModalLabel">
+                    Edit WL Provider
+                </h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="providerEditForm">
+                <div class="modal-body">
+                    <input type="hidden" id="providerId" name="id" />
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="providerCode" class="form-label">
+                                WL Provider Code
+                            </label>
+                            <input type="text" class="form-control"
+                                   id="providerCode" name="wlproviderCode"
+                                   required maxlength="100" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="providerName" class="form-label">
+                                WL Provider Name
+                            </label>
+                            <input type="text" class="form-control"
+                                   id="providerName" name="wlproviderName"
+                                   required maxlength="200" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="providerLogo" class="form-label">
+                                Logo URL
+                            </label>
+                            <input type="text" class="form-control"
+                                   id="providerLogo" name="wllogo"
+                                   maxlength="500" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="providerCategory" class="form-label">
+                                Category
+                            </label>
+                            <select class="form-select" id="providerCategory"
+                                    name="category" required>
+                                <option value="0">None</option>
+                                <option value="1">Casino</option>
+                                <option value="2">Slot</option>
+                                <option value="3">Arcade</option>
+                                <option value="4">Fishing</option>
+                                <option value="5">Sports</option>
+                                <option value="6">Table</option>
+                                <option value="7">Live Arena</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="providerGameCount" class="form-label">
+                                Total Game Count
+                            </label>
+                            <input type="number" class="form-control"
+                                   id="providerGameCount" name="totalGameCount"
+                                   min="0" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="providerOrder" class="form-label">
+                                Order
+                            </label>
+                            <input type="number" class="form-control"
+                                   id="providerOrder" name="order"
+                                   min="0" required />
+                        </div>
+                    </div>
+
+                    <div id="providerEditError"
+                         class="alert alert-danger d-none mt-3 mb-0"
+                         role="alert"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" id="saveProviderButton"
+                            class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/assets/js/pages/custom-table.js"></script>
+
+<script>
+
+    $(function () {
+        const urls = {
+            add: "/System/AddWLProvider",
+            update: "/System/UpdateWLProvider",
+            delete: "/System/DeleteWLProviders",
+            setStatus: "/System/SetStatus",
+            bulkStatus: "/System/SetBulkStatus"
+        };
+
+        const $table = $("#wlProvidersTable");
+        const $editModal = $("#providerEditModal");
+        const $editForm = $("#providerEditForm");
+
+        const Toast = Swal.mixin({
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        function showToast(message, success = true) {
+            return Toast.fire({
+                icon: success ? "success" : "error",
+                title: message || (success ? "Operation successful." : "Operation failed.")
+            });
+        }
+
+        function confirmAction({
+            title,
+            text = "",
+            confirmButtonText = "Confirm",
+            icon = "question"
+        }) {
+            return Swal.fire({
+                title,
+                text,
+                icon,
+                showCancelButton: true,
+                confirmButtonText,
+                cancelButtonText: "Cancel",
+                reverseButtons: true,
+                focusCancel: true
+            });
+        }
+
+        function getAntiForgeryToken() {
+            return $('input[name="__RequestVerificationToken"]').first().val();
+        }
+
+        function getAjaxError(xhr, fallback) {
+            return xhr.responseJSON?.msg ||
+                xhr.responseJSON?.message ||
+                fallback ||
+                "An unexpected error occurred.";
+        }
+
+        function post(url, data) {
+            return $.ajax({
+                url,
+                type: "POST",
+                data,
+                headers: {
+                    RequestVerificationToken: getAntiForgeryToken()
+                }
+            });
+        }
+
+        function getStatusSwitch(id, setting) {
+            return $table.find(
+                `tr[data-provider-id="${id}"] .provider-status-switch[data-setting="${setting}"]`
+            );
+        }
+
+        function syncStatusSwitches(id, status) {
+            const wlStatus = Number(status);
+
+            getStatusSwitch(id, "Wlstatus").prop("checked", wlStatus !== 0);
+            getStatusSwitch(id, "Maintenance").prop("checked", wlStatus === 2);
+        }
+
+        function updateSelectedCount() {
+            const count = $table.find("tbody .product-item-check:checked").length;
+
+            $("#selectedProviderCount").text(count);
+            $("#deleteSelectedButton, [data-table-delete-selected]")
+                .prop("disabled", count === 0);
+
+            const $checkboxes = $table.find("tbody .product-item-check");
+            const total = $checkboxes.length;
+            const selected = $checkboxes.filter(":checked").length;
+
+            $("[data-table-select-all]")
+                .prop("checked", total > 0 && selected === total)
+                .prop("indeterminate", selected > 0 && selected < total);
+        }
+
+        function getSelectedIds() {
+            return $table.find("tbody .product-item-check:checked")
+                .map(function () {
+                    return Number($(this).val());
+                })
+                .get()
+                .filter(id => Number.isInteger(id) && id > 0);
+        }
+
+        function refreshProviderTable() {
+            if ($.fn.DataTable && $.fn.DataTable.isDataTable("#wlProvidersTable")) {
+                $("#wlProvidersTable").DataTable().ajax.reload(null, false);
+            } else {
+                window.location.reload();
+            }
+        }
+
+        function setButtonLoading($button, loading, originalText) {
+            if (!$button.length) return;
+
+            if (loading) {
+                $button.data("original-text", $button.html());
+                $button.prop("disabled", true).text("Please wait...");
+            } else {
+                $button.prop("disabled", false);
+
+                const text = originalText || $button.data("original-text");
+                if (text !== undefined) {
+                    $button.html(text);
+                }
+            }
+        }
+
+        function openEditModal(provider) {
+            $("#providerId").val(provider.id ?? "");
+            $("#providerCode").val(provider.code ?? "");
+            $("#providerName").val(provider.name ?? "");
+            $("#providerLogo").val(provider.logo ?? "");
+            $("#providerCategory").val(provider.category ?? "0");
+            $("#providerGameCount").val(provider.gameCount ?? "0");
+            $("#providerOrder").val(provider.order ?? "0");
+            $("#providerEditError").text("").addClass("d-none");
+
+            if ($editModal.length) {
+                $editModal.modal("show");
+            }
+        }
+
+        function getProviderDataFromButton($button) {
+            const $row = $button.closest("tr");
+
+            return {
+                id: $button.data("provider-id") ?? $row.data("provider-id"),
+                code: $button.attr("data-provider-code") ?? $button.data("provider-code"),
+                name: $button.attr("data-provider-name") ?? $button.data("provider-name"),
+                logo: $button.attr("data-provider-logo") ?? $button.data("provider-logo"),
+                category: $button.attr("data-provider-category") ?? $button.data("provider-category"),
+                gameCount: $button.attr("data-provider-game-count") ?? $button.data("provider-game-count"),
+                order: $button.attr("data-provider-order") ?? $button.data("provider-order")
+            };
+        }
+
+        // Select/deselect an individual provider.
+        $table.on("change", ".product-item-check", function () {
+            $(this).closest("tr").toggleClass("row-selected", this.checked);
+            updateSelectedCount();
+        });
+
+        // Select/deselect all providers on the current rendered page.
+        $(document).on("change", "[data-table-select-all]", function () {
+            const checked = this.checked;
+
+            $table.find("tbody .product-item-check")
+                .prop("checked", checked)
+                .each(function () {
+                    $(this).closest("tr").toggleClass("row-selected", checked);
+                });
+
+            updateSelectedCount();
+        });
+
+        // Click a row to select it, except when clicking an interactive element.
+        $table.on("click", "tbody tr", function (event) {
+            if ($(event.target).closest(
+                "input, button, a, select, textarea, label, .form-switch, .dropdown-menu"
+            ).length) {
+                return;
+            }
+
+            const $checkbox = $(this).find(".product-item-check").first();
+
+            if ($checkbox.length) {
+                $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+            }
+        });
+
+        // Add provider.
+        $("#addProviderButton").on("click", async function () {
+            const $button = $(this);
+
+            const result = await confirmAction({
+                title: "Add provider?",
+                text: "A new provider record will be created.",
+                confirmButtonText: "Yes, add provider",
+                icon: "question"
+            });
+
+            if (!result.isConfirmed) return;
+
+            setButtonLoading($button, true);
+
+            try {
+                const response = await post(urls.add, {});
+
+                if (!response?.success) {
+                    showToast(response?.msg || "Failed to add provider.", false);
+                    return;
+                }
+
+                await showToast(response.msg || "Provider added successfully.");
+                refreshProviderTable();
+            } catch (xhr) {
+                showToast(getAjaxError(xhr, "Failed to add provider."), false);
+            } finally {
+                setButtonLoading($button, false);
+            }
+        });
+
+        // Open the edit form. Add data attributes to your edit buttons.
+        $table.on("click", ".provider-edit-button, [data-provider-edit]", function (event) {
+            event.preventDefault();
+            openEditModal(getProviderDataFromButton($(this)));
+        });
+
+        // Save provider changes.
+        $editForm.on("submit", async function (event) {
+            event.preventDefault();
+
+            const $button = $("#saveProviderButton");
+            const $error = $("#providerEditError");
+
+            $error.text("").addClass("d-none");
+
+            const result = await confirmAction({
+                title: "Save changes?",
+                text: "The provider information will be updated.",
+                confirmButtonText: "Yes, save changes",
+                icon: "question"
+            });
+
+            if (!result.isConfirmed) return;
+
+            setButtonLoading($button, true);
+
+            try {
+                const response = await post(urls.update, {
+                    id: $("#providerId").val(),
+                    wlproviderCode: $("#providerCode").val().trim(),
+                    wlproviderName: $("#providerName").val().trim(),
+                    wllogo: $("#providerLogo").val().trim(),
+                    category: $("#providerCategory").val(),
+                    totalGameCount: $("#providerGameCount").val(),
+                    order: $("#providerOrder").val()
+                });
+
+                if (!response?.success) {
+                    const message = response?.msg || "Failed to update provider.";
+                    $error.text(message).removeClass("d-none");
+                    showToast(message, false);
+                    return;
+                }
+
+                $editModal.modal("hide");
+                await showToast(response.msg || "Provider updated successfully.");
+                refreshProviderTable();
+            } catch (xhr) {
+                const message = getAjaxError(xhr, "Failed to update provider.");
+                $error.text(message).removeClass("d-none");
+                showToast(message, false);
+            } finally {
+                setButtonLoading($button, false);
+            }
+        });
+
+        // Update an individual provider setting.
+        $table.on("change", ".provider-status-switch", async function () {
+            const $switch = $(this);
+
+            if ($switch.data("processing")) return;
+
+            const id = Number($switch.closest("tr").data("provider-id"));
+            const setting = String($switch.data("setting") || "");
+            const requestedValue = $switch.prop("checked");
+            const originalValue = !requestedValue;
+
+            if (!id || !setting) {
+                $switch.prop("checked", originalValue);
+                showToast("Provider ID or setting is missing.", false);
+                return;
+            }
+
+            const settingName = $switch.data("setting-name") || setting;
+            const actionText = requestedValue ? "enable" : "disable";
+
+            const result = await confirmAction({
+                title: `${requestedValue ? "Enable" : "Disable"} ${settingName}?`,
+                text: `Are you sure you want to ${actionText} this setting?`,
+                confirmButtonText: `Yes, ${actionText}`,
+                icon: "question"
+            });
+
+            if (!result.isConfirmed) {
+                $switch.prop("checked", originalValue);
+                return;
+            }
+
+            $switch.data("processing", true).prop("disabled", true);
+
+            try {
+                const response = await post(urls.setStatus, {
+                    id,
+                    setting,
+                    value: requestedValue
+                });
+
+                if (!response?.success) {
+                    $switch.prop("checked", originalValue);
+                    showToast(response?.msg || "Failed to update provider status.", false);
+                    return;
+                }
+
+                if (setting === "Wlstatus" || setting === "Maintenance") {
+                    if (response.wlstatus !== undefined) {
+                        syncStatusSwitches(id, response.wlstatus);
+                    }
+                } else {
+                    $switch.prop("checked", requestedValue);
+                }
+
+                showToast(response.msg || "Provider setting updated successfully.");
+            } catch (xhr) {
+                $switch.prop("checked", originalValue);
+                showToast(getAjaxError(xhr, "Failed to update provider status."), false);
+            } finally {
+                $switch.data("processing", false).prop("disabled", false);
+            }
+        });
+
+        // Apply a setting to all selected providers.
+        $("#bulkStatusOn, #bulkStatusOff").on("click", async function () {
+            const $button = $(this);
+            const ids = getSelectedIds();
+            const setting = $("#bulkStatusSetting").val();
+            const value = this.id === "bulkStatusOn";
+
+            if (!ids.length) {
+                showToast("Please select at least one provider.", false);
+                return;
+            }
+
+            if (!setting) {
+                showToast("Please select a setting.", false);
+                return;
+            }
+
+            const settingNames = {
+                IsPromo: "Promo",
+                ShowJackpot: "Show Jackpot",
+                Wlstatus: "WL Status",
+                Maintenance: "Maintenance"
+            };
+
+            const settingName = settingNames[setting] || setting;
+            const actionText = value ? "enable" : "disable";
+
+            const result = await confirmAction({
+                title: `${value ? "Enable" : "Disable"} ${settingName}?`,
+                text: `This will ${actionText} ${settingName} for ${ids.length} selected provider(s).`,
+                confirmButtonText: `Yes, ${actionText}`,
+                icon: "warning"
+            });
+
+            if (!result.isConfirmed) return;
+
+            setButtonLoading($button, true);
+
+            try {
+                const response = await post(urls.bulkStatus, {
+                    ids,
+                    setting,
+                    value
+                });
+
+                if (!response?.success) {
+                    showToast(response?.msg || "Failed to update selected providers.", false);
+                    return;
+                }
+
+                if (setting === "IsPromo" || setting === "ShowJackpot") {
+                    ids.forEach(id => {
+                        $table.find(`tr[data-provider-id="${id}"]`)
+                            .find(`.provider-status-switch[data-setting="${setting}"]`)
+                            .prop("checked", value);
+                    });
+                } else if (setting === "Wlstatus") {
+                    ids.forEach(id => syncStatusSwitches(id, value ? 1 : 0));
+                } else if (setting === "Maintenance") {
+                    ids.forEach(id => syncStatusSwitches(id, value ? 2 : 1));
+                }
+
+                await showToast(
+                    response.msg || `Updated ${response.count ?? ids.length} provider(s) successfully.`
+                );
+
+                refreshProviderTable();
+            } catch (xhr) {
+                showToast(getAjaxError(xhr, "Failed to update selected providers."), false);
+            } finally {
+                setButtonLoading($button, false);
+            }
+        });
+
+        // Delete provider(s).
+        async function deleteProviders(ids) {
+            if (!ids.length) {
+                showToast("Please select at least one provider.", false);
+                return;
+            }
+
+            const result = await confirmAction({
+                title: ids.length === 1 ? "Delete this provider?" : "Delete selected providers?",
+                text: ids.length === 1
+                    ? "This action cannot be undone."
+                    : `${ids.length} provider(s) will be deleted. This action cannot be undone.`,
+                confirmButtonText: ids.length === 1 ? "Yes, delete" : "Yes, delete selected",
+                icon: "warning"
+            });
+
+            if (!result.isConfirmed) return;
+
+            const $deleteButtons = $("#deleteSelectedButton, [data-table-delete-selected], [data-provider-delete]");
+            $deleteButtons.prop("disabled", true);
+
+            try {
+                const response = await post(urls.delete, { ids });
+
+                if (!response?.success) {
+                    showToast(response?.msg || "Failed to delete provider(s).", false);
+                    return;
+                }
+
+                await showToast(response.msg || "Provider(s) deleted successfully.");
+                refreshProviderTable();
+            } catch (xhr) {
+                showToast(getAjaxError(xhr, "Failed to delete provider(s)."), false);
+            } finally {
+                $deleteButtons.prop("disabled", false);
+            }
+        }
+
+        // Delete selected providers.
+        $(document).on(
+            "click",
+            "#deleteSelectedButton, [data-table-delete-selected]",
+            function (event) {
+                event.preventDefault();
+                deleteProviders(getSelectedIds());
+            }
+        );
+
+        // Delete a single provider. The button needs data-provider-id.
+        $table.on("click", "[data-provider-delete]", function (event) {
+            event.preventDefault();
+
+            const id = Number($(this).data("provider-id"));
+
+            if (!id) {
+                showToast("Provider ID is missing.", false);
+                return;
+            }
+
+            deleteProviders([id]);
+        });
+
+        // Initialize selection UI.
+        updateSelectedCount();
+    });
+
+</script>

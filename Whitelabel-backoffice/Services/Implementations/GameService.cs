@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Security.Authentication;
 using System.Text;
 using Titan.HybridRepository;
+using Whitelabel_backoffice.Models.ApiModels;
+using Whitelabel_backoffice.Models;
 
 namespace Whitelabel_backoffice.Services.Implementations
 {
@@ -254,6 +256,62 @@ namespace Whitelabel_backoffice.Services.Implementations
             catch (Exception e)
             {
                 _logger.Error($"GetMiniGameList GetGameList: {e}");
+            }
+
+            return response;
+        }
+
+        public async Task<GetProviderListResponseModel> GetProviderList(GetProviderListRequestModel request)
+        {
+            var response = new GetProviderListResponseModel();
+            var api = await _dbStorage.Context.Apis
+                .Where(x => x.ApiCode == request.ApiCode.ToLower())
+                .FirstOrDefaultAsync();
+
+            if (api == null)
+            {
+                throw new IntegrationAPINotFoundException(request.ApiCode);
+            }
+
+            try
+            {
+                var token = await _goldenGateXAPITokenService.GetAccessToken();
+
+                HttpClientHandler clientHandler = new HttpClientHandler
+                {
+                    AllowAutoRedirect = false,
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls
+                };
+                using (var httpClient = new HttpClient(clientHandler))
+                {
+                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Token}");
+                    string url = api.ApiUrl + "/vendors/list";
+
+                    var httpRequestMessage = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri(url),
+                        Headers = {
+                    { HeaderNames.Accept, "application/json" }
+                },
+                    };
+
+                    var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+                    if (httpResponseMessage.IsSuccessStatusCode)
+                    {
+                        var s = await httpResponseMessage.Content.ReadAsStringAsync();
+                        response = JsonConvert.DeserializeObject<GetProviderListResponseModel>(s);
+                    }
+                    else
+                    {
+                        _logger.Error($"GetProviderList IsSuccessStatusCode: {httpResponseMessage}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error($"GetProviderList: {e}");
             }
 
             return response;

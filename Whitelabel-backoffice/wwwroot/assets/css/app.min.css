@@ -27537,3 +27537,112 @@ div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip] {
     }
 
 /*# sourceMappingURL=app.min.css.map */
+.wllogo {
+    display: flex;
+    margin: auto;
+    max-width: 70px;
+    filter: drop-shadow(1px 1px 1px grey);
+    border-radius: 10px;
+}
+
+#wlProvidersTable tbody tr {
+    cursor: pointer;
+}
+
+    #wlProvidersTable tbody tr.row-selected > td {
+        background-color: var(--bs-primary-bg-subtle);
+    }
+
+    #wlProvidersTable tbody tr .form-check-input {
+        cursor: pointer;
+    }
+
+/* Provider category badges */
+td.category-1 {
+    background-color: #8670e0 !important;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+td.category-2 {
+    background-color: #37ff98 !important;
+    color: #047857;
+    font-weight: 600;
+}
+
+td.category-3 {
+    background-color: #01e9ff !important;
+    color: #0E7490;
+    font-weight: 600;
+}
+
+td.category-4 {
+    background-color: #FEF3C7 !important;
+    color: #B45309;
+    font-weight: 600;
+}
+
+td.category-5 {
+    background-color: #FEE2E2 !important;
+    color: #B91C1C;
+    font-weight: 600;
+}
+
+td.category-6 {
+    background-color: #E2E8F0 !important;
+    color: #334155;
+    font-weight: 600;
+}
+
+td.category-0 {
+    background-color: #F1F5F9 !important;
+    color: #64748B;
+    font-weight: 600;
+}
+
+.badge-api-status {
+    display: inline-block;
+    min-width: 76px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.badge-api-status-1 {
+    background-color: #D1FAE5;
+    color: #047857;
+}
+
+.badge-api-status-0 {
+    background-color: #F1F5F9;
+    color: #64748B;
+}
+
+.badge-api-status-unknown {
+    background-color: #FEF3C7;
+    color: #B45309;
+}
+
+.badge-game-new {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.badge-game-new-1 {
+    background-color: #ff4444;
+    color: #ffffff;
+}
+
+.badge-game-new-0 {
+    background-color: #F1F5F9;
+    color: #64748B;
+}

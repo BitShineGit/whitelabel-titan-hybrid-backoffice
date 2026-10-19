@@ -2,6 +2,6 @@
 {
     public class GetProviderListRequestModel:BaseRequestModel
     {
-        public int Type { get; set;}
+        public string ApiCode { get; set; }
     }
 }

@@ -1,0 +1,719 @@
+﻿@model Whitelabel_backoffice.Models.ViewModels.APIGamesViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+    var apiList = ViewData["ApiList"] as IEnumerable<Titan.HybridRepository.Database.Api>
+        ?? Enumerable.Empty<Titan.HybridRepository.Database.Api>();
+}
+@section Styles {
+    <link rel="stylesheet" href="~/assets/plugins/select2/css/select2.min.css" />
+}
+
+<div class="page-title-head d-flex align-items-center">
+    <div class="flex-grow-1 ms-3">
+        <h4 class="page-main-title m-0">API Games</h4>
+    </div>
+    <div class="text-end">
+        <ol class="breadcrumb m-0 py-0">
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">MyStake</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">System</a>
+            </li>
+            <li class="breadcrumb-item active">API Games</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div data-table data-table-rows-per-page="100" class="card">
+                <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <h4 class="card-title mb-0">API Games</h4>
+
+                    <form id="gameFilterForm"
+                          method="get"
+                          action="@Url.Action("APIGames", "System")"
+                          class="d-flex align-items-center gap-2">
+
+                        <select id="apiCodeSelector"
+                                name="apiCode"
+                                class="form-select"
+                                style="width: 160px;">
+                            @foreach (var api in apiList)
+                            {
+                                <option value="@api.ApiCode"
+                                        selected="@(api.ApiCode.Equals(Model.ApiCode, StringComparison.OrdinalIgnoreCase))">
+                                    @api.ApiCode
+                                </option>
+                            }
+                        </select>
+
+                        <select id="providerCodeSelector"
+                                name="providerCode"
+                                class="form-select select2" style="width:150px;"
+                                disabled="@(Model.Providers.Count == 0)" data-toggle="select2">
+                            <option value="">Select provider</option>
+                            @foreach (var provider in Model.Providers)
+                            {
+                                <option value="@provider.Value"
+                                        selected="@(string.Equals(Model.ProviderCode, provider.Value, StringComparison.OrdinalIgnoreCase))">
+                                    @provider.Text
+                                </option>
+                            }
+                        </select>
+                    </form>
+                </div>
+
+                <div class="card-header border-light justify-content-between">
+                    <div class="d-flex gap-2">
+                        <div class="app-search">
+                            <input data-table-search type="search" class="form-control" placeholder="Search game name or code...." />
+                            <i class="ti ti-search app-search-icon text-muted"></i>
+                        </div>
+                        <button class="btn btn-success" id="syncProviderButton" type="button"><i class="ti ti-rotate-clockwise me-1"></i> Sync</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <select id="bulkGameSetting" class="form-select" style="width: 160px;">
+                            <option value="Wlstatus">WL Status</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="IsNew">New</option>
+                            <option value="IsJackpot">Jackpot</option>
+                            <option value="IsHot">Hot</option>
+                        </select>
+
+                        <button type="button" id="bulkGameOn" class="btn btn-success">
+                            <i class="ti ti-check me-1"></i> On
+                        </button>
+
+                        <button type="button" id="bulkGameOff" class="btn btn-secondary">
+                            <i class="ti ti-x me-1"></i> Off
+                        </button>
+
+                        <span id="selectedGameCount" class="text-muted small">0 selected</span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="me-2 fw-semibold">Filter By:</span>
+
+                        <!-- Records Per Page -->
+                        <div>
+                            <select data-table-set-rows-per-page class="form-select form-control my-1 my-md-0">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="apiGamesTable"
+                           class="table table-custom table-centered table-select table-hover w-100 mb-0" aria-describedby="fixed-header-data_info">
+                        <thead class="bg-light bg-opacity-25 thead-sm">
+                            <tr class="text-uppercase fs-xxs">
+                                <th class="ps-3 text-center">
+                                    <input type="checkbox"
+                                           id="selectAllGames"
+                                           class="form-check-input" />
+                                </th>
+                                @foreach (var column in Model.Columns.Where(x => x.Visible))
+                                {
+                                    <th data-column="@column.Field" class="text-center">
+                                        @column.Title
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (string.IsNullOrWhiteSpace(Model.ProviderCode))
+                            {
+                                <tr>
+                                    <td colspan="@(Model.Columns.Count + 1)" class="text-center py-4 text-muted">
+                                        Select an API and provider to view games.
+                                    </td>
+                                </tr>
+                            }
+                            else if (Model.Rows.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="@(Model.Columns.Count + 1)" class="text-center py-4 text-muted">
+                                        No games found for this provider.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var row in Model.Rows)
+                                {
+                                    var id = Convert.ToInt32(row["Id"]);
+
+                                    <tr data-game-id="@id">
+                                        <td class="ps-3 text-center">
+                                            <input type="checkbox"
+                                                   class="form-check-input game-item-check"
+                                                   value="@id" />
+                                        </td>
+
+                                        @foreach (var column in Model.Columns.Where(x => x.Visible))
+                                        {
+                                            var value = row.GetValueOrDefault(column.Field);
+
+                                            <td class="text-center">
+                                                @if (column.Field == "Ggxstatus")
+                                                {
+                                                    var status = Convert.ToInt32(value ?? 0);
+
+                                                    var statusText = status switch
+                                                    {
+                                                        0 => "Disabled",
+                                                        1 => "Enabled",
+                                                        _ => "Unknown"
+                                                    };
+
+                                                    <span class="badge-api-status badge-api-status-@value">
+                                                        @statusText
+                                                    </span>
+                                                }
+                                                else if (column.Field == "GgxisNew")
+                                                {
+                                                var isNew = Convert.ToBoolean(value ?? false);
+
+                                                <span class="badge-game-new badge-game-new-@(isNew ? "1" : "0")">
+                                                    @(isNew ? "New" : "-")
+                                                </span>
+                                                }
+                                                else if (column.Type == "switch")
+                                                {
+                                                    var isChecked = column.Field switch
+                                                    {
+                                                        "Wlstatus" => Convert.ToByte(value ?? (byte)0) != 0,
+                                                        "Maintenance" => Convert.ToBoolean(value ?? false),
+                                                        _ => Convert.ToBoolean(value ?? false)
+                                                    };
+
+                                                    <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                                        <input type="checkbox"
+                                                               class="form-check-input mt-1 game-setting-switch"
+                                                               data-game-id="@id"
+                                                               data-setting="@column.Field"
+                                                               checked="@isChecked" />
+                                                    </div>
+                                                }
+                                                else if (column.Field == "SortNumber")
+                                                {
+                                                    <input type="number"
+                                                           class="form-control form-control-sm game-sort-number mx-auto"
+                                                           data-game-id="@id"
+                                                           value="@value"
+                                                           min="0"
+                                                           step="1"
+                                                           style="width: 90px;" />
+                                                }
+                                                else if (column.Type == "image")
+                                                {
+                                                    @if (!string.IsNullOrWhiteSpace(Convert.ToString(value)))
+                                                    {
+                                                        <img src="@value"
+                                                             alt="Game thumbnail"
+                                                             loading="lazy"
+                                                             style="width:60px;height:45px;object-fit:contain;border-radius:5px;"
+                                                             onerror="this.style.display='none';" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">-</span>
+                                                    }
+                                                }
+                                                else if (column.Type == "number" && value != null)
+                                                {
+                                                    @string.Format("{0:N0}", value)
+                                                }
+                                                else
+                                                {
+                                                    @value
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div data-table-pagination-info="products"></div>
+                        <div data-table-pagination></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/pages/custom-table.js"></script>
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+
+<script>
+
+    $(function () {
+        const $form = $("#gameFilterForm");
+        const $apiSelector = $("#apiCodeSelector");
+        const $providerSelector = $("#providerCodeSelector");
+        const $table = $("#apiGamesTable");
+        const $selectAll = $("#selectAllGames");
+        const $selectedCount = $("#selectedGameCount");
+        const $bulkSetting = $("#bulkGameSetting");
+
+        const apiCode = () => $apiSelector.val() || "ggx";
+
+        const urls = {
+            setSetting: "/System/SetAPIGameSetting",
+            bulkSetting: "/System/SetBulkAPIGameSetting",
+            updateSort: "/System/UpdateAPIGameSortNumber",
+            sync: "/System/SyncGgxGames"
+        };
+
+        const toast = Swal.mixin({
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
+
+        function notifySuccess(message) {
+            toast.fire({ icon: "success", title: message });
+        }
+
+        function notifyError(message) {
+            Swal.fire({
+                title: "Operation Failed",
+                text: message || "An unexpected error occurred.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+
+        function request(url, data) {
+            return $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    ...data,
+                    apiCode: apiCode(),
+                },
+                traditional: true
+            });
+        }
+
+        function selectedIds() {
+            return $table.find(".game-item-check:checked")
+                .map(function () {
+                    return Number(this.value);
+                })
+                .get();
+        }
+
+        function updateSelectedCount() {
+            const total = $table.find(".game-item-check").length;
+            const selected = selectedIds().length;
+
+            $selectedCount.text(`${selected} selected`);
+
+            $selectAll.prop(
+                "checked",
+                total > 0 && selected === total
+            );
+
+            $selectAll.prop(
+                "indeterminate",
+                selected > 0 && selected < total
+            );
+
+            $table.find(".game-item-check").each(function () {
+                $(this).closest("tr").toggleClass(
+                    "row-selected",
+                    this.checked
+                );
+            });
+        }
+
+        // Change API: reset provider and reload its provider options.
+        $apiSelector.on("change", function () {
+            $providerSelector.val("");
+            $form.trigger("submit");
+        });
+
+        // Change provider: reload its games.
+        $providerSelector.on("change", function () {
+            $form.trigger("submit");
+        });
+
+        // Select all visible game rows.
+        $selectAll.on("change", function () {
+            $table.find(".game-item-check")
+                .prop("checked", this.checked);
+
+            updateSelectedCount();
+        });
+
+        // Update selected count.
+        $table.on("change", ".game-item-check", updateSelectedCount);
+
+        $table.on("click", "tbody tr[data-game-id]", function (e) {
+            // Ignore clicks on interactive elements.
+            if ($(e.target).closest(
+                "input, button, select, textarea, a, label, .form-check"
+            ).length) {
+                return;
+            }
+
+            const checkbox = $(this).find(".game-item-check");
+
+            if (!checkbox.length || checkbox.prop("disabled")) {
+                return;
+            }
+
+            checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
+        });
+
+        // Individual setting switch with confirmation.
+        // Individual setting switch with confirmation and real-time synchronization.
+        $table.on("change", ".game-setting-switch", async function () {
+            const input = $(this);
+            const id = Number(input.data("game-id"));
+            const setting = String(input.data("setting"));
+            const value = input.prop("checked");
+            const row = input.closest("tr");
+
+            const wlSwitch = row.find('.game-setting-switch[data-setting="Wlstatus"]');
+            const maintenanceSwitch = row.find('.game-setting-switch[data-setting="Maintenance"]');
+
+            const originalWlStatus = wlSwitch.prop("checked");
+            const originalMaintenance = maintenanceSwitch.prop("checked");
+
+            const settingName = {
+                Wlstatus: "WL Status",
+                Maintenance: "Maintenance",
+                IsNew: "New",
+                IsJackpot: "Jackpot",
+                IsHot: "Hot"
+            }[setting] || setting;
+
+            // Synchronize the switches immediately.
+            if (setting === "Wlstatus") {
+                if (!value) {
+                    maintenanceSwitch.prop("checked", false);
+                }
+            } else if (setting === "Maintenance") {
+                if (value) {
+                    wlSwitch.prop("checked", true);
+                }
+            }
+
+            // Calculate the resulting Wlstatus value.
+            let newWlstatus = null;
+
+            if (setting === "Wlstatus") {
+                newWlstatus = value
+                    ? (originalMaintenance ? 2 : 1)
+                    : 0;
+            } else if (setting === "Maintenance") {
+                newWlstatus = value ? 2 : 1;
+            }
+
+            const action = value ? "enable" : "disable";
+
+            const confirmation = await Swal.fire({
+                title: `${value ? "Enable" : "Disable"} ${settingName}?`,
+                text: setting === "Wlstatus" && !value
+                    ? "This will also turn off Maintenance."
+                    : setting === "Maintenance" && value
+                        ? "This will also enable WL Status."
+                        : `Are you sure you want to ${action} ${settingName} for this game?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, confirm",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            });
+
+            if (!confirmation.isConfirmed) {
+                wlSwitch.prop("checked", originalWlStatus);
+                maintenanceSwitch.prop("checked", originalMaintenance);
+                return;
+            }
+
+            wlSwitch.prop("disabled", true);
+            maintenanceSwitch.prop("disabled", true);
+            input.prop("disabled", true);
+
+            try {
+                const response = await request(urls.setSetting, {
+                    id: id,
+                    setting: setting,
+                    value: value
+                });
+
+                if (!response.success) {
+                    throw new Error(response.message || "Unable to update setting.");
+                }
+
+                // Apply the confirmed database state to both switches.
+                if (newWlstatus !== null) {
+                    wlSwitch.prop("checked", newWlstatus >= 1);
+                    maintenanceSwitch.prop("checked", newWlstatus === 2);
+                }
+
+                notifySuccess(response.message || `${settingName} updated successfully.`);
+            } catch (xhr) {
+                wlSwitch.prop("checked", originalWlStatus);
+                maintenanceSwitch.prop("checked", originalMaintenance);
+
+                notifyError(
+                    xhr.responseJSON?.message ||
+                    xhr.responseJSON?.title ||
+                    xhr.responseJSON?.error ||
+                    xhr.message ||
+                    xhr.statusText ||
+                    "Unable to update setting."
+                );
+            } finally {
+                console.log("");
+                wlSwitch.prop("disabled", false);
+                maintenanceSwitch.prop("disabled", false);
+            }
+        });
+
+
+        // Bulk On / Off.
+        async function bulkUpdate(value) {
+            const ids = selectedIds();
+
+            if (ids.length === 0) {
+                notifyError("Please select at least one game.");
+                return;
+            }
+
+            const setting = String($bulkSetting.val());
+            const settingName = $bulkSetting.find("option:selected").text();
+            const action = value ? "Enable" : "Disable";
+
+            const confirmation = await Swal.fire({
+                title: `${value ? "Enable" : "Disable"} ${settingName}?`,
+                text: `${action} ${settingName} for ${ids.length} selected game(s)?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Confirm",
+                cancelButtonText: "Cancel",
+                reverseButtons: true
+            });
+
+            if (!confirmation.isConfirmed) {
+                return;
+            }
+
+            const $buttons = $("#bulkGameOn, #bulkGameOff");
+            $buttons.prop("disabled", true);
+
+            try {
+                const response = await request(urls.bulkSetting, {
+                    ids: ids,
+                    setting: setting,
+                    value: value
+                });
+
+                if (!response.success) {
+                    throw new Error(response.message || "Bulk update failed.");
+                }
+
+                await Swal.fire({
+                    title: "Update Completed",
+                    text: response.message || `Updated ${response.updated} games.`,
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+
+                // Refresh server-rendered values.
+                window.location.reload();
+            } catch (xhr) {
+                notifyError(
+                    xhr.responseJSON?.message ||
+                    xhr.responseJSON?.title ||
+                    xhr.responseJSON?.error ||
+                    xhr.statusText
+                );
+            } finally {
+                $buttons.prop("disabled", false);
+            }
+        }
+
+        $("#bulkGameOn").on("click", function () {
+            bulkUpdate(true);
+        });
+
+        $("#bulkGameOff").on("click", function () {
+            bulkUpdate(false);
+        });
+
+        // Edit the sort number; save when the input loses focus or Enter is pressed.
+        $table.on("focus", ".game-sort-number", function () {
+            $(this).data("original-value", $(this).val());
+        });
+
+        $table.on("keydown", ".game-sort-number", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                $(this).trigger("blur");
+            }
+
+            if (event.key === "Escape") {
+                $(this).val($(this).data("original-value"));
+                this.blur();
+            }
+        });
+
+        $table.on("blur", ".game-sort-number", async function () {
+            const input = $(this);
+            const id = Number(input.data("game-id"));
+            const originalValue = String(input.data("original-value") ?? "");
+            const rawValue = String(input.val()).trim();
+
+            if (rawValue === originalValue) {
+                return;
+            }
+
+            if (!/^\d+$/.test(rawValue)) {
+                input.val(originalValue);
+                notifyError("Sort number must be a non-negative whole number.");
+                return;
+            }
+
+            const sortNumber = Number(rawValue);
+
+            if (!Number.isSafeInteger(sortNumber) || sortNumber < 0) {
+                input.val(originalValue);
+                notifyError("Please enter a valid non-negative whole number.");
+                return;
+            }
+
+            input.prop("disabled", true);
+
+            try {
+                const response = await request(urls.updateSort, {
+                    id: id,
+                    sortNumber: sortNumber
+                });
+
+                if (!response.success) {
+                    throw new Error(response.message || "Unable to update game order.");
+                }
+
+                input.data("original-value", String(sortNumber));
+                notifySuccess(response.message || "Game order updated.");
+            } catch (xhr) {
+                input.val(originalValue);
+
+                notifyError(
+                    xhr.responseJSON?.message ||
+                    xhr.responseJSON?.title ||
+                    xhr.responseJSON?.error ||
+                    xhr.statusText
+                );
+            } finally {
+                input.prop("disabled", false);
+            }
+        });
+
+        // Sync GGX games for the selected provider or all active providers.
+        $("#syncProviderButton").on("click", async function () {
+            const button = $(this);
+            const apiCode = String($("#apiCodeSelector").val() || "").toLowerCase();
+            const providerCode = String($("#providerCodeSelector").val() || "").trim();
+
+            if (apiCode !== "ggx") {
+                notifyError("Game sync is currently supported only for GGX.");
+                return;
+            }
+
+            const confirmation = await Swal.fire({
+                title: "Sync games?",
+                text: providerCode
+                    ? `Sync games for provider ${providerCode}?`
+                    : "No provider is selected. Sync games for all active GGX providers?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, sync",
+                cancelButtonText: "Cancel",
+                confirmButtonColor: "#198754",
+                reverseButtons: true
+            });
+
+            if (!confirmation.isConfirmed) {
+                return;
+            }
+
+            const originalHtml = button.html();
+            button.prop("disabled", true)
+                .html('<span class="spinner-border spinner-border-sm me-1"></span> Syncing...');
+
+            try {
+                const query = new URLSearchParams({ language: "en" });
+
+                if (providerCode) {
+                    query.set("vendorCode", providerCode);
+                }
+
+                const response = await $.ajax({
+                    url: `${urls.sync}?${query.toString()}`,
+                    type: "POST",
+                    data: {
+                    }
+                });
+
+                if (!response.success) {
+                    throw new Error(response.message || "Game sync failed.");
+                }
+
+                const message = [
+                    "Game sync completed.",
+                    `Added: ${response.totalAdded ?? 0}`,
+                    `Updated: ${response.totalUpdated ?? 0}`,
+                    `Reactivated: ${response.totalReactivated ?? 0}`,
+                    `Deactivated: ${response.totalDeactivated ?? 0}`
+                ].join("\n");
+
+                await Swal.fire({
+                    title: "Sync completed",
+                    text: message,
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+
+                // Reload the current API/provider selection and latest game data.
+                $("#gameFilterForm").trigger("submit");
+            } catch (xhr) {
+                notifyError(
+                    xhr.responseJSON?.message ||
+                    xhr.responseJSON?.title ||
+                    xhr.responseJSON?.error ||
+                    xhr.message ||
+                    xhr.statusText ||
+                    "Unable to sync games."
+                );
+            } finally {
+                button.prop("disabled", false).html(originalHtml);
+            }
+        });
+
+        updateSelectedCount();
+    });
+
+</script>
+<script>
+    jQuery().select2 && $('[data-toggle="select2"]').select2();
+</script>

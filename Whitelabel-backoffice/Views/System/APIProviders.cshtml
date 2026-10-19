@@ -1,0 +1,661 @@
+﻿@model Whitelabel_backoffice.Models.ViewModels.APIProviderTableViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+    var apiList = ViewData["ApiList"] as IEnumerable<Titan.HybridRepository.Database.Api>
+        ?? Enumerable.Empty<Titan.HybridRepository.Database.Api>();
+}
+<div class="page-title-head d-flex align-items-center">
+    <div class="flex-grow-1 ms-3">
+        <h4 class="page-main-title m-0">
+            API Providers
+        </h4>
+    </div>
+    <div class="text-end">
+        <ol class="breadcrumb m-0 py-0">
+            <li class="breadcrumb-item">
+                <a href="~/dashboard/index">
+                    MyStake
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">
+                    System
+                </a>
+            </li>
+            <li class="breadcrumb-item active">
+                API Providers
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div data-table data-table-rows-per-page="100" class="card">
+                <div class="card-header">
+                    <h4 class="card-title">API Providers</h4>
+
+                    <select id="apiCodeSelector" class="form-select" style="max-width:220px">
+                        @foreach (var api in apiList)
+                        {
+                            <option value="@api.ApiCode"
+                                    selected="@(api.ApiCode.Equals(Model.ApiCode, StringComparison.OrdinalIgnoreCase))">
+                                @api.ApiCode
+                            </option>
+                        }
+                    </select>
+
+                    
+                </div>
+
+                <div class="card-header border-light justify-content-between">
+                    <div class="d-flex gap-2">
+                        <div class="app-search">
+                            <input data-table-search type="search" class="form-control" placeholder="Search product name..." />
+                            <i class="ti ti-search app-search-icon text-muted"></i>
+                        </div>
+                        <button class="btn btn-success" id="syncProviderButton" type="button"><i class="ti ti-rotate-clockwise me-1"></i> Sync</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <select id="bulkStatusSetting" class="form-select" style="width: 170px;">
+                            @foreach (var setting in Model.BulkSettings)
+                            {
+                                <option value="@setting">
+                                    @(setting == "Wlstatus" ? "WL Status" : setting)
+                                </option>
+                            }
+                        </select>
+
+                        <button type="button" id="bulkStatusOn" class="btn btn-success">
+                            <i class="ti ti-check me-1"></i> On
+                        </button>
+
+                        <button type="button" id="bulkStatusOff" class="btn btn-secondary">
+                            <i class="ti ti-x me-1"></i> Off
+                        </button>
+
+                        <span id="selectedProviderCount" class="text-muted small">
+                            0 selected
+                        </span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="me-2 fw-semibold">Filter By:</span>
+
+                        <!-- Category Filter -->
+                        <div class="app-search">
+                            <select data-table-filter="category" class="form-select form-control my-1 my-md-0">
+                                <option value="All">Category</option>
+                                <option value="Live">Live</option>
+                                <option value="Slot">Slot</option>
+                                <option value="Mini">Mini</option>
+                                <option value="Fishing">Fishing</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Board">Board</option>
+                            </select>
+                            <i class="ti ti-category app-search-icon text-muted"></i>
+                        </div>
+
+                        <!-- Records Per Page -->
+                        <div>
+                            <select data-table-set-rows-per-page class="form-select form-control my-1 my-md-0">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="apiProvidersTable" class="table table-custom table-centered table-select table-hover w-100 mb-0">
+                        <thead class="bg-light align-middle bg-opacity-25 thead-sm">
+                            <tr class="text-uppercase fs-xxs">
+                                <th class="ps-3" style="width: 1%">
+                                    <input data-table-select-all class="form-check-input form-check-input-light fs-14 mt-0" type="checkbox" value="option" />
+                                </th>
+                                @foreach (var column in Model.Columns.Where(c => c.Visible))
+                                {
+                                    if (column.Field == "Ggxtype")
+                                    {
+                                        <th class="text-center" data-column="category">@column.Title</th>
+                                    }
+                                    else
+                                    {
+                                        <th class="text-center">@column.Title</th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in Model.Rows)
+                            {
+                                var id = Convert.ToInt32(row["Id"]);
+                                var wlStatus = Convert.ToByte(row["Wlstatus"] ?? (byte)0);
+
+                                <tr data-provider-id="@id">
+                                    <td class="ps-3 text-center">
+                                        <input class="form-check-input form-check-input-light fs-14 product-item-check mt-0"
+                                               type="checkbox"
+                                               value="@id" />
+                                    </td>
+                                    @foreach (var column in Model.Columns.Where(c => c.Visible))
+                                    {
+                                        var value = row.GetValueOrDefault(column.Field);
+
+                                        if (column.Field.Equals("Ggxtype", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            var category = Convert.ToInt32(value ?? 0);
+
+                                            var categoryName = category switch
+                                            {
+                                                1 => "Live",
+                                                2 => "Slot",
+                                                3 => "Mini",
+                                                4 => "Fishing",
+                                                5 => "Sports",
+                                                6 => "Board",
+                                                _ => "Unknown"
+                                            };
+
+                                            <td class="text-center category-@value">@categoryName</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center">
+                                                @if (column.Field.Equals("Ggxstatus", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    var status = Convert.ToInt32(value ?? 0);
+
+                                                    var statusText = status switch
+                                                    {
+                                                        0 => "Disabled",
+                                                        1 => "Enabled",
+                                                        _ => "Unknown"
+                                                    };
+
+                                                    <span class="badge-api-status badge-api-status-@value">
+                                                        @statusText
+                                                    </span>
+                                                }
+                                                else if (column.Type == "select" && column.Field == "WlproviderCode")
+                                                {
+                                                    <select class="form-select form-select-sm wl-provider-code"
+                                                            data-provider-id="@id"
+                                                            data-field="@column.Field">
+                                                        <option value="">Select WL provider</option>
+                                                        @foreach (var option in Model.WLProviderOptions)
+                                                        {
+                                                            <option value="@option.Value"
+                                                                    selected="@(string.Equals(Convert.ToString(value), option.Value, StringComparison.OrdinalIgnoreCase))">
+                                                                @option.Text
+                                                            </option>
+                                                        }
+                                                    </select>
+                                                }
+                                                else if (column.Type == "switch" && column.Setting != null)
+                                                {
+                                                    var checkedValue = column.Setting == "Maintenance"
+                                                    ? wlStatus == 2
+                                                    : wlStatus != 0;
+
+                                                    <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                                        <input type="checkbox"
+                                                               class="form-check-input mt-1 provider-status-switch"
+                                                               data-setting="@column.Setting"
+                                                               data-setting-name="@column.Title"
+                                                               checked="@checkedValue" />
+                                                    </div>
+                                                }
+                                                else if (column.Type == "number" && value != null)
+                                                {
+                                                    @string.Format("{0:N0}", value)
+                                                }
+                                                else
+                                                {
+                                                    @value
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div data-table-pagination-info="products"></div>
+                        <div data-table-pagination></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/pages/custom-table.js"></script>
+<script>
+
+    $(function () {
+        const $table = $("#apiProvidersTable");
+
+        if (!$table.length) return;
+
+        const apiCode = String($("#apiCodeSelector").val() || "").toLowerCase();
+
+        const urls = {
+            updateMapping: "/System/UpdateAPIProviderWLCode",
+            setStatus: "/System/SetAPIProviderStatus",
+            bulkStatus: "/System/SetBulkAPIProviderStatus"
+        };
+
+        const Toast = Swal.mixin({
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        function showToast(message, success = true) {
+            return Toast.fire({
+                icon: success ? "success" : "error",
+                title: message || (success ? "Operation successful." : "Operation failed.")
+            });
+        }
+
+        function confirmAction(title, text, confirmButtonText = "Confirm") {
+            return Swal.fire({
+                title,
+                text,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText,
+                cancelButtonText: "Cancel",
+                reverseButtons: true,
+                focusCancel: true
+            });
+        }
+
+        function getError(xhr, fallback) {
+            return xhr.responseJSON?.msg ||
+                xhr.responseJSON?.message ||
+                fallback ||
+                "An unexpected error occurred.";
+        }
+
+        function post(url, data) {
+
+            return $.ajax({
+                url,
+                type: "POST",
+                data,
+                traditional: true
+            });
+        }
+
+        function getSelectedIds() {
+            return $table.find("tbody .product-item-check:checked")
+                .map(function () {
+                    return Number($(this).val());
+                })
+                .get()
+                .filter(id => Number.isInteger(id) && id > 0);
+        }
+
+        function updateSelection() {
+            const $checkboxes = $table.find("tbody .product-item-check");
+            const total = $checkboxes.length;
+            const selected = $checkboxes.filter(":checked").length;
+
+            $("#selectedProviderCount").text(`${selected} selected`);
+
+            $table.find("[data-table-select-all]")
+                .prop("checked", total > 0 && selected === total)
+                .prop("indeterminate", selected > 0 && selected < total);
+        }
+
+        function syncStatusSwitches(id, status) {
+            const $row = $table.find(`tbody tr[data-provider-id="${id}"]`);
+            const value = Number(status);
+
+            $row.find('.provider-status-switch[data-setting="Wlstatus"]')
+                .prop("checked", value !== 0);
+
+            $row.find('.provider-status-switch[data-setting="Maintenance"]')
+                .prop("checked", value === 2);
+        }
+
+        function setLoading($button, loading) {
+            if (loading) {
+                if ($button.data("original-html") === undefined) {
+                    $button.data("original-html", $button.html());
+                }
+
+                $button.prop("disabled", true).text("Please wait...");
+            } else {
+                $button.prop("disabled", false);
+
+                const original = $button.data("original-html");
+                if (original !== undefined) {
+                    $button.html(original);
+                }
+            }
+        }
+
+        // Switch between API provider pages.
+        $("#apiCodeSelector").on("change", function () {
+            const selectedApi = String($(this).val() || "").trim();
+
+            if (selectedApi) {
+                window.location.href =
+                    `/System/APIProviders?apiCode=${encodeURIComponent(selectedApi)}`;
+            }
+        });
+
+        // Select all displayed rows.
+        $table.on("change", "[data-table-select-all]", function () {
+            const checked = this.checked;
+
+            $table.find("tbody .product-item-check")
+                .prop("checked", checked)
+                .each(function () {
+                    $(this).closest("tr").toggleClass("row-selected", checked);
+                });
+
+            updateSelection();
+        });
+
+        // Select an individual row.
+        $table.on("change", ".product-item-check", function () {
+            $(this).closest("tr").toggleClass("row-selected", this.checked);
+            updateSelection();
+        });
+
+        // Clicking the row toggles selection, except for controls.
+        $table.on("click", "tbody tr", function (event) {
+            if ($(event.target).closest(
+                "input, button, a, select, textarea, label, .form-switch"
+            ).length) {
+                return;
+            }
+
+            const $checkbox = $(this).find(".product-item-check").first();
+
+            if ($checkbox.length) {
+                $checkbox.prop("checked", !$checkbox.prop("checked"))
+                    .trigger("change");
+            }
+        });
+
+        // Store each dropdown's original value.
+        $table.find(".wl-provider-code").each(function () {
+            $(this).data("previous-value", this.value);
+        });
+
+        // Update an editable field rendered as a dropdown.
+        $table.on("change", ".wl-provider-code", async function () {
+            const $select = $(this);
+
+            if ($select.data("processing")) return;
+
+            const id = Number($select.data("provider-id"));
+            const field = String($select.data("field") || "");
+            const newValue = String($select.val() || "");
+            const oldValue = String($select.data("previous-value") ?? "");
+
+            if (!id || field !== "WlproviderCode" || !newValue) {
+                $select.val(oldValue);
+
+                if (!newValue) {
+                    showToast("Please select a WL provider.", false);
+                }
+
+                return;
+            }
+
+            if (newValue === oldValue) return;
+
+            const result = await confirmAction(
+                "Update WL provider mapping?",
+                `Change "${oldValue || "(none)"}" to "${newValue}"?`,
+                "Yes, update"
+            );
+
+            if (!result.isConfirmed) {
+                $select.val(oldValue);
+                return;
+            }
+
+            $select.data("processing", true).prop("disabled", true);
+
+            try {
+                const response = await post(urls.updateMapping, {
+                    apiCode,
+                    id,
+                    wlproviderCode: newValue
+                });
+
+                if (!response?.success) {
+                    $select.val(oldValue);
+                    showToast(response?.msg || "Failed to update mapping.", false);
+                    return;
+                }
+
+                $select.data("previous-value", newValue);
+                showToast(response.msg || "WL provider mapping updated.");
+            } catch (xhr) {
+                $select.val(oldValue);
+                showToast(getError(xhr, "Failed to update mapping."), false);
+            } finally {
+                $select.data("processing", false).prop("disabled", false);
+            }
+        });
+
+        // Update WL Status or Maintenance for one row.
+        $table.on("change", ".provider-status-switch", async function () {
+            const $switch = $(this);
+
+            if ($switch.data("processing")) return;
+
+            const id = Number($switch.closest("tr").data("provider-id"));
+            const setting = String($switch.data("setting") || "");
+            const settingName = String($switch.data("setting-name") || setting);
+            const requestedValue = $switch.prop("checked");
+            const previousValue = !requestedValue;
+
+            if (!id || !["Wlstatus", "Maintenance"].includes(setting)) {
+                $switch.prop("checked", previousValue);
+                showToast("Invalid provider or setting.", false);
+                return;
+            }
+
+            const result = await confirmAction(
+                `${requestedValue ? "Enable" : "Disable"} ${settingName}?`,
+                `Are you sure you want to ${requestedValue ? "enable" : "disable"} this setting?`,
+                requestedValue ? "Yes, enable" : "Yes, disable"
+            );
+
+            if (!result.isConfirmed) {
+                $switch.prop("checked", previousValue);
+                return;
+            }
+
+            $switch.data("processing", true).prop("disabled", true);
+
+            try {
+                const response = await post(urls.setStatus, {
+                    apiCode,
+                    id,
+                    setting,
+                    value: requestedValue
+                });
+
+                if (!response?.success) {
+                    $switch.prop("checked", previousValue);
+                    showToast(response?.msg || "Failed to update status.", false);
+                    return;
+                }
+
+                if (response.wlstatus !== undefined) {
+                    syncStatusSwitches(id, response.wlstatus);
+                }
+
+                showToast(response.msg || "Provider status updated.");
+            } catch (xhr) {
+                $switch.prop("checked", previousValue);
+                showToast(getError(xhr, "Failed to update status."), false);
+            } finally {
+                $switch.data("processing", false).prop("disabled", false);
+            }
+        });
+
+        // Bulk status changes.
+        $("#bulkStatusOn, #bulkStatusOff").on("click", async function () {
+            const $button = $(this);
+            const ids = getSelectedIds();
+            const setting = String($("#bulkStatusSetting").val() || "");
+            const value = this.id === "bulkStatusOn";
+
+            if (!ids.length) {
+                showToast("Please select at least one provider.", false);
+                return;
+            }
+
+            if (!["Wlstatus", "Maintenance"].includes(setting)) {
+                showToast("Please select a valid setting.", false);
+                return;
+            }
+
+            const settingName = setting === "Wlstatus" ? "WL Status" : "Maintenance";
+
+            const result = await confirmAction(
+                `${value ? "Enable" : "Disable"} ${settingName}?`,
+                `This will update ${settingName} for ${ids.length} selected provider(s).`,
+                value ? "Yes, enable" : "Yes, disable"
+            );
+
+            if (!result.isConfirmed) return;
+
+            setLoading($button, true);
+
+            try {
+                const response = await post(urls.bulkStatus, {
+                    apiCode,
+                    ids,
+                    setting,
+                    value
+                });
+
+                if (!response?.success) {
+                    showToast(response?.msg || "Failed to update providers.", false);
+                    return;
+                }
+
+                const status = setting === "Maintenance"
+                    ? (value ? 2 : 1)
+                    : (value ? 1 : 0);
+
+                ids.forEach(id => syncStatusSwitches(id, status));
+
+                showToast(
+                    response.msg ||
+                    `Updated ${response.count ?? ids.length} provider(s) successfully.`
+                );
+            } catch (xhr) {
+                showToast(getError(xhr, "Failed to update providers."), false);
+            } finally {
+                setLoading($button, false);
+            }
+        });
+
+        // Initial selection state.
+        $table.find("tbody .product-item-check").each(function () {
+            $(this).closest("tr").toggleClass("row-selected", this.checked);
+        });
+
+        updateSelection();
+    });
+
+</script>
+<script>
+    $(document).on("click", "#syncProviderButton", function () {
+        const button = $(this);
+        const originalHtml = button.html();
+
+        Swal.fire({
+            title: "Sync GGX Providers?",
+            text: "This will add new providers, update existing provider information, and deactivate providers no longer returned by GGX.",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Sync",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+        }).then(async (result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            button.prop("disabled", true)
+                .html('<span class="spinner-border spinner-border-sm me-1"></span> Syncing...');
+
+            Swal.fire({
+                title: "Syncing Providers...",
+                text: "Please wait while the GGX provider list is synchronized.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            try {
+                const response = await $.ajax({
+                    url: "/System/SyncGgxProviders",
+                    type: "POST",
+                    headers: {
+                    }
+                });
+
+                if (!response.success) {
+                    throw new Error(response.message || response.errorCode || "Unable to sync GGX providers.");
+                }
+
+                await Swal.fire({
+                    title: "Sync Completed",
+                    html: `
+                        <div class="text-start">
+                            <p>GGX providers have been synchronized successfully.</p>
+                            <ul>
+                                <li>Added: <strong>${response.added}</strong></li>
+                                <li>Updated: <strong>${response.updated}</strong></li>
+                                <li>Reactivated: <strong>${response.reactivated}</strong></li>
+                                <li>Deactivated: <strong>${response.deactivated}</strong></li>
+                                <li>Total from GGX: <strong>${response.total}</strong></li>
+                            </ul>
+                        </div>
+                    `,
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+
+                // Optional: refresh the page to display the updated provider list.
+                location.reload();
+            } catch (xhr) {
+                const message =
+                    xhr.responseJSON?.message ||
+                    xhr.responseJSON?.errorCode ||
+                    xhr.responseJSON?.title ||
+                    xhr.statusText ||
+                    "An unexpected error occurred while syncing GGX providers.";
+
+                Swal.fire({
+                    title: "Sync Failed",
+                    text: message,
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            } finally {
+                button.prop("disabled", false).html(originalHtml);
+            }
+        });
+    });
+</script>
