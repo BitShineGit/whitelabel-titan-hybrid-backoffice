@@ -18,7 +18,7 @@ namespace Whitelabel_backoffice.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IWhitelabelDBStorage _dbStorage;
         private readonly IConfiguration _configuration;
-        private readonly IGameService _gameService;
+        private readonly IBoltGameService _gameService;
         private readonly AppSettings _appSetting;
         public Global.Logging.ILogger _logger;
 
@@ -31,7 +31,7 @@ namespace Whitelabel_backoffice.Controllers
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
-            IGameService gameService,
+            IBoltGameService gameService,
             IOptions<AppSettings> appsettings
         ) : base(lang)
         {
@@ -56,7 +56,7 @@ namespace Whitelabel_backoffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> APIProviders(string apiCode = "ggx")
+        public async Task<IActionResult> APIProviders(string apiCode = "bolt")
         {
             apiCode = (apiCode ?? "").Trim().ToLowerInvariant();
 
@@ -81,11 +81,11 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var providers = await _dbStorage.Context.Ggxproviders
+                        var providers = await _dbStorage.Context.BoltProviders
                             .AsNoTracking()
-                            .OrderBy(x => x.Ggxtype)
+                            .OrderBy(x => x.BoltType)
                             .ToListAsync();
 
                         model.Rows = providers
@@ -137,13 +137,13 @@ namespace Whitelabel_backoffice.Controllers
         {
             return apiCode switch
             {
-                "ggx" => new List<APIProviderColumn>
+                "bolt" => new List<APIProviderColumn>
                 {
-                    new() { Field = "GgxvendorCode", Title = "Vendor Code" },
-                    new() { Field = "Ggxtype", Title = "Category", Type = "number" },
-                    new() { Field = "Ggxname", Title = "Vendor Name" },
-                    new() { Field = "Ggxstatus", Title = "API Status", Type = "number" },
-                    new() { Field = "GgxtotalGameCount", Title = "Total Games", Type = "number" },
+                    new() { Field = "BoltVendorCode", Title = "Vendor Code" },
+                    new() { Field = "BoltType", Title = "Category", Type = "number" },
+                    new() { Field = "BoltName", Title = "Vendor Name" },
+                    new() { Field = "BoltStatus", Title = "API Status", Type = "number" },
+                    new() { Field = "BolttotalGameCount", Title = "Total Games", Type = "number" },
                     new() { Field = "WlproviderCode", Title = "WL Provider Code", Type = "select", Editable = true },
                     new() { Field = "Wlstatus", Title = "WL Status", Type = "switch", Setting = "Wlstatus" },
                     new() { Field = "Wlstatus", Title = "Maintenance", Type = "switch", Setting = "Maintenance" }
@@ -473,9 +473,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var provider = await _dbStorage.Context.Ggxproviders
+                        var provider = await _dbStorage.Context.BoltProviders
                             .FirstOrDefaultAsync(x => x.Id == id);
 
                         if (provider == null)
@@ -521,7 +521,7 @@ namespace Whitelabel_backoffice.Controllers
             apiCode = (apiCode ?? "").Trim().ToLowerInvariant();
             setting = (setting ?? "").Trim();
 
-            if (!(apiCode == "ggx" || apiCode == "gamingsoft") || id <= 0 ||
+            if (!(apiCode == "bolt" || apiCode == "gamingsoft") || id <= 0 ||
                 (setting != "Wlstatus" && setting != "Maintenance"))
             {
                 return BadRequest(new { success = false, msg = "Invalid request." });
@@ -532,9 +532,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var provider = await _dbStorage.Context.Ggxproviders
+                        var provider = await _dbStorage.Context.BoltProviders
                             .FirstOrDefaultAsync(x => x.Id == id);
 
                         if (provider == null)
@@ -594,7 +594,7 @@ namespace Whitelabel_backoffice.Controllers
             apiCode = (apiCode ?? "").Trim().ToLowerInvariant();
             setting = (setting ?? "").Trim();
 
-            if (!(apiCode == "ggx" || apiCode == "gamingsoft") ||
+            if (!(apiCode == "bolt" || apiCode == "gamingsoft") ||
                 ids == null ||
                 ids.Count == 0 ||
                 ids.Count > 500 ||
@@ -608,9 +608,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var providers = await _dbStorage.Context.Ggxproviders
+                        var providers = await _dbStorage.Context.BoltProviders
                             .Where(x => distinctIds.Contains(x.Id))
                             .ToListAsync();
 
@@ -699,9 +699,9 @@ namespace Whitelabel_backoffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SyncGgxProviders()
+        public async Task<IActionResult> SyncBoltProviders()
         {
-            var result = await _gameService.GetProviderList(new Models.ApiModels.GetProviderListRequestModel { ApiCode = "ggx" });
+            var result = await _gameService.GetProviderList(new Models.ApiModels.GetProviderListRequestModel { ApiCode = "bolt" });
 
             if (result == null || !result.success || result.message == null)
             {
@@ -718,14 +718,14 @@ namespace Whitelabel_backoffice.Controllers
             // safety: an empty list would deactivate every provider, treat it as a bad response instead
             if (incoming.Count == 0)
             {
-                return BadRequest(new { success = false, message = "GGX returned an empty vendor list, nothing was changed" });
+                return BadRequest(new { success = false, message = "BOLT returned an empty vendor list, nothing was changed" });
             }
 
             var context = _dbStorage.Context;
             var now = DateTime.UtcNow;
-            var existing = await context.Ggxproviders.ToListAsync();
+            var existing = await context.BoltProviders.ToListAsync();
             var existingByCode = existing
-                .GroupBy(x => x.GgxvendorCode, StringComparer.OrdinalIgnoreCase)
+                .GroupBy(x => x.BoltVendorCode, StringComparer.OrdinalIgnoreCase)
                 .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
             var incomingCodes = new HashSet<string>(incoming.Select(v => v.VendorCode), StringComparer.OrdinalIgnoreCase);
 
@@ -739,17 +739,17 @@ namespace Whitelabel_backoffice.Controllers
                     var changed = false;
 
                     // GGX-owned fields: only written when they really differ
-                    if (row.Ggxname != vendor.Name || row.Ggxtype != (byte)vendor.Type)
+                    if (row.BoltName != vendor.Name || row.BoltType != (byte)vendor.Type)
                     {
-                        row.Ggxname = vendor.Name;
-                        row.Ggxtype = (byte)vendor.Type;
+                        row.BoltName = vendor.Name;
+                        row.BoltType = (byte)vendor.Type;
                         changed = true;
                     }
 
                     // vendor is back in the GGX list after being switched off
-                    if (row.Ggxstatus == 0)
+                    if (row.BoltStatus == 0)
                     {
-                        row.Ggxstatus = 1;
+                        row.BoltStatus = 1;
                         reactivated++;
                         changed = true;
                     }
@@ -762,30 +762,30 @@ namespace Whitelabel_backoffice.Controllers
                 }
                 else
                 {
-                    var newRow = new Ggxprovider
+                    var newRow = new BoltProvider
                     {
-                        GgxvendorCode = vendor.VendorCode,
-                        Ggxtype = (byte)vendor.Type,
-                        Ggxname = vendor.Name,
-                        Ggxstatus = 1,
-                        GgxtotalGameCount = 0,
+                        BoltVendorCode = vendor.VendorCode,
+                        BoltType = (byte)vendor.Type,
+                        BoltName = vendor.Name,
+                        BoltStatus = 1,
+                        BoltTotalGameCount = 0,
                         WlproviderCode = "",
                         Wlstatus = 0,
                         CreatedAt = now,
                         UpdatedAt = now,
                     };
-                    context.Ggxproviders.Add(newRow);
+                    context.BoltProviders.Add(newRow);
                     existingByCode[vendor.VendorCode] = newRow;   // protects against a repeat within the same run
                     added++;
                 }
             }
 
-            // 2. vendors stored before but missing from the new list -> Ggxstatus = 0
+            // 2. vendors stored before but missing from the new list -> BoltStatus = 0
             foreach (var row in existing)
             {
-                if (!incomingCodes.Contains(row.GgxvendorCode) && row.Ggxstatus != 0)
+                if (!incomingCodes.Contains(row.BoltVendorCode) && row.BoltStatus != 0)
                 {
-                    row.Ggxstatus = 0;
+                    row.BoltStatus = 0;
                     row.UpdatedAt = now;
                     deactivated++;
                 }
@@ -797,18 +797,18 @@ namespace Whitelabel_backoffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SyncGgxGames([FromQuery] string language = "en", [FromQuery] string vendorCode = null)
+        public async Task<IActionResult> SyncBoltGames([FromQuery] string language = "en", [FromQuery] string vendorCode = null)
         {
             var context = _dbStorage.Context;
             var now = DateTime.UtcNow;
 
-            var providerQuery = context.Ggxproviders.Where(p => p.Ggxstatus == 1);
+            var providerQuery = context.BoltProviders.Where(p => p.BoltStatus == 1);
 
             // optional filter: only sync the games of this vendor
             if (!string.IsNullOrWhiteSpace(vendorCode))
             {
                 var code = vendorCode.Trim();
-                providerQuery = providerQuery.Where(p => p.GgxvendorCode == code);
+                providerQuery = providerQuery.Where(p => p.BoltVendorCode == code);
             }
 
             var providers = await providerQuery.ToListAsync();
@@ -832,14 +832,14 @@ namespace Whitelabel_backoffice.Controllers
                 {
                     var gamesResponse = await _gameService.GetGameList(new GetGameListRequest
                     {
-                        ApiCode = "ggx",
-                        VendorCode = provider.GgxvendorCode,
+                        ApiCode = "bolt",
+                        VendorCode = provider.BoltVendorCode,
                         Language = language
                     });
 
                     if (gamesResponse?.Message == null)
                     {
-                        summary.Add(new { vendor = provider.GgxvendorCode, status = "no data" });
+                        summary.Add(new { vendor = provider.BoltVendorCode, status = "no data" });
                         continue;
                     }
 
@@ -851,11 +851,11 @@ namespace Whitelabel_backoffice.Controllers
                         .ToList();
                     var incomingCodes = new HashSet<string>(incoming.Select(g => g.GameCode), StringComparer.OrdinalIgnoreCase);
 
-                    var existing = await context.Ggxgames
-                        .Where(g => g.GgxvendorCode == provider.GgxvendorCode)
+                    var existing = await context.BoltGames
+                        .Where(g => g.BoltVendorCode == provider.BoltVendorCode)
                         .ToListAsync();
                     var existingByCode = existing
-                        .GroupBy(g => g.GgxgameCode, StringComparer.OrdinalIgnoreCase)
+                        .GroupBy(g => g.BoltGameCode, StringComparer.OrdinalIgnoreCase)
                         .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
                     int added = 0, updated = 0, reactivated = 0, deactivated = 0;
@@ -868,20 +868,20 @@ namespace Whitelabel_backoffice.Controllers
                             var changed = false;
 
                             // GGX-owned fields: a null from the API never overwrites a stored value
-                            var name = game.GameName ?? row.GgxgameName;
-                            var slug = game.Slug ?? row.Ggxslug;
-                            var thumbnail = game.Thumbnail ?? row.Ggxthumbnail;
+                            var name = game.GameName ?? row.BoltGameName;
+                            var slug = game.Slug ?? row.BoltSlug;
+                            var thumbnail = game.Thumbnail ?? row.BoltThumbnail;
 
-                            if (row.GgxgameName != name) { row.GgxgameName = name; changed = true; }
-                            if (row.Ggxslug != slug) { row.Ggxslug = slug; changed = true; }
-                            if (row.Ggxthumbnail != thumbnail) { row.Ggxthumbnail = thumbnail; changed = true; }
-                            if (row.GgxisNew != game.IsNew) { row.GgxisNew = game.IsNew; row.IsNew = game.IsNew; changed = true; }
-                            if (row.Ggxprovider != provider.Ggxname) { row.Ggxprovider = provider.Ggxname; changed = true; }
+                            if (row.BoltGameName != name) { row.BoltGameName = name; changed = true; }
+                            if (row.BoltSlug != slug) { row.BoltSlug = slug; changed = true; }
+                            if (row.BoltThumbnail != thumbnail) { row.BoltThumbnail = thumbnail; changed = true; }
+                            if (row.BoltIsNew != game.IsNew) { row.BoltIsNew = game.IsNew; row.IsNew = game.IsNew; changed = true; }
+                            if (row.BoltProvider != provider.BoltName) { row.BoltProvider = provider.BoltName; changed = true; }
 
                             // game is back in the GGX list after being switched off
-                            if (row.Ggxstatus == 0)
+                            if (row.BoltStatus == 0)
                             {
-                                row.Ggxstatus = 1;
+                                row.BoltStatus = 1;
                                 reactivated++;
                                 changed = true;
                             }
@@ -894,35 +894,35 @@ namespace Whitelabel_backoffice.Controllers
                         }
                         else
                         {
-                            var newRow = new Ggxgame
+                            var newRow = new BoltGame
                             {
-                                Ggxprovider = provider.Ggxname,
-                                GgxvendorCode = provider.GgxvendorCode,
-                                GgxgameCode = game.GameCode,
-                                GgxgameName = game.GameName ?? "",
-                                Ggxslug = game.Slug ?? "",
-                                Ggxthumbnail = game.Thumbnail ?? "",
-                                GgxisNew = game.IsNew,
+                                BoltProvider = provider.BoltName,
+                                BoltVendorCode = provider.BoltVendorCode,
+                                BoltGameCode = game.GameCode,
+                                BoltGameName = game.GameName ?? "",
+                                BoltSlug = game.Slug ?? "",
+                                BoltThumbnail = game.Thumbnail ?? "",
+                                BoltIsNew = game.IsNew,
                                 IsNew = game.IsNew,
-                                Ggxstatus = 1,
+                                BoltStatus = 1,
                                 Wlstatus = 0,
                                 CreatedAt = now,
                                 UpdatedAt = now,
                             };
-                            context.Ggxgames.Add(newRow);
+                            context.BoltGames.Add(newRow);
                             existingByCode[game.GameCode] = newRow;   // guards against duplicate codes in the same response
                             added++;
                         }
                     }
 
-                    // 2. games stored before but missing from the new list -> Ggxstatus = 0
+                    // 2. games stored before but missing from the new list -> BoltStatus = 0
                     if (incoming.Count > 0)
                     {
                         foreach (var row in existing)
                         {
-                            if (!incomingCodes.Contains(row.GgxgameCode) && row.Ggxstatus != 0)
+                            if (!incomingCodes.Contains(row.BoltGameCode) && row.BoltStatus != 0)
                             {
-                                row.Ggxstatus = 0;
+                                row.BoltStatus = 0;
                                 row.UpdatedAt = now;
                                 deactivated++;
                             }
@@ -931,11 +931,11 @@ namespace Whitelabel_backoffice.Controllers
                     else if (existing.Count > 0)
                     {
                         // an empty answer is suspicious (it can also be a failed call), so keep the stored games
-                        summary.Add(new { vendor = provider.GgxvendorCode, status = "empty result, nothing deactivated", storedGames = existing.Count });
+                        summary.Add(new { vendor = provider.BoltVendorCode, status = "empty result, nothing deactivated", storedGames = existing.Count });
                         continue;
                     }
 
-                    provider.GgxtotalGameCount = incoming.Count;
+                    provider.BoltTotalGameCount = incoming.Count;
 
                     // Save per provider so one failure doesn't roll back the others
                     await context.SaveChangesAsync();
@@ -944,13 +944,13 @@ namespace Whitelabel_backoffice.Controllers
                     totalUpdated += updated;
                     totalReactivated += reactivated;
                     totalDeactivated += deactivated;
-                    summary.Add(new { vendor = provider.GgxvendorCode, added, updated, reactivated, deactivated, total = incoming.Count });
+                    summary.Add(new { vendor = provider.BoltVendorCode, added, updated, reactivated, deactivated, total = incoming.Count });
                 }
                 catch (Exception e)
                 {
                     context.ChangeTracker.Clear();   // drop the failed provider's pending changes
-                    _logger.Error($"SyncGgxGames vendor {provider.GgxvendorCode}: {e}");
-                    summary.Add(new { vendor = provider.GgxvendorCode, status = "failed" });
+                    _logger.Error($"SyncBoltGames vendor {provider.BoltVendorCode}: {e}");
+                    summary.Add(new { vendor = provider.BoltVendorCode, status = "failed" });
                 }
             }
 
@@ -972,15 +972,15 @@ namespace Whitelabel_backoffice.Controllers
         {
             return apiCode switch
             {
-                "ggx" => new List<APIGameColumn>
+                "bolt" => new List<APIGameColumn>
                 {
                     new() { Field = "Id", Title = "ID", Type = "number" },
-                    new() { Field = "Ggxthumbnail", Title = "Thumbnail", Type = "image" },
-                    new() { Field = "GgxvendorCode", Title = "Vendor Code" },
-                    new() { Field = "GgxgameCode", Title = "Game Code" },
-                    new() { Field = "GgxgameName", Title = "Game Name" },
-                    new() { Field = "Ggxstatus", Title = "API Status", Type = "status" },
-                    new() { Field = "GgxisNew", Title = "GGX New", Type = "bool" },
+                    new() { Field = "BoltThumbnail", Title = "Thumbnail", Type = "image" },
+                    new() { Field = "BoltVendorCode", Title = "Vendor Code" },
+                    new() { Field = "BoltGameCode", Title = "Game Code" },
+                    new() { Field = "BoltGameName", Title = "Game Name" },
+                    new() { Field = "BoltStatus", Title = "API Status", Type = "status" },
+                    new() { Field = "BoltIsNew", Title = "Bolt New", Type = "bool" },
                     new() { Field = "SortNumber", Title = "Sort", Type = "number" },
                     new() { Field = "IsNew", Title = "New", Type = "switch" },
                     new() { Field = "IsJackpot", Title = "Jackpot", Type = "switch" },
@@ -1036,7 +1036,7 @@ namespace Whitelabel_backoffice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> APIGames(string apiCode = "ggx", string? providerCode = null)
+        public async Task<IActionResult> APIGames(string apiCode = "bolt", string? providerCode = null)
         {
             apiCode = (apiCode ?? "").Trim().ToLowerInvariant();
             providerCode = providerCode?.Trim();
@@ -1064,15 +1064,15 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        model.Providers = await context.Ggxproviders
+                        model.Providers = await context.BoltProviders
                             .AsNoTracking()
-                            .OrderBy(x => x.Ggxname)
+                            .OrderBy(x => x.BoltName)
                             .Select(x => new APIGameProviderOption
                             {
-                                Value = x.GgxvendorCode,
-                                Text = x.Ggxname + " (" + x.GgxvendorCode + ")"
+                                Value = x.BoltVendorCode,
+                                Text = x.BoltName + " (" + x.BoltVendorCode + ")"
                             })
                             .ToListAsync();
 
@@ -1089,11 +1089,11 @@ namespace Whitelabel_backoffice.Controllers
                                 return BadRequest("Invalid provider selected.");
                             }
 
-                            var games = await context.Ggxgames
+                            var games = await context.BoltGames
                                 .AsNoTracking()
-                                .Where(x => x.GgxvendorCode == provider.Value)
+                                .Where(x => x.BoltVendorCode == provider.Value)
                                 .OrderByDescending(x => x.SortNumber)
-                                .ThenBy(x => x.GgxgameName)
+                                .ThenBy(x => x.BoltGameName)
                                 .ToListAsync();
 
                             model.Rows = games
@@ -1171,9 +1171,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var game = await _dbStorage.Context.Ggxgames
+                        var game = await _dbStorage.Context.BoltGames
                             .FirstOrDefaultAsync(x => x.Id == id);
 
                         if (game == null)
@@ -1279,9 +1279,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var games = await _dbStorage.Context.Ggxgames
+                        var games = await _dbStorage.Context.BoltGames
                             .Where(x => ids.Contains(x.Id))
                             .ToListAsync();
 
@@ -1341,9 +1341,9 @@ namespace Whitelabel_backoffice.Controllers
 
             switch (apiCode)
             {
-                case "ggx":
+                case "bolt":
                     {
-                        var game = await _dbStorage.Context.Ggxgames
+                        var game = await _dbStorage.Context.BoltGames
                             .FirstOrDefaultAsync(x => x.Id == id);
 
                         if (game == null)

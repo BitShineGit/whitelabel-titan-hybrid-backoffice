@@ -11,11 +11,11 @@ using System.Text;
 
 namespace Whitelabel_backoffice.Services.Implementations
 {
-    public class GoldenGateXAPITokenService : IGoldenGateXAPITokenService
+    public class BoltAPITokenService : IBoltAPITokenService
     {
         private readonly Func<IServiceScope> _serviceScopeFactory;
         private Lazy<GoldenGateXBearerToken> _accessToken = new Lazy<GoldenGateXBearerToken>(() => new GoldenGateXBearerToken(), LazyThreadSafetyMode.ExecutionAndPublication);
-        public GoldenGateXAPITokenService(IServiceScopeFactory serviceScopeFactory)
+        public BoltAPITokenService(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = () => serviceScopeFactory.CreateScope();
         }
@@ -23,7 +23,7 @@ namespace Whitelabel_backoffice.Services.Implementations
         {
             if (_accessToken.Value.IsExpired)
             {
-                await FetchAccessToken("gdgx");
+                await FetchAccessToken("bolt");
             }
 
             return _accessToken.Value;
@@ -37,7 +37,7 @@ namespace Whitelabel_backoffice.Services.Implementations
 
             try
             {
-                var api = await _context.IntegratedApis.Where(x => x.ApiCode == APIName.ToLower()).FirstOrDefaultAsync();
+                var api = await _context.Apis.Where(x => x.ApiCode == APIName.ToLower()).FirstOrDefaultAsync();
 
                 if (api == null)
                 {
@@ -52,7 +52,7 @@ namespace Whitelabel_backoffice.Services.Implementations
                 };
                 using (var httpClient = new HttpClient(clientHandler))
                 {
-                    string url = api.Endpoint + "/auth/createtoken";
+                    string url = api.ApiUrl + "/auth/createtoken";
 
                     var httpRequestMessage = new HttpRequestMessage
                     {
@@ -64,8 +64,8 @@ namespace Whitelabel_backoffice.Services.Implementations
                     };
                     httpRequestMessage.Content = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        clientId = api.ClientId,
-                        clientSecret = api.ClientSecret,
+                        clientId = api.OpCode,
+                        clientSecret = api.OpSecret,
                     }), Encoding.UTF8, "application/json");
 
                     var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);

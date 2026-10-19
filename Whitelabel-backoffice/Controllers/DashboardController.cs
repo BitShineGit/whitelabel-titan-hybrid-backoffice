@@ -24,7 +24,7 @@ namespace Whitelabel_backoffice.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IWhitelabelDBStorage _dbStorage;
         private readonly IConfiguration _configuration;
-        private readonly IGameService _gameService;
+        private readonly IBoltGameService _gameService;
         public Global.Logging.ILogger _logger;
         private readonly WebSocketHandler _webSocketHandler;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -40,7 +40,7 @@ namespace Whitelabel_backoffice.Controllers
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
-            IGameService gameService,
+            IBoltGameService gameService,
             WebSocketHandler webSocketHandler,
             IHttpClientFactory httpClientFactory,
             ISettingService settingService,

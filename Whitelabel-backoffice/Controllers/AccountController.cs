@@ -20,7 +20,7 @@ namespace Whitelabel_backoffice.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IWhitelabelDBStorage _dbStorage;
         private readonly IConfiguration _configuration;
-        private readonly IGameService _gameService;
+        private readonly IBoltGameService _gameService;
         private readonly AppSettings _appSetting;
         private readonly ILogger<AccountController> _logger;
 
@@ -32,7 +32,7 @@ namespace Whitelabel_backoffice.Controllers
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
-            IGameService gameService,
+            IBoltGameService gameService,
             IOptions<AppSettings> appsettings
         ) 
         {

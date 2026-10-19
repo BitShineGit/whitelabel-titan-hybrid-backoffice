@@ -2,7 +2,7 @@
 
 namespace Whitelabel_backoffice.Services.Interfaces
 {
-    public interface IGoldenGateXAPITokenService
+    public interface IBoltAPITokenService
     {
         Task<GoldenGateXBearerToken> GetAccessToken();
     }

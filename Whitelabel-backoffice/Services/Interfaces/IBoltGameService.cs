@@ -4,7 +4,7 @@ using Whitelabel_backoffice.Services.Messaging.IntegratedApi;
 
 namespace Whitelabel_backoffice.Services.Interfaces
 {
-    public interface IGameService
+    public interface IBoltGameService
     {
         Task<GetGamesResponse> GetGameList(GetGameListRequest request);
         Task<GetGamesResponse> GetMiniGameList(GetGameListRequest request);

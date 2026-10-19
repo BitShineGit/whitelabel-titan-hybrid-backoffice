@@ -14,13 +14,13 @@ using Whitelabel_backoffice.Models;
 
 namespace Whitelabel_backoffice.Services.Implementations
 {
-    public class GameService : IGameService
+    public class BoltGameService : IBoltGameService
     {
         private readonly Global.Logging.ILogger _logger = null;
-        private readonly IGoldenGateXAPITokenService _goldenGateXAPITokenService = null;
+        private readonly IBoltAPITokenService _goldenGateXAPITokenService = null;
         private readonly IWhitelabelDBStorage _dbStorage = null;
 
-        public GameService(Global.Logging.ILogger logger, IWhitelabelDBStorage dbStorage, IGoldenGateXAPITokenService goldenGateXAPITokenService)
+        public BoltGameService(Global.Logging.ILogger logger, IWhitelabelDBStorage dbStorage, IBoltAPITokenService goldenGateXAPITokenService)
         {
             _logger = logger;
             _dbStorage = dbStorage;
@@ -30,7 +30,7 @@ namespace Whitelabel_backoffice.Services.Implementations
         public async Task<GetGameDetailResponse> GetGameDetail(GetGameDetailRequest request)
         {
             var response = new GetGameDetailResponse();
-            var api = await _dbStorage.Context.IntegratedApis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
+            var api = await _dbStorage.Context.Apis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
 
             if (api == null)
             {
@@ -49,7 +49,7 @@ namespace Whitelabel_backoffice.Services.Implementations
                 using (var httpClient = new HttpClient(clientHandler))
                 {
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Token}");
-                    string url = api.Endpoint + "/game/detail";
+                    string url = api.ApiUrl + "/game/detail";
 
                     var httpRequestMessage = new HttpRequestMessage
                     {
@@ -89,7 +89,7 @@ namespace Whitelabel_backoffice.Services.Implementations
         public async Task<GetGamesResponse> GetGameList(GetGameListRequest request)
         {
             var response = new GetGamesResponse();
-            var api = await _dbStorage.Context.IntegratedApis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
+            var api = await _dbStorage.Context.Apis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
 
             if (api == null)
             {
@@ -109,7 +109,7 @@ namespace Whitelabel_backoffice.Services.Implementations
                 using (var httpClient = new HttpClient(clientHandler))
                 {
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Token}");
-                    string url = api.Endpoint + "/games/list";
+                    string url = api.ApiUrl + "/games/list";
 
                     var httpRequestMessage = new HttpRequestMessage
                     {
@@ -150,7 +150,7 @@ namespace Whitelabel_backoffice.Services.Implementations
         public async Task<GetGameLaunchUrlResponse> GetLaunchURL(GetLaunchUrlRequest request)
         {
             var response = new GetGameLaunchUrlResponse();
-            var api = await _dbStorage.Context.IntegratedApis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
+            var api = await _dbStorage.Context.Apis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
             if (api == null)
             {
                 throw new IntegrationAPINotFoundException(request.ApiCode);
@@ -169,7 +169,7 @@ namespace Whitelabel_backoffice.Services.Implementations
                 using (var httpClient = new HttpClient(clientHandler))
                 {
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Token}");
-                    string url = api.Endpoint + "/game/launch-url";
+                    string url = api.ApiUrl + "/game/launch-url";
 
                     var httpRequestMessage = new HttpRequestMessage
                     {
@@ -209,7 +209,7 @@ namespace Whitelabel_backoffice.Services.Implementations
         public async Task<GetGamesResponse> GetMiniGameList(GetGameListRequest request)
         {
             var response = new GetGamesResponse();
-            var api = await _dbStorage.Context.IntegratedApis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
+            var api = await _dbStorage.Context.Apis.Where(x => x.ApiCode == request.ApiCode.ToLower()).FirstOrDefaultAsync();
 
             if (api == null)
             {
@@ -229,7 +229,7 @@ namespace Whitelabel_backoffice.Services.Implementations
                 using (var httpClient = new HttpClient(clientHandler))
                 {
                     httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Token}");
-                    string url = api.Endpoint + "/games/mini/list";
+                    string url = api.ApiUrl + "/games/mini/list";
 
                     var httpRequestMessage = new HttpRequestMessage
                     {

@@ -43,11 +43,11 @@ builder.Services.Configure<AppSettings>(
 
 
 
-builder.Services.AddSingleton<IGoldenGateXAPITokenService,
-    GoldenGateXAPITokenService>();
+builder.Services.AddSingleton<IBoltAPITokenService,
+    BoltAPITokenService>();
 
 
-builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IBoltGameService, BoltGameService>();
 
 builder.Services.AddScoped<IClientService, ClientService>();
 

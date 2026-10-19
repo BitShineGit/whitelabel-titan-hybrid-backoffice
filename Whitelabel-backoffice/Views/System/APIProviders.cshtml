@@ -14,8 +14,8 @@
     <div class="text-end">
         <ol class="breadcrumb m-0 py-0">
             <li class="breadcrumb-item">
-                <a href="~/dashboard/index">
-                    MyStake
+                <a href="~/account/index">
+                    TITANBET
                 </a>
             </li>
             <li class="breadcrumb-item">
@@ -118,7 +118,7 @@
                                 </th>
                                 @foreach (var column in Model.Columns.Where(c => c.Visible))
                                 {
-                                    if (column.Field == "Ggxtype")
+                                    if (column.Field == "BoltType")
                                     {
                                         <th class="text-center" data-column="category">@column.Title</th>
                                     }
@@ -145,7 +145,7 @@
                                     {
                                         var value = row.GetValueOrDefault(column.Field);
 
-                                        if (column.Field.Equals("Ggxtype", StringComparison.OrdinalIgnoreCase))
+                                        if (column.Field.Equals("BoltType", StringComparison.OrdinalIgnoreCase))
                                         {
                                             var category = Convert.ToInt32(value ?? 0);
 
@@ -165,7 +165,7 @@
                                         else
                                         {
                                             <td class="text-center">
-                                                @if (column.Field.Equals("Ggxstatus", StringComparison.OrdinalIgnoreCase))
+                                                @if (column.Field.Equals("BoltStatus", StringComparison.OrdinalIgnoreCase))
                                                 {
                                                     var status = Convert.ToInt32(value ?? 0);
 
@@ -609,7 +609,7 @@
 
             try {
                 const response = await $.ajax({
-                    url: "/System/SyncGgxProviders",
+                    url: "/System/SyncBoltProviders",
                     type: "POST",
                     headers: {
                     }

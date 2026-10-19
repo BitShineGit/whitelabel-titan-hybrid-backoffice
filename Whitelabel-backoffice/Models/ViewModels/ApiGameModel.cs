@@ -2,7 +2,7 @@
 
 public class APIGamesViewModel
 {
-    public string ApiCode { get; set; } = "ggx";
+    public string ApiCode { get; set; } = "bolt";
     public string? ProviderCode { get; set; }
     public string Title { get; set; } = "API Games";
 
