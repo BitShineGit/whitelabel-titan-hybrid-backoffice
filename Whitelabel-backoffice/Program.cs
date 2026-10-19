@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Whitelabel_backoffice.Data;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models;
 using Whitelabel_backoffice.Services.Implementations;
 using Whitelabel_backoffice.Services.Interfaces;
 using Whitelabel_backoffice.BackgroundJobs;
 using Whitelabel_backoffice.Services;
+using Titan.HybridRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -201,7 +202,7 @@ app.Map("/ws", async context =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}"
+    pattern: "{controller=Account}/{action=Index}"
 );
 
 

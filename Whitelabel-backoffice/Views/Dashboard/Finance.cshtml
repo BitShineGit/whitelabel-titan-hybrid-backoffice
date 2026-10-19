@@ -7,7 +7,70 @@
 <link rel="stylesheet" href="~/assets/plugins/daterangepicker/daterangepicker.css" />
 <link rel="stylesheet" href="~/assets/plugins/sweetalert2/sweetalert2.min.css" />
 <link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .dt-length {
+        margin-top: 20px;
+    }
 
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    /* 0 - Pending */
+    .status-pending {
+        background-color: rgba(255, 193, 7, 0.15);
+        color: #ffc107;
+    }
+
+    /* 1 - Processing */
+    .status-processing {
+        background-color: rgba(13, 202, 240, 0.15);
+        color: #0dcaf0;
+    }
+
+    /* 2 - Completed */
+    .status-completed {
+        background-color: rgba(25, 135, 84, 0.12);
+        color: #198754;
+    }
+
+    /* 3 - Rejected */
+    .status-rejected {
+        background-color: rgba(220, 53, 69, 0.12);
+        color: #dc3545;
+    }
+
+    /* 4 - Failed */
+    .status-failed {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #60a5fa;
+    }
+
+    /* 5 - Cancelled */
+    .status-cancelled {
+        background-color: rgba(248, 113, 113, 0.15);
+        color: #f87171;
+    }
+
+    /* 6 - Auto Cancelled */
+    .status-auto-cancelled {
+        background-color: rgba(236, 72, 153, 0.15);
+        color: #f472b6;
+    }
+
+    /* Unknown status */
+    .status-unknown {
+        background-color: rgba(156, 163, 175, 0.12);
+        color: #9ca3af;
+    }
+</style>
 <div class="page-title-head d-flex align-items-center">
 
     <div class="flex-grow-1 ms-3">
@@ -23,8 +86,8 @@
         <ol class="breadcrumb m-0 py-0">
 
             <li class="breadcrumb-item">
-                <a href="~/dashboard/index">
-                    MyStake
+                <a href="~/account/index">
+                    TITANBET
                 </a>
             </li>
 
@@ -718,11 +781,10 @@
             }
 
             return $("<div>")
-                .text(
-                    String(value)
-                )
+                .text(String(value))
                 .html();
         }
+
 
 
         /* =========================================================
@@ -738,6 +800,7 @@
                 ? number.toFixed(2)
                 : "0.00";
         }
+
 
 
         /* =========================================================
@@ -762,9 +825,9 @@
 
                 default:
                     return "Unknown";
-
             }
         }
+
 
 
         /* =========================================================
@@ -783,9 +846,9 @@
 
                 default:
                     return "Unknown";
-
             }
         }
+
 
 
         /* =========================================================
@@ -800,7 +863,7 @@
                     return "Pending";
 
                 case 1:
-                    return "";
+                    return "Processing";
 
                 case 2:
                     return "Completed";
@@ -819,13 +882,13 @@
 
                 default:
                     return "Unknown";
-
             }
         }
 
 
+
         /* =========================================================
-           BALANCE TEXT
+           BALANCE
         ========================================================= */
 
         function getFinanceBalanceText(
@@ -839,28 +902,27 @@
             var after =
                 Number(afterValue);
 
+
             if (!Number.isFinite(before)) {
                 before = 0;
             }
+
 
             if (!Number.isFinite(after)) {
                 after = 0;
             }
 
+
             return (
-                formatMoney(before) +
-                " → " +
+                formatMoney(before)
+                +
+                " → "
+                +
                 formatMoney(after)
             );
         }
 
 
-        /* =========================================================
-           BALANCE RENDERER
-
-           Always:
-               before → after
-        ========================================================= */
 
         function renderFinanceBalance(
             beforeValue,
@@ -873,38 +935,53 @@
             var after =
                 Number(afterValue);
 
+
             if (!Number.isFinite(before)) {
                 before = 0;
             }
+
 
             if (!Number.isFinite(after)) {
                 after = 0;
             }
 
+
             var afterClass =
                 after > before
                     ? "text-success"
-                    : after < before
+                    :
+                    after < before
                         ? "text-danger"
-                        : "";
+                        :
+                        "";
+
 
             return (
+
                 '<span class="text-nowrap">' +
-                formatMoney(before) +
-                ' <span class="text-muted mx-1">→</span> ' +
+
+                formatMoney(before)
+
+                +
+
+                ' <span class="text-muted mx-1">→</span> '
+
+                +
+
                 '<span class="' +
                 afterClass +
                 '">' +
-                formatMoney(after) +
-                "</span>" +
-                "</span>"
+
+                formatMoney(after)
+
+                +
+
+                '</span></span>'
+
             );
         }
 
 
-        /* =========================================================
-           FINANCE TYPE RENDER
-        ========================================================= */
 
         function renderFinanceType(value) {
 
@@ -914,15 +991,45 @@
         }
 
 
-        /* =========================================================
-           STATUS RENDER
-        ========================================================= */
 
         function renderStatus(value) {
+            var status = Number(value);
+            var statusName = getStatusName(status);
+            var badgeClass = "status-unknown";
 
-            return escapeHtml(
-                getStatusName(value)
-            );
+            switch (status) {
+                case 0:
+                    badgeClass = "status-pending"; // Pending
+                    break;
+
+                case 1:
+                    badgeClass = "status-processing"; // Processing
+                    break;
+
+                case 2:
+                    badgeClass = "status-completed"; // Completed
+                    break;
+
+                case 3:
+                    badgeClass = "status-rejected"; // Rejected
+                    break;
+
+                case 4:
+                    badgeClass = "status-failed"; // Failed
+                    break;
+
+                case 5:
+                    badgeClass = "status-cancelled"; // Cancelled
+                    break;
+
+                case 6:
+                    badgeClass = "status-auto-cancelled"; // Auto Cancelled
+                    break;
+            }
+
+            return '<span class="status-badge ' + badgeClass + '">' +
+                escapeHtml(statusName) +
+                '</span>';
         }
 
 
@@ -946,41 +1053,33 @@
         }
 
 
+
         /* =========================================================
            DATE RANGE
         ========================================================= */
 
         var defaultStart =
             moment()
-                .subtract(
-                    1,
-                    "month"
-                );
+                .subtract(1, "month");
 
 
         var defaultEnd =
             moment();
 
 
-        function updateDateRange(
-            start,
-            end
-        ) {
 
-            $("#dateRange")
-                .val(
+        function updateDateRange(start, end) {
+            $("#dateRange").val(
+                start.format("YYYY-MM-DD HH:mm:ss") +
+                " - " +
+                end.format("YYYY-MM-DD HH:mm:ss")
+            );
 
-                    start.format(
-                        "YYYY-MM-DD HH:mm:ss"
-                    )
-
-                    + " - " +
-
-                    end.format(
-                        "YYYY-MM-DD HH:mm:ss"
-                    )
-
-                );
+            $("#selectedValue").text(
+                start.format("MMMM D, YYYY HH:mm:ss") +
+                " - " +
+                end.format("MMMM D, YYYY HH:mm:ss")
+            );
         }
 
 
@@ -995,147 +1094,28 @@
                     endDate:
                         defaultEnd,
 
-                    autoUpdateInput:
-                        false,
+                    autoUpdateInput: false,
 
-                    opens:
-                        "left",
+                    opens: "left",
 
-                    drops:
-                        "down",
+                    drops: "down",
 
-                    timePicker:
-                        true,
+                    timePicker: true,
 
-                    timePicker24Hour:
-                        true,
+                    timePicker24Hour: true,
 
-                    timePickerSeconds:
-                        true,
+                    timePickerSeconds: true,
 
                     locale: {
-
                         format:
                             "MMMM D, YYYY HH:mm:ss",
 
-                        cancelLabel:
-                            "Cancel",
+                        cancelLabel: "Cancel",
 
-                        applyLabel:
-                            "Apply"
-
-                    },
-
-                    ranges: {
-
-                        "Today": [
-
-                            moment()
-                                .startOf("day"),
-
-                            moment()
-                                .endOf("day")
-
-                        ],
-
-
-                        "Yesterday": [
-
-                            moment()
-                                .subtract(
-                                    1,
-                                    "days"
-                                )
-                                .startOf("day"),
-
-                            moment()
-                                .subtract(
-                                    1,
-                                    "days"
-                                )
-                                .endOf("day")
-
-                        ],
-
-
-                        "Last 7 Days": [
-
-                            moment()
-                                .subtract(
-                                    6,
-                                    "days"
-                                )
-                                .startOf("day"),
-
-                            moment()
-                                .endOf("day")
-
-                        ],
-
-
-                        "Last 30 Days": [
-
-                            moment()
-                                .subtract(
-                                    29,
-                                    "days"
-                                )
-                                .startOf("day"),
-
-                            moment()
-                                .endOf("day")
-
-                        ],
-
-
-                        "This Month": [
-
-                            moment()
-                                .startOf("month"),
-
-                            moment()
-                                .endOf("month")
-
-                        ],
-
-
-                        "Last Month": [
-
-                            moment()
-                                .subtract(
-                                    1,
-                                    "month"
-                                )
-                                .startOf("month"),
-
-                            moment()
-                                .subtract(
-                                    1,
-                                    "month"
-                                )
-                                .endOf("month")
-
-                        ]
-
+                        applyLabel: "Apply"
                     }
 
                 });
-
-
-            $("#selectedValue")
-                .text(
-
-                    defaultStart.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
-                    + " - " +
-
-                    defaultEnd.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
-                );
 
 
             updateDateRange(
@@ -1145,32 +1125,29 @@
 
 
             $("#reportrange")
-                .off(
-                    "apply.daterangepicker.finance"
-                )
                 .on(
                     "apply.daterangepicker.finance",
                     function (
                         event,
                         picker
                     ) {
+                        $("#selectedValue").text(
 
-                        $("#selectedValue")
-                            .text(
+                            picker.startDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
 
-                                picker.startDate.format(
-                                    "MMMM D, YYYY HH:mm:ss"
-                                )
+                            +
 
-                                + " - " +
+                            " - "
 
-                                picker.endDate.format(
-                                    "MMMM D, YYYY HH:mm:ss"
-                                )
+                            +
 
-                            );
+                            picker.endDate.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
 
-
+                        );
                         updateDateRange(
                             picker.startDate,
                             picker.endDate
@@ -1180,790 +1157,636 @@
                 );
 
         }
-
-
         /* =========================================================
-           DATATABLE
-        ========================================================= */
+    DATATABLE
+    ========================================================= */
 
         var table =
             $("#financeLogsTable")
                 .DataTable({
 
-                    processing:
-                        true,
+                    processing: true,
 
-                    serverSide:
-                        true,
+                    serverSide: true,
 
-                    responsive:
-                        true,
+                    responsive: true,
 
-                    autoWidth:
-                        false,
+                    autoWidth: false,
 
-                    searching:
-                        false,
+                    searching: false,
 
-                    deferRender:
-                        true,
+                    deferRender: true,
 
-                    pageLength:
-                        25,
+                    pageLength: 25,
 
-                    lengthMenu:
-                        [
-                            [10, 25, 50, 100],
-                            [10, 25, 50, 100]
-                        ],
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, 100]
+                    ],
 
-                    dom:
-                        "lrtip",
+                    dom: "lrtip",
 
-                    order:
-                        [
-                            [7, "desc"]
-                        ],
-
-                    columnDefs:
-                        [
-
-                            {
-                                responsivePriority:
-                                    1,
-
-                                targets:
-                                    0
-                            },
+                    order: [
+                        [7, "desc"]
+                    ],
 
 
-                            {
-                                responsivePriority:
-                                    2,
+                    columnDefs: [
 
-                                targets:
-                                    10
-                            },
+                        {
+                            responsivePriority: 1,
+                            targets: 0
+                        },
 
+                        {
+                            responsivePriority: 2,
+                            targets: 10
+                        },
 
-                            {
-                                responsivePriority:
-                                    3,
+                        {
+                            responsivePriority: 3,
+                            targets: 9
+                        },
 
-                                targets:
-                                    9
-                            },
+                        {
+                            responsivePriority: 4,
+                            targets: [
+                                5,
+                                6,
+                                8
+                            ]
+                        },
 
+                        {
+                            responsivePriority: 5,
+                            targets: [
+                                2,
+                                3
+                            ]
+                        },
 
-                            {
-                                responsivePriority:
-                                    4,
+                        {
+                            responsivePriority: 6,
+                            targets: 4
+                        },
 
-                                targets:
-                                    [
-                                        5,
-                                        6,
-                                        8
-                                    ]
-                            },
+                        {
+                            responsivePriority: 7,
+                            targets: 7
+                        },
 
-
-                            {
-                                responsivePriority:
-                                    5,
-
-                                targets:
-                                    [
-                                        2,
-                                        3
-                                    ]
-                            },
-
-
-                            {
-                                responsivePriority:
-                                    6,
-
-                                targets:
-                                    4
-                            },
+                        {
+                            responsivePriority: 8,
+                            targets: 1
+                        },
 
 
-                            {
-                                responsivePriority:
-                                    7,
+                        {
+                            orderable: false,
 
-                                targets:
-                                    7
-                            },
+                            targets: [
+                                0,
+                                2,
+                                3,
+                                6,
+                                9,
+                                10
+                            ]
+                        }
 
-
-                            {
-                                responsivePriority:
-                                    8,
-
-                                targets:
-                                    1
-                            },
+                    ],
 
 
-                            {
-                                orderable:
-                                    false,
 
-                                targets:
-                                    [
-                                        0,
-                                        1,
-                                        2,
-                                        3,
-                                        6,
-                                        9,
-                                        10
-                                    ]
-                            }
-
-                        ],
-
-
-                    ajax:
-                    {
+                    ajax: {
 
                         url:
                             "@Url.Action("GetFinanceLogs", "Dashboard")",
 
-                        type:
-                            "POST",
-
-                        data:
-                            function (d) {
-
-                                d.__RequestVerificationToken =
-                                    $(
-                                        "input[name='__RequestVerificationToken']"
-                                    ).val();
+                        type: "POST",
 
 
-                                d.agentCode =
-                                    $("#filterAgent")
-                                        .val();
+                        data: function (d) {
 
 
-                                d.targetCode =
-                                    $("#filterTarget")
-                                        .val();
+                            d.__RequestVerificationToken =
+                                $("input[name='__RequestVerificationToken']")
+                                    .val();
 
 
-                                d.financeType =
-                                    $("#filterExecTypes")
-                                        .val();
+
+                            d.agentCode =
+                                $("#filterAgent")
+                                    .val();
 
 
-                                d.amount =
-                                    $("#filterAmount")
-                                        .val();
+
+                            d.targetCode =
+                                $("#filterTarget")
+                                    .val();
 
 
-                                d.orderId =
-                                    $("#filterOrderId")
-                                        .val();
+
+                            d.financeType =
+                                $("#filterExecTypes")
+                                    .val();
 
 
-                                d.status =
-                                    $("#filterStatus")
-                                        .val();
+
+                            d.amount =
+                                $("#filterAmount")
+                                    .val();
 
 
-                                var range =
-                                    $("#dateRange")
-                                        .val();
+
+                            d.orderId =
+                                $("#filterOrderId")
+                                    .val();
 
 
-                                if (range) {
 
-                                    var dates =
-                                        range.split(
-                                            " - "
-                                        );
+                            d.status =
+                                $("#filterStatus")
+                                    .val();
 
 
-                                    if (
-                                        dates.length ===
-                                        2
-                                    ) {
 
-                                        d.fromDate =
-                                            dates[0];
+                            var range =
+                                $("#dateRange")
+                                    .val();
 
-                                        d.toDate =
-                                            dates[1];
 
-                                    }
+
+                            if (range) {
+
+                                var dates =
+                                    range.split(" - ");
+
+
+                                if (dates.length === 2) {
+
+                                    d.fromDate =
+                                        dates[0];
+
+                                    d.toDate =
+                                        dates[1];
 
                                 }
-
-                            },
-
-
-                        error:
-                            function (
-                                xhr,
-                                status,
-                                error
-                            ) {
-
-                                console.error(
-                                    "GetFinanceLogs AJAX ERROR",
-                                    xhr.status,
-                                    status,
-                                    error,
-                                    xhr.responseText
-                                );
-
-                            }
-
-                    },
-
-
-                    columns:
-                        [
-
-                            /* 0 - No */
-
-                            {
-                                data:
-                                    null,
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                searchable:
-                                    false,
-
-                                className:
-                                    "text-center text-muted",
-
-                                render:
-                                    function (
-                                        data,
-                                        type,
-                                        row,
-                                        meta
-                                    ) {
-
-                                        return (
-                                            meta.row +
-                                            meta.settings._iDisplayStart +
-                                            1
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 1 - Order Id */
-
-                            {
-                                data:
-                                    "orderId",
-
-                                defaultContent:
-                                    "",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return escapeHtml(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 2 - Target Code */
-
-                            {
-                                data:
-                                    "targetCode",
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return escapeHtml(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 3 - Agent Code */
-
-                            {
-                                data:
-                                    "agentCode",
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return escapeHtml(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 4 - Finance Type */
-
-                            {
-                                data:
-                                    "financeType",
-
-                                defaultContent:
-                                    "",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return renderFinanceType(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 5 - Amount */
-
-                            {
-                                data:
-                                    "amount",
-
-                                defaultContent:
-                                    "",
-
-                                className:
-                                    "text-end text-nowrap",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return formatMoney(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 6 - Balance */
-
-                            {
-                                data:
-                                    null,
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                className:
-                                    "text-end",
-
-                                render:
-                                    function (
-                                        data,
-                                        type,
-                                        row
-                                    ) {
-
-                                        if (!row) {
-                                            return "";
-                                        }
-
-
-                                        return renderFinanceBalance(
-
-                                            row.targetBeforeBalance,
-
-                                            row.targetAfterBalance
-
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 7 - Date */
-
-                            {
-                                data:
-                                    "createdAt",
-
-                                defaultContent:
-                                    "",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return escapeHtml(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 8 - Status */
-
-                            {
-                                data:
-                                    "status",
-
-                                defaultContent:
-                                    "",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        return renderStatus(
-                                            data
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 9 - Details */
-
-                            {
-                                data:
-                                    null,
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                searchable:
-                                    false,
-
-                                className:
-                                    "text-center",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        if (!data) {
-                                            return "";
-                                        }
-
-
-                                        return (
-
-                                            '<button type="button" ' +
-
-                                            'class="btn btn-sm btn-light js-finance-details" ' +
-
-                                            'data-log-id="' +
-
-                                            escapeHtml(
-                                                data.id
-                                            ) +
-
-                                            '" ' +
-
-                                            'title="View details" ' +
-
-                                            'aria-label="View finance log details">' +
-
-                                            '<i class="ti ti-eye"></i>' +
-
-                                            "</button>"
-
-                                        );
-
-                                    }
-
-                            },
-
-
-                            /* 10 - Actions */
-
-                            {
-                                data:
-                                    null,
-
-                                defaultContent:
-                                    "",
-
-                                orderable:
-                                    false,
-
-                                searchable:
-                                    false,
-
-                                className:
-                                    "text-center",
-
-                                render:
-                                    function (
-                                        data
-                                    ) {
-
-                                        if (!data) {
-
-                                            return (
-
-                                                '<span class="text-muted small">' +
-
-                                                "No actions" +
-
-                                                "</span>"
-
-                                            );
-
-                                        }
-
-
-                                        var canManage =
-
-                                            Number(
-                                                data.financeType
-                                            ) ===
-                                            2
-
-                                            &&
-
-                                            Number(
-                                                data.status
-                                            ) ===
-                                            0;
-
-
-                                        if (!canManage) {
-
-                                            return (
-
-                                                '<span class="text-muted small">' +
-
-                                                "No actions" +
-
-                                                "</span>"
-
-                                            );
-
-                                        }
-
-
-                                        return (
-
-                                            '<div class="d-inline-flex gap-1">' +
-
-                                            '<button type="button" ' +
-
-                                            'class="btn btn-sm btn-success js-finance-action" ' +
-
-                                            'data-action="complete" ' +
-
-                                            'data-log-id="' +
-
-                                            escapeHtml(
-                                                data.id
-                                            ) +
-
-                                            '" ' +
-
-                                            'title="Complete transaction">' +
-
-                                            '<i class="ti ti-check me-1"></i>' +
-
-                                            "Complete" +
-
-                                            "</button>" +
-
-
-                                            '<button type="button" ' +
-
-                                            'class="btn btn-sm btn-danger js-finance-action" ' +
-
-                                            'data-action="reject" ' +
-
-                                            'data-log-id="' +
-
-                                            escapeHtml(
-                                                data.id
-                                            ) +
-
-                                            '" ' +
-
-                                            'title="Reject transaction">' +
-
-                                            '<i class="ti ti-x me-1"></i>' +
-
-                                            "Reject" +
-
-                                            "</button>" +
-
-                                            "</div>"
-
-                                        );
-
-                                    }
-
-                            }
-
-                        ],
-
-
-                    initComplete:
-                        function () {
-
-                            var api =
-                                this.api();
-
-
-                            var container =
-                                $(
-                                    api.table()
-                                        .container()
-                                );
-
-
-                            var length =
-                                container
-                                    .find(
-                                        ".dt-length, .dataTables_length"
-                                    )
-                                    .first();
-
-
-                            var info =
-                                container
-                                    .find(
-                                        ".dt-info, .dataTables_info"
-                                    )
-                                    .first();
-
-
-                            var paging =
-                                container
-                                    .find(
-                                        ".dt-paging, .dataTables_paginate"
-                                    )
-                                    .first();
-
-
-                            if (
-                                length.length
-                            ) {
-
-                                $(
-                                    "#dataTableLengthContainer"
-                                )
-                                    .empty()
-                                    .append(
-                                        length
-                                    );
-
-                            }
-
-
-                            if (
-                                info.length
-                            ) {
-
-                                $(
-                                    "#dataTableInfoContainer"
-                                )
-                                    .empty()
-                                    .append(
-                                        info
-                                    );
-
-                            }
-
-
-                            if (
-                                paging.length
-                            ) {
-
-                                $(
-                                    "#dataTablePagingContainer"
-                                )
-                                    .empty()
-                                    .append(
-                                        paging
-                                    );
-
-                            }
-
-
-                            api.columns.adjust();
-
-
-                            if (
-                                api.responsive &&
-                                typeof api.responsive.recalc ===
-                                "function"
-                            ) {
-
-                                api.responsive.recalc();
 
                             }
 
                         }
 
+                    },
+
+
+
+                    columns: [
+
+
+                        /* 0 No */
+
+                        {
+                            data: null,
+
+                            orderable: false,
+
+                            searchable: false,
+
+                            className:
+                                "text-center text-muted",
+
+                            render: function (
+                                data,
+                                type,
+                                row,
+                                meta
+                            ) {
+
+                                return (
+                                    meta.row +
+                                    meta.settings._iDisplayStart +
+                                    1
+                                );
+
+                            }
+
+                        },
+
+
+
+                        /* 1 Order Id */
+
+                        {
+                            data: "orderId",
+
+                            defaultContent: "",
+
+                            render: function (data) {
+
+                                return escapeHtml(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 2 Target */
+
+                        {
+                            data: "targetCode",
+
+                            defaultContent: "",
+
+                            render: function (data) {
+
+                                return escapeHtml(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 3 Agent */
+
+                        {
+                            data: "agentCode",
+
+                            defaultContent: "",
+
+                            render: function (data) {
+
+                                return escapeHtml(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 4 Finance Type */
+
+                        {
+                            data: "financeType",
+
+                            render: function (data) {
+
+                                return renderFinanceType(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 5 Amount */
+
+                        {
+                            data: "amount",
+
+                            className:
+                                "text-end text-nowrap",
+
+                            render: function (data) {
+
+                                return formatMoney(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 6 Balance */
+
+                        {
+                            data: null,
+
+                            orderable: false,
+
+                            className:
+                                "text-end",
+
+                            render: function (
+                                data,
+                                type,
+                                row
+                            ) {
+
+                                return renderFinanceBalance(
+
+                                    row.targetBeforeBalance,
+
+                                    row.targetAfterBalance
+
+                                );
+
+                            }
+
+                        },
+
+
+
+                        /* 7 Date */
+
+                        {
+                            data: "createdAt",
+
+                            render: function (data) {
+
+                                return escapeHtml(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 8 Status */
+
+                        {
+                            data: "status",
+
+                            render: function (data) {
+
+                                return renderStatus(data);
+
+                            }
+
+                        },
+
+
+
+                        /* 9 Details */
+
+                        {
+                            data: null,
+
+                            orderable: false,
+
+                            searchable: false,
+
+                            className:
+                                "text-center",
+
+                            render: function (data) {
+
+                                return (
+
+                                    '<button type="button" ' +
+
+                                    'class="btn btn-sm btn-light js-finance-details" ' +
+
+                                    'data-log-id="' +
+
+                                    escapeHtml(data.id)
+
+                                    +
+
+                                    '">' +
+
+                                    '<i class="ti ti-eye"></i>' +
+
+                                    '</button>'
+
+                                );
+
+                            }
+
+                        },
+
+
+
+                        /* =================================================
+                           10 Actions
+
+                           Flow:
+
+                           Pending(0)
+                               Approve
+                               Reject
+
+                           Processing(1)
+                               Complete
+                               Reject
+
+                           Completed/Rejected/Failed
+                               No actions
+
+                        ================================================= */
+
+                        {
+                            data: null,
+
+                            orderable: false,
+
+                            searchable: false,
+
+                            className:
+                                "text-center",
+
+
+                            render: function (data) {
+
+
+                                if (!data) {
+
+                                    return "";
+
+                                }
+
+
+
+                                var isSelfWithdraw =
+
+                                    Number(data.financeType) === 2
+
+                                    &&
+
+                                    Number(data.targetAccountType) === 0;
+
+
+
+                                if (!isSelfWithdraw) {
+
+                                    return (
+
+                                        '<span class="text-muted small">' +
+
+                                        'No actions' +
+
+                                        '</span>'
+
+                                    );
+
+                                }
+
+
+
+                                var buttons = "";
+
+                                var status =
+                                    Number(data.status);
+
+
+
+                                /*
+                                    Pending
+                                    0
+                                */
+
+                                if (status === 0) {
+
+
+                                    buttons +=
+
+                                        '<button type="button" ' +
+
+                                        'class="btn btn-sm btn-success js-finance-action" ' +
+
+                                        'data-action="approve" ' +
+
+                                        'data-log-id="' +
+
+                                        escapeHtml(data.id)
+
+                                        +
+
+                                        '">' +
+
+                                        '<i class="ti ti-check me-1"></i>' +
+
+                                        'Approve' +
+
+                                        '</button>';
+
+
+
+                                    buttons +=
+
+                                        '<button type="button" ' +
+
+                                        'class="btn btn-sm btn-danger js-finance-action" ' +
+
+                                        'data-action="reject" ' +
+
+                                        'data-log-id="' +
+
+                                        escapeHtml(data.id)
+
+                                        +
+
+                                        '">' +
+
+                                        '<i class="ti ti-x me-1"></i>' +
+
+                                        'Reject' +
+
+                                        '</button>';
+
+                                }
+
+
+
+
+                                /*
+                                    Processing
+                                    1
+                                */
+
+                                if (status === 1) {
+
+
+                                    buttons +=
+
+                                        '<button type="button" ' +
+
+                                        'class="btn btn-sm btn-warning js-finance-action" ' +
+
+                                        'data-action="complete" ' +
+
+                                        'data-log-id="' +
+
+                                        escapeHtml(data.id)
+
+                                        +
+
+                                        '">' +
+
+                                        '<i class="ti ti-check me-1"></i>' +
+
+                                        'Send Money' +
+
+                                        '</button>';
+
+
+
+                                    buttons +=
+
+                                        '<button type="button" ' +
+
+                                        'class="btn btn-sm btn-danger js-finance-action" ' +
+
+                                        'data-action="reject" ' +
+
+                                        'data-log-id="' +
+
+                                        escapeHtml(data.id)
+
+                                        +
+
+                                        '">' +
+
+                                        '<i class="ti ti-x me-1"></i>' +
+
+                                        'Reject' +
+
+                                        '</button>';
+
+                                }
+
+
+
+                                if (!buttons) {
+
+                                    return (
+
+                                        '<span class="text-muted small">' +
+
+                                        'No actions' +
+
+                                        '</span>'
+
+                                    );
+
+                                }
+
+
+
+                                return (
+
+                                    '<div class="d-inline-flex gap-1">' +
+
+                                    buttons +
+
+                                    '</div>'
+
+                                );
+
+
+                            }
+
+                        }
+
+
+                    ]
+
                 });
-
-
         /* =========================================================
-           SEARCH
-        ========================================================= */
+    SEARCH
+    ========================================================= */
 
         $("#financeFilterForm")
             .on(
@@ -1982,30 +1805,24 @@
             );
 
 
+
         $(
-            "#filterAgent, " +
-            "#filterTarget, " +
-            "#filterAmount, " +
+            "#filterAgent," +
+            "#filterTarget," +
+            "#filterAmount," +
             "#filterOrderId"
         )
             .on(
                 "keydown",
                 function (e) {
 
-                    if (
-                        e.key ===
-                        "Enter"
-                    ) {
+                    if (e.key === "Enter") {
 
                         e.preventDefault();
 
 
-                        $(
-                            "#financeFilterForm"
-                        )
-                            .trigger(
-                                "submit"
-                            );
+                        $("#financeFilterForm")
+                            .trigger("submit");
 
                     }
 
@@ -2013,8 +1830,9 @@
             );
 
 
+
         /* =========================================================
-           CLEAR
+           CLEAR FILTERS
         ========================================================= */
 
         $("#clearFiltersBtn")
@@ -2022,23 +1840,24 @@
                 "click",
                 function () {
 
+
                     $(
-                        "#filterAgent, " +
-                        "#filterTarget, " +
-                        "#filterAmount, " +
+                        "#filterAgent," +
+                        "#filterTarget," +
+                        "#filterAmount," +
                         "#filterOrderId"
                     )
                         .val("");
 
 
+
                     $(
-                        "#filterExecTypes, " +
+                        "#filterExecTypes," +
                         "#filterStatus"
                     )
                         .val("")
-                        .trigger(
-                            "change"
-                        );
+                        .trigger("change");
+
 
 
                     var start =
@@ -2053,6 +1872,7 @@
                         moment();
 
 
+
                     var picker =
                         $("#reportrange")
                             .data(
@@ -2061,33 +1881,30 @@
 
 
                     if (picker) {
+                        $("#selectedValue").text(
 
-                        picker.setStartDate(
-                            start
+                            defaultStart.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
+                            +
+
+                            " - "
+
+                            +
+
+                            defaultEnd.format(
+                                "MMMM D, YYYY HH:mm:ss"
+                            )
+
                         );
 
+                        picker.setStartDate(start);
 
-                        picker.setEndDate(
-                            end
-                        );
+                        picker.setEndDate(end);
 
                     }
 
-
-                    $("#selectedValue")
-                        .text(
-
-                            start.format(
-                                "MMMM D, YYYY HH:mm:ss"
-                            )
-
-                            + " - " +
-
-                            end.format(
-                                "MMMM D, YYYY HH:mm:ss"
-                            )
-
-                        );
 
 
                     updateDateRange(
@@ -2096,25 +1913,30 @@
                     );
 
 
+
                     table.ajax.reload(
                         null,
                         true
                     );
 
+
                 }
             );
+
+
+
 
 
         /* =========================================================
            FIND CURRENT ROW
         ========================================================= */
 
-        function getSelectedRow(
-            id
-        ) {
+        function getSelectedRow(id) {
 
             var rows =
-                table.rows().data();
+                table.rows()
+                    .data();
+
 
 
             for (
@@ -2124,15 +1946,9 @@
             ) {
 
                 if (
-
-                    Number(
-                        rows[i].id
-                    ) ===
-
-                    Number(
-                        id
-                    )
-
+                    Number(rows[i].id)
+                    ===
+                    Number(id)
                 ) {
 
                     return rows[i];
@@ -2143,11 +1959,15 @@
 
 
             return null;
+
         }
 
 
+
+
+
         /* =========================================================
-           COMPLETE / REJECT
+           APPROVE / COMPLETE / REJECT
         ========================================================= */
 
         $(document)
@@ -2156,354 +1976,272 @@
                 ".js-finance-action",
                 function () {
 
-                    var $button =
+
+                    var button =
                         $(this);
+
 
 
                     var action =
                         String(
-                            $button.data(
-                                "action"
-                            )
+                            button.data("action")
                         );
 
 
-                    var logId =
+
+                    var id =
                         Number(
-                            $button.data(
-                                "log-id"
-                            )
+                            button.data("log-id")
                         );
 
 
-                    if (
 
-                        (
-
-                            action !==
-                            "complete"
-
-                            &&
-
-                            action !==
-                            "reject"
-
-                        )
-
-                        ||
-
-                        !Number.isFinite(
-                            logId
-                        )
-
-                        ||
-
-                        $button.prop(
-                            "disabled"
-                        )
-
-                    ) {
+                    if (!Number.isFinite(id)) {
 
                         return;
 
                     }
-
 
                     var selected =
-                        getSelectedRow(
-                            logId
-                        );
+                        getSelectedRow(id);
 
 
-                    if (
+                    if (!selected) {
 
-                        !selected
+                        return;
 
-                        ||
+                    }
 
-                        Number(
-                            selected.financeType
-                        ) !==
-                        2
+                    var title = "";
 
-                        ||
+                    var message = "";
 
-                        Number(
-                            selected.status
-                        ) !==
-                        0
+                    var endpoint = "";
 
-                    ) {
+
+
+                    /*
+                        Pending
+                        0 -> 1
+                    */
+
+                    if (action === "approve") {
+
+
+                        title =
+                            "Approve Withdrawal?";
+
+
+                        message =
+                            "Withdrawal will move to Processing status.";
+
+
+                        endpoint =
+                            "@Url.Action("ApproveWithdraw", "Dashboard")";
+
+
+                    }
+
+
+
+                    /*
+                        Processing
+                        1 -> 2
+                    */
+                    else if (action === "complete") {
+
+
+                        title =
+                            "Complete Withdrawal?";
+
+
+                        message =
+                            "Wallet Address:\n" +
+                            (selected.walletAddress || "-") +
+                            "\n\nNetwork: " +
+                            (selected.network || "-") +
+                            "\nCurrency: " +
+                            (selected.currency || "-") +
+                            "\n\nPayment will be completed and balances will update.";
+
+
+                        endpoint =
+                            "@Url.Action("CompleteWithdraw", "Dashboard")";
+
+
+                    }
+
+
+                    /*
+                        Pending/Processing
+                        -> Rejected
+                    */
+
+                    else if (action === "reject") {
+
+
+                        title =
+                            "Reject Withdrawal?";
+
+
+                        message =
+                            "This withdrawal will be rejected.";
+
+
+                        endpoint =
+                            "@Url.Action("RejectFinanceLog", "Dashboard")";
+
+
+                    }
+
+
+
+                    else {
 
                         return;
 
                     }
 
 
-                    var amount =
-                        formatMoney(
-                            selected.amount
-                        );
 
-
-                    var targetCode =
-                        selected.targetCode ||
-                        "";
-
-
-                    var orderId =
-                        selected.orderId ||
-                        "-";
-
-
-                    var isComplete =
-                        action ===
-                        "complete";
-
-
-                    var title =
-                        isComplete
-
-                            ?
-
-                            "Complete Self Withdraw?"
-
-                            :
-
-                            "Reject Self Withdraw?";
-
-
-                    var confirmText =
-                        isComplete
-
-                            ?
-
-                            "Complete"
-
-                            :
-
-                            "Reject";
-
-
-                    var message =
-                        isComplete
-
-                            ?
-
-                            "Target: " +
-                            targetCode +
-                            "\nAmount: " +
-                            amount +
-                            "\nOrder ID: " +
-                            orderId +
-                            "\n\nPlayer CurrentBalance will decrease and agent Balance will increase."
-
-                            :
-
-                            "Target: " +
-                            targetCode +
-                            "\nAmount: " +
-                            amount +
-                            "\nOrder ID: " +
-                            orderId +
-                            "\n\nNo balance will be changed.";
-
-
-                    $button.prop(
-                        "disabled",
-                        true
-                    );
 
 
                     Swal.fire({
 
-                        title:
-                            title,
+                        title: title,
 
-                        text:
-                            message,
+                        text: message,
 
-                        icon:
-                            "warning",
+                        icon: "warning",
 
-                        showCancelButton:
-                            true,
+                        showCancelButton: true,
 
-                        confirmButtonText:
-                            confirmText,
+                        confirmButtonText: "Confirm",
 
-                        cancelButtonText:
-                            "Cancel"
+                        cancelButtonText: "Cancel"
+
 
                     })
-                        .then(
-                            function (result) {
+                        .then(function (result) {
 
-                                if (
 
-                                    !result
+                            if (!result.isConfirmed) {
 
-                                    ||
+                                return;
 
-                                    !result.isConfirmed
+                            }
 
-                                ) {
 
-                                    $button.prop(
-                                        "disabled",
-                                        false
+
+
+                            $.ajax({
+
+                                url: endpoint,
+
+                                type: "POST",
+
+
+                                data: {
+
+                                    __RequestVerificationToken:
+                                        $("input[name='__RequestVerificationToken']")
+                                            .val(),
+
+
+                                    id: id
+
+                                },
+
+
+                                success: function (res) {
+
+
+                                    if (
+                                        res
+                                        &&
+                                        res.success
+                                    ) {
+
+
+                                        Swal.fire({
+
+                                            title: "Success",
+
+                                            text:
+                                                res.message
+                                                ||
+                                                "Operation completed.",
+
+                                            icon: "success",
+
+                                            timer: 1800,
+
+                                            showConfirmButton: false
+
+                                        });
+
+
+
+                                        table.ajax.reload(
+                                            null,
+                                            false
+                                        );
+
+
+                                    }
+                                    else {
+
+
+                                        showFinanceError(
+                                            res.message
+                                            ||
+                                            "Operation failed."
+                                        );
+
+                                    }
+
+
+                                },
+
+
+                                error: function (xhr) {
+
+
+                                    showFinanceError(
+
+                                        xhr.responseJSON?.message
+
+                                        ||
+
+                                        "Unexpected error."
+
                                     );
 
-                                    return;
 
                                 }
 
 
-                                var endpoint =
-                                    isComplete
-
-                                        ?
-
-                                        "@Url.Action("CompleteFinanceLog", "Dashboard")"
-
-                                        :
-
-                                        "@Url.Action("RejectFinanceLog", "Dashboard")";
+                            });
 
 
-                                $.ajax({
 
-                                    url:
-                                        endpoint,
-
-                                    type:
-                                        "POST",
-
-                                    data:
-                                    {
-                                        __RequestVerificationToken:
-                                            $(
-                                                "input[name='__RequestVerificationToken']"
-                                            ).val(),
-
-                                        id:
-                                            selected.id
-                                    },
+                        });
 
 
-                                    success:
-                                        function (
-                                            response
-                                        ) {
-
-                                            if (
-
-                                                !response
-
-                                                ||
-
-                                                !response.success
-
-                                            ) {
-
-                                                $button.prop(
-                                                    "disabled",
-                                                    false
-                                                );
-
-
-                                                showFinanceError(
-
-                                                    response?.message
-
-                                                    ||
-
-                                                    (
-                                                        isComplete
-
-                                                            ?
-
-                                                            "Unable to complete this transaction."
-
-                                                            :
-
-                                                            "Unable to reject this transaction."
-                                                    )
-
-                                                );
-
-
-                                                return;
-
-                                            }
-
-
-                                            showFinanceSuccess(
-
-                                                isComplete
-
-                                                    ?
-
-                                                    "Completed. Player and agent balances updated."
-
-                                                    :
-
-                                                    "Rejected. No balance was changed."
-
-                                            );
-
-
-                                            table.ajax.reload(
-                                                null,
-                                                false
-                                            );
-
-                                        },
-
-
-                                    error:
-                                        function (
-                                            xhr
-                                        ) {
-
-                                            $button.prop(
-                                                "disabled",
-                                                false
-                                            );
-
-
-                                            showFinanceError(
-
-                                                xhr.responseJSON?.message
-
-                                                ||
-
-                                                "An unexpected error occurred."
-
-                                            );
-
-                                        }
-
-                                });
-
-                            }
-
-                        );
 
                 }
-
             );
 
 
-        /* =========================================================
-           SWEETALERT ERROR
 
-           Uses project's native SweetAlert2.
+
+
+        /* =========================================================
+           ERROR
         ========================================================= */
 
-        function showFinanceError(
-            message
-        ) {
+        function showFinanceError(message) {
+
 
             Swal.fire({
 
@@ -2518,46 +2256,17 @@
 
             });
 
-        }
-
-
-        /* =========================================================
-           SWEETALERT SUCCESS TOAST
-
-           Uses native SweetAlert2 toast.
-        ========================================================= */
-
-        function showFinanceSuccess(
-            message
-        ) {
-
-            Swal.fire({
-
-                toast:
-                    true,
-
-                position:
-                    "top-end",
-
-                icon:
-                    "success",
-
-                title:
-                    message,
-
-                timer:
-                    1800,
-
-                showConfirmButton:
-                    false
-
-            });
 
         }
 
 
+
+
+
+
+
         /* =========================================================
-           DETAILS
+           DETAILS MODAL
         ========================================================= */
 
         $(document)
@@ -2566,29 +2275,18 @@
                 ".js-finance-details",
                 function () {
 
-                    var logId =
+
+                    var id =
                         Number(
-                            $(this).data(
-                                "log-id"
-                            )
+                            $(this)
+                                .data("log-id")
                         );
 
-
-                    if (
-                        !Number.isFinite(
-                            logId
-                        )
-                    ) {
-
-                        return;
-
-                    }
 
 
                     var selected =
-                        getSelectedRow(
-                            logId
-                        );
+                        getSelectedRow(id);
+
 
 
                     if (!selected) {
@@ -2598,31 +2296,31 @@
                     }
 
 
+
                     $("#detailId")
-                        .text(
-                            selected.id
-                        );
+                        .text(selected.id);
+
 
 
                     $("#detailOrderId")
                         .text(
-                            selected.orderId ||
-                            ""
+                            selected.orderId || ""
                         );
+
 
 
                     $("#detailAgentCode")
                         .text(
-                            selected.agentCode ||
-                            ""
+                            selected.agentCode || ""
                         );
+
 
 
                     $("#detailTargetCode")
                         .text(
-                            selected.targetCode ||
-                            ""
+                            selected.targetCode || ""
                         );
+
 
 
                     $("#detailFinanceType")
@@ -2633,12 +2331,14 @@
                         );
 
 
+
                     $("#detailTargetAccountType")
                         .text(
                             getTargetAccountTypeName(
                                 selected.targetAccountType
                             )
                         );
+
 
 
                     $("#detailAmount")
@@ -2649,6 +2349,7 @@
                         );
 
 
+
                     $("#detailStatus")
                         .text(
                             getStatusName(
@@ -2657,9 +2358,9 @@
                         );
 
 
+
                     $("#detailTargetBalance")
                         .text(
-
                             getFinanceBalanceText(
 
                                 selected.targetBeforeBalance,
@@ -2667,13 +2368,12 @@
                                 selected.targetAfterBalance
 
                             )
-
                         );
+
 
 
                     $("#detailAgentBalance")
                         .text(
-
                             getFinanceBalanceText(
 
                                 selected.agentBeforeBalance,
@@ -2681,63 +2381,60 @@
                                 selected.agentAfterBalance
 
                             )
-
                         );
+
 
 
                     $("#detailCreatedAt")
                         .text(
-                            selected.createdAt ||
-                            ""
+                            selected.createdAt || ""
                         );
+
 
 
                     $("#detailAgentPath")
                         .text(
-                            selected.agentPath ||
-                            ""
+                            selected.agentPath || ""
                         );
+
 
 
                     $("#detailTargetPath")
                         .text(
-                            selected.targetPath ||
-                            ""
+                            selected.targetPath || ""
                         );
 
 
-                    var modalElement =
+
+                    var modal =
                         document.getElementById(
                             "financeLogDetailsModal"
                         );
 
 
+
                     if (
-
-                        modalElement
-
+                        modal
                         &&
-
-                        typeof bootstrap !==
-                        "undefined"
-
+                        typeof bootstrap !== "undefined"
                         &&
-
                         bootstrap.Modal
-
                     ) {
 
                         bootstrap.Modal
-                            .getOrCreateInstance(
-                                modalElement
-                            )
+                            .getOrCreateInstance(modal)
                             .show();
 
                     }
 
-                }
 
+
+                }
             );
+
+
+
+
 
 
         /* =========================================================
@@ -2749,27 +2446,26 @@
                 "resize",
                 function () {
 
+
                     table.columns.adjust();
 
 
+
                     if (
-
                         table.responsive
-
                         &&
-
-                        typeof table.responsive.recalc ===
-                        "function"
-
+                        typeof table.responsive.recalc === "function"
                     ) {
 
                         table.responsive.recalc();
 
                     }
 
-                }
 
+                }
             );
+
+
 
     });
 </script>

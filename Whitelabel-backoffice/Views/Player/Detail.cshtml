@@ -1,4 +1,4 @@
-﻿@using Whitelabel_backoffice.Database
+﻿@using Titan.HybridRepository.Database
 @section Styles {
     <link href="~/assets/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
@@ -21,7 +21,7 @@
 
         <div class="text-end">
             <ol class="breadcrumb m-0 py-0">
-                <li class="breadcrumb-item"><a href="/">MyStake</a></li>
+                <li class="breadcrumb-item"><a href="/">TITANBET</a></li>
                 <li class="breadcrumb-item"><a href="/player">Player</a></li>
                 <li class="breadcrumb-item active">Detail</li>
             </ol>
@@ -928,21 +928,21 @@
 
 
                                                         <!-- ================================================= -->
-                                                        <!-- HISTORY ID -->
+                                                        <!-- TRANSACTION ID -->
                                                         <!-- ================================================= -->
 
                                                         <div class="col-xl-3 col-md-6">
 
-                                                            <label for="filterHistoryId" class="form-label">
-                                                                History ID
+                                                            <label for="filterTransactionId" class="form-label">
+                                                                Transaction ID
                                                             </label>
 
                                                             <div class="app-search">
 
                                                                 <input type="search"
                                                                        class="form-control"
-                                                                       id="filterHistoryId"
-                                                                       placeholder="Search history ID..."
+                                                                       id="filterTransactionId"
+                                                                       placeholder="Search transaction ID..."
                                                                        autocomplete="off">
 
                                                                 <i class="ti ti-hash app-search-icon text-muted"></i>
@@ -990,7 +990,7 @@
 
 
                                                         <!-- ================================================= -->
-                                                        <!-- DATE RANGE - INSPINIA CALENDAR -->
+                                                        <!-- DATE RANGE - TITANBET CALENDAR -->
                                                         <!-- ================================================= -->
 
                                                         <div class="col-xl-6 col-md-6">
@@ -1091,7 +1091,7 @@
                                                                 <th>Provider Code</th>
                                                                 <th>Game Code</th>
                                                                 <th>Round ID</th>
-                                                                <th>History ID</th>
+                                                                <th>Transaction ID</th>
                                                                 <th>Bet Amount</th>
                                                                 <th>Win Amount</th>
                                                                 <th>Before Balance</th>
@@ -1754,9 +1754,9 @@
                     d.roundId =
                         $('#filterRoundId').val().trim();
 
-                    // History ID
-                    d.historyId =
-                        $('#filterHistoryId').val().trim();
+                    // Transaction ID
+                    d.transactionId =
+                        $('#filterTransactionId').val().trim();
 
                     // Status
                     d.status =
@@ -1810,9 +1810,9 @@
                     }
                 },
 
-                // 4 - History ID
+                // 4 - Transaction ID
                 {
-                    data: 'historyId',
+                    data: 'transactionId',
 
                 },
 
@@ -1968,7 +1968,7 @@
 
                     'Round ID',
 
-                    'History ID',
+                    'Transaction ID',
 
                     'Bet Amount',
 
@@ -2151,7 +2151,7 @@
 
 
             // History
-            $('#filterHistoryId')
+            $('#filterTransactionId')
                 .val('');
 
 
@@ -2396,9 +2396,45 @@
         }
 
         function renderStatus(value) {
-            return escapeHtml(
-                getStatusName(value)
-            );
+
+            var status = Number(value);
+            var statusName = getStatusName(status);
+            var badgeClass = "badge-soft-secondary";
+
+            switch (status) {
+
+                case 0:
+                    badgeClass = "badge-soft-warning"; // Pending
+                    break;
+
+                case 1:
+                    badgeClass = "badge-soft-info"; // Processing
+                    break;
+
+                case 2:
+                    badgeClass = "badge-soft-success"; // Completed
+                    break;
+
+                case 3:
+                    badgeClass = "badge-soft-danger"; // Rejected
+                    break;
+
+                case 4:
+                    badgeClass = "badge-soft-secondary"; // Failed
+                    break;
+
+                case 5:
+                    badgeClass = "badge-soft-purple"; // Cancelled
+                    break;
+
+                case 6:
+                    badgeClass = "badge-soft-dark"; // Auto Cancelled
+                    break;
+            }
+
+            return '<span class="badge ' + badgeClass + '">' +
+                escapeHtml(statusName) +
+                '</span>';
         }
 
         var defaultStart =

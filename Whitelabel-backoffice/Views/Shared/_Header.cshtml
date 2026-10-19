@@ -34,7 +34,7 @@
                 <i class="ti ti-menu-4"></i>
             </button>
 
-            <div id="search-box" class="app-search d-none d-xl-flex">
+@*             <div id="search-box" class="app-search d-none d-xl-flex">
                 <input type="search" class="form-control topbar-search" name="search" placeholder="Search for something...">
                 <i class="ti ti-search app-search-icon text-muted"></i>
             </div>
@@ -57,7 +57,7 @@
                                                         <div class="px-3 py-2 text-center bg-light bg-opacity-50">
                                                             <h4 class="mb-0 fs-lg fw-semibold">
                                                                 Welcome to
-                                                                <span class="text-primary">MyStake</span>
+                                                                <span class="text-primary">TITANBET</span>
                                                                 Admin Theme.
                                                             </h4>
                                                         </div>
@@ -340,7 +340,7 @@
                     <!-- .dropdown-menu-->
                 </div>
                 <!-- .dropdown-->
-            </div>
+            </div> *@
         </div>
 
         <div class="d-flex align-items-center gap-2">
@@ -351,7 +351,7 @@
                 </button>
             </div>
 
-            <div id="apps-dropdown-rounded" class="topbar-item">
+@*             <div id="apps-dropdown-rounded" class="topbar-item">
                 <div class="dropdown">
                     <button class="topbar-link dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-apps topbar-link-icon"></i>
@@ -584,9 +584,9 @@
                     <!-- End dropdown-menu -->
                 </div>
                 <!-- end dropdown-->
-            </div>
+            </div> *@
 
-            <div id="notification-dropdown-alert" class="topbar-item">
+            @* <div id="notification-dropdown-alert" class="topbar-item">
                 <div class="dropdown">
                     <button class="topbar-link dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-bell topbar-link-icon"></i>
@@ -849,7 +849,7 @@
                         <a href="javascript:void(0);" class="dropdown-item text-center text-reset text-decoration-underline link-offset-2 fw-bold notify-item border-top border-light py-2">View All Alerts</a>
                     </div>
                 </div>
-            </div>
+            </div> *@
 
             <div id="fullscreen-toggler" class="topbar-item d-none d-md-flex">
                 <button class="topbar-link" type="button" data-toggle="fullscreen">
@@ -864,7 +864,7 @@
                 </button>
             </div>
 
-            <div class="topbar-item d-none d-sm-flex">
+@*             <div class="topbar-item d-none d-sm-flex">
                 <button class="topbar-link btn-theme-setting" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" type="button">
                     <i class="ti ti-settings topbar-link-icon"></i>
                 </button>
@@ -909,14 +909,14 @@
                     <!-- end dropdown-menu-->
                 </div>
                 <!-- end dropdown-->
-            </div>
+            </div> *@
 
             <div id="simple-user-dropdown" class="topbar-item nav-user">
                 <div class="dropdown">
                     <a class="topbar-link dropdown-toggle drop-arrow-none px-2" data-bs-toggle="dropdown" href="/bootstrap/pages-empty.html#!" aria-haspopup="false" aria-expanded="false">
-                        <img src="/assets/images/users/user-1.jpg" width="32" class="rounded-circle me-lg-2 d-flex" alt="user-image">
+                        <img src="/assets/images/users/user.jpg" width="32" class="rounded-circle me-lg-2 d-flex" alt="user-image">
                         <div class="d-lg-flex align-items-center gap-1 d-none">
-                            <h5 class="my-0">Damian D.</h5>
+                            <h5 class="my-0">@User.Identity.Name.</h5>
                             <i class="ti ti-chevron-down align-middle"></i>
                         </div>
                     </a>
@@ -927,46 +927,46 @@
                         </div>
 
                         <!-- My Profile -->
-                        <a href="/bootstrap/pages-empty.html#!" class="dropdown-item">
+                        <a href="/Account/Index" class="dropdown-item">
                             <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Profile</span>
                         </a>
 
                         <!-- Notifications -->
-                        <a href="javascript:void(0);" class="dropdown-item">
+@*                         <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-bell-ringing me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Notifications</span>
-                        </a>
+                        </a> *@
 
                         <!-- Wallet -->
-                        <a href="javascript:void(0);" class="dropdown-item">
+@*                         <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-credit-card me-1 fs-lg align-middle"></i>
                             <span class="align-middle">
                                 Balance:
                                 <span class="fw-semibold">$985.25</span>
                             </span>
-                        </a>
+                        </a> *@
 
                         <!-- Settings -->
-                        <a href="javascript:void(0);" class="dropdown-item">
+                        <a href="/Account/Index" class="dropdown-item">
                             <i class="ti ti-settings-2 me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Account Settings</span>
                         </a>
 
                         <!-- Support -->
-                        <a href="javascript:void(0);" class="dropdown-item">
+@*                         <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-headset me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Support Center</span>
-                        </a>
+                        </a> *@
 
                         <!-- Divider -->
                         <div class="dropdown-divider"></div>
 
                         <!-- Lock -->
-                        <a href="/bootstrap/auth-lock-screen.html" class="dropdown-item">
+@*                         <a href="/bootstrap/auth-lock-screen.html" class="dropdown-item">
                             <i class="ti ti-lock me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Lock Screen</span>
-                        </a>
+                        </a> *@
 
                         <!-- Logout -->
                         <a href="/account/logout" class="dropdown-item text-danger fw-semibold">

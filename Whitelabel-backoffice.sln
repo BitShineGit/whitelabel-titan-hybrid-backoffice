@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.Logging", "..\..\..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.Logging.Sinks", "..\..\..\1-Global\Global.Logging.Sinks\Global.Logging.Sinks.csproj", "{01042151-70A3-452A-9129-9967EA313ADD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Whitelabel_Global", "Whitelabel_Global", "{DF3228EE-8416-456B-8C76-5B2B8B13945A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Titan.HybridRepository", "..\..\1-Whitelabel_Global\whitelabel-global\Titan.HybridRepository\Titan.HybridRepository\Titan.HybridRepository.csproj", "{FEB26E06-BB02-43C5-87F1-3465C55F7574}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,10 @@ Global
 		{01042151-70A3-452A-9129-9967EA313ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01042151-70A3-452A-9129-9967EA313ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01042151-70A3-452A-9129-9967EA313ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB26E06-BB02-43C5-87F1-3465C55F7574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB26E06-BB02-43C5-87F1-3465C55F7574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB26E06-BB02-43C5-87F1-3465C55F7574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB26E06-BB02-43C5-87F1-3465C55F7574}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3A61EED1-40F5-4DD0-8B0D-D92F198FADFD} = {8CFAC832-971D-4AB7-9C6B-E1D9B6BDAC05}
 		{01042151-70A3-452A-9129-9967EA313ADD} = {8CFAC832-971D-4AB7-9C6B-E1D9B6BDAC05}
+		{FEB26E06-BB02-43C5-87F1-3465C55F7574} = {DF3228EE-8416-456B-8C76-5B2B8B13945A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4495BD61-CD26-4463-96C7-EB012177A46E}

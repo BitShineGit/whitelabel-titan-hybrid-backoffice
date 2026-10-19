@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models;
 using Whitelabel_backoffice.Services.Interfaces;
 
@@ -159,7 +160,7 @@ namespace Whitelabel_backoffice.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Index()
         {
             try
             {
@@ -979,7 +980,6 @@ namespace Whitelabel_backoffice.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> VerifyTwoFactor(
             string code,
             bool rememberMe = false)
@@ -1007,14 +1007,25 @@ namespace Whitelabel_backoffice.Controllers
                         msg = "Please enter a valid 6-digit code."
                     });
                 }
-
+                _logger.LogInformation(
+    "[VerifyTwoFactor] Starting verification. CodeLength: {CodeLength}, UserAuthenticated: {UserAuthenticated}, UserName: {UserName}",
+    code?.Length ?? 0,
+    User?.Identity?.IsAuthenticated,
+    User?.Identity?.Name
+);
                 var result =
                     await _signInManager.TwoFactorAuthenticatorSignInAsync(
                         code: code,
                         isPersistent: rememberMe,
                         rememberClient: false
                     );
-
+                _logger.LogInformation(
+    "[VerifyTwoFactor] Result. Succeeded: {Succeeded}, RequiresTwoFactor: {RequiresTwoFactor}, IsLockedOut: {IsLockedOut}, IsNotAllowed: {IsNotAllowed}",
+    result.Succeeded,
+    result.RequiresTwoFactor,
+    result.IsLockedOut,
+    result.IsNotAllowed
+);
                 if (result.Succeeded)
                 {
                     return Json(new

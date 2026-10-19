@@ -1,4 +1,4 @@
-﻿using Whitelabel_backoffice.Database;
+﻿using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models.ApiModels;
 using Whitelabel_backoffice.Services.Exceptions;
 using Whitelabel_backoffice.Services.Interfaces;

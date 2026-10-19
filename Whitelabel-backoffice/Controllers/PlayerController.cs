@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Whitelabel_backoffice.Database;
+using Titan.HybridRepository;
+using Titan.HybridRepository.Database;
 using Whitelabel_backoffice.Models.Requests;
 using Whitelabel_backoffice.Services;
 
@@ -477,8 +478,8 @@ namespace Whitelabel_backoffice.Controllers
             var roundId =
                 Request.Form["roundId"].FirstOrDefault();
 
-            var historyId =
-                Request.Form["historyId"].FirstOrDefault();
+            var transactionId =
+                Request.Form["transactionId"].FirstOrDefault();
 
             var status =
                 Request.Form["status"].FirstOrDefault();
@@ -522,10 +523,10 @@ namespace Whitelabel_backoffice.Controllers
                     x.RoundId.Contains(roundId));
             }
 
-            if (long.TryParse(historyId, out var historyIdValue))
+            if (long.TryParse(transactionId, out var historyIdValue))
             {
                 query = query.Where(x =>
-                    x.HistoryId == historyIdValue);
+                    x.TransactionId == historyIdValue.ToString());
             }
 
             if (!string.IsNullOrWhiteSpace(status) &&
@@ -684,7 +685,7 @@ namespace Whitelabel_backoffice.Controllers
 
                     createdAt = x.CreatedAt + currentAgentOffset,
 
-                    historyId = x.HistoryId
+                    transactionId = x.TransactionId
                 })
                 .ToListAsync();
 
