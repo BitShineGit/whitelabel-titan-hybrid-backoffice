@@ -27557,49 +27557,6 @@ div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip] {
         cursor: pointer;
     }
 
-/* Provider category badges */
-td.category-1 {
-    background-color: #8670e0 !important;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-td.category-2 {
-    background-color: #37ff98 !important;
-    color: #047857;
-    font-weight: 600;
-}
-
-td.category-3 {
-    background-color: #01e9ff !important;
-    color: #0E7490;
-    font-weight: 600;
-}
-
-td.category-4 {
-    background-color: #FEF3C7 !important;
-    color: #B45309;
-    font-weight: 600;
-}
-
-td.category-5 {
-    background-color: #FEE2E2 !important;
-    color: #B91C1C;
-    font-weight: 600;
-}
-
-td.category-6 {
-    background-color: #E2E8F0 !important;
-    color: #334155;
-    font-weight: 600;
-}
-
-td.category-0 {
-    background-color: #F1F5F9 !important;
-    color: #64748B;
-    font-weight: 600;
-}
-
 .badge-api-status {
     display: inline-block;
     min-width: 76px;
@@ -27643,6 +27600,61 @@ td.category-0 {
 }
 
 .badge-game-new-0 {
+    background-color: #F1F5F9;
+    color: #64748B;
+}
+
+tr.table-row-selected {
+    background-color: #f8ac59a1!important
+}
+
+/* Provider category badges */
+.badge-category {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.badge-category-live {
+    background-color: #EDE9FE;
+    color: #6D28D9;
+}
+
+.badge-category-slot {
+    background-color: #FEE2E2;
+    color: #B91C1C;
+}
+
+.badge-category-mini {
+    background-color: #CFFAFE;
+    color: #0E7490;
+}
+
+.badge-category-fishing {
+    background-color: #FEF3C7;
+    color: #B45309;
+}
+
+.badge-category-sports {
+    background-color: #D1FAE5;
+    color: #047857;
+}
+
+.badge-category-table {
+    background-color: #E2E8F0;
+    color: #334155;
+}
+
+.badge-category-live-arena {
+    background-color: #FCE7F3;
+    color: #BE185D;
+}
+
+.badge-category-unknown {
     background-color: #F1F5F9;
     color: #64748B;
 }

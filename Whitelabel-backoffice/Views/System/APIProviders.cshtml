@@ -5,6 +5,10 @@
     var apiList = ViewData["ApiList"] as IEnumerable<Titan.HybridRepository.Database.Api>
         ?? Enumerable.Empty<Titan.HybridRepository.Database.Api>();
 }
+@section Styles {
+    <link rel="stylesheet" href="~/assets/plugins/select2/css/select2.min.css" />
+}
+
 <div class="page-title-head d-flex align-items-center">
     <div class="flex-grow-1 ms-3">
         <h4 class="page-main-title m-0">
@@ -145,81 +149,94 @@
                                     {
                                         var value = row.GetValueOrDefault(column.Field);
 
-                                        if (column.Field.Equals("BoltType", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            var category = Convert.ToInt32(value ?? 0);
-
-                                            var categoryName = category switch
+                                        <td class="text-center">
+                                            @if (column.Field.Equals("BoltStatus", StringComparison.OrdinalIgnoreCase))
                                             {
-                                                1 => "Live",
-                                                2 => "Slot",
-                                                3 => "Mini",
-                                                4 => "Fishing",
-                                                5 => "Sports",
-                                                6 => "Board",
-                                                _ => "Unknown"
-                                            };
+                                                var status = Convert.ToInt32(value ?? 0);
 
-                                            <td class="text-center category-@value">@categoryName</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="text-center">
-                                                @if (column.Field.Equals("BoltStatus", StringComparison.OrdinalIgnoreCase))
+                                                var statusText = status switch
                                                 {
-                                                    var status = Convert.ToInt32(value ?? 0);
+                                                    0 => "Disabled",
+                                                    1 => "Enabled",
+                                                    _ => "Unknown"
+                                                };
 
-                                                    var statusText = status switch
+                                                <span class="badge-api-status badge-api-status-@value">
+                                                    @statusText
+                                                </span>
+                                            }
+                                            else if (column.Field.Equals("BoltType", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                var category = Convert.ToInt32(value ?? 0);
+
+                                                var categoryName = category switch
+                                                {
+                                                    1 => "Live",
+                                                    2 => "Slot",
+                                                    3 => "Mini",
+                                                    4 => "Fishing",
+                                                    5 => "Sports",
+                                                    6 => "Board",
+                                                    7 => "Live Arena",
+                                                    _ => "Unknown"
+                                                };
+
+                                                var categoryClass = category switch
+                                                {
+                                                    1 => "live",
+                                                    2 => "slot",
+                                                    3 => "mini",
+                                                    4 => "fishing",
+                                                    5 => "sports",
+                                                    6 => "board",
+                                                    7 => "live-arena",
+                                                    _ => "unknown"
+                                                };
+
+                                                <span class="badge-category badge-category-@categoryClass">
+                                                    @categoryName
+                                                </span>
+                                            }
+                                            else if (column.Type == "select" && column.Field == "WlproviderCode")
+                                            {
+                                                <select class="form-select form-select-sm wl-provider-code select2"
+                                                        data-provider-id="@id"
+                                                        data-field="@column.Field" data-toggle="select2">
+                                                    <option value=""> - </option>
+                                                    @foreach (var option in Model.WLProviderOptions)
                                                     {
-                                                        0 => "Disabled",
-                                                        1 => "Enabled",
-                                                        _ => "Unknown"
-                                                    };
+                                                        <option value="@option.Value"
+                                                                selected="@(string.Equals(Convert.ToString(value), option.Value, StringComparison.OrdinalIgnoreCase))">
+                                                            @option.Text
+                                                        </option>
+                                                    }
+                                                </select>
+                                            }
+                                            else if (column.Type == "switch" && column.Setting != null)
+                                            {
+                                                var checkedValue = column.Setting == "Maintenance"
+                                                ? wlStatus == 2
+                                                : wlStatus != 0;
 
-                                                    <span class="badge-api-status badge-api-status-@value">
-                                                        @statusText
-                                                    </span>
-                                                }
-                                                else if (column.Type == "select" && column.Field == "WlproviderCode")
-                                                {
-                                                    <select class="form-select form-select-sm wl-provider-code"
-                                                            data-provider-id="@id"
-                                                            data-field="@column.Field">
-                                                        <option value="">Select WL provider</option>
-                                                        @foreach (var option in Model.WLProviderOptions)
-                                                        {
-                                                            <option value="@option.Value"
-                                                                    selected="@(string.Equals(Convert.ToString(value), option.Value, StringComparison.OrdinalIgnoreCase))">
-                                                                @option.Text
-                                                            </option>
-                                                        }
-                                                    </select>
-                                                }
-                                                else if (column.Type == "switch" && column.Setting != null)
-                                                {
-                                                    var checkedValue = column.Setting == "Maintenance"
-                                                    ? wlStatus == 2
-                                                    : wlStatus != 0;
-
-                                                    <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
-                                                        <input type="checkbox"
-                                                               class="form-check-input mt-1 provider-status-switch"
-                                                               data-setting="@column.Setting"
-                                                               data-setting-name="@column.Title"
-                                                               checked="@checkedValue" />
-                                                    </div>
-                                                }
-                                                else if (column.Type == "number" && value != null)
-                                                {
-                                                    @string.Format("{0:N0}", value)
-                                                }
-                                                else
-                                                {
-                                                    @value
-                                                }
-                                            </td>
-                                        }
+                                                <div class="form-check form-switch form-check-secondary fs-xxl mb-2 d-flex justify-content-center">
+                                                    <input type="checkbox"
+                                                            class="form-check-input mt-1 provider-status-switch"
+                                                            data-setting="@column.Setting"
+                                                            data-setting-name="@column.Title"
+                                                            checked="@checkedValue" />
+                                                </div>
+                                            }
+                                            else if (column.Type == "number" && value != null)
+                                            {
+                                                @string.Format("{0:N0}", value)
+                                            }
+                                            else
+                                            {
+                                                @value
+                                            }
+                                        </td>
                                     }
+                                    
                                 </tr>
                             }
                         </tbody>
@@ -236,6 +253,7 @@
     </div>
 </div>
 <script src="~/assets/js/pages/custom-table.js"></script>
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
 <script>
 
     $(function () {
@@ -360,7 +378,7 @@
             $table.find("tbody .product-item-check")
                 .prop("checked", checked)
                 .each(function () {
-                    $(this).closest("tr").toggleClass("row-selected", checked);
+                    $(this).closest("tr").toggleClass("table-row-selected", checked);
                 });
 
             updateSelection();
@@ -368,7 +386,7 @@
 
         // Select an individual row.
         $table.on("change", ".product-item-check", function () {
-            $(this).closest("tr").toggleClass("row-selected", this.checked);
+            $(this).closest("tr").toggleClass("table-row-selected", this.checked);
             updateSelection();
         });
 
@@ -394,6 +412,7 @@
         });
 
         // Update an editable field rendered as a dropdown.
+
         $table.on("change", ".wl-provider-code", async function () {
             const $select = $(this);
 
@@ -404,8 +423,13 @@
             const newValue = String($select.val() || "");
             const oldValue = String($select.data("previous-value") ?? "");
 
+            // Restore both the select value and its Select2 display.
+            function restoreValue(value) {
+                $select.val(value).trigger("change.select2");
+            }
+
             if (!id || field !== "WlproviderCode" || !newValue) {
-                $select.val(oldValue);
+                restoreValue(oldValue);
 
                 if (!newValue) {
                     showToast("Please select a WL provider.", false);
@@ -423,7 +447,7 @@
             );
 
             if (!result.isConfirmed) {
-                $select.val(oldValue);
+                restoreValue(oldValue);
                 return;
             }
 
@@ -437,20 +461,24 @@
                 });
 
                 if (!response?.success) {
-                    $select.val(oldValue);
+                    restoreValue(oldValue);
                     showToast(response?.msg || "Failed to update mapping.", false);
                     return;
                 }
 
+                // Only update the saved original after the server confirms success.
                 $select.data("previous-value", newValue);
+                restoreValue(newValue);
+
                 showToast(response.msg || "WL provider mapping updated.");
             } catch (xhr) {
-                $select.val(oldValue);
+                restoreValue(oldValue);
                 showToast(getError(xhr, "Failed to update mapping."), false);
             } finally {
                 $select.data("processing", false).prop("disabled", false);
             }
         });
+
 
         // Update WL Status or Maintenance for one row.
         $table.on("change", ".provider-status-switch", async function () {
@@ -629,7 +657,7 @@
                                 <li>Updated: <strong>${response.updated}</strong></li>
                                 <li>Reactivated: <strong>${response.reactivated}</strong></li>
                                 <li>Deactivated: <strong>${response.deactivated}</strong></li>
-                                <li>Total from GGX: <strong>${response.total}</strong></li>
+                                <li>Total: <strong>${response.total}</strong></li>
                             </ul>
                         </div>
                     `,
@@ -658,4 +686,7 @@
             }
         });
     });
+</script>
+<script>
+    jQuery().select2 && $('[data-toggle="select2"]').select2();
 </script>

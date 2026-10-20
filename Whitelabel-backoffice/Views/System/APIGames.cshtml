@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-12">
             <div data-table data-table-rows-per-page="100" class="card">
-                <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="card-header d-flex flex-wrap align-items-center gap-3">
                     <h4 class="card-title mb-0">API Games</h4>
 
                     <form id="gameFilterForm"
@@ -336,7 +336,7 @@
 
             $table.find(".game-item-check").each(function () {
                 $(this).closest("tr").toggleClass(
-                    "row-selected",
+                    "table-row-selected",
                     this.checked
                 );
             });
@@ -381,41 +381,60 @@
             checkbox.prop("checked", !checkbox.prop("checked")).trigger("change");
         });
 
-        // Individual setting switch with confirmation.
-        // Individual setting switch with confirmation and real-time synchronization.
+
         $table.on("change", ".game-setting-switch", async function () {
             const input = $(this);
+            const row = input.closest("tr");
             const id = Number(input.data("game-id"));
             const setting = String(input.data("setting"));
             const value = input.prop("checked");
-            const row = input.closest("tr");
 
             const wlSwitch = row.find('.game-setting-switch[data-setting="Wlstatus"]');
             const maintenanceSwitch = row.find('.game-setting-switch[data-setting="Maintenance"]');
 
-            const originalWlStatus = wlSwitch.prop("checked");
-            const originalMaintenance = maintenanceSwitch.prop("checked");
+            // Capture the row's current state.
+            const originalStates = {};
 
-            const settingName = {
+            row.find(".game-setting-switch").each(function () {
+                const key = String($(this).data("setting"));
+                originalStates[key] = $(this).prop("checked");
+            });
+
+            // The clicked switch has already changed, so reverse it.
+            originalStates[setting] = !value;
+
+            const restoreSwitches = function () {
+                row.find(".game-setting-switch").each(function () {
+                    const key = String($(this).data("setting"));
+
+                    if (Object.prototype.hasOwnProperty.call(originalStates, key)) {
+                        $(this).prop("checked", originalStates[key]);
+                    }
+                });
+            };
+
+            const originalWlStatus = originalStates.Wlstatus ?? false;
+            const originalMaintenance = originalStates.Maintenance ?? false;
+
+            const settingNames = {
                 Wlstatus: "WL Status",
                 Maintenance: "Maintenance",
                 IsNew: "New",
                 IsJackpot: "Jackpot",
                 IsHot: "Hot"
-            }[setting] || setting;
+            };
 
-            // Synchronize the switches immediately.
-            if (setting === "Wlstatus") {
-                if (!value) {
-                    maintenanceSwitch.prop("checked", false);
-                }
-            } else if (setting === "Maintenance") {
-                if (value) {
-                    wlSwitch.prop("checked", true);
-                }
+            const settingName = settingNames[setting] || setting;
+
+            // Synchronize the related switches.
+            if (setting === "Wlstatus" && !value) {
+                maintenanceSwitch.prop("checked", false);
             }
 
-            // Calculate the resulting Wlstatus value.
+            if (setting === "Maintenance" && value) {
+                wlSwitch.prop("checked", true);
+            }
+
             let newWlstatus = null;
 
             if (setting === "Wlstatus") {
@@ -426,15 +445,13 @@
                 newWlstatus = value ? 2 : 1;
             }
 
-            const action = value ? "enable" : "disable";
-
             const confirmation = await Swal.fire({
                 title: `${value ? "Enable" : "Disable"} ${settingName}?`,
                 text: setting === "Wlstatus" && !value
                     ? "This will also turn off Maintenance."
                     : setting === "Maintenance" && value
                         ? "This will also enable WL Status."
-                        : `Are you sure you want to ${action} ${settingName} for this game?`,
+                        : `Are you sure you want to ${value ? "enable" : "disable"} ${settingName} for this game?`,
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Yes, confirm",
@@ -443,14 +460,11 @@
             });
 
             if (!confirmation.isConfirmed) {
-                wlSwitch.prop("checked", originalWlStatus);
-                maintenanceSwitch.prop("checked", originalMaintenance);
+                restoreSwitches();
                 return;
             }
 
-            wlSwitch.prop("disabled", true);
-            maintenanceSwitch.prop("disabled", true);
-            input.prop("disabled", true);
+            row.find(".game-setting-switch").prop("disabled", true);
 
             try {
                 const response = await request(urls.setSetting, {
@@ -463,7 +477,6 @@
                     throw new Error(response.message || "Unable to update setting.");
                 }
 
-                // Apply the confirmed database state to both switches.
                 if (newWlstatus !== null) {
                     wlSwitch.prop("checked", newWlstatus >= 1);
                     maintenanceSwitch.prop("checked", newWlstatus === 2);
@@ -471,8 +484,7 @@
 
                 notifySuccess(response.message || `${settingName} updated successfully.`);
             } catch (xhr) {
-                wlSwitch.prop("checked", originalWlStatus);
-                maintenanceSwitch.prop("checked", originalMaintenance);
+                restoreSwitches();
 
                 notifyError(
                     xhr.responseJSON?.message ||
@@ -483,11 +495,10 @@
                     "Unable to update setting."
                 );
             } finally {
-                console.log("");
-                wlSwitch.prop("disabled", false);
-                maintenanceSwitch.prop("disabled", false);
+                row.find(".game-setting-switch").prop("disabled", false);
             }
         });
+
 
 
         // Bulk On / Off.
@@ -636,7 +647,7 @@
             const providerCode = String($("#providerCodeSelector").val() || "").trim();
 
             if (apiCode !== "bolt") {
-                notifyError("Game sync is currently supported only for GGX.");
+                notifyError("Game sync is currently supported only for Bolt.");
                 return;
             }
 
@@ -684,7 +695,8 @@
                     `Added: ${response.totalAdded ?? 0}`,
                     `Updated: ${response.totalUpdated ?? 0}`,
                     `Reactivated: ${response.totalReactivated ?? 0}`,
-                    `Deactivated: ${response.totalDeactivated ?? 0}`
+                    `Deactivated: ${response.totalDeactivated ?? 0}`,
+                    `Total: ${response.totalCount ?? 0}`
                 ].join("\n");
 
                 await Swal.fire({

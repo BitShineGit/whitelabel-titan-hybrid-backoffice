@@ -131,7 +131,7 @@
                                     <td>@wlprovider.WlproviderCode</td>
                                     <td>@wlprovider.WlproviderName</td>
                                     <td><img class="wllogo" src="@wlprovider.Wllogo" /></td>
-                                    <td class="text-center category-@wlprovider.Category">
+                                    <td class="text-center">
                                         @{
                                             var categoryName = wlprovider.Category switch
                                             {
@@ -140,11 +140,27 @@
                                                 3 => "Mini",
                                                 4 => "Fishing",
                                                 5 => "Sports",
-                                                6 => "Board",
+                                                6 => "Table",
+                                                7 => "Live Arena",
                                                 _ => "Unknown"
                                             };
+
+                                            var categoryClass = wlprovider.Category switch
+                                            {
+                                                1 => "live",
+                                                2 => "slot",
+                                                3 => "mini",
+                                                4 => "fishing",
+                                                5 => "sports",
+                                                6 => "table",
+                                                7 => "live-arena",
+                                                _ => "unknown"
+                                            };
                                         }
-                                        @categoryName
+
+                                        <span class="badge-category badge-category-@categoryClass">
+                                            @categoryName
+                                        </span>
                                     </td>
                                     <td class="text-center">@wlprovider.WltotalGameCount</td>
                                     <td class="text-center">@wlprovider.Order</td>
@@ -492,7 +508,7 @@
 
         // Select/deselect an individual provider.
         $table.on("change", ".product-item-check", function () {
-            $(this).closest("tr").toggleClass("row-selected", this.checked);
+            $(this).closest("tr").toggleClass("table-row-selected", this.checked);
             updateSelectedCount();
         });
 
@@ -503,7 +519,7 @@
             $table.find("tbody .product-item-check")
                 .prop("checked", checked)
                 .each(function () {
-                    $(this).closest("tr").toggleClass("row-selected", checked);
+                    $(this).closest("tr").toggleClass("table-row-selected", checked);
                 });
 
             updateSelectedCount();

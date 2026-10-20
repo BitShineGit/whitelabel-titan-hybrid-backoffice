@@ -80,48 +80,16 @@
                             <!--- Sidenav Menu -->
                             <div id="sidenav-menu">
                                 <ul class="side-nav">
-                                    <li class="side-nav-title mt-2" data-lang="my-profile">MY PROFILE</li>
+                                    <li class="side-nav-title mt-2" data-lang="my-profile">MAIN</li>
                                     <li class="side-nav-item active">
-                                        <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#dashboards" aria-expanded="false" aria-controls="dashboards" class="side-nav-link collapsed">
+                                        <a href="/account/index" class="side-nav-link">
                                             <span class="menu-icon"><i class="ti ti-dashboard"></i></span>
                                             <span class="menu-text" data-lang="dashboards">Dashboards</span>
-                                            <span class="menu-arrow"></span>
                                         </a>
-                                        <div class="collapse" id="dashboards">
-                                            <ul class="sub-menu">
-@*                                                 <li class="side-nav-item">
-                                                    <a href="/" class="side-nav-link">
-                                                        <span class="menu-text" data-lang="overview">Overview</span>
-                                                    </a>
-                                                </li> *@
-                                                <li class="side-nav-item">
-                                                    <a asp-action="Finance" asp-controller="Dashboard" class="side-nav-link">
-                                                        <span class="menu-text" data-lang="finance">Finance</span>
-                                                    </a>
-                                                </li>
-                                                <li class="side-nav-item">
-                                                    <a asp-action="BettingLogs" asp-controller="Dashboard" class="side-nav-link">
-                                                        <span class="menu-text" data-lang="Betting Logs">Betting Logs</span>
-                                                    </a>
-                                                </li>
-
-                                                <li class="side-nav-item">
-                                                    <a asp-action="KycVerified" asp-controller="Dashboard" class="side-nav-link">
-                                                        <span class="menu-text" data-lang="statisticslogs">KYC Verified</span>
-                                                    </a>
-                                                </li>
-
-                                                <li class="side-nav-item">
-                                                    <a asp-action="StatisticsLogs" asp-controller="Dashboard" class="side-nav-link">
-                                                        <span class="menu-text" data-lang="statisticslogs">Statistics Logs</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </li>
                                     <li class="side-nav-item">
                                         <a href="/account/index" class="side-nav-link">
-                                            <span class="menu-icon"><i class="ti ti-rocket"></i></span>
+                                            <span class="menu-icon"><i class="ti ti-password-user"></i></span>
                                             <span class="menu-text" data-lang="account">Account</span>
                                         </a>                                     
                                     </li>
@@ -149,7 +117,7 @@
                                     </li> *@
                                     <li class="side-nav-item">
                                         <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#pages" aria-expanded="false" aria-controls="pages" class="side-nav-link collapsed">
-                                            <span class="menu-icon"><i class="ti ti-files"></i></span>
+                                            <span class="menu-icon"><i class="ti ti-users"></i></span>
                                             <span class="menu-text" data-lang="players">Players</span>
                                             <span class="menu-arrow"></span>
                                         </a>                                                
@@ -188,7 +156,7 @@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="side-nav-title mt-2" data-lang="system">SYSTEM</li>
+                                    <li class="side-nav-title mt-2" data-lang="management">Management</li>
                                     @* <li class="side-nav-item">
                                         <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#layout-options" aria-expanded="false" aria-controls="layout-options" class="side-nav-link collapsed">
                                             <span class="menu-icon"><i class="ti ti-layout"></i></span>
@@ -221,6 +189,37 @@
                                         </div>
                                     </li> *@
                                     <li class="side-nav-item">
+                                        <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#report" aria-expanded="false" aria-controls="report" class="side-nav-link collapsed">
+                                            <span class="menu-icon"><i class="ti ti-invoice"></i></span>
+                                            <span class="menu-text" data-lang="report">Report</span>
+                                            <span class="menu-arrow"></span>
+                                        </a>
+                                        <div class="collapse" id="report">
+                                            <ul class="sub-menu">
+                                                <li class="side-nav-item">
+                                                    <a asp-action="Finance" asp-controller="Dashboard" class="side-nav-link">
+                                                        <span class="menu-text" data-lang="finance logs">Finance Logs</span>
+                                                    </a>
+                                                </li>
+                                                <li class="side-nav-item">
+                                                    <a asp-action="BettingLogs" asp-controller="Dashboard" class="side-nav-link">
+                                                        <span class="menu-text" data-lang="betting logs">Betting Logs</span>
+                                                    </a>
+                                                </li>
+                                                <li class="side-nav-item">
+                                                    <a asp-action="StatisticsLogs" asp-controller="Dashboard" class="side-nav-link">
+                                                        <span class="menu-text" data-lang="statistics logs">Statistics Logs</span>
+                                                    </a>
+                                                </li>
+                                                <li class="side-nav-item">
+                                                    <a asp-action="KycVerified" asp-controller="Dashboard" class="side-nav-link">
+                                                        <span class="menu-text" data-lang="kyc verified">KYC Verified</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="side-nav-item">
                                         <a data-bs-toggle="collapse" href="/bootstrap/pages-empty.html#sidebars" aria-expanded="false" aria-controls="sidebars" class="side-nav-link collapsed">
                                             <span class="menu-icon"><i class="ti ti-layout-sidebar-inactive"></i></span>
                                             <span class="menu-text" data-lang="system">System</span>
@@ -229,17 +228,17 @@
                                         <div class="collapse" id="sidebars">
                                             <ul class="sub-menu">
                                                 <li class="side-nav-item">
-                                                    <a asp-action="WLProviders" asp-controller="System" class="side-nav-link" target="_blank">
+                                                    <a asp-action="WLProviders" asp-controller="System" class="side-nav-link">
                                                         <span class="menu-text" data-lang="WL Providers">WL Providers</span>
                                                     </a>
                                                 </li>
                                                 <li class="side-nav-item">
-                                                    <a asp-action="ApiProviders" asp-controller="System" class="side-nav-link" target="_blank">
+                                                    <a asp-action="ApiProviders" asp-controller="System" class="side-nav-link">
                                                         <span class="menu-text" data-lang="WL Providers">API Providers</span>
                                                     </a>
                                                 </li>
                                                 <li class="side-nav-item">
-                                                    <a asp-action="ApiGames" asp-controller="System" class="side-nav-link" target="_blank">
+                                                    <a asp-action="ApiGames" asp-controller="System" class="side-nav-link">
                                                         <span class="menu-text" data-lang="WL Providers">API Games</span>
                                                     </a>
                                                 </li>

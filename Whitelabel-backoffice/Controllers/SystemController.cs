@@ -824,7 +824,7 @@ namespace Whitelabel_backoffice.Controllers
             }
 
             var summary = new List<object>();
-            int totalAdded = 0, totalUpdated = 0, totalReactivated = 0, totalDeactivated = 0;
+            int totalAdded = 0, totalUpdated = 0, totalReactivated = 0, totalDeactivated = 0, totalCount = 0;
 
             foreach (var provider in providers)
             {
@@ -944,6 +944,7 @@ namespace Whitelabel_backoffice.Controllers
                     totalUpdated += updated;
                     totalReactivated += reactivated;
                     totalDeactivated += deactivated;
+                    totalCount += incoming.Count;
                     summary.Add(new { vendor = provider.BoltVendorCode, added, updated, reactivated, deactivated, total = incoming.Count });
                 }
                 catch (Exception e)
@@ -954,7 +955,7 @@ namespace Whitelabel_backoffice.Controllers
                 }
             }
 
-            return Ok(new { success = true, vendorCode, totalAdded, totalUpdated, totalReactivated, totalDeactivated, providers = summary });
+            return Ok(new { success = true, vendorCode, totalAdded, totalUpdated, totalReactivated, totalDeactivated, totalCount, providers = summary });
         }
 
         private static string Key(int productId, int productCode, string currency, string gameType) =>

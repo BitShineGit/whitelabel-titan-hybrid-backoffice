@@ -685,7 +685,7 @@ namespace Whitelabel_backoffice.Controllers
 
                     createdAt = x.CreatedAt + currentAgentOffset,
 
-                    historyId = x.TransactionId
+                    transactionId = x.TransactionId
                 })
                 .ToListAsync();
 
