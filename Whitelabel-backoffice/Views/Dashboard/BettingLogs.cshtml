@@ -167,6 +167,27 @@
 
                     </div>
 
+                    <!-- USER NICKNAME -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterUserNickname" class="form-label">
+                            User Nickname
+                        </label>
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterUserNickname"
+                                   placeholder="Search user nickname..."
+                                   autocomplete="off">
+
+                            <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
 
                     <!-- ================================================= -->
                     <!-- PROVIDER CODE - SELECT2 -->
@@ -412,30 +433,31 @@
                     </div>
 
 
-                    @for (int i = 0; i < 20; i++)
+                    @for (int i = 0; i < 21; i++)
                     {
                         string columnName = i switch
                         {
                             0 => "ID",
                             1 => "User Code",
-                            2 => "Agent Code",
-                            3 => "Provider Code",
-                            4 => "Game Code",
-                            5 => "Bet Amount",
-                            6 => "Win Amount",
-                            7 => "Status",
-                            8 => "Created At",
-                            9 => "Updated At",
-                            10 => "Transaction ID",
-                            11 => "User Table ID",
-                            12 => "Agent Table ID",
-                            13 => "Agent Path",
-                            14 => "Provider ID",
-                            15 => "Provider Name",
-                            16 => "Game Name",
-                            17 => "Round ID",
-                            18 => "Before Balance",
-                            19 => "After Balance",
+                            2 => "User Nickname",
+                            3 => "Agent Code",
+                            4 => "Provider Code",
+                            5 => "Game Code",
+                            6 => "Bet Amount",
+                            7 => "Win Amount",
+                            8 => "Status",
+                            9 => "Created At",
+                            10 => "Updated At",
+                            11 => "Transaction ID",
+                            12 => "User Table ID",
+                            13 => "Agent Table ID",
+                            14 => "Agent Path",
+                            15 => "Provider ID",
+                            16 => "Provider Name",
+                            17 => "Game Name",
+                            18 => "Round ID",
+                            19 => "Before Balance",
+                            20 => "After Balance",
                             _ => ""
                         };
 
@@ -444,7 +466,7 @@
                             <input type="checkbox"
                                    class="form-check-input m-0 column-toggle"
                                    data-column="@i"
-                                   checked />
+                            @(i != 14 ? "checked" : "") />
 
                             <span>
                                 @columnName
@@ -478,6 +500,7 @@
 
                             <th>ID</th>
                             <th>User Code</th>
+                            <th>User Nickname</th>
                             <th>Agent Code</th>
                             <th>Provider Code</th>
                             <th>Game Code</th>
@@ -703,17 +726,12 @@
          * YYYY-MM-DD HH:mm:ss - YYYY-MM-DD HH:mm:ss
          */
         function updateDateRange(start, end) {
-
             var backendValue =
                 start.format("YYYY-MM-DD HH:mm:ss") +
                 " - " +
                 end.format("YYYY-MM-DD HH:mm:ss");
 
-
-            $("#dateRange").val(
-                backendValue
-            );
-
+            $("#dateRange").val(backendValue);
         }
 
 
@@ -763,18 +781,9 @@
 
 
                 locale: {
-
-                    format:
-                        "MMMM D, YYYY HH:mm:ss",
-
-
-                    cancelLabel:
-                        "Cancel",
-
-
-                    applyLabel:
-                        "Apply"
-
+                    format: "M D, YYYY HH:mm:ss",
+                    cancelLabel: "Cancel",
+                    applyLabel: "Apply"
                 },
 
 
@@ -912,22 +921,10 @@
 
 
                 $("#selectedValue").text(
-
-                    defaultStart.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
-                    +
-
-                    " - "
-
-                    +
-
-                    defaultEnd.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
-                );  
+                    defaultStart.format("M D, YYYY HH:mm:ss") +
+                    " - " +
+                    defaultEnd.format("M D, YYYY HH:mm:ss")
+                );
 
 
 
@@ -956,21 +953,9 @@
                          * Update visible text.
                          */
                         $("#selectedValue").text(
-
-                            picker.startDate.format(
-                                "MMMM D, YYYY HH:mm:ss"
-                            )
-
-                            +
-
-                            " - "
-
-                            +
-
-                            picker.endDate.format(
-                                "MMMM D, YYYY HH:mm:ss"
-                            )
-
+                            picker.startDate.format("M D, YYYY HH:mm:ss") +
+                            " - " +
+                            picker.endDate.format("M D, YYYY HH:mm:ss")
                         );
 
 
@@ -1179,10 +1164,15 @@
 
                     [
 
-                        [8, "desc"]
+                        [9, "desc"]
 
                     ],
-
+                columnDefs: [
+                    {
+                        targets: [14],
+                        visible: false
+                    }
+                ],
 
 
 
@@ -1227,7 +1217,7 @@
 
                                 $("#filterProviderCode")
                                     .val();
-
+                            d.userNickname = $("#filterUserNickname").val();
 
 
                             d.gameCode =
@@ -1325,7 +1315,10 @@
                             data:
                                 "userCode"
                         },
-
+                        {
+                            data: "userNickname",
+                            defaultContent: ""  
+                        },
 
                         /*
                          * 2 - AGENT CODE
@@ -1803,7 +1796,7 @@
 
                     $("#filterRoundId").val("");
 
-
+                    $("#filterUserNickname").val("");
 
 
 
@@ -1874,7 +1867,7 @@
                         $("#selectedValue").text(
 
                             start.format(
-                                "MMMM D, YYYY HH:mm:ss"
+                                "M D, YYYY HH:mm:ss"
                             )
 
                             +
@@ -1884,7 +1877,7 @@
                             +
 
                             end.format(
-                                "MMMM D, YYYY HH:mm:ss"
+                                "M D, YYYY HH:mm:ss"
                             )
 
 
@@ -1947,6 +1940,7 @@
             "#filterUser, " +
 
             "#filterGameCode, " +
+            "#filterUserNickname, " +
 
             "#filterRoundId"
         )

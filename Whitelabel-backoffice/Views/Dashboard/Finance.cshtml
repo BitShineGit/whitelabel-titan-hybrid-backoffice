@@ -8,6 +8,26 @@
 <link rel="stylesheet" href="~/assets/plugins/sweetalert2/sweetalert2.min.css" />
 <link id="app-style" href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
 <style>
+    /* Finance Type Badges */
+    .finance-type-self-deposit {
+        background-color: rgba(25, 135, 84, 0.12);
+        color: #198754;
+    }
+
+    .finance-type-manual-deposit {
+        background-color: rgba(13, 202, 240, 0.15);
+        color: #0dcaf0;
+    }
+
+    .finance-type-manual-withdraw {
+        background-color: rgba(255, 193, 7, 0.15);
+        color: #ffc107;
+    }
+
+    .finance-type-self-withdraw {
+        background-color: rgba(220, 53, 69, 0.12);
+        color: #dc3545;
+    }
     .dt-length {
         margin-top: 20px;
     }
@@ -365,6 +385,34 @@
                     </div>
 
 
+                    <!-- AGENT CODE -->
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <label for="filterUserNickname"
+                               class="form-label">
+
+                            User Nickname
+
+                        </label>
+
+
+                        <div class="app-search">
+
+                            <input type="search"
+                                   class="form-control"
+                                   id="filterUserNickname"
+                                   placeholder="Search user nicknname..."
+                                   autocomplete="off">
+
+
+                            <i class="ti ti-user app-search-icon text-muted"></i>
+
+                        </div>
+
+                    </div>
+
+
                     <!-- SEARCH / CLEAR -->
 
                     <div class="col-xl-3 col-md-6 d-flex align-items-end">
@@ -442,6 +490,7 @@
                             <th>
                                 Order Id
                             </th>
+                            <th>User Nickname</th>
 
                             <th>
                                 Target Code
@@ -702,30 +751,6 @@
                     </div>
 
 
-                    <div class="col-md-6">
-
-                        <label class="form-label text-muted">
-                            Agent Path
-                        </label>
-
-                        <div id="detailAgentPath"
-                             class="text-break">
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-6">
-
-                        <label class="form-label text-muted">
-                            Target Path
-                        </label>
-
-                        <div id="detailTargetPath"
-                             class="text-break">
-                        </div>
-
-                    </div>
 
 
                 </div>
@@ -891,103 +916,74 @@
            BALANCE
         ========================================================= */
 
-        function getFinanceBalanceText(
-            beforeValue,
-            afterValue
-        ) {
+        function getFinanceBalanceText(beforeValue, afterValue) {
+            var before = Number(beforeValue || 0);
+            var after = Number(afterValue || 0);
 
-            var before =
-                Number(beforeValue);
-
-            var after =
-                Number(afterValue);
-
-
-            if (!Number.isFinite(before)) {
-                before = 0;
+            if (before === after) {
+                return formatMoney(before);
             }
 
-
-            if (!Number.isFinite(after)) {
-                after = 0;
-            }
-
-
-            return (
-                formatMoney(before)
-                +
-                " → "
-                +
-                formatMoney(after)
-            );
+            return formatMoney(before) + " → " + formatMoney(after);
         }
 
 
 
-        function renderFinanceBalance(
-            beforeValue,
-            afterValue
-        ) {
+        function renderFinanceBalance(beforeValue, afterValue) {
+            var before = Number(beforeValue);
+            var after = Number(afterValue);
 
-            var before =
-                Number(beforeValue);
+            if (!Number.isFinite(before)) before = 0;
+            if (!Number.isFinite(after)) after = 0;
 
-            var after =
-                Number(afterValue);
-
-
-            if (!Number.isFinite(before)) {
-                before = 0;
+            if (before === after) {
+                return formatMoney(before);
             }
 
-
-            if (!Number.isFinite(after)) {
-                after = 0;
-            }
-
-
-            var afterClass =
-                after > before
-                    ? "text-success"
-                    :
-                    after < before
-                        ? "text-danger"
-                        :
-                        "";
-
+            var afterClass = after > before
+                ? "text-success"
+                : after < before
+                    ? "text-danger"
+                    : "";
 
             return (
-
                 '<span class="text-nowrap">' +
-
-                formatMoney(before)
-
-                +
-
-                ' <span class="text-muted mx-1">→</span> '
-
-                +
-
-                '<span class="' +
-                afterClass +
-                '">' +
-
-                formatMoney(after)
-
-                +
-
+                formatMoney(before) +
+                ' <span class="text-muted mx-1">→</span> ' +
+                '<span class="' + afterClass + '">' +
+                formatMoney(after) +
                 '</span></span>'
-
             );
         }
 
 
 
         function renderFinanceType(value) {
+            var financeType = Number(value);
+            var financeTypeName = getFinanceTypeName(financeType);
+            var badgeClass = "status-unknown";
 
-            return escapeHtml(
-                getFinanceTypeName(value)
-            );
+            switch (financeType) {
+                case 0:
+                    badgeClass = "finance-type-self-deposit";
+                    break;
+
+                case 1:
+                    badgeClass = "finance-type-manual-deposit";
+                    break;
+
+                case 2:
+                    badgeClass = "finance-type-self-withdraw";
+                    break;
+
+                case 3:
+                    badgeClass = "finance-type-manual-withdraw";
+                    break;
+            }
+
+            return '<span class="status-badge ' + badgeClass + '">' +
+                escapeHtml(financeTypeName) +
+                '</span>';
         }
 
 
@@ -1076,9 +1072,9 @@
             );
 
             $("#selectedValue").text(
-                start.format("MMMM D, YYYY HH:mm:ss") +
+                start.format("M D, YYYY HH:mm:ss") +
                 " - " +
-                end.format("MMMM D, YYYY HH:mm:ss")
+                end.format("M D, YYYY HH:mm:ss")
             );
         }
 
@@ -1187,73 +1183,43 @@
                     dom: "lrtip",
 
                     order: [
-                        [7, "desc"]
+                        [8, "desc"]
                     ],
 
 
                     columnDefs: [
-
                         {
                             responsivePriority: 1,
                             targets: 0
                         },
-
                         {
                             responsivePriority: 2,
-                            targets: 10
+                            targets: 11
                         },
-
                         {
                             responsivePriority: 3,
-                            targets: 9
+                            targets: 10
                         },
-
                         {
                             responsivePriority: 4,
-                            targets: [
-                                5,
-                                6,
-                                8
-                            ]
+                            targets: 9
                         },
-
                         {
                             responsivePriority: 5,
-                            targets: [
-                                2,
-                                3
-                            ]
+                            targets: [5, 6, 7, 8]
                         },
-
                         {
                             responsivePriority: 6,
-                            targets: 4
+                            targets: [2, 3, 4]
                         },
-
                         {
                             responsivePriority: 7,
-                            targets: 7
-                        },
-
-                        {
-                            responsivePriority: 8,
                             targets: 1
                         },
-
-
                         {
                             orderable: false,
-
-                            targets: [
-                                0,
-                                2,
-                                3,
-                                6,
-                                9,
-                                10
-                            ]
+                            targets: [0, 2, 10, 11]
                         }
-
                     ],
 
 
@@ -1309,7 +1275,9 @@
                                 $("#filterStatus")
                                     .val();
 
-
+                            d.userNickname = 
+                                $("#filterUserNickname")
+                                    .val();
 
                             var range =
                                 $("#dateRange")
@@ -1390,7 +1358,11 @@
 
                         },
 
-
+                        {
+                            data: "userNickname",
+                            orderable: false,
+                            defaultContent: ""
+                        },
 
                         /* 2 Target */
 
@@ -2389,21 +2361,6 @@
                         .text(
                             selected.createdAt || ""
                         );
-
-
-
-                    $("#detailAgentPath")
-                        .text(
-                            selected.agentPath || ""
-                        );
-
-
-
-                    $("#detailTargetPath")
-                        .text(
-                            selected.targetPath || ""
-                        );
-
 
 
                     var modal =

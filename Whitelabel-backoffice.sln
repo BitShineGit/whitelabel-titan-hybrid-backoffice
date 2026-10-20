@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.Logging.Sinks", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Titan.HybridRepository", "..\..\1-Whitelabel_Global\whitelabel-global\Titan.HybridRepository\Titan.HybridRepository\Titan.HybridRepository.csproj", "{C494A74B-1BF8-4766-B2F5-10934AC41483}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Whitelabel_Global (2)", "Whitelabel_Global (2)", "{DF3228EE-8416-456B-8C76-5B2B8B13945A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

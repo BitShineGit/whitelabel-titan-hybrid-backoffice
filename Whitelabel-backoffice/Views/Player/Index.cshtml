@@ -101,6 +101,26 @@
 
                             </div>
 
+                            <!-- User Nickname -->
+                            <div class="col-xl-3 col-md-6">
+
+                                <label for="filterUserNickname" class="form-label">
+                                    User Nickname
+                                </label>
+
+                                <div class="app-search">
+
+                                    <input type="search"
+                                           class="form-control"
+                                           id="filterUserNickname"
+                                           placeholder="Search user nickname..."
+                                           autocomplete="off">
+
+                                    <i class="ti ti-user-circle app-search-icon text-muted"></i>
+
+                                </div>
+
+                            </div>
 
                             <!-- Provider -->
                             <div class="col-xl-3 col-md-6">
@@ -236,6 +256,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>User Code</th>
+                                <th>User Nickname</th>
                                 <th>Email</th>
                                 <th>Balance</th>
                                 <th>Currency</th>
@@ -295,12 +316,13 @@
     // CREATED AT DATE RANGE
     // ==========================================
 
+
     function updateCreatedDateDisplay(start, end) {
 
         $('#selectedValue').html(
-            start.format('MMMM D, YYYY') +
+            start.format('MMM D, YYYY') +
             ' - ' +
-            end.format('MMMM D, YYYY')
+            end.format('MMM D, YYYY')
         );
 
         $('#dateRange').val(
@@ -545,7 +567,9 @@
                 // User Code
                 d.userCode =
                     $('#filterUser').val().trim();
-
+                // User Nickname
+                d.userNickname =
+                    $('#filterUserNickname').val().trim();
                 // Currency
                 d.currency =
                     $('#filterCurrency').val() || '';
@@ -579,7 +603,14 @@
             {
                 data: 'userCode'
             },
+            // 2 - User Nickname
+            {
+                data: 'userNickname',
 
+                render: function (data) {
+                    return data || '-';
+                }
+            },
             // 2 - User Email
             {
                 data: 'userEmail',
@@ -715,12 +746,12 @@
 
             {
                 orderable: true,
-                targets: [0, 3, 7]
+                targets: [0, 4, 8]
             },
 
             {
                 orderable: false,
-                targets: [1, 2, 4, 5, 6, 8]
+                targets: [1, 2, 3, 5, 6, 7, 9]
             }
 
         ],
@@ -735,6 +766,7 @@
             const columnNames = [
                 'ID',
                 'User Code',
+                'User Nickname',
                 'User Email',
                 'Total Balance',
                 'Currency',
@@ -742,7 +774,6 @@
                 'Upline Code',
                 'Created At',
                 'Action'
-
             ];
 
             const columnToggleWrapper =
@@ -947,7 +978,7 @@
 
             // Clear User
             $('#filterUser').val('');
-
+            $('#filterUserNickname').val('');
             // Clear Currency
             $('#filterCurrency').val('');
 

@@ -448,6 +448,9 @@ namespace Whitelabel_backoffice.Controllers
                     Request.Form["providerCode"]
                         .FirstOrDefault();
 
+                string? userNickname =
+                    Request.Form["userNickname"]
+                        .FirstOrDefault();
 
                 string? gameCode =
                     Request.Form["gameCode"]
@@ -703,7 +706,26 @@ namespace Whitelabel_backoffice.Controllers
 
                 }
 
+                // -------------------------------------------------
+                // USER NICKNAME
+                // -------------------------------------------------
 
+                if (!string.IsNullOrWhiteSpace(userNickname))
+                {
+                    userNickname = userNickname.Trim();
+
+                    var matchingUserCodes =
+                        await _dbStorage.Context.Users
+                            .AsNoTracking()
+                            .Where(x => x.UserNickName.Contains(userNickname))
+                            .Select(x => x.UserCode)
+                            .ToListAsync();
+
+                    query =
+                        query.Where(
+                            x => matchingUserCodes.Contains(x.UserCode)
+                        );
+                }
 
 
 
@@ -1042,7 +1064,17 @@ namespace Whitelabel_backoffice.Controllers
                         .ToListAsync();
 
 
+                var userCodes =
+                    data
+                        .Select(x => x.UserCode)
+                        .Distinct()
+                        .ToList();
 
+                var users =
+                    await _dbStorage.Context.Users
+                        .AsNoTracking()
+                        .Where(x => userCodes.Contains(x.UserCode))
+                        .ToDictionaryAsync(x => x.UserCode);
 
 
 
@@ -1089,6 +1121,10 @@ namespace Whitelabel_backoffice.Controllers
 
                                 x.UserCode,
 
+                                UserNickname =
+                                    users.TryGetValue(x.UserCode, out var userInfo)
+                                        ? userInfo.UserNickName
+                                        : "",
                                 x.AgentTableId,
 
                                 x.AgentCode,
@@ -1276,6 +1312,10 @@ namespace Whitelabel_backoffice.Controllers
                         .ToString()
                         .Trim();
 
+                var userNickname =
+                    Request.Form["userNickname"]
+                        .ToString()
+                        .Trim();
 
                 var targetCode =
                     Request.Form["targetCode"]
@@ -1485,6 +1525,25 @@ namespace Whitelabel_backoffice.Controllers
 
 
                 // =========================================================
+                // USER NICKNAME FILTER
+                // =========================================================
+
+                if (!string.IsNullOrWhiteSpace(userNickname))
+                {
+                    var matchingUserCodes =
+                        await _dbStorage.Context.Users
+                            .AsNoTracking()
+                            .Where(x => x.UserNickName.Contains(userNickname))
+                            .Select(x => x.UserCode)
+                            .ToListAsync();
+
+                    query =
+                        query.Where(x =>
+                            x.TargetAccountType == 0 &&
+                            matchingUserCodes.Contains(x.TargetCode));
+                }
+
+                // =========================================================
                 // STATUS FILTER
                 //
                 // Status 1 is NOT removed from database logic.
@@ -1684,170 +1743,58 @@ namespace Whitelabel_backoffice.Controllers
 
                 switch (orderColumn)
                 {
-                    // -----------------------------------------------------
-                    // 1. ORDER ID
-                    // -----------------------------------------------------
-
                     case 1:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.OrderId
-                                )
-                                : query.OrderByDescending(
-                                    x => x.OrderId
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.OrderId)
+                            : query.OrderByDescending(x => x.OrderId);
                         break;
 
-
-                    // -----------------------------------------------------
-                    // 2. TARGET CODE
-                    // -----------------------------------------------------
-
-                    case 2:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.TargetCode
-                                )
-                                : query.OrderByDescending(
-                                    x => x.TargetCode
-                                );
-
-                        break;
-
-
-                    // -----------------------------------------------------
-                    // 3. AGENT CODE
-                    // -----------------------------------------------------
+                    // User Nickname (column 2) is not sorted in SQL.
 
                     case 3:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.AgentCode
-                                )
-                                : query.OrderByDescending(
-                                    x => x.AgentCode
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.TargetCode)
+                            : query.OrderByDescending(x => x.TargetCode);
                         break;
-
-
-                    // -----------------------------------------------------
-                    // 4. FINANCE TYPE
-                    // -----------------------------------------------------
 
                     case 4:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.FinanceType
-                                )
-                                : query.OrderByDescending(
-                                    x => x.FinanceType
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.AgentCode)
+                            : query.OrderByDescending(x => x.AgentCode);
                         break;
-
-
-                    // -----------------------------------------------------
-                    // 5. AMOUNT
-                    // -----------------------------------------------------
 
                     case 5:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.Amount
-                                )
-                                : query.OrderByDescending(
-                                    x => x.Amount
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.FinanceType)
+                            : query.OrderByDescending(x => x.FinanceType);
                         break;
-
-
-                    // -----------------------------------------------------
-                    // 6. BALANCE
-                    //
-                    // Balance column displays:
-                    // TargetBeforeBalance -> TargetAfterBalance
-                    //
-                    // Sort by final balance.
-                    // -----------------------------------------------------
 
                     case 6:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.TargetAfterBalance
-                                )
-                                : query.OrderByDescending(
-                                    x => x.TargetAfterBalance
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.Amount)
+                            : query.OrderByDescending(x => x.Amount);
                         break;
-
-
-                    // -----------------------------------------------------
-                    // 7. DATE
-                    // -----------------------------------------------------
 
                     case 7:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.CreatedAt
-                                )
-                                : query.OrderByDescending(
-                                    x => x.CreatedAt
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.TargetAfterBalance)
+                            : query.OrderByDescending(x => x.TargetAfterBalance);
                         break;
-
-
-                    // -----------------------------------------------------
-                    // 8. STATUS
-                    // -----------------------------------------------------
 
                     case 8:
-
-                        query =
-                            orderDir == "asc"
-                                ? query.OrderBy(
-                                    x => x.Status
-                                )
-                                : query.OrderByDescending(
-                                    x => x.Status
-                                );
-
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.CreatedAt)
+                            : query.OrderByDescending(x => x.CreatedAt);
                         break;
 
-
-                    // -----------------------------------------------------
-                    // 0 # / 9 DETAILS / 10 ACTIONS
-                    //
-                    // Not sortable.
-                    //
-                    // Default to newest first.
-                    // -----------------------------------------------------
+                    case 9:
+                        query = orderDir == "asc"
+                            ? query.OrderBy(x => x.Status)
+                            : query.OrderByDescending(x => x.Status);
+                        break;
 
                     default:
-
-                        query =
-                            query.OrderByDescending(
-                                x => x.CreatedAt
-                            );
-
+                        query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                 }
 
@@ -1869,17 +1816,11 @@ namespace Whitelabel_backoffice.Controllers
                                 agentCode =
                                     x.AgentCode,
 
-                                agentPath =
-                                    x.AgentPath,
-
                                 agentTableId =
                                     x.AgentTableId,
 
                                 targetCode =
                                     x.TargetCode,
-
-                                targetPath =
-                                    x.TargetPath,
 
                                 targetTableId =
                                     x.TargetTableId,
@@ -1918,7 +1859,17 @@ namespace Whitelabel_backoffice.Controllers
                             }
                         )
                         .ToListAsync();
+                var targetCodes =
+                    logs
+                        .Where(x => x.targetAccountType == 0)
+                        .Select(x => x.targetCode)
+                        .Distinct()
+                        .ToList();
 
+                var users = await _dbStorage.Context.Users
+                    .AsNoTracking()
+                    .Where(x => targetCodes.Contains(x.UserCode))
+                    .ToDictionaryAsync(x => x.UserCode);
                 var walletIds =
                     logs
                         .Select(x => x.userWalletId)
@@ -1949,17 +1900,11 @@ namespace Whitelabel_backoffice.Controllers
                             agentCode =
                                 x.agentCode,
 
-                            agentPath =
-                                x.agentPath,
-
                             agentTableId =
                                 x.agentTableId,
 
                             targetCode =
                                 x.targetCode,
-
-                            targetPath =
-                                x.targetPath,
 
                             targetTableId =
                                 x.targetTableId,
@@ -1981,6 +1926,11 @@ namespace Whitelabel_backoffice.Controllers
                                     .ToString(
                                         "yyyy-MM-dd HH:mm:ss"
                                     ),
+                            userNickname =
+                                x.targetAccountType == 0 &&
+                                users.TryGetValue(x.targetCode, out var userInfo)
+                                    ? userInfo.UserNickName
+                                    : "",
 
                             agentBeforeBalance =
                                 x.agentBeforeBalance,
