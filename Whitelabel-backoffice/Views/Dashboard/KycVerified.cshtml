@@ -713,7 +713,7 @@
                 {
 
                     format:
-                        "MMMM D, YYYY HH:mm:ss",
+                        "M D, YYYY HH:mm:ss",
 
                     cancelLabel:
                         "Cancel",
@@ -803,21 +803,9 @@
 
 
                 $("#selectedValue").text(
-
-                    defaultStart.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
-                    +
-
-                    " - "
-
-                    +
-
-                    defaultEnd.format(
-                        "MMMM D, YYYY HH:mm:ss"
-                    )
-
+                    defaultStart.format("M D, YYYY HH:mm:ss") +
+                    " - " +
+                    defaultEnd.format("M D, YYYY HH:mm:ss")
                 );
 
 

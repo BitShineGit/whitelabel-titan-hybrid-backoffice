@@ -76,7 +76,8 @@ namespace Whitelabel_backoffice.Controllers
 
             var length = Convert.ToInt32(
                 Request.Form["length"].FirstOrDefault() ?? "10");
-
+            string userNickname =
+                Request.Form["userNickname"].ToString();
 
             // ==========================================
             // FILTER PARAMETERS
@@ -135,7 +136,19 @@ namespace Whitelabel_backoffice.Controllers
                 query = query.Where(x =>
                     x.UserCode == userCode);
             }
+            // -------------------------------------------------
+            // USER NICKNAME
+            // -------------------------------------------------
 
+            if (!string.IsNullOrWhiteSpace(userNickname))
+            {
+                userNickname = userNickname.Trim();
+
+                query = query.Where(
+                    x => x.UserNickName != null &&
+                         x.UserNickName.Contains(userNickname)
+                );
+            }
 
             // ==========================================
             // UPLINE CODE FILTER
@@ -319,6 +332,7 @@ namespace Whitelabel_backoffice.Controllers
                 {
                     id = x.Id,
                     userCode = x.UserCode,
+                    userNickname = x.UserNickName,
                     userEmail = x.UserEmail,
                     currentBalance = x.CurrentBalance,
                     currencyCode = x.CurrencyCode,
