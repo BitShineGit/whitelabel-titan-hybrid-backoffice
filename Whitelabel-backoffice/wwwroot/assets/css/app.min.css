@@ -26729,9 +26729,9 @@ div.dt-button-collection .dropdown-menu {
         color: var(--theme-primary) !important
     }
 
-.select2-container {
+/*.select2-container {
     width: 100% !important
-}
+}*/
 
     .select2-container .select2-selection--single {
         border: var(--theme-border-width) solid var(--theme-border-color);
@@ -27644,7 +27644,7 @@ tr.table-row-selected {
     color: #047857;
 }
 
-.badge-category-table {
+.badge-category-board {
     background-color: #E2E8F0;
     color: #334155;
 }

@@ -200,7 +200,7 @@
                                             else if (column.Type == "select" && column.Field == "WlproviderCode")
                                             {
                                                 <select class="form-select form-select-sm wl-provider-code select2"
-                                                        data-provider-id="@id"
+                                                        data-provider-id="@id" style="width:100%;"
                                                         data-field="@column.Field" data-toggle="select2">
                                                     <option value=""> - </option>
                                                     @foreach (var option in Model.WLProviderOptions)
@@ -291,7 +291,7 @@
                 confirmButtonText,
                 cancelButtonText: "Cancel",
                 reverseButtons: true,
-                focusCancel: true
+                focusConfirm: true
             });
         }
 
@@ -428,12 +428,8 @@
                 $select.val(value).trigger("change.select2");
             }
 
-            if (!id || field !== "WlproviderCode" || !newValue) {
+            if (!id || field !== "WlproviderCode") {
                 restoreValue(oldValue);
-
-                if (!newValue) {
-                    showToast("Please select a WL provider.", false);
-                }
 
                 return;
             }
@@ -616,6 +612,7 @@
             text: "This will add new providers, update existing provider information, and deactivate providers no longer returned by GGX.",
             icon: "question",
             showCancelButton: true,
+            focusConfirm: true,
             confirmButtonText: "Yes, Sync",
             cancelButtonText: "Cancel",
             reverseButtons: true
@@ -662,6 +659,7 @@
                         </div>
                     `,
                     icon: "success",
+                    focusConfirm: true,
                     confirmButtonText: "OK"
                 });
 
@@ -679,6 +677,7 @@
                     title: "Sync Failed",
                     text: message,
                     icon: "error",
+                    focusConfirm: true,
                     confirmButtonText: "OK"
                 });
             } finally {

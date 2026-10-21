@@ -143,7 +143,7 @@ namespace Whitelabel_backoffice.Controllers
                     new() { Field = "BoltType", Title = "Category", Type = "number" },
                     new() { Field = "BoltName", Title = "Vendor Name" },
                     new() { Field = "BoltStatus", Title = "API Status", Type = "number" },
-                    new() { Field = "BolttotalGameCount", Title = "Total Games", Type = "number" },
+                    new() { Field = "BoltTotalGameCount", Title = "Total Games", Type = "number" },
                     new() { Field = "WlproviderCode", Title = "WL Provider Code", Type = "select", Editable = true },
                     new() { Field = "Wlstatus", Title = "WL Status", Type = "switch", Setting = "Wlstatus" },
                     new() { Field = "Wlstatus", Title = "Maintenance", Type = "switch", Setting = "Maintenance" }
@@ -460,12 +460,19 @@ namespace Whitelabel_backoffice.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAPIProviderWLCode(string apiCode, int id, string wlproviderCode)
         {
-            var validCode = await _dbStorage.Context.Wlproviders
-                .AnyAsync(x => x.WlproviderCode == wlproviderCode);
-
-            if (!validCode)
+            if (string.IsNullOrEmpty(wlproviderCode))
             {
-                return BadRequest(new { success = false, msg = "Selected WL provider was not found." });
+                wlproviderCode = "";
+            }
+            else
+            {
+                var validCode = await _dbStorage.Context.Wlproviders
+                    .AnyAsync(x => x.WlproviderCode == wlproviderCode);
+
+                if (!validCode)
+                {
+                    return BadRequest(new { success = false, msg = "Selected WL provider was not found." });
+                }
             }
 
             apiCode = (apiCode ?? "").Trim().ToLowerInvariant();
@@ -1260,8 +1267,8 @@ namespace Whitelabel_backoffice.Controllers
         {
             apiCode = apiCode?.Trim().ToLowerInvariant() ?? "";
 
-            if (ids == null || ids.Count == 0 || ids.Count > 500)
-                return BadRequest(new { success = false, message = "Select between 1 and 500 games." });
+            if (ids == null || ids.Count == 0 || ids.Count > 1000)
+                return BadRequest(new { success = false, message = "Select between 1 and 1000 games." });
 
             if (ids.Any(id => id <= 0))
                 return BadRequest(new { success = false, message = "Invalid game ID." });
