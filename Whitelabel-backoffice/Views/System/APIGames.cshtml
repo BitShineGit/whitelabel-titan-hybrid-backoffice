@@ -29,7 +29,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div data-table data-table-rows-per-page="100" class="card">
+            <div data-table data-table-rows-per-page="1000" class="card">
                 <div class="card-header d-flex flex-wrap align-items-center gap-3">
                     <h4 class="card-title mb-0">API Games</h4>
 
@@ -53,7 +53,7 @@
 
                         <select id="providerCodeSelector"
                                 name="providerCode"
-                                class="form-select select2" style="width:150px;"
+                                class="form-select select2" style="width:250px;"
                                 disabled="@(Model.Providers.Count == 0)" data-toggle="select2">
                             <option value="">Select provider</option>
                             @foreach (var provider in Model.Providers)
@@ -74,6 +74,7 @@
                             <i class="ti ti-search app-search-icon text-muted"></i>
                         </div>
                         <button class="btn btn-success" id="syncProviderButton" type="button"><i class="ti ti-rotate-clockwise me-1"></i> Sync</button>
+                        <button class="btn btn-warning" id="refreshButton" type="button"><i class="ti ti-rotate-clockwise me-1"></i> Refresh</button>
                     </div>
 
                     <div class="d-flex flex-wrap align-items-center gap-2">
@@ -102,10 +103,10 @@
                         <!-- Records Per Page -->
                         <div>
                             <select data-table-set-rows-per-page class="form-select form-control my-1 my-md-0">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
                             </select>
                         </div>
                     </div>
@@ -228,10 +229,6 @@
                                                         <span class="text-muted">-</span>
                                                     }
                                                 }
-                                                else if (column.Type == "number" && value != null)
-                                                {
-                                                    @string.Format("{0:N0}", value)
-                                                }
                                                 else
                                                 {
                                                     @value
@@ -294,6 +291,7 @@
                 title: "Operation Failed",
                 text: message || "An unexpected error occurred.",
                 icon: "error",
+                focusConfirm: true,
                 confirmButtonText: "OK"
             });
         }
@@ -454,6 +452,7 @@
                         : `Are you sure you want to ${value ? "enable" : "disable"} ${settingName} for this game?`,
                 icon: "question",
                 showCancelButton: true,
+                focusConfirm: true,
                 confirmButtonText: "Yes, confirm",
                 cancelButtonText: "Cancel",
                 reverseButtons: true
@@ -519,6 +518,7 @@
                 text: `${action} ${settingName} for ${ids.length} selected game(s)?`,
                 icon: "question",
                 showCancelButton: true,
+                focusConfirm: true,
                 confirmButtonText: "Confirm",
                 cancelButtonText: "Cancel",
                 reverseButtons: true
@@ -546,6 +546,7 @@
                     title: "Update Completed",
                     text: response.message || `Updated ${response.updated} games.`,
                     icon: "success",
+                    focusConfirm: true,
                     confirmButtonText: "OK"
                 });
 
@@ -658,6 +659,7 @@
                     : "No provider is selected. Sync games for all active GGX providers?",
                 icon: "question",
                 showCancelButton: true,
+                focusConfirm: true,
                 confirmButtonText: "Yes, sync",
                 cancelButtonText: "Cancel",
                 confirmButtonColor: "#198754",
@@ -703,6 +705,7 @@
                     title: "Sync completed",
                     text: message,
                     icon: "success",
+                    focusConfirm: true,
                     confirmButtonText: "OK"
                 });
 
@@ -720,6 +723,10 @@
             } finally {
                 button.prop("disabled", false).html(originalHtml);
             }
+        });
+
+        $("#refreshButton").on("click", async function () {
+            window.location.reload();
         });
 
         updateSelectedCount();
