@@ -1,0 +1,582 @@
+﻿@{
+    ViewData["Title"] = "Login History";
+}
+
+<script src="~/assets/plugins/datatables/dataTables.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/assets/plugins/datatables/responsive.bootstrap5.min.js"></script>
+<script src="~/assets/plugins/select2/js/select2.min.js"></script>
+<script src="~/assets/plugins/moment/moment.min.js"></script>
+<script src="~/assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+<link href="~/assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+<link href="~/assets/plugins/datatables/responsive.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+<link href="/assets/css/app.min.css" rel="stylesheet" />
+
+<div class="page-title-head d-flex align-items-center">
+    <div class="flex-grow-1" style="margin-left:15px;">
+        <h4 class="page-main-title m-0">Login History</h4>
+    </div>
+
+    <div class="text-end">
+        <ol class="breadcrumb m-0 py-0">
+            <li class="breadcrumb-item">
+                <a href="~/account/index">TITANBET</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0);">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Login History</li>
+        </ol>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- FILTER CARD -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <div>
+                <h4 class="card-title mb-1">Search Login History</h4>
+                <p class="text-muted mb-0">
+                    Search login and logout activity by account, device, IP address, and time.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="loginHistoryFilterForm">
+                <div class="row g-3">
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterTargetCode" class="form-label">Target Code</label>
+                        <input type="search"
+                               id="filterTargetCode"
+                               class="form-control"
+                               placeholder="Search target code..."
+                               autocomplete="off" />
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterTargetType" class="form-label">Target Type</label>
+                        <select id="filterTargetType" class="form-select">
+                            <option value="">All Types</option>
+                            <option value="0">Agent</option>
+                            <option value="1">Player</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterIpAddress" class="form-label">IP Address</label>
+                        <input type="search"
+                               id="filterIpAddress"
+                               class="form-control"
+                               placeholder="Search IP address..."
+                               autocomplete="off" />
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label class="form-label">Time Range</label>
+                        <div id="reportrange"
+                             class="form-control"
+                             style="cursor:pointer; position:relative;">
+                            <i class="ti ti-calendar me-2"></i>
+                            <span id="selectedValue"></span>
+                            <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+                        </div>
+                        <input type="hidden" id="dateRange" />
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterAction" class="form-label">Action</label>
+                        <select id="filterAction" class="form-select">
+                            <option value="">All Actions</option>
+                            <option value="Login">Login</option>
+                            <option value="Logout">Logout</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterDevice" class="form-label">Device</label>
+                        <select id="filterDevice" class="form-select">
+                            <option value="">All Devices</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Tablet">Tablet</option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterDomain" class="form-label">Domain</label>
+                        <input type="search"
+                               id="filterDomain"
+                               class="form-control"
+                               placeholder="Search domain..."
+                               autocomplete="off" />
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <label for="filterTargetNickname" class="form-label">Target Nickname</label>
+                        <input type="search"
+                               id="filterTargetNickname"
+                               class="form-control"
+                               placeholder="Search nickname..."
+                               autocomplete="off" />
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 d-flex align-items-end">
+                        <div class="d-flex gap-2 w-100">
+                            <button type="submit"
+                                    class="btn btn-primary flex-fill">
+                                <i class="ti ti-search me-1"></i>
+                                Search
+                            </button>
+
+                            <button type="button"
+                                    id="clearFiltersBtn"
+                                    class="btn btn-light flex-fill">
+                                <i class="ti ti-refresh me-1"></i>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <h4 class="card-title mb-1">Login Records</h4>
+                <p class="text-muted mb-0">
+                    Login and logout activity displayed in your agent timezone.
+                </p>
+            </div>
+
+            <div class="dropdown">
+                <button type="button"
+                        class="btn btn-light"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false">
+                    <i class="ti ti-columns-3 me-1"></i>
+                    Columns
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-end p-2"
+                     id="columnsMenu">
+                    <div class="dropdown-header">Show / Hide Columns</div>
+
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        string columnName = i switch
+                        {
+                            0 => "Target Code",
+                            1 => "Target Type",
+                            2 => "IP Address",
+                            3 => "Time",
+                            4 => "Action",
+                            5 => "Device",
+                            6 => "Domain",
+                            7 => "Target Nickname",
+                            8 => "Target Email",
+                            9 => "Device Detail",
+                            _ => ""
+                        };
+
+                        <label class="dropdown-item d-flex align-items-center gap-2">
+                            <input type="checkbox"
+                                   class="form-check-input m-0 column-toggle"
+                                   data-column="@i"
+                                   checked />
+                            <span>@columnName</span>
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="loginHistoryTable"
+                       class="table table-hover table-nowrap align-middle mb-0"
+                       style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Target Code</th>
+                            <th>Target Type</th>
+                            <th>IP Address</th>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Device</th>
+                            <th>Domain</th>
+                            <th>Target Nickname</th>
+                            <th>Target Email</th>
+                            <th>Device Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="dataTableLengthContainer" class="mt-3 pt-2"></div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3">
+                <div id="dataTableInfoContainer"></div>
+                <div id="dataTablePagingContainer" class="ms-auto"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #dataTableLengthContainer .dt-length select,
+    #dataTableLengthContainer .dataTables_length select {
+        width: auto !important;
+        min-width: 65px;
+        display: inline-block;
+    }
+
+    #dataTableLengthContainer .dt-length,
+    #dataTableLengthContainer .dataTables_length {
+        width: auto;
+    }
+
+    #loginHistoryTable td {
+        vertical-align: middle;
+    }
+
+        #loginHistoryTable td.device-detail-cell {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            min-width: 260px;
+            max-width: 420px;
+        }
+
+    .login-action-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .login-action-success {
+        background-color: rgba(25, 135, 84, 0.12);
+        color: #198754;
+    }
+
+    .logout-action {
+        background-color: rgba(108, 117, 125, 0.12);
+        color: #6c757d;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        // ---------------------------------------------------------
+        // SELECT2
+        // ---------------------------------------------------------
+
+        if ($.fn.select2) {
+            $("#filterTargetType, #filterAction, #filterDevice").select2({
+                width: "100%",
+                minimumResultsForSearch: Infinity
+            });
+        }
+
+        // ---------------------------------------------------------
+        // DATE RANGE
+        // The selected values are agent-local wall-clock times.
+        // The controller converts the range to UTC.
+        // ---------------------------------------------------------
+
+        var defaultStart = moment().subtract(1, "month");
+        var defaultEnd = moment();
+
+        function updateDateRange(start, end) {
+            $("#dateRange").val(
+                start.format("YYYY-MM-DD HH:mm:ss") +
+                " - " +
+                end.format("YYYY-MM-DD HH:mm:ss")
+            );
+        }
+
+        function displayDateRange(start, end) {
+            $("#selectedValue").text(
+                start.format("M DD, YYYY HH:mm:ss") +
+                " - " +
+                end.format("M DD, YYYY HH:mm:ss")
+            );
+        }
+
+        if ($.fn.daterangepicker) {
+            $("#reportrange").daterangepicker({
+                startDate: defaultStart,
+                endDate: defaultEnd,
+                autoUpdateInput: false,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+                opens: "left",
+                drops: "down",
+                locale: {
+                    format: 'M DD, YYYY HH:mm:ss',
+                    separator: ' - ',
+                    applyLabel: 'Apply',
+                    cancelLabel: 'Cancel',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom Range',
+                    weekLabel: 'W',
+                    daysOfWeek: moment.weekdaysMin(),
+                    monthNames: moment.months(),
+                    firstDay: 1
+                },
+                ranges: {
+                    "Today": [
+                        moment().startOf("day"),
+                        moment().endOf("day")
+                    ],
+                    "Yesterday": [
+                        moment().subtract(1, "days").startOf("day"),
+                        moment().subtract(1, "days").endOf("day")
+                    ],
+                    "Last 7 Days": [
+                        moment().subtract(6, "days").startOf("day"),
+                        moment()
+                    ],
+                    "Last 30 Days": [
+                        moment().subtract(29, "days").startOf("day"),
+                        moment()
+                    ],
+                    "This Month": [
+                        moment().startOf("month"),
+                        moment()
+                    ],
+                    "Last Month": [
+                        moment().subtract(1, "month").startOf("month"),
+                        moment().subtract(1, "month").endOf("month")
+                    ]
+                }
+            });
+
+            displayDateRange(defaultStart, defaultEnd);
+            updateDateRange(defaultStart, defaultEnd);
+
+            $("#reportrange")
+                .off("apply.daterangepicker.loginHistory")
+                .on("apply.daterangepicker.loginHistory", function (event, picker) {
+                    displayDateRange(picker.startDate, picker.endDate);
+                    updateDateRange(picker.startDate, picker.endDate);
+                });
+        } else {
+            console.error("daterangepicker.js is not loaded.");
+        }
+
+        // ---------------------------------------------------------
+        // DATATABLE
+        // ---------------------------------------------------------
+
+        var table = $("#loginHistoryTable").DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            dom: "lrtip",
+            pageLength: 25,
+            lengthMenu: [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+            order: [[3, "desc"]],
+            ajax: {
+                url: '@Url.Action("GetLoginHistory", "Report")',
+                type: "POST",
+                data: function (d) {
+                    d.targetCode = $("#filterTargetCode").val();
+                    d.targetType = $("#filterTargetType").val();
+                    d.ipAddress = $("#filterIpAddress").val();
+                    d.action = $("#filterAction").val();
+                    d.device = $("#filterDevice").val();
+                    d.domain = $("#filterDomain").val();
+                    d.targetNickname = $("#filterTargetNickname").val();
+
+                    var range = $("#dateRange").val();
+
+                    if (range) {
+                        var dates = range.split(" - ");
+
+                        if (dates.length === 2) {
+                            d.fromDate = dates[0];
+                            d.toDate = dates[1];
+                        }
+                    }
+                }
+            },
+            columns: [
+                { data: "targetCode", defaultContent: "" },
+                {
+                    data: 'targetTypeName',
+                    render: function (data) {
+                        if (data === 'Player') {
+                            return '<span class="badge bg-info">Player</span>';
+                        }
+
+                        return '<span class="badge bg-secondary">Agent</span>';
+                    }
+                },
+                { data: "ipAddress", defaultContent: "" },
+                { data: "time", defaultContent: "" },
+                {
+                    data: "action",
+                    defaultContent: "",
+                    render: function (data, type) {
+                        if (type !== "display") {
+                            return data || "";
+                        }
+
+                        if (data === "Login") {
+                            return '<span class="login-action-badge login-action-success">Login</span>';
+                        }
+
+                        if (data === "Logout") {
+                            return '<span class="login-action-badge" style="background-color: #f8d7da; color: #842029;">Logout</span>';
+
+                        }
+
+                        return $("<span>").text(data || "").html();
+                    }
+                },
+                { data: "device", defaultContent: "" },
+                { data: "domain", defaultContent: "" },
+                { data: "targetNickname", defaultContent: "" },
+                { data: "targetEmail", defaultContent: "" },
+                {
+                    data: "deviceDetail",
+                    defaultContent: "",
+                    className: "device-detail-cell",
+                    render: function (data, type) {
+                        if (type !== "display") {
+                            return data || "";
+                        }
+
+                        return $("<span>").text(data || "").html();
+                    }
+                }
+            ],
+            initComplete: function () {
+                var api = this.api();
+                var container = $(api.table().container());
+
+                var length = container.find(".dt-length, .dataTables_length").first();
+                var info = container.find(".dt-info, .dataTables_info").first();
+                var paging = container.find(".dt-paging, .dataTables_paginate").first();
+
+                if (length.length) {
+                    $("#dataTableLengthContainer").empty().append(length);
+                }
+
+                if (info.length) {
+                    $("#dataTableInfoContainer").empty().append(info);
+                }
+
+                if (paging.length) {
+                    $("#dataTablePagingContainer").empty().append(paging);
+                }
+
+                api.columns.adjust();
+
+                if (api.responsive && typeof api.responsive.recalc === "function") {
+                    api.responsive.recalc();
+                }
+            }
+        });
+
+        // ---------------------------------------------------------
+        // SEARCH
+        // ---------------------------------------------------------
+
+        $("#loginHistoryFilterForm").on("submit", function (e) {
+            e.preventDefault();
+            table.ajax.reload(null, true);
+        });
+
+        // ---------------------------------------------------------
+        // CLEAR FILTERS
+        // ---------------------------------------------------------
+
+        $("#clearFiltersBtn").on("click", function () {
+            $("#filterTargetCode").val("");
+            $("#filterIpAddress").val("");
+            $("#filterDomain").val("");
+            $("#filterTargetNickname").val("");
+
+            $("#filterTargetType, #filterAction, #filterDevice")
+                .val("")
+                .trigger("change");
+
+            var start = moment().subtract(1, "month");
+            var end = moment();
+
+            var picker = $("#reportrange").data("daterangepicker");
+
+            if (picker) {
+                picker.setStartDate(start);
+                picker.setEndDate(end);
+            }
+
+            displayDateRange(start, end);
+            updateDateRange(start, end);
+
+            table.ajax.reload(null, true);
+        });
+
+        // ---------------------------------------------------------
+        // ENTER KEY
+        // ---------------------------------------------------------
+
+        $("#filterTargetCode, #filterIpAddress, #filterDomain, #filterTargetNickname")
+            .on("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    $("#loginHistoryFilterForm").trigger("submit");
+                }
+            });
+
+        // ---------------------------------------------------------
+        // COLUMN VISIBILITY
+        // ---------------------------------------------------------
+
+        $(document).on("change", ".column-toggle", function () {
+            var index = Number($(this).data("column"));
+
+            table.column(index).visible($(this).is(":checked"), false);
+            table.columns.adjust();
+
+            if (table.responsive && typeof table.responsive.recalc === "function") {
+                table.responsive.recalc();
+            }
+        });
+
+        // ---------------------------------------------------------
+        // WINDOW RESIZE
+        // ---------------------------------------------------------
+
+        $(window).on("resize", function () {
+            table.columns.adjust();
+
+            if (table.responsive && typeof table.responsive.recalc === "function") {
+                table.responsive.recalc();
+            }
+        });
+    });
+</script>

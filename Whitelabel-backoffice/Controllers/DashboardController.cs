@@ -61,127 +61,127 @@ namespace Whitelabel_backoffice.Controllers
 
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    try
-        //    {
-        //        // =========================================================
-        //        // Resolve current agent + timezone offset
-        //        // =========================================================
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                // =========================================================
+                // Resolve current agent + timezone offset
+                // =========================================================
 
-        //        var currentAgent = await GetCurrentAgentAsync();
+                var currentAgent = await GetCurrentAgentAsync();
 
-        //        if (currentAgent == null)
-        //        {
-        //            return Unauthorized();
-        //        }
+                if (currentAgent == null)
+                {
+                    return Unauthorized();
+                }
 
-        //        var offset = TryParseOffset(currentAgent.TimeZone, out var parsedOffset)
-        //            ? parsedOffset
-        //            : TimeSpan.Zero;
-
-
-        //        // =========================================================
-        //        // Compute "today" boundaries in the agent's local timezone,
-        //        // converted to UTC for querying (CreatedAt is stored UTC)
-        //        // =========================================================
-
-        //        var nowLocal = DateTime.UtcNow + offset;
-
-        //        var todayLocalStart = nowLocal.Date;
-
-        //        var todayLocalEnd = todayLocalStart.AddDays(1);
-
-        //        var startUtc = todayLocalStart - offset;
-
-        //        var endUtc = todayLocalEnd - offset;
+                var offset = TryParseOffset(currentAgent.TimeZone, out var parsedOffset)
+                    ? parsedOffset
+                    : TimeSpan.Zero;
 
 
-        //        // =========================================================
-        //        // Downline scope: this agent's own records + everything
-        //        // under their AgentPath (same pattern as GetBettingLogs)
-        //        // =========================================================
+                // =========================================================
+                // Compute "today" boundaries in the agent's local timezone,
+                // converted to UTC for querying (CreatedAt is stored UTC)
+                // =========================================================
 
-        //        var agentPathPrefix = currentAgent.AgentPath + currentAgent.Id + ".";
+                var nowLocal = DateTime.UtcNow + offset;
 
+                var todayLocalStart = nowLocal.Date;
 
-        //        // =========================================================
-        //        // Betting logs — total bet amount / total win amount
-        //        // Status == 1 (Success) only
-        //        // =========================================================
+                var todayLocalEnd = todayLocalStart.AddDays(1);
 
-        //        var bettingQuery = _dbStorage.Context.BettingLogs
-        //            .AsNoTracking()
-        //            .Where(x =>
-        //                x.Status == 1 &&
-        //                x.CreatedAt >= startUtc &&
-        //                x.CreatedAt < endUtc &&
-        //                (
-        //                    x.AgentPath.StartsWith(agentPathPrefix) ||
-        //                    x.AgentCode == currentAgent.AgentCode
-        //                ));
+                var startUtc = todayLocalStart - offset;
 
-        //        // BetAmount is stored negative (see insert code), negate for display
-        //        var totalBetAmount =
-        //            -(await bettingQuery.SumAsync(x => (decimal?)x.BetAmount) ?? 0m);
-
-        //        var totalWinAmount =
-        //            await bettingQuery.SumAsync(x => (decimal?)x.WinAmount) ?? 0m;
+                var endUtc = todayLocalEnd - offset;
 
 
-        //        // =========================================================
-        //        // Finance logs — total deposit / total withdraw
-        //        // Status == 2 (Completed) only
-        //        //
-        //        // FinanceType: 0 = Self Deposit, 1 = Manual Deposit,
-        //        //              2 = Self Withdraw, 3 = Manual Withdraw
-        //        // =========================================================
+                // =========================================================
+                // Downline scope: this agent's own records + everything
+                // under their AgentPath (same pattern as GetBettingLogs)
+                // =========================================================
 
-        //        var depositTypes = new byte[] { 0, 1 };
+                var agentPathPrefix = currentAgent.AgentPath + currentAgent.Id + ".";
 
-        //        var withdrawTypes = new byte[] { 2, 3 };
 
-        //        var financeQuery = _dbStorage.Context.FinanceLogs
-        //            .AsNoTracking()
-        //            .Where(x =>
-        //                x.Status == 2 &&
-        //                x.CreatedAt >= startUtc &&
-        //                x.CreatedAt < endUtc &&
-        //                (
-        //                    x.TargetPath.StartsWith(agentPathPrefix) ||
-        //                    x.TargetCode == currentAgent.AgentCode
-        //                ));
+                // =========================================================
+                // Betting logs — total bet amount / total win amount
+                // Status == 1 (Success) only
+                // =========================================================
 
-        //        var totalDepositAmount =
-        //            await financeQuery
-        //                .Where(x => depositTypes.Contains(x.FinanceType))
-        //                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+                var bettingQuery = _dbStorage.Context.BettingLogs
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.Status == 1 &&
+                        x.CreatedAt >= startUtc &&
+                        x.CreatedAt < endUtc &&
+                        (
+                            x.AgentPath.StartsWith(agentPathPrefix) ||
+                            x.AgentCode == currentAgent.AgentCode
+                        ));
 
-        //        var totalWithdrawAmount =
-        //            await financeQuery
-        //                .Where(x => withdrawTypes.Contains(x.FinanceType))
-        //                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+                // BetAmount is stored negative (see insert code), negate for display
+                var totalBetAmount =
+                    -(await bettingQuery.SumAsync(x => (decimal?)x.BetAmount) ?? 0m);
 
-        //        ViewData["TotalBetAmount"] = totalBetAmount;
-        //        ViewData["TotalWinAmount"] = totalWinAmount;
-        //        ViewData["TotalDepositAmount"] = totalDepositAmount;
-        //        ViewData["TotalWithdrawAmount"] = totalWithdrawAmount;
+                var totalWinAmount =
+                    await bettingQuery.SumAsync(x => (decimal?)x.WinAmount) ?? 0m;
 
-        //        // =========================================================
-        //        // Response
-        //        // =========================================================
 
-        //        return View();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error($"GetTodaySummary: {ex}");
+                // =========================================================
+                // Finance logs — total deposit / total withdraw
+                // Status == 2 (Completed) only
+                //
+                // FinanceType: 0 = Self Deposit, 1 = Manual Deposit,
+                //              2 = Self Withdraw, 3 = Manual Withdraw
+                // =========================================================
 
-        //        return StatusCode(
-        //            StatusCodes.Status500InternalServerError,
-        //            new { error = "Failed to load today's summary." });
-        //    }
-        //}
+                var depositTypes = new byte[] { 0, 1 };
+
+                var withdrawTypes = new byte[] { 2, 3 };
+
+                var financeQuery = _dbStorage.Context.FinanceLogs
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.Status == 2 &&
+                        x.CreatedAt >= startUtc &&
+                        x.CreatedAt < endUtc &&
+                        (
+                            x.TargetPath.StartsWith(agentPathPrefix) ||
+                            x.TargetCode == currentAgent.AgentCode
+                        ));
+
+                var totalDepositAmount =
+                    await financeQuery
+                        .Where(x => depositTypes.Contains(x.FinanceType))
+                        .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+
+                var totalWithdrawAmount =
+                    await financeQuery
+                        .Where(x => withdrawTypes.Contains(x.FinanceType))
+                        .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+
+                ViewData["TotalBetAmount"] = totalBetAmount;
+                ViewData["TotalWinAmount"] = totalWinAmount;
+                ViewData["TotalDepositAmount"] = totalDepositAmount;
+                ViewData["TotalWithdrawAmount"] = totalWithdrawAmount;
+
+                // =========================================================
+                // Response
+                // =========================================================
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"GetTodaySummary: {ex}");
+
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { error = "Failed to load today's summary." });
+            }
+        }
 
 
         // =========================================================

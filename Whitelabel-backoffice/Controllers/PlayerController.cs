@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Security.Claims;
 using Titan.HybridRepository;
 using Titan.HybridRepository.Database;
@@ -13,11 +14,11 @@ namespace Whitelabel_backoffice.Controllers
     {
         private IWhitelabelDBStorage _dbStorage;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<PlayerController> _logger;
+        public Global.Logging.ILogger _logger;
         private readonly ISettingService _settingService;
 
 
-        public PlayerController(IWhitelabelDBStorage dbStorage, UserManager<IdentityUser> userManager, ILogger<PlayerController> logger, ISettingService settingService)
+        public PlayerController(IWhitelabelDBStorage dbStorage, UserManager<IdentityUser> userManager, Global.Logging.ILogger logger, ISettingService settingService)
         {
             _dbStorage = dbStorage;
             _userManager = userManager;
@@ -413,7 +414,7 @@ namespace Whitelabel_backoffice.Controllers
             var providerCodeList = await _dbStorage.Context.BoltProviders.Select(p => p.BoltVendorCode).ToListAsync();
 
             var currentAgentOffset = await GetCurrentAgentTimeZoneOffsetAsync();
-
+            ViewData["AgentTimeZoneOffsetMinutes"] = (int)currentAgentOffset.TotalMinutes;
             // Shift UTC CreatedAt into the logged-in agent's local time
             user.CreatedAt = user.CreatedAt + currentAgentOffset;
 
@@ -424,6 +425,235 @@ namespace Whitelabel_backoffice.Controllers
             ViewData["UserCreatedAtLocal"] = user.CreatedAt + currentAgentOffset;
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetPlayerLoginHistory()
+        {
+            string? draw = Request.Form["draw"].FirstOrDefault();
+
+            try
+            {
+                int playerId = int.TryParse(
+                    Request.Form["playerId"].FirstOrDefault(),
+                    out int parsedPlayerId)
+                    ? parsedPlayerId
+                    : 0;
+
+                int start = int.TryParse(
+                    Request.Form["start"].FirstOrDefault(),
+                    out int parsedStart)
+                    ? Math.Max(parsedStart, 0)
+                    : 0;
+
+                int length = int.TryParse(
+                    Request.Form["length"].FirstOrDefault(),
+                    out int parsedLength)
+                    ? parsedLength
+                    : 10;
+
+                if (length <= 0)
+                {
+                    length = 10;
+                }
+
+                int sortColumn = int.TryParse(
+                    Request.Form["order[0][column]"].FirstOrDefault(),
+                    out int parsedSortColumn)
+                    ? parsedSortColumn
+                    : 2;
+
+                bool descending = string.Equals(
+                    Request.Form["order[0][dir]"].FirstOrDefault(),
+                    "desc",
+                    StringComparison.OrdinalIgnoreCase);
+
+                if (playerId <= 0)
+                {
+                    return Json(new
+                    {
+                        draw,
+                        recordsTotal = 0,
+                        recordsFiltered = 0,
+                        data = new List<object>()
+                    });
+                }
+
+                string? ipAddress = Request.Form["ipAddress"].FirstOrDefault();
+                string? device = Request.Form["device"].FirstOrDefault();
+                string? action = Request.Form["action"].FirstOrDefault();
+                string? fromDate = Request.Form["fromDate"].FirstOrDefault();
+                string? toDate = Request.Form["toDate"].FirstOrDefault();
+
+                TimeSpan agentOffset = await GetCurrentAgentTimeZoneOffsetAsync();
+
+                // Only retrieve login records belonging to this player.
+                IQueryable<LoginLog> query = _dbStorage.Context.LoginLogs
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.TargetType == 1 &&
+                        x.TargetTableId == playerId);
+
+                int totalRecords = await query.CountAsync();
+
+                // Interpret date filters using the logged-in agent's timezone.
+                DateTime agentNow = DateTime.UtcNow.Add(agentOffset);
+
+                DateTime fromLocal = agentNow.AddMonths(-1);
+                DateTime toLocal = agentNow;
+
+                if (DateTime.TryParseExact(
+                    fromDate,
+                    "yyyy-MM-dd HH:mm:ss",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime parsedFrom))
+                {
+                    fromLocal = parsedFrom;
+                }
+
+                if (DateTime.TryParseExact(
+                    toDate,
+                    "yyyy-MM-dd HH:mm:ss",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime parsedTo))
+                {
+                    toLocal = parsedTo;
+                }
+
+                fromLocal = DateTime.SpecifyKind(
+                    fromLocal,
+                    DateTimeKind.Unspecified);
+
+                toLocal = DateTime.SpecifyKind(
+                    toLocal,
+                    DateTimeKind.Unspecified);
+
+                DateTime fromUtc = fromLocal.Subtract(agentOffset);
+                DateTime toUtc = toLocal.Subtract(agentOffset);
+
+                if (fromUtc > toUtc)
+                {
+                    (fromUtc, toUtc) = (toUtc, fromUtc);
+                }
+
+                // Include the complete selected final second.
+                DateTime toUtcExclusive = toUtc.AddSeconds(1);
+
+                query = query.Where(x =>
+                    x.LoginTime >= fromUtc &&
+                    x.LoginTime < toUtcExclusive);
+
+                if (!string.IsNullOrWhiteSpace(ipAddress))
+                {
+                    ipAddress = ipAddress.Trim();
+
+                    query = query.Where(x =>
+                        x.IpAddress.Contains(ipAddress));
+                }
+
+                if (!string.IsNullOrWhiteSpace(device))
+                {
+                    query = query.Where(x => x.Device == device);
+                }
+
+                if (!string.IsNullOrWhiteSpace(action))
+                {
+                    query = query.Where(x => x.Action == action);
+                }
+
+                int filteredRecords = await query.CountAsync();
+
+                query = sortColumn switch
+                {
+                    0 => descending
+                        ? query.OrderByDescending(x => x.Id)
+                        : query.OrderBy(x => x.Id),
+
+                    1 => descending
+                        ? query.OrderByDescending(x => x.IpAddress)
+                        : query.OrderBy(x => x.IpAddress),
+
+                    2 => descending
+                        ? query.OrderByDescending(x => x.LoginTime)
+                        : query.OrderBy(x => x.LoginTime),
+
+                    3 => descending
+                        ? query.OrderByDescending(x => x.Device)
+                        : query.OrderBy(x => x.Device),
+
+                    4 => descending
+                        ? query.OrderByDescending(x => x.Action)
+                        : query.OrderBy(x => x.Action),
+
+                    5 => descending
+                        ? query.OrderByDescending(x => x.Domain)
+                        : query.OrderBy(x => x.Domain),
+
+                    6 => descending
+                        ? query.OrderByDescending(x => x.DeviceDetail)
+                        : query.OrderBy(x => x.DeviceDetail),
+
+                    _ => query.OrderByDescending(x => x.LoginTime)
+                };
+
+                var logs = await query
+                    .Skip(start)
+                    .Take(length)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.IpAddress,
+                        x.LoginTime,
+                        x.Device,
+                        x.Action,
+                        x.Domain,
+                        x.DeviceDetail
+                    })
+                    .ToListAsync();
+
+                var data = logs.Select(x =>
+                {
+                    DateTime loginUtc = DateTime.SpecifyKind(
+                        x.LoginTime,
+                        DateTimeKind.Utc);
+
+                    DateTime loginLocal = loginUtc.Add(agentOffset);
+
+                    return new
+                    {
+                        x.Id,
+                        x.IpAddress,
+                        Time = loginLocal.ToString("yyyy-MM-dd HH:mm:ss"),
+                        x.Device,
+                        x.Action,
+                        x.Domain,
+                        x.DeviceDetail
+                    };
+                }).ToList();
+
+                return Json(new
+                {
+                    draw,
+                    recordsTotal = totalRecords,
+                    recordsFiltered = filteredRecords,
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error loading player login history.");
+
+                return Json(new
+                {
+                    draw,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new List<object>(),
+                    error = "Failed to load player login history."
+                });
+            }
         }
 
         [HttpGet]

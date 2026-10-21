@@ -53,6 +53,7 @@ namespace Whitelabel_backoffice.Controllers
             return View();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -61,7 +62,10 @@ namespace Whitelabel_backoffice.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await _dbStorage.Context.Agents.Where(u => u.AgentLoginName == model.Username).FirstOrDefaultAsync();
+                var user = await _dbStorage.Context.Agents
+                    .Where(u => u.AgentLoginName == model.Username)
+                    .FirstOrDefaultAsync();
+
                 if (user == null)
                 {
                     return Json(new
@@ -72,6 +76,7 @@ namespace Whitelabel_backoffice.Controllers
                 }
 
                 var identityUser = await _userManager.FindByNameAsync(user.AgentCode);
+
                 if (identityUser == null)
                 {
                     return Json(new
@@ -82,16 +87,56 @@ namespace Whitelabel_backoffice.Controllers
                 }
 
                 // Attempt sign-in
-                var result =
-                    await _signInManager.PasswordSignInAsync(
-                        identityUser.UserName,
-                        model.Password,
-                        model.RememberMe,
-                        lockoutOnFailure: true
-                    );
+                var result = await _signInManager.PasswordSignInAsync(
+                    identityUser.UserName,
+                    model.Password,
+                    model.RememberMe,
+                    lockoutOnFailure: true
+                );
 
                 if (result.Succeeded)
                 {
+                    try
+                    {
+                        var userAgent = Request.Headers["User-Agent"].ToString();
+
+                        var device = userAgent.Contains(
+                            "Mobile", StringComparison.OrdinalIgnoreCase)
+                            ? "Mobile"
+                            : userAgent.Contains(
+                                "Tablet", StringComparison.OrdinalIgnoreCase)
+                                ? "Tablet"
+                                : "Desktop";
+
+                        var loginLog = new LoginLog
+                        {
+                            TargetCode = user.AgentCode,
+                            TargetTableId = user.Id,
+                            TargetType = 0,
+                            IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "",
+                            LoginTime = DateTime.UtcNow,
+                            Device = device,
+                            Action = "Login",
+                            Country = "",
+                            Domain = Request.Host.ToString(),
+                            TargetPath = user.AgentPath,
+                            DeviceDetail = userAgent,
+                            TargetEmail = "",
+                            TargetNickName = user.AgentLoginName
+                        };
+
+                        _dbStorage.Context.LoginLogs.Add(loginLog);
+                        await _dbStorage.Context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(
+                            ex,
+                            "[Admin AccountController->Login] Failed to save login log for agent {AgentCode}",
+                            user.AgentCode
+                        );
+                    }
+
                     return Json(new
                     {
                         success = true,
@@ -145,14 +190,75 @@ namespace Whitelabel_backoffice.Controllers
             });
         }
 
+
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
+            try
+            {
+                var identityUser = await _userManager.GetUserAsync(User);
+
+                if (identityUser != null)
+                {
+                    var agent = await _dbStorage.Context.Agents
+                        .FirstOrDefaultAsync(a => a.AspNetUserId == identityUser.Id);
+
+                    if (agent != null)
+                    {
+                        var userAgent = Request.Headers["User-Agent"].ToString();
+
+                        var device = userAgent.Contains(
+                            "Mobile", StringComparison.OrdinalIgnoreCase)
+                            ? "Mobile"
+                            : userAgent.Contains(
+                                "Tablet", StringComparison.OrdinalIgnoreCase)
+                                ? "Tablet"
+                                : "Desktop";
+
+                        var loginLog = new LoginLog
+                        {
+                            TargetCode = agent.AgentCode,
+                            TargetTableId = agent.Id,
+                            TargetType = 0,
+                            IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "",
+                            LoginTime = DateTime.UtcNow,
+                            Device = device,
+                            Action = "Logout",
+                            Country = "",
+                            Domain = Request.Host.ToString(),
+                            TargetPath = agent.AgentPath,
+                            DeviceDetail = userAgent,
+                            TargetEmail = "",
+                            TargetNickName = agent.AgentLoginName
+                        };
+
+                        _dbStorage.Context.LoginLogs.Add(loginLog);
+                        await _dbStorage.Context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _logger.LogError(
+                            "[Admin AccountController->Logout] Agent record not found for Identity user {IdentityUserId}",
+                            identityUser.Id
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "[Admin AccountController->Logout] Failed to save logout log."
+                );
+            }
+
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Login", "Account");
         }
+
 
         // =========================================================
         // ACCOUNT PAGE
@@ -979,6 +1085,7 @@ namespace Whitelabel_backoffice.Controllers
 
         }
 
+
         [HttpPost]
         public async Task<IActionResult> VerifyTwoFactor(
             string code,
@@ -1007,27 +1114,89 @@ namespace Whitelabel_backoffice.Controllers
                         msg = "Please enter a valid 6-digit code."
                     });
                 }
+
                 _logger.LogInformation(
-    "[VerifyTwoFactor] Starting verification. CodeLength: {CodeLength}, UserAuthenticated: {UserAuthenticated}, UserName: {UserName}",
-    code?.Length ?? 0,
-    User?.Identity?.IsAuthenticated,
-    User?.Identity?.Name
-);
+                    "[VerifyTwoFactor] Starting verification. CodeLength: {CodeLength}, UserAuthenticated: {UserAuthenticated}, UserName: {UserName}",
+                    code?.Length ?? 0,
+                    User?.Identity?.IsAuthenticated,
+                    User?.Identity?.Name
+                );
+
                 var result =
                     await _signInManager.TwoFactorAuthenticatorSignInAsync(
                         code: code,
                         isPersistent: rememberMe,
                         rememberClient: false
                     );
+
                 _logger.LogInformation(
-    "[VerifyTwoFactor] Result. Succeeded: {Succeeded}, RequiresTwoFactor: {RequiresTwoFactor}, IsLockedOut: {IsLockedOut}, IsNotAllowed: {IsNotAllowed}",
-    result.Succeeded,
-    result.RequiresTwoFactor,
-    result.IsLockedOut,
-    result.IsNotAllowed
-);
+                    "[VerifyTwoFactor] Result. Succeeded: {Succeeded}, RequiresTwoFactor: {RequiresTwoFactor}, IsLockedOut: {IsLockedOut}, IsNotAllowed: {IsNotAllowed}",
+                    result.Succeeded,
+                    result.RequiresTwoFactor,
+                    result.IsLockedOut,
+                    result.IsNotAllowed
+                );
+
                 if (result.Succeeded)
                 {
+                    try
+                    {
+                        var identityUser = await _userManager.GetUserAsync(User);
+
+                        if (identityUser != null)
+                        {
+                            var agent = await _dbStorage.Context.Agents
+                                .FirstOrDefaultAsync(a => a.AspNetUserId == identityUser.Id);
+
+                            if (agent != null)
+                            {
+                                var userAgent = Request.Headers["User-Agent"].ToString();
+
+                                var device = userAgent.Contains(
+                                    "Mobile", StringComparison.OrdinalIgnoreCase)
+                                    ? "Mobile"
+                                    : userAgent.Contains(
+                                        "Tablet", StringComparison.OrdinalIgnoreCase)
+                                        ? "Tablet"
+                                        : "Desktop";
+
+                                var loginLog = new LoginLog
+                                {
+                                    TargetCode = agent.AgentCode,
+                                    TargetTableId = agent.Id,
+                                    TargetType = 0,
+                                    IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "",
+                                    LoginTime = DateTime.UtcNow,
+                                    Device = device,
+                                    Action = "Login",
+                                    Country = "",
+                                    Domain = Request.Host.ToString(),
+                                    TargetPath = agent.AgentPath,
+                                    DeviceDetail = userAgent,
+                                    TargetEmail = "",
+                                    TargetNickName = agent.AgentLoginName
+                                };
+
+                                _dbStorage.Context.LoginLogs.Add(loginLog);
+                                await _dbStorage.Context.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                _logger.LogError(
+                                    "[VerifyTwoFactor] Agent record not found for Identity user {IdentityUserId}",
+                                    identityUser.Id
+                                );
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(
+                            ex,
+                            "[Admin AccountController->VerifyTwoFactor] Failed to save login log."
+                        );
+                    }
+
                     return Json(new
                     {
                         success = true,
@@ -1064,6 +1233,7 @@ namespace Whitelabel_backoffice.Controllers
                 });
             }
         }
+
 
         // =========================================================
         // UPDATE TIME ZONE

@@ -12,7 +12,27 @@
     var providerCodeList = (List<string>)ViewData["ProviderCodeList"];
     DateTime UserCreatedAtLocal = (DateTime)ViewData["UserCreatedAtLocal"];
 }
+<style>
+    .dt-length {
+        margin-top: 20px;
+    }
 
+    .login-action-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .login-action-success {
+        background-color: rgba(25, 135, 84, 0.12);
+        color: #198754;
+    }
+</style>
 <div class="container-fluid">
     <div class="page-title-head d-flex align-items-center">
         <div class="flex-grow-1">
@@ -182,7 +202,10 @@
                                         <a href="#detail_finance" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Finance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#detail_history" data-bs-toggle="tab" aria-expanded="false" class="nav-link">History</a>
+                                        <a href="#detail_history" data-bs-toggle="tab" aria-expanded="false" class="nav-link">Betting Log</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#detail_login_history" data-bs-toggle="tab" aria-expanded="false" class="nav-link">Login History</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#detail_settings" data-bs-toggle="tab" aria-expanded="false" class="nav-link">Settings</a>
@@ -1108,6 +1131,105 @@
                                         </div>
 
                                     </div>
+                                    <div class="tab-pane" id="detail_login_history">
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                <div>
+                                                    <h4 class="card-title mb-1">Search Login History</h4>
+                                                    <p class="text-muted mb-0">
+                                                        View login and logout activity for this player.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <form id="playerLoginHistoryFilterForm">
+                                                    <div class="row g-3">
+                                                        <div class="col-xl-3 col-md-6">
+                                                            <label for="playerLoginFilterIpAddress" class="form-label">IP Address</label>
+                                                            <input type="search"
+                                                                   id="playerLoginFilterIpAddress"
+                                                                   class="form-control"
+                                                                   placeholder="Search IP address..."
+                                                                   autocomplete="off" />
+                                                        </div>
+
+                                                        <div class="col-xl-6 col-md-6">
+                                                            <label class="form-label">Time Range</label>
+                                                            <div id="playerLoginReportrange"
+                                                                 class="form-control"
+                                                                 style="cursor:pointer; position:relative;">
+                                                                <i class="ti ti-calendar me-2"></i>
+                                                                <span id="playerLoginSelectedValue"></span>
+                                                                <i class="ti ti-chevron-down position-absolute end-0 top-50 translate-middle me-1"></i>
+                                                            </div>
+                                                            <input type="hidden" id="playerLoginDateRange" />
+                                                        </div>
+
+                                                        <div class="col-xl-3 col-md-6">
+                                                            <label for="playerLoginFilterDevice" class="form-label">Device</label>
+                                                            <select id="playerLoginFilterDevice" class="form-select">
+                                                                <option value="">All Devices</option>
+                                                                <option value="Desktop">Desktop</option>
+                                                                <option value="Mobile">Mobile</option>
+                                                                <option value="Tablet">Tablet</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-xl-3 col-md-6">
+                                                            <label for="playerLoginFilterAction" class="form-label">Action</label>
+                                                            <select id="playerLoginFilterAction" class="form-select">
+                                                                <option value="">All Actions</option>
+                                                                <option value="Login">Login</option>
+                                                                <option value="Logout">Logout</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-xl-3 col-md-6 d-flex align-items-end">
+                                                            <div class="d-flex gap-2 w-100">
+                                                                <button type="submit" class="btn btn-primary flex-fill">
+                                                                    <i class="ti ti-search me-1"></i> Search
+                                                                </button>
+                                                                <button type="button" id="playerLoginClearFiltersBtn" class="btn btn-light flex-fill">
+                                                                    <i class="ti ti-refresh me-1"></i> Clear
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div>
+                                                    <h4 class="card-title mb-1">Player Login Records</h4>
+                                                    <p class="text-muted mb-0">Only login history belonging to this player is shown.</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="playerLoginHistoryTable"
+                                                           class="table table-hover table-striped align-middle w-100">
+                                                        <thead class="thead-sm text-uppercase fs-xxs">
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>IP Address</th>
+                                                                <th>Time</th>
+                                                                <th>Device</th>
+                                                                <th>Action</th>
+                                                                <th>Domain</th>
+                                                                <th>Device Detail</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="tab-pane" id="detail_settings">
                                         <p class="mb-0">View and manage all ongoing projects, tasks, and milestones. Collaborate with your team and track progress in real-time.</p>
                                     </div>
@@ -1438,7 +1560,7 @@
                     title: "Update Failed",
 
                     text: error.message ||
-                          "Something went wrong while updating the profile.",
+                        "Something went wrong while updating the profile.",
 
                     icon: "error",
 
@@ -1683,24 +1805,24 @@
             // ====================================================
 
             dom: `
-                <'row align-items-center mt-2 mb-3'
-                    <'col-md-6'
-                        <'columnToggleWrapper'>
+                    <'row align-items-center mt-2 mb-3'
+                        <'col-md-6'
+                            <'columnToggleWrapper'>
+                        >
+                        <'col-md-6 text-end'
+                            l
+                        >
                     >
-                    <'col-md-6 text-end'
-                        l
+                    rt
+                    <'row align-items-center mt-2'
+                        <'col-md-6'
+                            i
+                        >
+                        <'col-md-6 text-end'
+                            p
+                        >
                     >
-                >
-                rt
-                <'row align-items-center mt-2'
-                    <'col-md-6'
-                        i
-                    >
-                    <'col-md-6 text-end'
-                        p
-                    >
-                >
-            `,
+                `,
 
 
             // ====================================================
@@ -2004,24 +2126,24 @@
 
                 dropdown.innerHTML = `
 
-                    <button
-                        class="btn btn-sm btn-secondary"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside">
+                        <button
+                            class="btn btn-sm btn-secondary"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside">
 
-                        <i class="ti ti-columns-3 me-1"></i>
+                            <i class="ti ti-columns-3 me-1"></i>
 
-                        Show / Hide Columns
+                            Show / Hide Columns
 
-                    </button>
+                        </button>
 
 
-                    <ul
-                        class="dropdown-menu"
-                        id="columnToggleMenu">
+                        <ul
+                            class="dropdown-menu"
+                            id="columnToggleMenu">
 
-                        ${columnNames.map(
+                            ${columnNames.map(
                     function (name, index) {
 
                         const visible =
@@ -2031,35 +2153,35 @@
 
                         return `
 
-                                    <li class="dropdown-item">
+                                        <li class="dropdown-item">
 
-                                        <div class="form-check">
+                                            <div class="form-check">
 
-                                            <input
-                                                class="form-check-input form-check-input-light fs-14 mt-0 toggle-vis"
-                                                type="checkbox"
-                                                data-column="${index}"
-                                                id="bettingColToggle${index}"
-                                                ${visible ? 'checked' : ''}>
+                                                <input
+                                                    class="form-check-input form-check-input-light fs-14 mt-0 toggle-vis"
+                                                    type="checkbox"
+                                                    data-column="${index}"
+                                                    id="bettingColToggle${index}"
+                                                    ${visible ? 'checked' : ''}>
 
-                                            <label
-                                                class="form-check-label fw-medium"
-                                                for="bettingColToggle${index}">
+                                                <label
+                                                    class="form-check-label fw-medium"
+                                                    for="bettingColToggle${index}">
 
-                                                ${name}
+                                                    ${name}
 
-                                            </label>
+                                                </label>
 
-                                        </div>
+                                            </div>
 
-                                    </li>
+                                        </li>
 
-                                `;
+                                    `;
                     }
                 ).join('')}
 
-                    </ul>
-                `;
+                        </ul>
+                    `;
 
 
                 wrapper.appendChild(dropdown);
@@ -2204,7 +2326,7 @@
                 type: "GET",
                 data: {
                     playerId: @id
-            },
+                },
                 dataType: "json",
                 success: function (data) {
                     var agentSelect =
@@ -3426,5 +3548,197 @@
 
                 }
             );
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        if (!$("#playerLoginHistoryTable").length || !$.fn.DataTable) {
+            return;
+        }
+
+        var playerLoginOffsetMinutes = Number('@(ViewData["AgentTimeZoneOffsetMinutes"] ?? 0)');
+        var playerLoginNow = moment.utc().utcOffset(playerLoginOffsetMinutes);
+        var playerLoginDefaultStart = playerLoginNow.clone().subtract(1, "month");
+        var playerLoginDefaultEnd = playerLoginNow.clone();
+
+        function updatePlayerLoginDateRange(start, end) {
+            $("#playerLoginSelectedValue").text(
+                start.format("M DD, YYYY HH:mm:ss") +
+                " - " +
+                end.format("M DD, YYYY HH:mm:ss")
+            );
+
+            $("#playerLoginDateRange").val(
+                start.format("YYYY-MM-DD HH:mm:ss") +
+                "|" +
+                end.format("YYYY-MM-DD HH:mm:ss")
+            );
+        }
+
+        if ($.fn.daterangepicker) {
+            $("#playerLoginReportrange").daterangepicker({
+                startDate: playerLoginDefaultStart,
+                endDate: playerLoginDefaultEnd,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+                autoUpdateInput: false,
+                opens: "left",
+                drops: "down",
+                locale: {
+                    format: "M DD, YYYY HH:mm:ss",
+                    separator: " - ",
+                    applyLabel: "Apply",
+                    cancelLabel: "Cancel",
+                    customRangeLabel: "Custom Range",
+                    firstDay: 1
+                },
+                ranges: {
+                    "Today": [
+                        playerLoginNow.clone().startOf("day"),
+                        playerLoginNow.clone().endOf("day")
+                    ],
+                    "Yesterday": [
+                        playerLoginNow.clone().subtract(1, "day").startOf("day"),
+                        playerLoginNow.clone().subtract(1, "day").endOf("day")
+                    ],
+                    "Last 7 Days": [
+                        playerLoginNow.clone().subtract(6, "days").startOf("day"),
+                        playerLoginNow.clone()
+                    ],
+                    "Last 30 Days": [
+                        playerLoginNow.clone().subtract(29, "days").startOf("day"),
+                        playerLoginNow.clone()
+                    ],
+                    "This Month": [
+                        playerLoginNow.clone().startOf("month"),
+                        playerLoginNow.clone()
+                    ],
+                    "Last Month": [
+                        playerLoginNow.clone().subtract(1, "month").startOf("month"),
+                        playerLoginNow.clone().subtract(1, "month").endOf("month")
+                    ]
+                }
+            });
+
+            updatePlayerLoginDateRange(playerLoginDefaultStart, playerLoginDefaultEnd);
+
+            $("#playerLoginReportrange")
+                .off("apply.daterangepicker.playerLoginHistory")
+                .on("apply.daterangepicker.playerLoginHistory", function (event, picker) {
+                    updatePlayerLoginDateRange(picker.startDate, picker.endDate);
+                });
+        }
+
+        var playerLoginHistoryTable = $("#playerLoginHistoryTable").DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            searching: false,
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+            order: [[2, "desc"]],
+            ajax: {
+                url: '@Url.Action("GetPlayerLoginHistory", "Player")',
+                type: "POST",
+                data: function (d) {
+                    d.playerId = @id;
+                    d.ipAddress = $("#playerLoginFilterIpAddress").val() || "";
+                    d.device = $("#playerLoginFilterDevice").val() || "";
+                    d.action = $("#playerLoginFilterAction").val() || "";
+
+                    var range = $("#playerLoginDateRange").val();
+                    if (range) {
+                        var dates = range.split("|");
+                        if (dates.length === 2) {
+                            d.fromDate = dates[0];
+                            d.toDate = dates[1];
+                        }
+                    }
+                }
+            },
+            columns: [
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return meta.settings._iDisplayStart + meta.row + 1;
+                    }
+                },
+                { data: "ipAddress", defaultContent: "-" },
+                { data: "time", defaultContent: "-" },
+                { data: "device", defaultContent: "-" },
+                {
+                    data: "action",
+                    render: function (data, type, row) {
+                        if (data === "Login") {
+                            return '<span class="login-action-badge login-action-success">Login</span>';
+                        }
+
+                        if (data === "Logout") {
+                            return '<span class="login-action-badge" style="background-color: #f8d7da; color: #842029;">Logout</span>';
+                        }
+
+                        return data || "";
+                    }
+                },
+                { data: "domain", defaultContent: "-" },
+                {
+                    data: "deviceDetail",
+                    defaultContent: "-",
+                    render: function (data, type) {
+                        if (type !== "display") {
+                            return data || "";
+                        }
+
+                        return $("<span>").text(data || "-").html();
+                    }
+                }
+            ],
+            columnDefs: [
+                { orderable: false, targets: [6] }
+            ]
+        });
+
+        $("#playerLoginHistoryFilterForm").on("submit", function (e) {
+            e.preventDefault();
+            playerLoginHistoryTable.ajax.reload(null, true);
+        });
+
+        $("#playerLoginClearFiltersBtn").on("click", function () {
+            $("#playerLoginFilterIpAddress").val("");
+            $("#playerLoginFilterDevice, #playerLoginFilterAction").val("").trigger("change");
+
+            var now = moment.utc().utcOffset(playerLoginOffsetMinutes);
+            var start = now.clone().subtract(1, "month");
+            var end = now.clone();
+            var picker = $("#playerLoginReportrange").data("daterangepicker");
+
+            if (picker) {
+                picker.setStartDate(start);
+                picker.setEndDate(end);
+            }
+
+            updatePlayerLoginDateRange(start, end);
+            playerLoginHistoryTable.ajax.reload(null, true);
+        });
+
+        $("#playerLoginFilterIpAddress").on("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                $("#playerLoginHistoryFilterForm").trigger("submit");
+            }
+        });
+
+        $('a[data-bs-toggle="tab"][href="#detail_login_history"]')
+            .on("shown.bs.tab", function () {
+                playerLoginHistoryTable.columns.adjust();
+
+                if (playerLoginHistoryTable.responsive &&
+                    typeof playerLoginHistoryTable.responsive.recalc === "function") {
+                    playerLoginHistoryTable.responsive.recalc();
+                }
+            });
     });
 </script>
